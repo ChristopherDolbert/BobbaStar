@@ -195,8 +195,7 @@ $out=array(
 			
 		function GabCMSHash($str)
 			{
-				$config_hash = "xCg532%@%gdvf^5DGaa6&*rFTfg^FD4\$OIFThrR_gh(ugf*/";
-				$str = Secu(sha1($str . $config_hash));
+				$str = Secu(password_hash($str, PASSWORD_BCRYPT));
 				return $str;
 			}
 		

@@ -106,9 +106,9 @@ background: url(./images/subnavibg.png) no-repeat 190px 0;
 	<?PHP } }?>
 	<!-- FIN BOUTTON MANAGEMENTS -->
 </ul> 
-	<div id="habbos-online"><div class="rounded"><span>Il y a <?PHP $tmp = $bdd->query("SELECT users_online FROM server_status LIMIT 1");
+	<div id="habbos-online"><div class="rounded"><span>Il y a <?PHP $tmp = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
 				$tma = $tmp->fetch(PDO::FETCH_ASSOC);
-				echo $tma['users_online']; ?> connectés</span></div></div>	
+				echo $tma['count(id)']; ?> connectés</span></div></div>
 	</div> 
 </div> 
 <div id="content-container"> 
