@@ -7,7 +7,7 @@
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
 	$sitename = "BobbaStar";
-	$url = "http://localhost";
+	$url = "http://bobbastar.test";
 	$description = "&raquo; Créer ton appart, tchat avec des centaines d'utilisateurs et fais-toi de nouveaux amis.";
 	$imagepath = "".$url."/web-gallery/"; 
 	$keyword = "CMS, GabCMS, Habbo, rétro, jeune, ados, love, kiff, habbo";
@@ -21,8 +21,8 @@
 	$compte_facebook = "Gabcms";
 
    //Config Starpass
-   $id_document = 444508; //Identifiant du document starpass
-   $id_compte = 248094; /*Id compte starpass pour le récupérer faites installer sur starpass et dans l'étape 2 cherchez
+   $id_document = 188893; //Identifiant du document starpass
+   $id_compte = 67277; /*Id compte starpass pour le récupérer faites installer sur starpass et dans l'étape 2 cherchez
                          $idp=.... après $idp= c'est l'id de votre compte starpass vous n'avez qu'à le prendre.
                        */
 	
