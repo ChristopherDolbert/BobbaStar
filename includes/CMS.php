@@ -7,7 +7,7 @@
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
 	$sitename = "BobbaStar";
-	$url = "https://bobbastar.fr";
+	$url = "http://localhost";
 	$description = "&raquo; Créer ton appart, tchat avec des centaines d'utilisateurs et fais-toi de nouveaux amis.";
 	$imagepath = "".$url."/web-gallery/"; 
 	$keyword = "CMS, GabCMS, Habbo, rétro, jeune, ados, love, kiff, habbo";
