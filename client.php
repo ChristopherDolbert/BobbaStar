@@ -29,6 +29,7 @@ elseif($client['emulateur'] == 'butterfly') { $ticket = UpdateSSO($user['id']); 
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 
 <title><?PHP echo $sitename;?> &raquo; <?PHP echo $pagename;?></title> 
+  <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
  
 <script type="text/javascript"> 
 var andSoItBegins = (new Date()).getTime();

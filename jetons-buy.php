@@ -49,7 +49,7 @@ try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
 </script>
  
 <style type="text/css">
-body { behavior: url(http://www.habbo.com/js/csshover.htc); }
+body { behavior: url(https://www.habbo.com/js/csshover.htc); }
 </style>
 <![endif]--> 
 <meta name="build" content="<?PHP echo $build;?> >> <?PHP echo $version;?>" /> 
@@ -76,7 +76,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                 </div>
             </div></div>
 		<div id="starpass_<?php echo $id_document; ?>"></div>
-		<script type="text/javascript" src="http://script.starpass.fr/script.php?idd=<?php echo $id_document; ?>&amp;verif_en_php=1&amp;datas=">
+		<script type="text/javascript" src="https://script.starpass.fr/script.php?idd=<?php echo $id_document; ?>&amp;verif_en_php=1&amp;datas=">
 		</script>
 		<noscript>Veuillez activer le Javascript de votre navigateur s'il vous pla&icirc;t.<br />
 		<a href="http://www.starpass.fr/">Micro Paiement StarPass</a>
