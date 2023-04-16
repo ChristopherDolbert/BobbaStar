@@ -1,0 +1,98 @@
+@charset 'UTF-8';
+body {padding: 0;margin: 0;background: url('../images/sc/bg.png');font-family: Ubuntu,Arial,serif;}
+* {font-family: Ubuntu,Arial,serif;color: #444444;}
+
+#page {width: 726px;margin-top: 20px;margin-bottom: 20px;margin-left: auto;margin-right: auto;min-height: 10px;}
+#page_header {width: 100%;height: 77px;}
+#page_header #logo {float: left;}
+#page_header #right {float: right;margin-top: 40px;text-align: right;cursor:pointer;}
+#page_head {width: 100%;height: 10px;background: url('../images/sc/hth.png') no-repeat top left;padding: 0px 6px 0px 6px;}
+#page_content {width: 100%;height: 310px;background: url('../images/sc/htm.png') repeat-y top left;padding: 0px 6px 0px 6px;}
+#page_content #contenu {margin-left:10px;font-weight:bolder;}
+#page_content #contenu2 {margin-left:10px;font-weight:lighter;margin-top:10px;font-size:12px;}
+#page_content #contenu3 {margin-left:10px;font-weight:lighter;margin-top:10px;font-size:12px;color:red;}
+#page_content #contenu4 {width:80px;min-height:10px;border-radius:3px;background:#fff url('../images/sc/sms.gif') no-repeat;background-position:center 10px;padding-top:60px;padding-bottom:10px;border:1px solid #cfcfcf;font-size:12px;text-align:center;float:left;margin-left:30%;margin-top:10px;}
+#page_content #contenu4:hover {background-color:#eee;}
+#page_content #contenu5 {width:80px;min-height:10px;border-radius:3px;background:#fff url('../images/sc/sub.gif') no-repeat;background-position:center 10px;padding-top:60px;padding-bottom:10px;border:1px solid #cfcfcf;font-size:12px;text-align:center;float:left;margin-top:10px;margin-left:10px;}
+#page_content #contenu5:hover {background-color:#eee;}
+#page_content #contenu6 {width:80px;min-height:10px;border-radius:3px;background:#fff url('../images/sc/a.gif') no-repeat;background-position:center 20px;padding-top:60px;padding-bottom:10px;border:1px solid #cfcfcf;font-size:12px;text-align:center;float:left;margin-top:10px;margin-left:10px;}
+#page_content #contenu6:hover {background-color:#eee;}
+#page_content #contenu7 {margin-top:130px;font-size:12px;margin-left:10px;margin-right:10px;}
+#page_content #contenu7 c {margin-left:20px;}
+hr {width:90%;margin:auto;border:none;height:1px;background:#cfcfcf;margin-bottom:10px;}
+#page_footer {width: 100%;min-height: 10px;background: url('../images/sc/htb.png') no-repeat bottom left;padding: 0px 6px 0px 6px;}a.new-button {margin: 0 10px 5px 10px;display: block;float: right;height: 25px;position: relative;text-decoration: none;cursor: pointer;overflow: hidden;white-space: nowrap;}
+a.new-button.save-icon b {padding-left: 10px;}
+a.new-button.green-button b {background-position: -3px -150px;color: #fff !important;}
+a.new-button b {float: left;padding: 5px 17px 4px 20px;font-size: 11px;height: 17px;margin-right: 3px;background: transparent url(../images/sc/new_button.png) no-repeat -3px 0;color: #000;font-weight: bold;text-align: center;display: inline;}
+a.new-button.save-icon span {float: left;display: inline;height: 16px;width: 16px;background: transparent url(../images/sc/button_icons2.png) repeat 0px -97px;margin-right: 8px;}
+a.new-button b {float: left;padding: 7px 17px 4px 20px;font-size: 11px;height: 17px;margin-right: 3px;background: transparent url(../images/sc/new_button.png) no-repeat -3px 0;color: #000;font-weight: bold;text-align: center;display: inline;}
+a.new-button i {position: absolute;right: 0;top: 0;width: 3px;height: 25px;background: transparent url(../images/sc/new_button.png) no-repeat;background-position:0 -150px;;}
+#footer {width: 800px;margin: auto;font-size: 12px;text-align: center;}
+#footer p {margin: 0;padding-top: .7em;padding-bottom: 0;font-size: 11px;color: #777;}
+a {font-weight: bold;cursor: pointer;}
+input[type="text"]:not(.nostyle), input[type="button"]:not(.nostyle), input[type="password"]:not(.nostyle), textarea:not(.nostyle):not(.cke_source), .input_textarea{
+-webkit-border-radius:5px;
+-moz-border-radius:5px;
+border-radius:5px;
+box-shadow:inset 0 1px 5px 0 rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 1);
+background-image:linear-gradient(top,#fefefe,#D1D1D1);
+background-image:-o-linear-gradient(top,#fefefe,#D1D1D1);
+background-image:-moz-linear-gradient(top,#fefefe,#D1D1D1);
+background-image:-webkit-linear-gradient(top,#fefefe,#D1D1D1);
+background-image:-ms-linear-gradient(top,#fefefe,#D1D1D1);
+background-color:#D1D1D1;
+padding:7px;
+font-family:verdana,arial,tahoma;
+font-size:11px;
+border:1px solid #5a5a5a;
+}
+
+select {
+background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
+background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
+background-color:#BFBEBF;
+-webkit-border-radius:3px;
+-moz-border-radius:3px;
+border-radius:6px;
+border:1px solid #808080;
+display:inline-block;
+color:#000;
+font-size:13px;
+font-family:arial;
+padding:5px 7px 6px;
+}
+
+input[type="text"]:not(.nostyle):hover, input[type="password"]:not(.nostyle):hover, textarea:not(.nostyle):not(.cke_source):hover, .input_textarea:hover{
+border:1px solid #000000;
+}
+
+input[type="text"]:not(.nostyle):focus, input[type="password"]:not(.nostyle):focus, textarea:not(.nostyle):not(.cke_source):focus, .input_textarea:focus{
+background-image:linear-gradient(top,#fefefe,#D8D8D8);
+background-image:-o-linear-gradient(top,#fefefe,#D8D8D8);
+background-image:-moz-linear-gradient(top,#fefefe,#D8D8D8);
+background-image:-webkit-linear-gradient(top,#fefefe,#D8D8D8);
+background-image:-ms-linear-gradient(top,#fefefe,#D8D8D8);
+background-color:#D8D8D8;
+border:1px solid #000000;
+}
+
+textarea.markItUpEditor, input.markItUpEditor{
+line-height:normal;
+padding:7px;
+}
+
+.bouton, input[type="submit"]:not(.nostyle), .input_submit{
+-webkit-border-radius:3px;
+-moz-border-radius:3px;
+border-radius:3px;
+box-shadow:inset 0 1px 0 0 rgba(255, 255, 255, 0.3), 0 1px 0 0 rgba(255, 255, 255, 1);
+color:#fff;
+font-weight:normal;
+cursor:pointer;
+display:inline-block;
+font-size:13px;
+font-family:tahoma,arial,verdana;
+padding:5px 7px 6px;
+text-align:center;
+text-shadow:1px 1px 0 rgba(0, 0, 0, 0.4);
+}

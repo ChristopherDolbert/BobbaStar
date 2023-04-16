@@ -1,0 +1,127 @@
+<!-- INCLUDE overall_header.html -->
+<?php //echo "style/captcha_captchme_acp.php"; ?>
+<a name="maincontent"></a>
+
+<h1>{L_ACP_VC_SETTINGS}</h1>
+
+<p>{L_ACP_VC_SETTINGS_EXPLAIN}</p>
+
+
+<form id="acp_captcha" method="post" action="{U_ACTION}">
+
+<fieldset>
+<legend>{L_GENERAL_OPTIONS}</legend>
+
+<dl>
+	<dt><label for="captchme_pubkey">{L_CAPTCHME_PUBLIC}:</label><br /><span>{L_CAPTCHME_PUBLIC_EXPLAIN}</span></dt>
+	<dd><input id="captchme_pubkey" name="captchme_pubkey" value="{CAPTCHME_PUBKEY}" size="65" type="text" /></dd>
+</dl>
+<dl>
+	<dt><label for="captchme_privkey">{L_CAPTCHME_PRIVATE}:</label><br /><span>{L_CAPTCHME_PRIVATE_EXPLAIN}</span></dt>
+	<dd><input id="captchme_privkey" name="captchme_privkey" value="{CAPTCHME_PRIVKEY}" size="65" type="text" /></dd>
+</dl>
+<dl>
+    <dt><label for="captchme_authkey">{L_CAPTCHME_AUTHKEY}:</label><br /><span>{L_CAPTCHME_AUTHKEY_EXPLAIN}</span></dt>
+    <dd><input id="captchme_authkey" name="captchme_authkey" value="{CAPTCHME_AUTHKEY}" size="65" type="text" /></dd>
+</dl>
+<dl>
+    <dt><label for="captchme_lang">{L_CAPTCHME_LANG}:</label><br /><span>{L_CAPTCHME_LANG_EXPLAIN}</span></dt>
+    <dd>
+        <label>
+            <input id="captchme_lang" name="captchme_lang" value="fr" class="radio" type="radio"<!-- IF CAPTCHME_LANG == fr --> checked="checked"<!-- ENDIF --> />
+            {L_CAPTCHME_FRENCH}
+        </label>
+        <label>
+            <input id="captchme_lang" name="captchme_lang" value="en" class="radio" type="radio"<!-- IF CAPTCHME_LANG == en --> checked="checked"<!-- ENDIF --> />
+            {L_CAPTCHME_ENGLISH}
+        </label>
+        <label>
+            <input id="captchme_lang" name="captchme_lang" value="es" class="radio" type="radio"<!-- IF CAPTCHME_LANG == es --> checked="checked"<!-- ENDIF --> />
+            {L_CAPTCHME_SPANISH}
+        </label>
+        <label>
+            <input id="captchme_lang" name="captchme_lang" value="none" class="radio" type="radio"<!-- IF CAPTCHME_LANG == none --> checked="checked"<!-- ENDIF --> />
+           {L_CAPTCHME_WEBUSER}
+        </label>
+    </dd>
+</dl>
+<dl>
+    <dt><label for="captchme_format">{L_CAPTCHME_FORMAT}:</label><br /><span>{L_CAPTCHME_FORMAT_EXPLAIN}</span></dt>
+    <dd>
+        <label>
+            <input id="captchme_format" name="captchme_format" value="classic" class="radio" type="radio"<!-- IF CAPTCHME_FORMAT == classic --> checked="checked"<!-- ENDIF --> />
+            {L_CAPTCHME_CLASSIC}
+        </label>
+        <label>
+            <input id="captchme_format" name="captchme_format" value="wide" class="radio" type="radio"<!-- IF CAPTCHME_FORMAT == wide --> checked="checked"<!-- ENDIF --> />
+            {L_CAPTCHME_WIDE}
+        </label>
+    </dd>
+</dl>
+<dl>
+    <dt><label for="captchme_theme">{L_CAPTCHME_THEME}:</label><br /><span>{L_CAPTCHME_THEME_EXPLAIN}</span></dt>
+    <dd>
+        <label>
+            <input id="captchme_theme" name="captchme_theme" value="gray" class="radio" type="radio"<!-- IF CAPTCHME_THEME == gray --> checked="checked"<!-- ENDIF --> />
+            {L_CAPTCHME_GRAY}
+        </label>
+        <label>
+            <input id="captchme_theme" name="captchme_theme" value="white" class="radio" type="radio"<!-- IF CAPTCHME_THEME == white --> checked="checked"<!-- ENDIF --> />
+            {L_CAPTCHME_WHITE}
+        </label>
+    </dd>
+</dl>
+<dl>
+    <dt><label for="captchme_titre">{L_CAPTCHME_TITRE}:</label><br /><span>{L_CAPTCHME_TITRE_EXPLAIN}</span></dt>
+    <dd>
+        <label>
+            <input id="captchme_titre" name="captchme_titre" value="1" class="radio" type="radio"<!-- IF CAPTCHME_TITRE == 1 --> checked="checked"<!-- ENDIF --> />
+            {L_CAPTCHME_HIDE}
+        </label>
+        <label>
+            <input id="captchme_titre" name="captchme_titre" value="2" class="radio" type="radio"<!-- IF CAPTCHME_TITRE == 2 --> checked="checked"<!-- ENDIF --> />
+            {L_CAPTCHME_SHOW}
+        </label>
+    </dd>
+</dl>
+<dl>
+    <dt><label for="captchme_instruction">{L_CAPTCHME_INSTRUCTION}:</label><br /><span>{L_CAPTCHME_INSTRUCTION_EXPLAIN}</span></dt>
+    <dd>
+        <label>
+            <input id="captchme_instruction" name="captchme_instruction" value="1" class="radio" type="radio"<!-- IF CAPTCHME_INSTRUCTION == 1 --> checked="checked"<!-- ENDIF --> />
+            {L_CAPTCHME_HIDE}
+        </label>
+        <label>
+            <input id="captchme_instruction" name="captchme_instruction" value="2" class="radio" type="radio"<!-- IF  CAPTCHME_INSTRUCTION == 2 --> checked="checked"<!-- ENDIF --> />
+            {L_CAPTCHME_SHOW}
+        </label>
+    </dd>
+</dl>
+
+
+</fieldset>
+<fieldset>
+	<legend>{L_PREVIEW}</legend>
+<!-- IF PREVIEW -->
+	<div class="successbox">
+		<h3>{L_WARNING}</h3>
+		<p>{L_CAPTCHA_PREVIEW_MSG}</p>
+	</div>
+<!-- ENDIF -->
+<!-- INCLUDE {CAPTCHA_PREVIEW} -->
+</fieldset>
+
+<fieldset>
+	<legend>{L_ACP_SUBMIT_CHANGES}</legend>
+	<p class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />&nbsp;
+	</p>
+	<input type="hidden" name="select_captcha" value="{CAPTCHA_NAME}" />
+	<input type="hidden" name="configure" value="1" />
+
+	{S_FORM_TOKEN}
+</fieldset>
+</form>
+
+<!-- INCLUDE overall_footer.html -->

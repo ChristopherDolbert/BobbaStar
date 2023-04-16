@@ -1,0 +1,34 @@
+<!-- IF S_CAPTCHME_AVAILABLE -->
+	<dl>
+	<dd>
+    <!-- IF CAPTCHME_LANG == "none" -->
+
+            <script type="text/javascript">
+                var CaptchmeOptions = {
+                    theme:'{CAPTCHME_THEME}',
+                    format:'{CAPTCHME_FORMAT}',
+                    showtitle:{CAPTCHME_TITRE} - 1,
+                    showinstruction:{CAPTCHME_INSTRUCTION} - 1
+                    };
+            </script>
+
+        <!-- ELSE -->
+
+            <script type="text/javascript">
+                var CaptchmeOptions = {
+                    theme:'{CAPTCHME_THEME}',
+                    lang:'{CAPTCHME_LANG}',
+                    format:'{CAPTCHME_FORMAT}',
+                    showtitle:{CAPTCHME_TITRE} - 1,
+                    showinstruction:{CAPTCHME_INSTRUCTION} - 1
+                    };
+            </script>
+
+        <!-- ENDIF -->
+
+            <script type="text/javascript" src="{CAPTCHME_SERVER}/api/script?key={CAPTCHME_PUBKEY}" ></script>
+	</dd>
+	</dl>
+<!-- ELSE -->
+{L_CAPTCHME_NOT_AVAILABLE}
+<!-- ENDIF -->

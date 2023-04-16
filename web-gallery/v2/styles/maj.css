@@ -1,0 +1,114 @@
+@charset 'UTF-8';
+body {
+    padding:0;
+    margin:0;
+    background:url('../images/bg.png');
+    font-family:Ubuntu,Arial,serif;
+}
+* {
+    font-family:Ubuntu,Arial,serif;
+    color:#444444;
+}
+a {
+    font-weight:bold;
+    cursor:pointer;
+}
+
+#page {
+    width:726px;
+    margin-top:20px;
+    margin-bottom:20px;
+    margin-left:auto;
+    margin-right:auto;
+    min-height:10px;
+}
+#page_header {
+    width:100%;
+    height:77px;
+}
+#page_header #logo {
+    float:left;
+}
+#page_header #right {
+    float:right;
+    margin-top:10px;
+    text-align:right;
+}
+#page_head {
+    width:100%;
+    height:10px;
+    background:url('../images/hth.png') no-repeat top left;
+    padding:0px 6px 0px 6px;
+}
+#page_content {
+    width:100%;
+    min-height:200px;
+    height:900px;
+    background:url('../images/htm.png') repeat-y top left;
+    padding:0px 6px 0px 6px;
+}
+#page_content #maj {
+    background:#23a523;
+    border-radius:3px;
+    text-align:center;
+    width:708px;
+    padding:6px;
+    color:#eeeeee;
+}
+#page_content #nnmaj {
+    background:#d35241;
+    border-radius:3px;
+    text-align:center;
+    width:708px;
+    padding:6px;
+    color:#eeeeee;
+}
+#page_content #nnmaj a {
+    color:#eeeeee;
+}
+#page_content #big_box {
+    width:60%;
+    height:400px;
+    margin-top:6px;
+    float:left;
+    background:rgba(0,0,0,0.2);
+    padding:6px;
+    color:#eeeeee;
+    border-radius:3px;
+}
+#page_content #big_box .title, #little_box .title {
+    font-size:20px;
+    padding-bottom:3px;
+    margin-bottom:7px;
+    border-bottom:1px dashed #777777;
+    color:#777777;
+}
+#page_content #little_box {
+    width:35%;
+    margin-top:6px;
+    float:left;
+    background:rgba(0,0,0,0.2);
+    padding:6px;
+    color:#eeeeee;
+    border-radius:3px;
+    margin-left:6px;
+}
+#page_footer {
+    width:100%;
+    min-height:10px;
+    background:url('../images/htb.png') no-repeat bottom left;
+    padding:0px 6px 0px 6px;
+}
+#footer {
+    width:800px;
+    margin:auto;
+    font-size: 12px;
+    text-align:center;
+}
+#footer p {
+    margin: 0;
+    padding-top: .7em;
+    padding-bottom: 0;
+    font-size: 11px;
+    color: #777;
+}

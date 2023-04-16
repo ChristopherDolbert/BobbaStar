@@ -1,0 +1,252 @@
+<?PHP
+#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
+#|                                                                        #|
+#|           GabCMS - Site Web et Content Management System               #|
+#|         Copyright © 2012-2015 - Gabodd Tout droits réservés.           #|
+#|																		  #|
+#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
+
+	include("./config.php");
+	$pagename = "Tes informations";
+	$pageid = "info";
+
+	if(isset($_GET['pseudo'])) {
+		$pseudo = Secu($_GET['pseudo']); 
+	} else {
+		$pseudo = $_SESSION['username'];
+	}	
+			$sql = $bdd->query("SELECT * FROM users WHERE username = '".$pseudo."' LIMIT 1");
+			$row = $sql->rowCount();
+	if($row > 0) {
+		$pseudo = $sql->fetch(PDO::FETCH_ASSOC); 
+				 }
+
+if(!isset($_SESSION['username']))
+	{
+		Redirect("".$url."/index");
+	}
+	?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head> 
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+<title><?PHP echo $sitename;?> &raquo; <?PHP echo $pagename;?></title> 
+ 
+<script type="text/javascript"> 
+var andSoItBegins = (new Date()).getTime();
+var ad_keywords = "";
+document.habboLoggedIn = true;
+var habboName = "<?PHP echo $user['username'];?>";
+var habboReqPath = "<?PHP echo $url;?>";
+var habboStaticFilePath = "<?PHP echo $imagepath;?>";
+var habboImagerUrl = "http://www.habbo.com/habbo-imaging/";
+var habboPartner = "";
+var habboDefaultClientPopupUrl = "<?PHP echo $url;?>/client";
+window.name = "habboMain";
+if (typeof HabboClient!= "undefined") { HabboClient.windowName = "uberClientWnd"; }
+</script> 
+
+
+
+<link rel="shortcut icon" href="<?PHP echo $imagepath;?>favicon.ico" type="image/vnd.microsoft.icon" /> 
+<script src="<?PHP echo $imagepath;?>static/js/libs2.js" type="text/javascript"></script>
+<script src="<?PHP echo $imagepath;?>static/js/visual.js" type="text/javascript"></script>
+<script src="<?PHP echo $imagepath;?>static/js/libs.js" type="text/javascript"></script>
+<script src="<?PHP echo $imagepath;?>js/tooltip.js" type="text/javascript"></script>
+<script src="<?PHP echo $imagepath;?>static/js/common.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>static/styles/lightweightmepage.css" type="text/css" />
+<script src="<?PHP echo $imagepath;?>static/js/lightweightmepage.js" type="text/javascript"></script>
+<script src="<?PHP echo $imagepath;?>static/js/fullcontent.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/style.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/buttons.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/boxes.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/tooltips.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/personal.css" type="text/css" />
+
+<meta name="description" content="<?PHP echo $description;?>" /> 
+<meta name="keywords" content="<?PHP echo $keyword;?>" />   
+<meta name="build" content="<?PHP echo $build;?> >> <?PHP echo $version;?>" /> 
+</head>
+
+<body id="home" class=" "> 
+<div id="tooltip"></div>
+<div id="overlay"></div> 
+<!-- MENU -->
+<?PHP include("./template/header.php");?>
+<!-- FIN MENU -->
+<div id="container">
+	<div id="content" style="position: relative" class="clearfix">
+<div id="column2" class="column">
+				<div class="habblet-container ">
+						<div class="cbb clearfix blue">
+
+							<h2 class="title">Son porte-feuille
+							</h2>
+						<div id="notfound-looking-for" class="box-content">
+<div style="float:right; margin: -5px -5px;display:block;"><img src="<?PHP echo $imagepath; ?>v2/images/stats_icon.gif"></div>
+Nombre de credits :&nbsp;<strong><?php echo Secu($pseudo['credits']); ?></strong><br />
+Nombre de pixels :&nbsp;<strong><?php echo Secu($pseudo['activity_points']); ?></strong><br />
+Nombre de jetons :&nbsp;<strong><?php echo Secu($pseudo['jetons']); ?></strong><br />
+Nombre de messages qu'il peut poster sur le tchat :&nbsp;<strong><?php echo Secu($pseudo['message']); ?></strong><br /> 
+			<br/><br/>
+			Ces monnaies serviront à acheter des mobis, badges ou encore des bots.
+</div>
+
+
+					</div>
+				</div>
+				<script type="text/javascript">if (!$(document.body).hasClassName('process-template')) { Rounder.init(); }</script>
+<div id="column2" class="column">
+				<div class="habblet-container ">
+						<div class="cbb clearfix green">
+
+							<h2 class="title">Recherche avancée..
+							</h2>
+						<div id="notfound-looking-for" class="box-content">
+ <form method="post" action="#">
+<td width='100' class='tbl'><b>Pseudo :</b></td>
+<td width='80%' class='tbl'><input type="text" name="recherche_pseudo" value="<?php  if (!empty($_POST["recherche_pseudo"])) {  echo htmlspecialchars($_POST["recherche_pseudo"],ENT_QUOTES);  } ?>" class="text" style="width: 240px">
+	<input type="submit" value="Recherche avancée" />
+</form><br/>
+<table>
+    <tbody>
+        <tr class="haut">
+            <td class="haut">Pseudo</td>
+        </tr>
+<?php
+if(isset($_POST['recherche_pseudo'])) {
+ $sql2 = $bdd->query("SELECT * FROM users WHERE username LIKE '%".$_POST['recherche_pseudo']."%' ORDER BY username ASC LIMIT 0,10");
+ while($a = $sql2->fetch()) {
+?>
+        <tr class="bas">
+            <td class="bas"><div style="width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url(https://avatar.myhabbo.fr/?figure=<?PHP echo Secu($a['look']);?>&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);"></div><a href="<?PHP echo $url; ?>/info?pseudo=<?PHP echo Secu($a['username']); ?>"><?PHP echo Secu($a['username']); ?></a></div></td>
+        </tr>
+<?PHP } } ?>
+    </tbody>
+</table>
+</div>
+
+
+					</div>
+				</div>
+				</div>
+				<script type="text/javascript">if (!$(document.body).hasClassName('process-template')) { Rounder.init(); }</script>
+
+</div>
+	<?php
+if($pseudo['rank'] == 1 && $pseudo['gender'] == "M") {
+$modif_info = "est un <b>utilisateur</b>";
+}
+if($pseudo['rank'] == 2 && $pseudo['gender'] == "M") {
+$modif_info = "est <b>VIP</b>";
+}
+if($pseudo['rank'] == 5 && $pseudo['gender'] == "M") {
+$modif_info = "est <b>modérateur</b>";
+}
+if($pseudo['rank'] == 6 && $pseudo['gender'] == "M") {
+$modif_info = "est <b>administrateur</b>";
+}
+if($pseudo['rank'] == 7 && $pseudo['gender'] == "M") {
+$modif_info = "est <b>manager</b>";
+}
+if($pseudo['rank'] == 8 && $pseudo['gender'] == "M") {
+$modif_info = "est <b>fondateur</b>";
+}
+if($pseudo['rank'] == 3 && $pseudo['gender'] == "M") {
+$modif_info = "est membre du <b>STAFF CLUB</b>";
+}
+if($pseudo['rank'] == 1 && $pseudo['gender'] == "F") {
+$modif_info = "est une <b>utilisatrice</b>";
+}
+if($pseudo['rank'] == 2 && $pseudo['gender'] == "F") {
+$modif_info = "est <b>VIP</b>";
+}
+if($pseudo['rank'] == 3 && $pseudo['gender'] == "F") {
+$modif_info = "est membre du <b>STAFF CLUB</b>";
+}
+if($pseudo['rank'] == 5 && $pseudo['gender'] == "F") {
+$modif_info = "est <b>modératrice</b>";
+}
+if($pseudo['rank'] == 6 && $pseudo['gender'] == "F") {
+$modif_info = "est <b>administratrice</b>";
+}
+if($pseudo['rank'] == 7 && $pseudo['gender'] == "F") {
+$modif_info = "est <b>manageuse</b>";
+}
+if($pseudo['rank'] == 8 && $pseudo['gender'] == "F") {
+$modif_info = "est <b>fondatrice</b>";
+}
+	$search = $bdd->query("SELECT * FROM bans WHERE value = '".$pseudo['username']."'");
+	$ok = $search->fetch();
+		$stamp_now = time();
+		$stamp_expire = $ok['expire'];
+		$expire = date('d/m/Y H:i', $ok['expire']);
+?>
+<div id="column1" class="column">
+				<div class="habblet-container ">
+						<div class="cbb clearfix red ">
+
+							<h2 class="title">Quelques infos sur son compte
+								</h2>
+						<div id="notfound-looking-for" class="box-content">
+			<img style="float: left;" alt="<?PHP echo Secu($pseudo['username']); ?>" src="https://avatar.myhabbo.fr/?figure=<?PHP echo Secu($pseudo['look']); ?>&action=crr=667&direction=2&head_direction=3&gesture=sml&size=big&img_format=gif"/>
+<?PHP if($pseudo['disabled'] == '1') { ?><b><span style="color:#FF0000;"><center>COMPTE D&Eacute;SACTIV&Eacute;</center></span></b><?PHP } ?>
+<?PHP if($stamp_now < $stamp_expire && $ok['value'] == $pseudo['username']) { ?><b><span style="color:#FF0000;"><center>COMPTE BANNI JUSQU'AU <?PHP echo $expire ?></center></span></b><?PHP } ?>
+	<b><span style="color: #0000ff;"><?PHP echo Secu($pseudo['username']); ?></span></b> est <?php if ($user['online'] == 1) {
+		echo '<span style="color: #008000;">connecté</span>'; } else { echo '<span style="color: #ff0000;">déconnecté</span>'; } ?><br/>
+	Sa phrase perso : <b><span style="color: #0000ff;"><?PHP echo Secu($pseudo['motto']); ?></b></span><br/>
+	<?PHP echo $pseudo['username']; ?> <?PHP echo $modif_info; ?><br/>
+<?PHP if($pseudo['rank'] >= '4') { ?>Poste(s) occupé(s) : <b><?PHP $infe = $bdd->query("SELECT * FROM gabcms_postes WHERE user_id = '".$pseudo['id']."'");
+while($rt = $infe->fetch()) { 
+			$correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '".$rt['poste']."'");
+			$caz = $correct->fetch(); 
+			if($pseudo['gender'] == "M") { ?> <?PHP echo stripslashes(Secu($caz['nom_M']))?>, <?PHP } if($pseudo['gender'] == "F") { ?><?PHP echo stripslashes(Secu($caz['nom_F']))?>, <?PHP } }?></b><br/><?PHP } ?>
+	<?PHP echo $pseudo['username']; ?> a crée son compte le <b><span style="color: #0000ff;"><?PHP echo Secu($pseudo['account_created']); ?></b></span><br/>
+	Sa dernière connexion remonte au <b><span style="color: #0000ff;"><?PHP $connexion = date('d/m/Y H:i:s', $pseudo['last_online']);
+echo $connexion ;?></b></span><br/><br/>
+
+</div>
+
+
+					</div>
+				</div>
+				<script type="text/javascript">if (!$(document.body).hasClassName('process-template')) { Rounder.init(); }</script>
+</div>
+<div id="column1" class="column">
+				<div class="habblet-container ">
+						<div class="cbb clearfix blue">
+
+							<h2 class="title">Tous ses badges
+							</h2>
+						<div id="notfound-looking-for" class="box-content">
+						<?php
+        $userbadges = $bdd->query("SELECT DISTINCT * FROM user_badges WHERE user_id = '".$pseudo['id']. "'");
+        if($userbadges->rowCount() == 0)
+        {
+            echo "<center>Aucun badge</center>";
+        }
+        while($userbadge = $userbadges->fetch())
+        {
+        ?>
+            <tr><td>
+			<img title="<?php echo Secu($userbadge['badge_id']); ?>" src="<?PHP echo $swf_badge; echo Secu($userbadge['badge_id']); ?>.gif" border="0" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"/>
+			</td>
+			</tr>
+        <?php
+        }
+        ?>
+</div>
+
+
+					</div>
+				</div>
+				<script type="text/javascript">if (!$(document.body).hasClassName('process-template')) { Rounder.init(); }</script>
+</div>
+		</div>
+				</div>
+<!-- FOOTER -->
+<?PHP include("./template/footer.php"); ?>
+<!-- FIN FOOTER -->
+</body>
+</html>

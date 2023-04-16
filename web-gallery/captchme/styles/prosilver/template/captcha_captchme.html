@@ -1,0 +1,50 @@
+<!-- IF S_TYPE == 1 -->
+<div class="panel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+
+	<h3>{L_CONFIRMATION}</h3>
+	<p>{L_CONFIRM_EXPLAIN}</p>
+
+	<fieldset class="fields2">
+<!-- ENDIF -->
+
+<!-- IF S_CAPTCHME_AVAILABLE -->
+	<dl style="overflow: visible;">
+	<dt><label>{L_CONFIRM_CODE}</label>: <br /><span>{L_CAPTCHME_EXPLAIN}</span></dt>
+	<dd>
+        <!-- IF CAPTCHME_LANG == "none" -->
+
+            <script type="text/javascript">
+                var CaptchmeOptions = {
+                    theme:'{CAPTCHME_THEME}',
+                    format:'{CAPTCHME_FORMAT}',
+                    showtitle:{CAPTCHME_TITRE} - 1,
+                    showinstruction:{CAPTCHME_INSTRUCTION} - 1
+                    };
+            </script>
+
+        <!-- ELSE -->
+
+            <script type="text/javascript">
+                var CaptchmeOptions = {
+                    theme:'{CAPTCHME_THEME}',
+                    lang:'{CAPTCHME_LANG}',
+                    format:'{CAPTCHME_FORMAT}',
+                    showtitle:{CAPTCHME_TITRE} - 1,
+                    showinstruction:{CAPTCHME_INSTRUCTION} - 1
+                    };
+            </script>
+        <!-- ENDIF -->
+
+            <script type="text/javascript" src="{CAPTCHME_SERVER}/api/script?key={CAPTCHME_PUBKEY}" ></script>
+	</dd>
+	</dl>
+<!-- ELSE -->
+{L_CAPTCHME_NOT_AVAILABLE}
+<!-- ENDIF -->
+
+<!-- IF S_TYPE == 1 -->
+	</fieldset>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+<!-- ENDIF -->

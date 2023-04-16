@@ -1,0 +1,37 @@
+<!-- IF S_CAPTCHME_AVAILABLE -->
+	<tr>
+		<th colspan="2" valign="middle">{L_CONFIRM_CODE}</th>
+	</tr>
+	<tr>
+		<td class="row1"><b class="genmed">{L_CONFIRM_CODE}:</b><br /><span class="gensmall">{L_CAPTCHME_EXPLAIN}</span></td>
+		<td class="row2">
+                    <!-- IF CAPTCHME_LANG == "none" -->
+
+            <script type="text/javascript">
+                var CaptchmeOptions = {
+                    theme:'{CAPTCHME_THEME}',
+                    format:'{CAPTCHME_FORMAT}',
+                    showtitle:{CAPTCHME_TITRE} - 1,
+                    showinstruction:{CAPTCHME_INSTRUCTION} - 1
+                    };
+            </script>
+
+        <!-- ELSE -->
+
+            <script type="text/javascript">
+                var CaptchmeOptions = {
+                    theme:'{CAPTCHME_THEME}',
+                    lang:'{CAPTCHME_LANG}',
+                    format:'{CAPTCHME_FORMAT}',
+                    showtitle:{CAPTCHME_TITRE} - 1,
+                    showinstruction:{CAPTCHME_INSTRUCTION} - 1
+                    };
+            </script>
+        <!-- ENDIF -->
+            <script type="text/javascript" src="{CAPTCHME_SERVER}/api/script?key={CAPTCHME_PUBKEY}" ></script>
+		</td>
+	</tr>
+
+<!-- ELSE -->
+{L_CAPTCHME_NOT_AVAILABLE}
+<!-- ENDIF -->
