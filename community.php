@@ -7,12 +7,15 @@
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
 include("./config.php");
-$pagename = "Communauté";
+$pagename = "Communaut&eacute;";
 $pageid = "communaute";
 
 if (!isset($_SESSION['username'])) {
 	Redirect("" . $url . "/index");
 }
+
+$sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
+$cof = $sql->fetch(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
@@ -72,7 +75,7 @@ if (!isset($_SESSION['username'])) {
 				<div id="promo-box">
 					<div id="promo-bullets"></div>
 					<?PHP
-					$sql = $bdd->query("SELECT * FROM gabcms_news ORDER BY -id LIMIT 0,1");
+					$sql = $bdd->query("SELECT * FROM gabcms_news ORDER BY -id LIMIT 0," . $cof['nb_news'] . "");
 					$c = 0;
 					while ($news = $sql->fetch()) {
 						$c++;
@@ -133,7 +136,7 @@ if (!isset($_SESSION['username'])) {
 										<tr>
 											<td valign="middle" width="10" height="60">
 												<a href="<?PHP echo $url ?>/info?pseudo=<?PHP echo $s['username'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">
-													<div style="width: 64px; height: 70px; margin-bottom:-10px; margin-top:-15px; margin-left: -15px; float: right; background: url(https://avatar.myhabbo.fr/?figure=<?PHP echo Secu($s['look']); ?>&action=sit&direction=2&head_direction=3&gesture=sml&size=b&img_format=gif);"></div>
+													<div style="width: 64px; height: 70px; margin-bottom:-10px; margin-top:-15px; margin-left: -15px; float: right; background: url(http://www.habbo.co.uk/habbo-imaging/avatarimage?figure=<?PHP echo Secu($s['look']); ?>&action=sit&direction=2&head_direction=3&gesture=sml&size=b&img_format=gif);"></div>
 												</a>
 											</td>
 											<td valign="top">
@@ -175,15 +178,7 @@ if (!isset($_SESSION['username'])) {
 															echo $nb_inscrit['id'];
 
 															?></strong><br />
-							Record de connectés:&nbsp;<strong><?php
 
-																$req = "SELECT * FROM `system_stats`";
-																$query = $bdd->query($req);
-
-																$nb_inscrit = $query->fetch();
-																echo $nb_inscrit['users'];
-
-																?></strong><br />
 							Nombre de bannis:&nbsp;<strong><?php
 
 															$req = "SELECT COUNT(*) AS id FROM bans";
