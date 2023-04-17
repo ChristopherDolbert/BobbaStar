@@ -13,6 +13,9 @@ $pageid = "communaute";
 if (!isset($_SESSION['username'])) {
 	Redirect("" . $url . "/index");
 }
+
+$sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
+$cof = $sql->fetch(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
@@ -72,7 +75,7 @@ if (!isset($_SESSION['username'])) {
 				<div id="promo-box">
 					<div id="promo-bullets"></div>
 					<?PHP
-					$sql = $bdd->query("SELECT * FROM gabcms_news ORDER BY -id LIMIT 0,1");
+					$sql = $bdd->query("SELECT * FROM gabcms_news ORDER BY -id LIMIT 0," . $cof['nb_news'] . "");
 					$c = 0;
 					while ($news = $sql->fetch()) {
 						$c++;
