@@ -13,7 +13,7 @@ $pagename = "Accueil";
 $pageid = "index";
 
 if (isset($_SESSION['username'])) {
-    Redirect("" . $url . "/moi");
+    Redirect($url . "/moi");
 }
 if (isset($_GET['do'])) {
     $do = Secu($_GET['do']);
@@ -38,24 +38,25 @@ if (isset($_GET['do'])) {
                     if ($assoc['disabled'] == 1) {
                         $erreur = "Ton compte a été désactivé par l'administration! En cas d'erreur merci de nous contacter.";
                     } else {
-                        // TODO : BAN SYSTEM
-                        $sql = $bdd->query("SELECT * FROM bans WHERE value = '" . $username . "'");
+                        $sql = $bdd->prepare("SELECT * FROM bans WHERE user_id = ? OR ip = ?");
+                        $sql->execute([$userId, $_SERVER['REMOTE_ADDR']]);
                         $b = $sql->fetch(PDO::FETCH_ASSOC);
                         $row_ban = $sql->rowCount();
 
 
                         $stamp_now = time();
-                        $stamp_expire = $b['expire'];
-                        $expire = date('d/m/Y H:i:s', $b['expire']);
+                        $stamp_expire = $b['ban_expire'];
+                        $expire = date('d/m/Y H:i:s', $stamp_expire);
 
                         if ($stamp_now < $stamp_expire) {
-                            $erreur = "Ton compte a &eacute;t&eacute; bannis pour la raison suivante :<br/> <b>" . $b['reason'] . "</b>. Il expira le: <b>" . $expire . "</b>";
+                            $erreur = "Ton compte a &eacute;t&eacute; bannis pour la raison suivante :<br/> <b>" . $b['ban_reason'] . "</b>. Il expira le: <b>" . $expire . "</b>";
                         } else {
                             if ($row_ban > 0) {
-                                $bdd->query("DELETE FROM bans WHERE value = '" . $username . "'");
+                                $sql = $bdd->prepare("DELETE FROM bans WHERE user_id = ? OR ip = ?");
+                                $sql->execute([$userId, $_SERVER['REMOTE_ADDR']]);
                             }
-                            $sql = $bdd->prepare("UPDATE users SET last_login = '" . time() . "' WHERE username = ?");
-                            $sql->execute([$username]);
+                            $sql = $bdd->prepare("UPDATE users SET last_login = ? WHERE username = ?");
+                            $sql->execute([time(), $username]);
                             $_SESSION['username'] = $username;
                             $_SESSION['password'] = $password;
                             Redirect($url . "/moi");
