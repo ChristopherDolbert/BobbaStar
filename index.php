@@ -56,8 +56,8 @@ if (isset($_GET['do'])) {
                                 $sql = $bdd->prepare("DELETE FROM bans WHERE user_id = ? OR ip = ?");
                                 $sql->execute([$userId, $_SERVER['REMOTE_ADDR']]);
                             }
-                            $sql = $bdd->prepare("UPDATE users SET last_login = ? WHERE username = ?");
-                            $sql->execute([time(), $username]);
+                            $sql = $bdd->prepare("UPDATE users SET last_login = ?, ip_current = ? WHERE username = ?");
+                            $sql->execute([time(), $_SERVER['REMOTE_ADDR'], $username]);
                             $_SESSION['username'] = $username;
                             $_SESSION['password'] = $password;
                             Redirect($url . "/moi");
