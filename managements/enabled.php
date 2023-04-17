@@ -45,9 +45,9 @@ if($do == "ban") {
             $insertn1->bindValue(':date', FullDate('full'));
         $insertn1->execute(); 
 		$bdd->query("UPDATE users SET disabled = '0' WHERE username = '".$name[$n]."'");
-				echo '<h4 class="alert_success">Le compte <b>'.$name[$n].'</b> &agrave; &eacute;t&eacute; re-activ&eacute;.</h4>';					
+				echo '<h4 class="alert_success">Le compte <b>'.$name[$n].'</b> &agrave; été re-activé.</h4>';					
 					} else {
-					echo '<h4 class="alert_error">Le compte <b>'.$name[$n].'</b> est d&eacute;j&agrave; activ&eacute;.</h4>';
+					echo '<h4 class="alert_error">Le compte <b>'.$name[$n].'</b> est déj&agrave; activé.</h4>';
 					}
 				}
 	endfor;
@@ -67,7 +67,7 @@ Re-actives plusieurs comptes en m&ecirc;me temps pour cela apr&egrave;s chaque p
 <br/>
 <tr>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 </tr>
 <br/><br/>
 Comptes désactivés : <?php

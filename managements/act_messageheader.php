@@ -67,7 +67,7 @@ Modifies le message de l'header, la couleur de fond...
 <label><input type="radio" name="afficher" value="Oui" <?PHP if($c['afficher'] == "Oui") { ?> checked="checked" <?PHP } ?> /><span style="color:#008800;">Afficher</span></label> 
 <br/><br/>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 <br/>
 </body>
 </html>

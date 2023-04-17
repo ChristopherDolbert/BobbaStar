@@ -37,20 +37,20 @@ if(isset($_GET['demande'])) {
                 $insertusera->execute();
 $fichier_message = '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bonjour <b>'.$user['username'].'</b>,</div>
 <div>&nbsp;</div>
-<div>Tu as demand&eacute; que ton mot de passe soit chang&eacute;. Ta demande a &eacute;t&eacute; accept&eacute;, pour cela, voici les &eacute;tapes :</div>
+<div>Tu as demandé que ton mot de passe soit changé. Ta demande a été accepté, pour cela, voici les étapes :</div>
 <ol>
 	<li>Clique sur le lien ci-contre : <a href="'.$url.'/oubliemotdepasse?changement=nok'.$lien.'">ici</a></li>
-	<li>Copie dans l&#39;emplacement pr&eacute;vu le code qui te sera fourni en bas de ce MP.</li>
+	<li>Copie dans l&#39;emplacement prévu le code qui te sera fourni en bas de ce MP.</li>
 	<li>Recopie un nouveau mot de passe, et hop, &ccedil;a sera bon !</li>
 </ol>
 <div>Voici le code : <b>'.$code.'</b></div>
 <div>&nbsp;</div>
 <div><span style="color:#FF0000"><strong>Attention, le code est utilisable qu&#39;une fois.</strong></span></div>
 <div>&nbsp;</div>
-<div style="text-align: right;">Cordialement, l&#39;&eacute;quipe de '.$sitename.'</div>
+<div style="text-align: right;">Cordialement, l&#39;équipe de '.$sitename.'</div>
 <div>&nbsp;</div>
 <div>&nbsp;</div>
-<div><sub>Demande effectu&eacute;e le '.FullDate('full').' &agrave; l&#39;adresse IP suivante : <i>'.$_SERVER["REMOTE_ADDR"].'</i></sub></div>'; //On ajoute les infos au message
+<div><sub>Demande effectuée le '.FullDate('full').' &agrave; l&#39;adresse IP suivante : <i>'.$_SERVER["REMOTE_ADDR"].'</i></sub></div>'; //On ajoute les infos au message
 // On définit la liste des inscrits.
 $message = $fichier_message;
 $destinataire = $email; 

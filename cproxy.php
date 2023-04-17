@@ -119,8 +119,8 @@ $mytarg = array_reverse(explode('/', $_POST['url']));
 <div class="habblet-container ">  
  <div id="external-link-container">
  </br>
-<h2><img src="http://images.habbo.com/habboweb/<?php echo $WebBuild;?>/web-gallery/v2/images/registration/warning_sign.png"/> Annonce de s&eacute;curit&eacute;e</h2>
-<p>Vous quittez <?php echo $sitename;?>. Pour la s&eacute;curit&eacute; et la confidentialit&eacute; de vos comptes, n&#39;oubliez pas d&#39;entrer votre mot de passe JAMAIS sur un site autre que l&#39;original <?php echo $sitename;?>. Assurez-vous &eacute;galement de t&eacute;l&eacute;charger des programmes &agrave; partir de sites Web fiables.</p>
+<h2><img src="http://images.habbo.com/habboweb/<?php echo $WebBuild;?>/web-gallery/v2/images/registration/warning_sign.png"/> Annonce de sécuritée</h2>
+<p>Vous quittez <?php echo $sitename;?>. Pour la sécurité et la confidentialité de vos comptes, n&#39;oubliez pas d&#39;entrer votre mot de passe JAMAIS sur un site autre que l&#39;original <?php echo $sitename;?>. Assurez-vous également de télécharger des programmes &agrave; partir de sites Web fiables.</p>
     <p><strong><?php echo $_POST["url"];?></strong></p>
 
 <p class="clearfix" style="padding: 0">
@@ -215,7 +215,7 @@ $vars = "https://fbcdn-profile-a.akamaihd.net/static-ak/rsrc.php/v2/yo/r/UlIqmHJ
 
                   <a href="<?php echo $url;?>/moi" target="_blank" id="logout">Retour &agrave; l&#39;h&ocirc;tel</a>
 
-                  <a href="<?php echo $url;?>/profile" target="_blank" id="manage-account">Pr&eacute;f&eacute;rences</a>
+                  <a href="<?php echo $url;?>/profile" target="_blank" id="manage-account">Préférences</a>
 
               </div>
 

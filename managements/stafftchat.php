@@ -198,7 +198,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 <br/>Recopie <b><?PHP echo Secu($captcha); ?></b> : <input type='text' name='captcha_code' id='message' class='text' size='7' title='Recopie le captcha exact' onmouseover='tooltip.show(this)' onmouseout='tooltip.hide(this)'><input type='hidden' name='captcha_verif' value='<?PHP echo Secu($captcha); ?>'><br/></td>
 <tr>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter'></form>
+<input type='submit' name='submit' value='Exécuter'></form>
 </tr>
 <?PHP if(isset($affichage)) { echo "<br/>".$affichage.""; } ?>
 </div></div></div>

@@ -100,14 +100,14 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
                     <?PHP } elseif ($cof['etat_client'] == '2') { ?>
                         <div class="enter-hotel-btn">
                             <div class="closed enter-btn">
-                                <span>L'H&Ocirc;TEL EST FERM&Eacute;</span>
+                                <span>L'H&Ocirc;TEL EST FERMé</span>
                                 <b></b>
                             </div>
                         </div>
                     <?PHP } elseif ($cof['etat_client'] == '3' && $cof['si3_debut'] <= $nowtime && $cof['si3_fin'] >= $nowtime) { ?>
                         <div class="enter-hotel-btn">
                             <div class="closed enter-btn">
-                                <span>L'H&Ocirc;TEL EST FERM&Eacute;</span>
+                                <span>L'H&Ocirc;TEL EST FERMé</span>
                                 <b></b>
                             </div>
                         </div>

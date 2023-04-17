@@ -46,7 +46,7 @@ $r1 = $rdo1->fetch();
         $insertn2->execute();
         $bdd->query("DELETE FROM gabcms_alertes WHERE id = '".$do."'");
         $bdd->query("DELETE FROM gabcms_demande WHERE number_alert = '".$do."'");
-	echo '<h4 class="alert_success">Une alerte a &eacute;t&eacute; supprimée avec succès !</h4>';
+	echo '<h4 class="alert_success">Une alerte a été supprimée avec succès !</h4>';
  } elseif(isset($_GET['do2'])) {
     $do2 = Secu($_GET['do2']);
 $tdo2 = $bdd->query("SELECT * FROM gabcms_alertes WHERE id = '".$do2."'");
@@ -69,7 +69,7 @@ $r2 = $rdo2->fetch();
             $insertn2->bindValue(':look', $user['look']);
         $insertn2->execute();
         $bdd->query("DELETE FROM gabcms_demande WHERE number_alert = '".$do2."'");     
-	  echo '<h4 class="alert_success">La demande a bien &eacute;t&eacute; refus&eacute;e.</h4>';
+	  echo '<h4 class="alert_success">La demande a bien été refusée.</h4>';
 	  }	
 ?>
 <link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>

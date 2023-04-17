@@ -39,7 +39,7 @@ if($do == "filtre") {
             $insertn1->bindValue(':date', FullDate('full'));
         $insertn1->execute(); 
 		$bdd->query("INSERT INTO wordfilter (word, replacement, strict) VALUES ('".$name[$n]."', '".$filter."', '1')");
-				echo '<h4 class="alert_success">>Le mot : <b>'.$name[$n].'</b> &agrave; &eacute;t&eacute; ajout&eacute;.</h4>';
+				echo '<h4 class="alert_success">>Le mot : <b>'.$name[$n].'</b> &agrave; été ajouté.</h4>';
 	endfor;
 									 } else {
 					echo '<h4 class="alert_error">Les champs ne sont pas tous remplie.</h4>';
@@ -50,7 +50,7 @@ if($do == "filtre") {
 ?>
 <link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
 <span id="titre">Filtres un mot.</span><br />
-Ici vous pourriez filtrer plusieurs mots en les s&eacute;parents d'un point virgule (;). Ces mots seront filtrés sur le tchat, et sur le client !<br/><br/>
+Ici vous pourriez filtrer plusieurs mots en les séparents d'un point virgule (;). Ces mots seront filtrés sur le tchat, et sur le client !<br/><br/>
 <form name='editor' method='post' action="?do=filtre">
 <td width='100' class='tbl'><b>Mot interdit :</b><br/></td>
 <td width='80%' class='tbl'><textarea name='name' wrap=discuss rows=3 cols=34 ></textarea><br/></td>
@@ -58,7 +58,7 @@ Ici vous pourriez filtrer plusieurs mots en les s&eacute;parents d'un point virg
 <td width='80%' class='tbl'><textarea name='filtre' wrap=discuss rows=3 cols=34 ></textarea><br/></td>
 <tr><br/>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 </tr>
 <hr/>
 <span id="titre">Les mots actuellements filtrés</span><br />

@@ -49,7 +49,8 @@ if (isset($_GET['do'])) {
                         $expire = date('d/m/Y H:i:s', $stamp_expire);
 
                         if ($stamp_now < $stamp_expire) {
-                            $erreur = "Ton compte a &eacute;t&eacute; bannis pour la raison suivante :<br/> <b>" . $b['ban_reason'] . "</b>. Il expira le: <b>" . $expire . "</b>";
+
+                            $erreur = "Ton compte a été bannis pour la raison suivante :<br/> <b>" . $b['reason'] . "</b>. Il expira le: <b>" . $expire . "</b>";
                         } else {
                             if ($row_ban > 0) {
                                 $sql = $bdd->prepare("DELETE FROM bans WHERE user_id = ? OR ip = ?");
@@ -150,9 +151,9 @@ if (isset($_GET['do'])) {
         <a href="<?PHP echo $url; ?>/disclaimer" target="_blank">Conditions Générales d'Utilisations</a>
     </div>
     Index basé sur une index en libre partage d'<b>Eklopsis</b> &copy;<br/>
-    <?PHP echo $sitename; ?> est un projet ind&eacute;pendant, &agrave; but non lucratif &copy; 2012-2014.<br/>
-    Habbo est une marque d&eacute;pos&eacute;e de Sulake Corporation. Tous droits r&eacute;serv&eacute;s &agrave;
-    leur(s) propri&eacute;taire(s) respectif(s).<br/>Nous ne sommes pas approuv&eacute;s, affili&eacute;s ou offertes
+    <?PHP echo $sitename; ?> est un projet indépendant, &agrave; but non lucratif &copy; 2012-2014.<br/>
+    Habbo est une marque déposée de Sulake Corporation. Tous droits réservés &agrave;
+    leur(s) propriétaire(s) respectif(s).<br/>Nous ne sommes pas approuvés, affiliés ou offertes
     par Sulake Corporation LTD.<br><br><u>&copy; GabCMS v<?PHP echo $version; ?> - Créer par l'équipe de GabCMS</u>
 </div>
 </body>

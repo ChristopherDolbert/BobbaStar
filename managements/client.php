@@ -39,7 +39,7 @@ if(!isset($_SESSION['username']))
             $insertn1->bindValue(':date', FullDate('full'));
         $insertn1->execute(); 
         $bdd->query("UPDATE gabcms_client SET ip = '".$ip."', port = '".$port."', mus_port = '".$mus_port."', variable = '".$variable."', texte = '".$texte."', swf = '".$swf."', version = '".$version."', loading_texte = '".$loading."' WHERE id = '1'");
-	  echo '<h4 class="alert_success">Le client &agrave; &eacute;t&eacute; mis &agrave; jour.</h4>';
+	  echo '<h4 class="alert_success">Le client &agrave; été mis &agrave; jour.</h4>';
 	  } elseif(!is_numeric($mus_port)) {
 	  echo '<h4 class="alert_error">Merci de mettre exclusivement des chiffres dans "Mus Port"</h4>';
 	  } elseif(!is_numeric($port)) {
@@ -81,6 +81,6 @@ Modifie les différentes informations du client.<br/><br/>
 <td width='80%' class='tbl'><input type='text' name='loading_texte' value='<?PHP echo $c['loading_texte']; ?>' class='text' style='width: 240px'><br/></td>
 <br/>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 </body>
 </html>

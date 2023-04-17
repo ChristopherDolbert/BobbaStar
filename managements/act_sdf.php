@@ -71,7 +71,7 @@ Ajoutes plusieurs sites de fans qui seront affichés sur le site.
 <br/>
 <tr>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 </tr>
 <hr/>
 <span id="titre">Supprimes des site de fans</span><br/>

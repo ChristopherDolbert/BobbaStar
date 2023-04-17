@@ -49,7 +49,7 @@ if(isset($_GET['do'])) {
 									$expire = date('d/m/Y H:i:s', $b['expire']);
 									
 									if($stamp_now < $stamp_expire){
-									$erreur = "Ton compte a &eacute;t&eacute; bannis pour la raison suivante :<br/> <b>".$b['reason']."</b>. Il expira le: <b>".$expire."</b>";
+									$erreur = "Ton compte a été bannis pour la raison suivante :<br/> <b>".$b['reason']."</b>. Il expira le: <b>".$expire."</b>";
 																} else {
 									if($row_ban > 0) {
 										$bdd->query("DELETE FROM bans WHERE value = '".$username."'");

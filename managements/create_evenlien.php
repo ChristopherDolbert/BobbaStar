@@ -39,7 +39,7 @@ $bdd->query("INSERT INTO gabcms_news (`topstory_image`,`title`,`snippet`,`info`,
             $insertn1->bindValue(':action', 'a créé un événement avec lien <b>('.addslashes($titre).')</b>');
             $insertn1->bindValue(':date', FullDate('full'));
         $insertn1->execute(); 
-	  echo '<h4 class="alert_success">L\'événement vient d\'&ecirc;tre ajout&eacute;.</h4>';
+	  echo '<h4 class="alert_success">L\'événement vient d\'&ecirc;tre ajouté.</h4>';
 	  } else {
 	  echo '<h4 class="alert_error">Merci de remplir les champs vides.</h4>';
 	  }
@@ -48,7 +48,7 @@ $bdd->query("INSERT INTO gabcms_news (`topstory_image`,`title`,`snippet`,`info`,
 }
 ?>
 <link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
-<span id="titre">Cr&eacute;e un événement</span><br/>
+<span id="titre">Crée un événement</span><br/>
 Crées un événement avec un lien afin que tout l'hôtel puisse le voir. Penses à bien compléter tous les champs.
  <br/><br/>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -75,7 +75,7 @@ Crées un événement avec un lien afin que tout l'hôtel puisse le voir. Penses
 
 <br/>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 </tr>
 <br/>
 </body>

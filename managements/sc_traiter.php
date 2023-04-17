@@ -294,7 +294,7 @@ $t = $retour_messages->fetch();
 			<option value="7" <?php if (isset($t['resul']) && $t['resul']=="7") echo 'selected="selected"';?> >Fermé - déjà signalé/résolu</option>
 			<option value="8" <?php if (isset($t['resul']) && $t['resul']=="8") echo 'selected="selected"';?> >Fermé - sans suite</option>
 	</select>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form><?PHP if(isset($affichage)) { echo "<br/>".$affichage.""; } ?>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form><?PHP if(isset($affichage)) { echo "<br/>".$affichage.""; } ?>
 </div></div></div><script type="text/javascript">if (!$(document.body).hasClassName('process-template')) { Rounder.init(); }</script>
 <div class="habblet-container">        
 <div class="cbb clearfix red"><h2 class="title">Commentaire</h2> 

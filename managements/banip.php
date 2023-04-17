@@ -50,7 +50,7 @@ $date_ban = $date_ac + $date_calcul;
         $insertn1->execute(); 
 		$bdd->query("INSERT INTO bans (bantype,value,reason,expire,added_by,added_date,appeal_state) VALUES ('ip','".$ip[$n]."','".$raison."','".$date_ban."','".$user['username']."','".FullDate('full')."','0')");
 				
-				echo '<h4 class="alert_success">L\'adresse IP <b>'.$ip[$n].'</b> &agrave; &eacute;t&eacute; bannis pour la raison suivante: <b>'.$raison.'</b></h4>';
+				echo '<h4 class="alert_success">L\'adresse IP <b>'.$ip[$n].'</b> &agrave; été bannis pour la raison suivante: <b>'.$raison.'</b></h4>';
 					} else {
 					echo '<h4 class="alert_error">L\'adresse IP <b>'.$ip[$n].'</b> n\'existe pas.</h4>';
 					}	
@@ -74,7 +74,7 @@ Bannis plusieurs adresses IP en m&ecirc;me temps pour cela apr&egrave;s chaque I
 <td width='80%' class='tbl'><select name="date" id="lenght" class="select"><option value="1">1 heures</option><option value="2">2 heures</option><option value="3">3 heures</option><option value="4">4 heures</option><option value="10">10 heures</option><option value="12">12 heures</option><option value="24">1 jour</option><option value="48">2 jours</option><option value="72">3 jours</option><option value="96">4 jours</option><option value="168">1 semaine</option><option value="336">2 semaines</option><option value="672">1 mois</option><option value="1344">2 mois</option><option value="4032">6 mois</option><option value="8064">1 an</option><option value="16128">2 ans</option><option value="525420">Permanent</option></select>
 <tr>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 </tr>
 </body>
 </html>
