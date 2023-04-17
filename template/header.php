@@ -1,4 +1,4 @@
-<?PHP 
+<?PHP
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 #|                                                                        #|
 #|           GabCMS - Site Web et Content Management System               #|
@@ -6,53 +6,116 @@
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
-        $sqlss = $bdd->query("SELECT * FROM gabcms_maintenance WHERE id = '1'");
-        $c = $sqlss->fetch(PDO::FETCH_ASSOC);
-        if($c['activ'] == "Oui") {
+$sqlss = $bdd->query("SELECT * FROM gabcms_maintenance WHERE id = '1'");
+$c = $sqlss->fetch(PDO::FETCH_ASSOC);
+if ($c['activ'] == "Oui") {
 ?><div style="background-color:#FF0000; width: 100%; color:#FFFFFF; padding:5px; margin-left:-10px;"><b>MAINTENANCE EN COURS</b></div>
 <?PHP } ?>
-<?PHP 
-        $message = $bdd->query("SELECT * FROM gabcms_header WHERE id = '1'");
-        $c = $message->fetch(PDO::FETCH_ASSOC);
-        if($c['afficher'] == "Oui") {
+<?PHP
+$message = $bdd->query("SELECT * FROM gabcms_header WHERE id = '1'");
+$c = $message->fetch(PDO::FETCH_ASSOC);
+if ($c['afficher'] == "Oui") {
 ?><div style="background-color:#<?PHP echo Secu($c['couleur']); ?>; width: 100%; color:#FFFFFF; padding:5px; margin-left:-10px;"><b><?PHP echo stripslashes($c['message']); ?></b></div>
 <?PHP } ?>
 <div style="display:block; position:fixed;" title="Contact le service client" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">
-<a href="<?PHP echo $url; ?>/service_client/"><img src="<?PHP echo $imagepath; ?>v2/images/bouton_sc.png" style="margin-left:10px;margin-top:10px;"/></a></div>
-<div id="header-container"> 
-	<div id="header" class="clearfix"> 
-		<h1><a href="<?PHP echo $url; ?>"></a></h1> 
-			<div id="subnavi"> 
-				<div id="subnavi-user"> 	
-				</div> 
-				<div id="subnavi-search"> 
-					<div id="subnavi-search-upper"> 
-					</div> 
-				</div> 
+	<a href="<?PHP echo $url; ?>/service_client/"><img src="<?PHP echo $imagepath; ?>v2/images/bouton_sc.png" style="margin-left:10px;margin-top:10px;" /></a>
+</div>
+<div id="header-container">
+	<div id="header" class="clearfix">
+		<h1><a href="<?PHP echo $url; ?>"></a></h1>
+		<div id="subnavi">
+			<div id="subnavi-user">
+			</div>
+			<div id="subnavi-search">
+				<div id="subnavi-search-upper">
+				</div>
+			</div>
 			<div id="to-hotel">
-<style>
-			 .header {
-			 position:absolute;
-			 width: 175px;
-			 float:right;
-			 left:-400px;
-			 top: -15px;
-			 height:15px;
-			 width:380px;
-			 background: #FFFFFF;
-			 border-radius: 5px;
-			 padding: 10px;
-			 margin: 10px auto; }
-</style>
-<div class="header">
-	<div style="position:absolute;float:right;left:-400px;top:-10px;background-image:url('#');height:36px;width:400px;"></div> 
-	</div>
-		<div style="position:absolute;float:right;left:-390px;top:-5px;height:32px;width:380px;padding-top:2px;"> 
-			<p style="margin-top:9px;padding-left:5px;" class="alignleft"><a href="<?PHP echo $url; ?>/client" target="habbohelp" onclick="openOrFocusHelp(this); return false"><b>Entre sur <?PHP echo $sitename; ?></b></a> |
-			<a href="<?PHP echo $url ?>/forum/">Forum</a> | 
-			<a href="<?PHP echo $url ?>/logout" class="userlink" id="signout">Se d&eacute;connecter</a></p>    
+				<style>
+					.header {
+						position: absolute;
+						width: 175px;
+						float: right;
+						left: -400px;
+						top: -15px;
+						height: 15px;
+						width: 380px;
+						background: #FFFFFF;
+						border-radius: 5px;
+						padding: 10px;
+						margin: 10px auto;
+					}
+				</style>
+				<div class="header">
+					<div style="position:absolute;float:right;left:-400px;top:-10px;background-image:url('#');height:36px;width:400px;"></div>
+				</div>
+				<div style="position:absolute;float:right;left:-390px;top:-5px;height:32px;width:380px;padding-top:2px;">
+					<p style="margin-top:9px;padding-left:5px;" class="alignleft"><a href="<?PHP echo $url; ?>/client" target="habbohelp" onclick="openOrFocusHelp(this); return false"><b>Entre sur <?PHP echo $sitename; ?></b></a> |
+						<a href="<?PHP echo $url ?>/forum/">Forum</a> |
+						<a href="<?PHP echo $url ?>/logout" class="userlink" id="signout">Se d&eacute;connecter</a>
+					</p>
+				</div>
+			</div>
 		</div>
-	</div>           
+		<style>
+			#header {
+				position: relative;
+				background: url(./images/subnavibg.png) no-repeat 190px 0;
+			}
+		</style>
+		<ul id="navi">
+			<!-- BOUTTON JOUEUR -->
+			<?PHP if ($pageid == "accueil" || $pageid == "option" || $pageid == "alert" || $pageid == "flux" || $pageid == "dossier" || $pageid == "info" || $pageid == "transactions") { ?>
+				<li class="metab selected"><strong><?PHP echo $user['username']; ?> (<?PHP echo $user['id']; ?> <b><img src="<?PHP echo $imagepath; ?>images/icon_habbo_small.png" style="vertical-align: bottom;"></b>)</strong> <span></span>
+				</li>
+			<?PHP } else { ?>
+				<li class=""><a href="<?PHP echo $url; ?>/moi"><?PHP echo $user['username']; ?> (<?PHP echo $user['id']; ?> <b><img src="<?PHP echo $imagepath; ?>images/icon_habbo_small.png" style="vertical-align: bottom;"></b>)</a> <span></span>
+				</li>
+			<?PHP } ?>
+			<!-- FIN DU BOUTTON JOUEUR -->
+			<!-- BOUTTON COMMUNAUTE -->
+			<?PHP if ($pageid == "communaute" || $pageid == "tchat" || $pageid == "forum" || $pageid == "articles" || $pageid == "staff" || $pageid == "recrut" || $pageid == "rs" || $pageid == "sdf" || $pageid == "error") { ?>
+				<li class="selected"><a href="<?PHP echo $url; ?>/community">Communaut&eacute;</a> <span></span>
+				</li>
+			<?PHP } else { ?>
+				<li class=""><a href="<?PHP echo $url; ?>/community">Communaut&eacute;</a> <span></span>
+				</li>
+			<?PHP } ?>
+			<!-- FIN DU BOUTTON COMMUNAUTE -->
+			<!-- BOUTTON SECURITE -->
+			<?PHP if ($pageid == "safety" ||  $pageid == "habbo_way") { ?>
+				<li class="selected"><a href="<?PHP echo $url; ?>/safety">S&eacute;curit&eacute;</a> <span></span>
+				</li>
+			<?PHP } else { ?>
+				<li class=""><a href="<?PHP echo $url; ?>/safety">S&eacute;curit&eacute;</a> <span></span>
+				</li>
+			<?PHP } ?>
+			<!-- FIN DU BOUTTON SECURITE -->
+			<!-- BOUTTON BOUTIQUE -->
+			<?PHP if ($pageid == "badgeshop" || $pageid == "achats" || $pageid == "codepromo" || $pageid == "jetons" || $pageid == "clubs" || $pageid == "shopbots") { ?>
+				<li class="selected"><a href="<?PHP echo $url; ?>/jetons">Boutique</a> <span></span>
+				</li>
+			<?PHP } else { ?>
+				<li class=""><a href="<?PHP echo $url; ?>/jetons">Boutique</a> <span></span>
+				<?PHP } ?>
+				<!-- FIN DU BOUTON BOUTIQUE -->
+				<!-- BOUTON MANAGEMENTS -->
+				<?PHP if ($user['rank'] >= 5) { ?>
+					<?PHP if ($pageid == "tchatstaff" || $pageid == "sta" || $pageid == "nds" || $pageid == "bureau" || $pageid == "acces" || $pageid == "sc_index" || $pageid == "forum_index") { ?>
+				<li class="selected"><a href="<?PHP echo $url; ?>/managements/bureau">Managements</a><span></span>
+				</li>
+			<?PHP } else { ?>
+				<li id="tab-register-now" class="tab-register-now"><a href="<?php echo $url; ?>/managements/bureau">Managements</a><span></span></li>
+		<?PHP }
+				} ?>
+		<!-- FIN BOUTTON MANAGEMENTS -->
+		</ul>
+		<div id="habbos-online">
+			<div class="rounded"><span>Il y a <?PHP $tmp = $bdd->query("SELECT users_online FROM server_status LIMIT 1");
+												$tma = $tmp->fetch(PDO::FETCH_ASSOC);
+												echo $tma['users_online']; ?> connectés</span></div>
+		</div>
+	</div>
 </div>
 <style>
 #header {

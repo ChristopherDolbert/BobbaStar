@@ -6,65 +6,66 @@
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
-	include("./config.php");
-	$pagename = "Accueil";
-	$pageid = "accueil"; 
-	
-if(!isset($_SESSION['username']))
-	{
-		Redirect("".$url."/index");
-	}
+include("./config.php");
+$pagename = "Accueil";
+$pageid = "accueil";
+
+if (!isset($_SESSION['username'])) {
+    Redirect("" . $url . "/index");
+}
 $sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
-<head> 
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
-<title><?PHP echo $sitename; ?> &raquo; <?PHP echo $pagename; ?></title> 
- 
-<script type="text/javascript"> 
-var andSoItBegins = (new Date()).getTime();
-var ad_keywords = "";
-document.habboLoggedIn = true;
-var habboName = "<?PHP echo $user['username'];?>";
-var habboReqPath = "<?PHP echo $url;?>";
-var habboStaticFilePath = "<?PHP echo $imagepath;?>";
-var habboImagerUrl = "http://www.habbo.com/habbo-imaging/";
-var habboPartner = "";
-var habboDefaultClientPopupUrl = "<?PHP echo $url;?>/client";
-window.name = "habboMain";
-if (typeof HabboClient!= "undefined") { HabboClient.windowName = "uberClientWnd"; }
-</script> 
 
-<link rel="shortcut icon" href="<?PHP echo $imagepath;?>favicon.ico" type="image/vnd.microsoft.icon" /> 
-<script src="<?PHP echo $imagepath;?>static/js/libs2.js" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath;?>static/js/visual.js" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath;?>static/js/libs.js" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath;?>js/tooltip.js" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath;?>static/js/common.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>static/styles/lightweightmepage.css" type="text/css" />
-<script src="<?PHP echo $imagepath;?>static/js/lightweightmepage.js" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath;?>static/js/fullcontent.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/style.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/buttons.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/boxes.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/tooltips.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/personal.css" type="text/css" />
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title><?PHP echo $sitename; ?> &raquo; <?PHP echo $pagename; ?></title>
 
-<meta name="description" content="<?PHP echo $description;?>" /> 
-<meta name="keywords" content="<?PHP echo $keyword;?>" />   
-<meta name="build" content="<?PHP echo $build;?> >> <?PHP echo $version;?>" /> 
+    <script type="text/javascript">
+        var andSoItBegins = (new Date()).getTime();
+        var ad_keywords = "";
+        document.habboLoggedIn = true;
+        var habboName = "<?PHP echo $user['username']; ?>";
+        var habboReqPath = "<?PHP echo $url; ?>";
+        var habboStaticFilePath = "<?PHP echo $imagepath; ?>";
+        var habboImagerUrl = "http://www.habbo.com/habbo-imaging/";
+        var habboPartner = "";
+        var habboDefaultClientPopupUrl = "<?PHP echo $url; ?>/client";
+        window.name = "habboMain";
+        if (typeof HabboClient != "undefined") {
+            HabboClient.windowName = "uberClientWnd";
+        }
+    </script>
+
+    <link rel="shortcut icon" href="<?PHP echo $imagepath; ?>favicon.ico" type="image/vnd.microsoft.icon" />
+    <script src="<?PHP echo $imagepath; ?>static/js/libs2.js" type="text/javascript"></script>
+    <script src="<?PHP echo $imagepath; ?>static/js/visual.js" type="text/javascript"></script>
+    <script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
+    <script src="<?PHP echo $imagepath; ?>js/tooltip.js" type="text/javascript"></script>
+    <script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/lightweightmepage.css" type="text/css" />
+    <script src="<?PHP echo $imagepath; ?>static/js/lightweightmepage.js" type="text/javascript"></script>
+    <script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css" type="text/css" />
+
+    <meta name="description" content="<?PHP echo $description; ?>" />
+    <meta name="keywords" content="<?PHP echo $keyword; ?>" />
+    <meta name="build" content="<?PHP echo $build; ?> >> <?PHP echo $version; ?>" />
 </head>
 
-<body id="home" class=" "> 
-<div id="tooltip"></div>
-<div id="overlay"></div> 
-<!-- MENU -->
-<?PHP include("./template/header.php");?>
-<!-- FIN MENU -->
-<div id="container">
+<body id="home" class=" ">
+    <div id="tooltip"></div>
+    <div id="overlay"></div>
+    <!-- MENU -->
+    <?PHP include("./template/header.php"); ?>
+    <!-- FIN MENU -->
+    <div id="container">
         <div id="content" style="position: relative" class="clearfix">
     <div id="column1" class="column">   
     <div id="wide-personal-info">
@@ -205,10 +206,11 @@ while ($a = $sql->fetch())
 HabboView.run();
 </script>
 <!--[if lt IE 7]>
+
 <script type="text/javascript">
 Pngfix.doPngImageFix();
 </script>
 <![endif]-->
-<!-- FOOTER -->
-<?PHP include("./template/footer.php");?>
-<!-- FIN FOOTER -->
+        <!-- FOOTER -->
+        <?PHP include("./template/footer.php"); ?>
+        <!-- FIN FOOTER -->

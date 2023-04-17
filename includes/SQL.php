@@ -17,4 +17,3 @@ $bdd = new PDO('mysql:host='.$GabCMS_hote.';port='.$GabCMS_port.';dbname='.$GabC
 } catch (PDOException $e) {
 die('Erreur sur le fichier SQL.php : ' . $e->getMessage());
 }
-?>
