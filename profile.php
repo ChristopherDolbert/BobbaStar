@@ -7,38 +7,38 @@
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
 include("./config.php");
-$pagename = "Mes pr&eacute;f&eacute;rences";
+$pagename = "Mes préférences";
 $pageid = "option";
 
 if (!isset($_SESSION['username'])) {
 	Redirect("" . $url . "/index");
 }
 
+$id = $user['id'];
+$users_settings = $bdd->query("SELECT * FROM users_settings WHERE user_id = '" . $id . "' LIMIT 1");
+$user_settings = $users_settings->fetch();
+
 if (isset($_GET['tab'])) {
 	$tab = Secu($_GET['tab']);
 	if ($tab == "general") {
 
 		$textamigo = Secu($_POST['textamigo']);
-		$online = Secu($_POST['online']);
-		$following = Secu($_POST['block_following']);
-		//$motto = Secu($_POST['motto']);
+		$old_chat = Secu($_POST['old_chat']);
+		$block_roominvites = Secu($_POST['block_roominvites']);
+		$join = Secu($_POST['join']);
 
-		if ($following != "" && $online != "" && $textamigo != "" && $motto != "") {
+		if ($textamigo != "" && $old_chat != "" && $block_roominvites != "" && $join != "") {
 
-			if (is_numeric($textamigo) && is_numeric($online) && is_numeric($following)) {
-
-
-
+			if (is_numeric($textamigo) && is_numeric($block_roominvites) && is_numeric($join)) {
 				if (!empty($_POST['envoimail'])) {
-					$bdd->query("UPDATE users_settings SET block_friendrequests = '" . $textamigo . "', hide_online = '" . $online . "', block_following = '" . $following . "', newsletter = '1' WHERE user_id = '" . $_SESSION['id'] . "'");
+					$bdd->query("UPDATE users_settings SET block_friendrequests = '" . $textamigo . "', old_chat = '" . $old_chat . "', block_roominvites = '" . $block_roominvites . "', block_following = '" . $join . "' WHERE user_id = '" . $id . "' LIMIT 1");
 				} else {
-					$bdd->query("UPDATE users_settings SET block_friendrequests = '" . $textamigo . "', hide_online = '" . $online . "', block_following = '" . $following . "', newsletter = '0' WHERE user_id = '" . $_SESSION['id'] . "'");
+					$bdd->query("UPDATE users_settings SET block_friendrequests = '" . $textamigo . "', old_chat = '" . $old_chat . "', block_roominvites = '" . $block_roominvites . "', block_following = '" . $join . "' WHERE user_id = '" . $id . "' LIMIT 1");
 				}
-
 				$affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
             <div class=\"rounded rounded-green\"> 
-               Modification r&eacute;ussie avec succ&egrave;s
+               Modification réussie avec succ&egrave;s
             </div> 
         </div> 
 </div>";
@@ -178,36 +178,34 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 									echo $affichage . "<br/>";
 								} ?>
 								<form action="?tab=general" method="post" id="profileForm">
-									<h3>Phrase d'humeur</h3>
+									<h3>Ancien chat</h3>
 									<p>
-										<label><input type="text" name="motto" value="Blabla" class="text" style="width: 240px" maxlength="50"></label>
-									</p>
-									<h3>Textamigo</h3>
-									<p>
-										<label><input type="radio" name="textamigo" value="0" <?PHP if ($user['block_newfriends'] == "0") { ?> checked="checked" <?PHP } ?> />Accepter</label>
-										<label><input type="radio" name="textamigo" value="1" <?PHP if ($user['block_newfriends'] == "1") { ?> checked="checked" <?PHP } ?> />Refuser</label>
+										Choisis entre l'ancien et le nouveau chat:<br />
+										<label><input type="radio" name="old_chat" value="1" <?PHP if ($user_settings['old_chat'] == "1") { ?> checked="checked" <?PHP } ?> />Ancien</label>
+										<label><input type="radio" name="old_chat" value="0" <?PHP if ($user_settings['old_chat'] == "0") { ?> checked="checked" <?PHP } ?> />Nouveau</label>
 									</p>
 
-									<h3>Connexion</h3>
+									<h3>Textamigo</h3>
 									<p>
-										Choisis qui peut voir si tu es ou non connecté:<br />
-										<label><input type="radio" name="online" value="1" <?PHP if ($user['hide_online'] == "1") { ?> checked="checked" <?PHP } ?> />Personne</label>
-										<label><input type="radio" name="online" value="0" <?PHP if ($user['hide_online'] == "0") { ?> checked="checked" <?PHP } ?> />Tout le monde</label>
+										<label><input type="radio" name="textamigo" value="0" <?PHP if ($user_settings['block_friendrequests'] == "0") { ?> checked="checked" <?PHP } ?> />Accepter</label>
+										<label><input type="radio" name="textamigo" value="1" <?PHP if ($user_settings['block_friendrequests'] == "1") { ?> checked="checked" <?PHP } ?> />Refuser</label>
+									</p>
+
+									<h3>Invitation d'appart</h3>
+									<p>
+										Choisis qui peut t'inviter dans un appart:<br />
+										<label><input type="radio" name="block_roominvites" value="1" <?PHP if ($user_settings['block_roominvites'] == "0") { ?> checked="checked" <?PHP } ?> />Personne</label>
+										<label><input type="radio" name="block_roominvites" value="0" <?PHP if ($user_settings['block_roominvites'] == "1") { ?> checked="checked" <?PHP } ?> />Tout le monde</label>
 									</p>
 
 
 									<h3>Préférences &quot;rejoindre&quot;</h3>
 									<p>
 										Choisis qui peut te suivre où que tu ailles:<br />
-										<label><input type="radio" name="join" value="1" <?PHP if ($user['hide_inroom'] == "1") { ?> checked="checked" <?PHP } ?> />Personne</label>
-										<label><input type="radio" name="join" value="0" <?PHP if ($user['hide_inroom'] == "0") { ?> checked="checked" <?PHP } ?> />Mes amis</label>
+										<label><input type="radio" name="join" value="1" <?PHP if ($user_settings['block_following'] == "1") { ?> checked="checked" <?PHP } ?> />Personne</label>
+										<label><input type="radio" name="join" value="0" <?PHP if ($user_settings['block_following'] == "0") { ?> checked="checked" <?PHP } ?> />Mes amis</label>
 									</p>
 
-									<h3>Newsletter</h3>
-									<p>
-										Choisis si tu veux recevoir les newsletters envoyées par le staff de l'hôtel.<br />
-										<label><input type="checkbox" name="envoimail" value="1" <?PHP if ($user['newsletter'] == "1") { ?> checked="checked" <?PHP } ?> /> Oui, je souhaite recevoir les newsletters envoyées par <b><?PHP echo $sitename; ?></b><br /></label>
-									</p>
 									<div class="settings-buttons">
 										<a href="#" class="new-button" style="display: none" id="profileForm-submit"><b>Enregistrer</b><i></i></a>
 										<noscript><input type="submit" value="Enregistrer" name="save" class="submit" /></noscript>

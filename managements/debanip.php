@@ -42,7 +42,7 @@ $do = Secu($_GET['do']);
             $insertn1->bindValue(':date', FullDate('full'));
         $insertn1->execute(); 
         $bdd->query("DELETE FROM bans WHERE value = '".$ip[$n]."'");
-				echo '<h4 class="alert_success">L\'adresse IP <b>'.$ip[$n].'</b> &agrave; &eacute;t&eacute; d&eacute;bannis.</h4>';					
+				echo '<h4 class="alert_success">L\'adresse IP <b>'.$ip[$n].'</b> &agrave; été débannis.</h4>';					
 					} else {
 					echo '<h4 class="alert_error">L\'adresse IP  <b>'.$ip[$n].'</b> n\'est pas bannis.</h4>';
 					}
@@ -55,7 +55,7 @@ $do = Secu($_GET['do']);
 }
 ?>
 <link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
-<span id="titre">D&eacute;bannir des adresses IP</span><br />
+<span id="titre">Débannir des adresses IP</span><br />
 Débannis des IP que vous avez bannis précédemment.<br/><br/>
 <form name='editor' method='post' action="?do=ban">
 <td width='100' class='tbl'><b>Adresse IP:</b><br/></td>
@@ -63,7 +63,7 @@ Débannis des IP que vous avez bannis précédemment.<br/><br/>
 <br/>
 <tr>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 </tr><br/>
 Voici la liste des bannis actuel.
    <br />

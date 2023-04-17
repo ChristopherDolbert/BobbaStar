@@ -208,7 +208,7 @@ if($i['date_butoire'] >= $nowtime && $ok['pseudo'] != $user['username']) { ?><sp
  }
 ?></textarea>
 <script>CKEDITOR.replace( 'editor1', { toolbar: 'Recrutements' });</script><br/>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 <?PHP }
 if($i['date_butoire'] < $nowtime) { ?>
 <center><span style="color:#FF0000;"><b>La date butoire est dépassée!</b></span><br/><a href="<?PHP echo $url ?>/recrutement">Revenir à la page de recrutement</a></center>

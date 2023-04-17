@@ -188,7 +188,7 @@ Ouvres une session d'animation, qui sera visible que par les staffs de l'hôtel.
 <td width='80%' class='tbl'><input type='text' name='jeu' value='' placeholder='Nom de ton jeu' class='text' style='width: 240px' maxlength="250"><br/></td>
 <br/>
 <tr><td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 </tr>
 <hr/>
 <span id="titre">Action sur une animation</span><br/>

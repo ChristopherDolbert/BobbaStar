@@ -218,9 +218,9 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 	$su = $selectuser->rowCount();
 	if(isset($pseudo) && isset($email) && isset($motdepasse) && isset($remotdepasse)) {
 		if($su['id'] > 0){
-			$message['name'] = "Ton pseudo est d&eacute;j&agrave; utilis&eacute;.";
+			$message['name'] = "Ton pseudo est déj&agrave; utilisé.";
 		} elseif($filtre_pseudo !== $pseudo) {
-			$message['name'] = "Ton pseudo contient des caract&egrave;res non-autoris&eacute;.";
+			$message['name'] = "Ton pseudo contient des caract&egrave;res non-autorisé.";
 		} elseif(strlen($pseudo) > 24) {
 			$message['name'] = "Ton pseudo est trop long.";
 		} elseif(strlen($pseudo) < 1) {
@@ -259,9 +259,9 @@ $insertuser = $bdd->prepare("INSERT INTO users (username, password, mail, rank, 
 $insertuser->execute();
 $fichier_message = '<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bonjour <b>'.$pseudo.'</b>,</div>
 <div>&nbsp;</div>
-<div>Tu as d&eacute;sir&eacute; t&#39;inscrire &agrave; la newsletter de '.$sitename.', nous t&#39;en remercions.</div>
+<div>Tu as désiré t&#39;inscrire &agrave; la newsletter de '.$sitename.', nous t&#39;en remercions.</div>
 <div>&nbsp;</div>
-<div>Pour info, tu peux &agrave; tout moment t&#39;inscrire ou te d&eacute;sinscrire depuis la page &quot;Mes pr&eacute;f&eacute;rences&quot;.</div>
+<div>Pour info, tu peux &agrave; tout moment t&#39;inscrire ou te désinscrire depuis la page &quot;Mes préférences&quot;.</div>
 <div>&nbsp;</div><div style="text-align: right;">Cordialement, l&#39;équipe de '.$sitename.'</div>'; //On ajoute les infos au message
 // On définit la liste des inscrits.
 $message = $fichier_message;
@@ -397,7 +397,7 @@ $insertusera->execute();
 
                 <div class="right">
 
-                    <div class="help"><u>Etape n°3 :</u> Choisis un mot de passe difficile et s&eacute;curis&eacute;.<br><br><font color="red">Pense a utilis&eacute; un mot de passe que tu n'as jamais mis nul part.</font></div>
+                    <div class="help"><u>Etape n°3 :</u> Choisis un mot de passe difficile et sécurisé.<br><br><font color="red">Pense a utilisé un mot de passe que tu n'as jamais mis nul part.</font></div>
 
                 </div>
 

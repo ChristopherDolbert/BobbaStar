@@ -78,7 +78,7 @@ Enlèves un certain nombre de messages à des utilisateurs.<br/><br/>
 <br/>
 <tr>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form></td>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form></td>
 </tr>
 </body>
 </html>

@@ -52,7 +52,7 @@ if ($c['afficher'] == "Oui") {
 				<div style="position:absolute;float:right;left:-390px;top:-5px;height:32px;width:380px;padding-top:2px;">
 					<p style="margin-top:9px;padding-left:5px;" class="alignleft"><a href="<?PHP echo $url; ?>/client" target="habbohelp" onclick="openOrFocusHelp(this); return false"><b>Entre sur <?PHP echo $sitename; ?></b></a> |
 						<a href="<?PHP echo $url ?>/forum/">Forum</a> |
-						<a href="<?PHP echo $url ?>/logout" class="userlink" id="signout">Se d&eacute;connecter</a>
+						<a href="<?PHP echo $url ?>/logout" class="userlink" id="signout">Se déconnecter</a>
 					</p>
 				</div>
 			</div>
@@ -75,19 +75,19 @@ if ($c['afficher'] == "Oui") {
 			<!-- FIN DU BOUTTON JOUEUR -->
 			<!-- BOUTTON COMMUNAUTE -->
 			<?PHP if ($pageid == "communaute" || $pageid == "tchat" || $pageid == "forum" || $pageid == "articles" || $pageid == "staff" || $pageid == "recrut" || $pageid == "rs" || $pageid == "sdf" || $pageid == "error") { ?>
-				<li class="selected"><a href="<?PHP echo $url; ?>/community">Communaut&eacute;</a> <span></span>
+				<li class="selected"><a href="<?PHP echo $url; ?>/community">Communauté</a> <span></span>
 				</li>
 			<?PHP } else { ?>
-				<li class=""><a href="<?PHP echo $url; ?>/community">Communaut&eacute;</a> <span></span>
+				<li class=""><a href="<?PHP echo $url; ?>/community">Communauté</a> <span></span>
 				</li>
 			<?PHP } ?>
 			<!-- FIN DU BOUTTON COMMUNAUTE -->
 			<!-- BOUTTON SECURITE -->
 			<?PHP if ($pageid == "safety" ||  $pageid == "habbo_way") { ?>
-				<li class="selected"><a href="<?PHP echo $url; ?>/safety">S&eacute;curit&eacute;</a> <span></span>
+				<li class="selected"><a href="<?PHP echo $url; ?>/safety">Sécurité</a> <span></span>
 				</li>
 			<?PHP } else { ?>
-				<li class=""><a href="<?PHP echo $url; ?>/safety">S&eacute;curit&eacute;</a> <span></span>
+				<li class=""><a href="<?PHP echo $url; ?>/safety">Sécurité</a> <span></span>
 				</li>
 			<?PHP } ?>
 			<!-- FIN DU BOUTTON SECURITE -->
@@ -128,9 +128,9 @@ if ($c['afficher'] == "Oui") {
 						<li class=""><a href="<?PHP echo $url; ?>/moi">Mon avatar</a></li>
 					<?PHP } ?>
 					<?PHP if ($pageid == "option") { ?>
-						<li class="selected">Mes Pr&eacute;f&eacute;rences</li>
+						<li class="selected">Mes Préférences</li>
 					<?PHP } else { ?>
-						<li class=""><a href="<?PHP echo $url; ?>/profile">Mes Pr&eacute;f&eacute;rences</a></li>
+						<li class=""><a href="<?PHP echo $url; ?>/profile">Mes Préférences</a></li>
 					<?PHP } ?>
 					<?PHP if ($pageid == "alert") { ?>
 						<li class=" selected">Mes alertes</li>
@@ -162,9 +162,9 @@ if ($c['afficher'] == "Oui") {
 				<?PHP } ?>
 				<?PHP if ($pageid == "communaute" || $pageid == "tchat" || $pageid == "forum" || $pageid == "articles" || $pageid == "staff" || $pageid == "recrut" || $pageid == "rs" || $pageid == "sdf" || $pageid == "error") { ?>
 					<?PHP if ($pageid == "communaute") { ?>
-						<li class=" selected">Communaut&eacute;</li>
+						<li class=" selected">Communauté</li>
 					<?PHP } else { ?>
-						<li class=""><a href="<?PHP echo $url; ?>/community">Communaut&eacute;</a></li>
+						<li class=""><a href="<?PHP echo $url; ?>/community">Communauté</a></li>
 					<?PHP } ?>
 					<?PHP if ($pageid == "articles") { ?>
 						<li class=" selected">Articles</li>
@@ -172,9 +172,9 @@ if ($c['afficher'] == "Oui") {
 						<li class=""><a href="<?PHP echo $url; ?>/articles">Articles</a></li>
 					<?PHP } ?>
 					<?PHP if ($pageid == "staff") { ?>
-						<li class=" selected">L'&eacute;quipe</li>
+						<li class=" selected">L'équipe</li>
 					<?PHP } else { ?>
-						<li class=""><a href="<?PHP echo $url; ?>/lequipe">L'&eacute;quipe</a></li>
+						<li class=""><a href="<?PHP echo $url; ?>/lequipe">L'équipe</a></li>
 					<?PHP } ?>
 					<?PHP if ($pageid == "recrut") { ?>
 						<li class=" selected">Recrutements</li>
@@ -182,9 +182,9 @@ if ($c['afficher'] == "Oui") {
 						<li class=""><a href="<?PHP echo $url; ?>/recrutement">Recrutements</a></li>
 					<?PHP } ?>
 					<?PHP if ($pageid == "rs") { ?>
-						<li class=" selected">R&eacute;seaux sociaux</li>
+						<li class=" selected">Réseaux sociaux</li>
 					<?PHP } else { ?>
-						<li class=""><a href="<?PHP echo $url; ?>/reseaux">R&eacute;seaux sociaux</a></li>
+						<li class=""><a href="<?PHP echo $url; ?>/reseaux">Réseaux sociaux</a></li>
 					<?PHP } ?>
 					<?PHP if ($pageid == "sdf") { ?>
 						<li class=" selected">Sites de fan</li>
@@ -204,9 +204,9 @@ if ($c['afficher'] == "Oui") {
 				<?PHP } ?>
 				<?PHP if ($pageid == "safety" || $pageid == "habbo_way") { ?>
 					<?PHP if ($pageid == "safety") { ?>
-						<li class=" selected">Conseils de s&eacute;curit&eacute;</li>
+						<li class=" selected">Conseils de sécurité</li>
 					<?PHP } else { ?>
-						<li class=""><a href="<?PHP echo $url; ?>/safety">Conseils de s&eacute;curit&eacute;</a></li>
+						<li class=""><a href="<?PHP echo $url; ?>/safety">Conseils de sécurité</a></li>
 					<?PHP } ?>
 					<?PHP if ($pageid == "habbo_way") { ?>
 						<li class=" selected"><?PHP echo $sitename; ?> attitude</li>

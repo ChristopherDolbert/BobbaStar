@@ -47,9 +47,9 @@ $do = Secu($_GET['do']);
             $insertn1->bindValue(':date', FullDate('full'));
         $insertn1->execute(); 
 		$bdd->query("UPDATE users SET disabled = '1' WHERE username = '".$name[$n]."'");
-				echo '<h4 class="alert_success">Le compte <b>'.$name[$n].'</b> a &eacute;t&eacute; d&eacute;sactiv&eacute;.</h4>';					
+				echo '<h4 class="alert_success">Le compte <b>'.$name[$n].'</b> a été désactivé.</h4>';					
 					} else {
-					echo '<h4 class="alert_error">Le compte <b>'.$name[$n].'</b> est d&eacute;j&agrave; d&eacute;sactiv&eacute;.</h4>';
+					echo '<h4 class="alert_error">Le compte <b>'.$name[$n].'</b> est déj&agrave; désactivé.</h4>';
 					}
 				}
 	endfor;
@@ -61,15 +61,15 @@ $do = Secu($_GET['do']);
 }
 ?>
 <link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
-<span id="titre">D&eacute;sactives des comptes</span><br />
-D&eacute;sactives plusieurs comptes en m&ecirc;me temps pour cela apr&egrave;s chaque pseudo mettez un point virgule (;).<br/><br/>
+<span id="titre">Désactives des comptes</span><br />
+Désactives plusieurs comptes en m&ecirc;me temps pour cela apr&egrave;s chaque pseudo mettez un point virgule (;).<br/><br/>
 <form name='editor' method='post' action="?do=ban">
 <td width='100' class='tbl'><b>Pseudo:</b><br/></td>
 <td width='80%' class='tbl'><textarea name='name' wrap=discuss rows=3 cols=34 maxlength="50"></textarea><br/></td>
 <br/>
 <tr>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 </tr>
 </body>
 </html>

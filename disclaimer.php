@@ -108,7 +108,7 @@ var andSoItBegins = (new Date()).getTime();
 	        	<div id="terms" class="box-content"> 
 <div class="tos-header"><center><size="+1"><b>CONDITIONS GÉNÉRALES D'UTILISATIONS</b></size></center></div> 
 <div class="tos-item"><br /><br />
-Bienvenue sur le site Internet <a href="<?PHP echo $url;?>"><?PHP echo $sitename;?></a> (ci-apr&egrave;s d&eacute;sign&eacute; le «Site» ou «Nous»).
+Bienvenue sur le site Internet <a href="<?PHP echo $url;?>"><?PHP echo $sitename;?></a> (ci-apr&egrave;s désigné le «Site» ou «Nous»).
 <br /> <br />
 <b>L’accès au Site et aux services proposés sont réservés aux personnes âgées de plus de 10 ans.<br/><br/>
 Si vous avez moins de 18 ans, vous devez demander à vos parents ou tuteurs légaux de vous expliquer tous les termes ou expressions utilisés ci-dessous que vous ne comprenez pas et valider avec eux votre décision d'accepter l'ensemble des Conditions Générales d'Utilisations. <br/><br/>

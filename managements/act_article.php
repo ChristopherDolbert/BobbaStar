@@ -55,7 +55,7 @@ if(isset($_GET['modifiernews'])) {
             $insertn2->bindValue(':look', $user['look']);
             $insertn2->bindValue(':id', $modifiernews);
         $insertn2->execute();
-	  echo '<h4 class="alert_success">L\'article vient d\'&ecirc;tre modifi&eacute;.</h4>';
+	  echo '<h4 class="alert_success">L\'article vient d\'&ecirc;tre modifié.</h4>';
 	  } else {
 	  echo '<h4 class="alert_error">Merci de remplir les champs vide</h4>';
 	  }
@@ -82,7 +82,7 @@ if(isset($_GET['modifiertitle'])) {
             $insertn2->bindValue(':look', $user['look']);
             $insertn2->bindValue(':id', $modifiertitle);
         $insertn2->execute();
-	  echo '<h4 class="alert_success">Le titre de l\'article vient d\'&ecirc;tre modifi&eacute;.</h4>';
+	  echo '<h4 class="alert_success">Le titre de l\'article vient d\'&ecirc;tre modifié.</h4>';
 	  } else {
 	  echo '<h4 class="alert_error">Merci de marquer un titre</h4>';
 	  }
@@ -100,7 +100,7 @@ if(isset($_GET['do'])) {
         $insertn1->execute(); 
         $bdd->query("DELETE FROM gabcms_news_recommande WHERE news_id = '".$do."'");
         $bdd->query("DELETE FROM gabcms_news WHERE id = '".$do."'");
-	echo '<h4 class="alert_success">L\'article vient d\'&ecirc;tre supprim&eacute;</h4>';
+	echo '<h4 class="alert_success">L\'article vient d\'&ecirc;tre supprimé</h4>';
 	}
 ?>
 <link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>

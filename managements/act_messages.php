@@ -60,7 +60,7 @@ Enleves tous les messages des utilisateurs qui spam le plus !<br/><br/>
 <td width='100' class='tbl'><b>Raison :</b><br/></td>
 <td width='80%' class='tbl'><textarea type='text' name="raison" class='text' wrap=discuss rows=3 cols=34'></textarea><br/></td>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form></td>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form></td>
 </tr>
 </body>
 </html>

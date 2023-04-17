@@ -194,7 +194,7 @@ $modifier_u = "<td width='100' class='tbl'><b>Message que tu souhaites poster:</
 <br/>Recopie <b>".$captcha."</b> : <input type='text' name='captcha_code' id='message' class='text' size='7' title='Recopie le captcha exact' onmouseover='tooltip.show(this)' onmouseout='tooltip.hide(this)'><input type='hidden' name='captcha_verif' value='".$captcha."'><br/></td>
 <tr>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter'></form>
+<input type='submit' name='submit' value='Exécuter'></form>
 </tr>";
 }
 if($user['message'] == 0) {

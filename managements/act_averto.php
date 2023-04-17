@@ -159,7 +159,7 @@ while($a = $sql_a->fetch()) {
 	</select>
 </td><br/><br/>
 <tr><td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 </tr>
 <br/><hr/><br/>
 <span id="titre">Affiches les avertissements</span><br/>

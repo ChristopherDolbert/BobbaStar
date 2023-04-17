@@ -121,7 +121,7 @@ Modifies le nombre de jetons donnés à l'achat, le prix du staff club...
             <td class="bas"><input type="text" name="staffclub" value="<?PHP echo $cof['staffclub']; ?>" class="text" size="2" maxlength="2" /></td>
         </tr>
         <tr class="haut">
-            <td class="haut" colspan="2"><input type='submit' name='submit' value='Ex&eacute;cuter' class='submit' /></td>
+            <td class="haut" colspan="2"><input type='submit' name='submit' value='Exécuter' class='submit' /></td>
         </tr>
     </tbody>     
 </table></form>
