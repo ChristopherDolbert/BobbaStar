@@ -65,7 +65,7 @@ $date_ban = $date_ac + $date_calcul;
             $insertn2->bindValue(':date', FullDate('full'));
             $insertn2->bindValue(':etat', '0');
         $insertn2->execute();
-				echo '<h4 class="alert_success">Le compte <b>'.$username[$n].'</b> &agrave; &eacute;t&eacute; bannis pour la raison suivante : <b>'.$raison.'</b></h4>';
+				echo '<h4 class="alert_success">Le compte <b>'.$username[$n].'</b> &agrave; été bannis pour la raison suivante : <b>'.$raison.'</b></h4>';
 					} else {
 					echo '<h4 class="alert_error">Le compte IP <b>'.$username[$n].'</b> n\'existe pas.</h4>';
 					}	
@@ -90,7 +90,7 @@ Bannis plusieurs utilisateurs en m&ecirc;me temps pour cela apr&egrave;s chaque 
 <td width='80%' class='tbl'><select name="date" id="lenght" class="select"><option value="1">1 heures</option><option value="2">2 heures</option><option value="3">3 heures</option><option value="4">4 heures</option><option value="10">10 heures</option><option value="12">12 heures</option><option value="24">1 jour</option><option value="48">2 jours</option><option value="168">1 semaine</option><option value="336">2 semaines</option><option value="672">1 mois</option><option value="1344">2 mois</option><option value="4032">6 mois</option><option value="8064">1 an</option><option value="16128">2 ans</option><option value="525420">Permanent</option></select>
 <tr>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 </tr>
 <?PHP } else { ?>
 <span id="titre">Selectionnes un topic</span><br \>

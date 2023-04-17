@@ -48,7 +48,7 @@ $do = Secu($_GET['do']);
             $insertn1->bindValue(':date', FullDate('full'));
         $insertn1->execute(); 
 		$bdd->query("DELETE FROM bans WHERE value = '".$name[$n]."'");
-				echo '<h4 class="alert_success">Le compte <b>'.$name[$n].'</b> &agrave; &eacute;t&eacute; d&eacute;bannis.</h4>';					
+				echo '<h4 class="alert_success">Le compte <b>'.$name[$n].'</b> &agrave; été débannis.</h4>';					
 					} else {
 					echo '<h4 class="alert_error">Le compte <b>'.$name[$n].'</b> n\'est pas bannis.</h4>';
 					}
@@ -62,15 +62,15 @@ $do = Secu($_GET['do']);
 }
 ?>
 <link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
-<span id="titre">D&eacute;bannir des utilisateurs</span><br />
-D&eacute;bannis plusieurs utilisateurs en m&ecirc;me temps pour cela apr&egrave;s chaque pseudo mettez un point virgule (;).<br/><br/>
+<span id="titre">Débannir des utilisateurs</span><br />
+Débannis plusieurs utilisateurs en m&ecirc;me temps pour cela apr&egrave;s chaque pseudo mettez un point virgule (;).<br/><br/>
 <form name='editor' method='post' action="?do=ban">
 <td width='100' class='tbl'><b>Pseudo:</b><br/></td>
 <td width='80%' class='tbl'><textarea name='name' wrap=discuss rows=3 cols=34 ></textarea><br/></td>
 <br/>
 <tr>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 </tr><br/>
 Voici la liste des bannis actuel.<br />
 <table>

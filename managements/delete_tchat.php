@@ -33,7 +33,7 @@ if(isset($_GET['do'])) {
             $insertn1->bindValue(':date', FullDate('full'));
         $insertn1->execute(); 
         $bdd->query("UPDATE gabcms_tchat SET message='<span style=\"color:#B5B5B5;\"><i>Ce message a été modéré par un modérateur.</i></span>' WHERE id = '".$do."'");
-	echo '<h4 class="alert_success">Un tchat a &eacute;t&eacute; modéré avec succès !</h4>';
+	echo '<h4 class="alert_success">Un tchat a été modéré avec succès !</h4>';
 }
 if(isset($_GET['sup'])) {
 	$sup = Secu($_GET['sup']);
@@ -45,7 +45,7 @@ if(isset($_GET['sup'])) {
             $insertn1->bindValue(':date', FullDate('full'));
         $insertn1->execute(); 
         $bdd->query("DELETE FROM gabcms_tchat WHERE id = '".$sup."'");
-	echo '<h4 class="alert_success">Un tchat a &eacute;t&eacute; supprimé avec succès !</h4>';
+	echo '<h4 class="alert_success">Un tchat a été supprimé avec succès !</h4>';
 }
 ?>
 <link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>

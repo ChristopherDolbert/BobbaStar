@@ -127,7 +127,7 @@ $urlt = ''.$url.'/managements/'.$repertoire.''.$nom_fichier.'';
 echo '<div id="purse-redeem-result"> 
         <div class="redeem-error"> 
             <div class="rounded rounded-green"> 
-<a href="'.$urlt.'" target="_blank"><img src="'.$urlt.'" style="float:left; height:70px; width: 70px;"/></a>Votre image a &eacute;t&eacute; upload&eacute;e sur le serveur avec succès!<br/><br/><br/>Voici le lien: <input type="text" value="'.$urlt.'" size="60">
+<a href="'.$urlt.'" target="_blank"><img src="'.$urlt.'" style="float:left; height:70px; width: 70px;"/></a>Votre image a été uploadée sur le serveur avec succès!<br/><br/><br/>Voici le lien: <input type="text" value="'.$urlt.'" size="60">
 		</div> 
 	</div> 
 </div>

@@ -191,7 +191,7 @@ $modif_info = "est <b>fondatrice</b>";
 								</h2>
 						<div id="notfound-looking-for" class="box-content">
 			<img style="float: left;" alt="<?PHP echo Secu($pseudo['username']); ?>" src="https://avatar.myhabbo.fr/?figure=<?PHP echo Secu($pseudo['look']); ?>&action=crr=667&direction=2&head_direction=3&gesture=sml&size=big&img_format=gif"/>
-<?PHP if($pseudo['disabled'] == '1') { ?><b><span style="color:#FF0000;"><center>COMPTE D&Eacute;SACTIV&Eacute;</center></span></b><?PHP } ?>
+<?PHP if($pseudo['disabled'] == '1') { ?><b><span style="color:#FF0000;"><center>COMPTE DéSACTIVé</center></span></b><?PHP } ?>
 <?PHP if($stamp_now < $stamp_expire && $ok['value'] == $pseudo['username']) { ?><b><span style="color:#FF0000;"><center>COMPTE BANNI JUSQU'AU <?PHP echo $expire ?></center></span></b><?PHP } ?>
 	<b><span style="color: #0000ff;"><?PHP echo Secu($pseudo['username']); ?></span></b> est <?php if ($user['online'] == 1) {
 		echo '<span style="color: #008000;">connecté</span>'; } else { echo '<span style="color: #ff0000;">déconnecté</span>'; } ?><br/>

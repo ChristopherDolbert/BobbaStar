@@ -89,7 +89,7 @@ while($b = $sql_b->fetch()) {
 <td width='80%' class='tbl'><textarea name='comment' wrap=discuss rows=3 cols=34 placeholder='Par exemple : 2 candidatures a acceptées, nombre de candidature minimale : 10, rank 7, poste de co-fondateur.'></textarea><br/></td>
 <br/>
 <tr><td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 </tr>
 <br/>
 </body>

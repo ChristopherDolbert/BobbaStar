@@ -36,7 +36,7 @@ $modifiernews = Secu($_GET['modifiernews']);
             $insertn1->bindValue(':date', FullDate('full'));
         $insertn1->execute(); 
         $bdd->query("UPDATE gabcms_news SET topstory_image = '".($image)."', title = '".($titre)."', snippet = '".($desc)."', modifier = '1', modif_date = '".$nowtime."', modif_auteur = '".$user['username']."', look = '".$user['look']."' WHERE id = '".$modifiernews."'");
-	  echo '<h4 class="alert_success">L\'événement vient d\'&ecirc;tre modifi&eacute;.</h4>';
+	  echo '<h4 class="alert_success">L\'événement vient d\'&ecirc;tre modifié.</h4>';
 	  } else {
 	  echo '<h4 class="alert_error">Merci de remplir les champs vide</h4>';
 	  }

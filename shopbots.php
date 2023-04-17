@@ -231,7 +231,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 		echo "</SELECT>"; 
 		}
 ?>
-<br/><br/><input type="submit" name="bots" value="Cr&eacute;er mon bot" />
+<br/><br/><input type="submit" name="bots" value="Créer mon bot" />
 </form>
 				<font color="#6699FF"><h3><u><b>Prix: <?PHP echo $cp['bots'] ?> jetons</b></u></h3></font></center>		
 			</div>

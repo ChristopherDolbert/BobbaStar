@@ -71,7 +71,7 @@ Modifie les données sur le nombre de news, flux, tchat affiché par page. Sache
 <label><input type="radio" name="img_sdf" value="3" <?PHP if($cof['img_sdf'] == "3") { ?> checked="checked" <?PHP } ?> /><img alt="3" src="<?PHP echo $imagepath; ?>images/sitedefan/habbo_friends3.png" style="height:128px; width:150px" /></label> 
 <br/>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 </tr>
 <br/>
 </body>

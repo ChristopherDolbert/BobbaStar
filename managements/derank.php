@@ -87,7 +87,7 @@ $do = Secu($_GET['do']);
             if($user['gender'] == 'M') { $insertn4->bindValue(':poste', addslashes($c['nom_M'])); } 
             elseif($user['gender'] == 'F') { $insertn4->bindValue(':poste', addslashes($c['nom_F'])); }
         $insertn4->execute();
-				echo '<h4 class="alert_success">Le compte <b>'.$name[$n].'</b> a &eacute;t&eacute; deranker, a reçu une alerte et un commentaire sur son dossier.</h4>';
+				echo '<h4 class="alert_success">Le compte <b>'.$name[$n].'</b> a été deranker, a reçu une alerte et un commentaire sur son dossier.</h4>';
 					} else {
 					echo '<h4 class="alert_error">Le compte <b>'.$name[$n].'</b> n\'existe pas.</h4>';
 					}	
@@ -149,7 +149,7 @@ while($a = $sql_a->fetch()) {
 	</select>
 </td><br/><br/>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form><hr/><br/>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form><hr/><br/>
 <span id="titre">Regarde le rank</span><br />
 Regarde les personnes ayant un rank avec des filtres<br/><br/>
 <form method="post" action="?recherche=ok">

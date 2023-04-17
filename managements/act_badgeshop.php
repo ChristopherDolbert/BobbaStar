@@ -48,7 +48,7 @@ if($do == "cree") {
             $insertn1->bindValue(':action', 'a mis le badge <b>'.$badge_id.'</b> en vente limité <b>('.$stock.' en stock)</b> sur la boutique du site');
             $insertn1->bindValue(':date', FullDate('full'));
         $insertn1->execute(); 
-      echo '<h4 class="alert_success">Le badge <b>'.$badge_id.'</b> vient d\'&ecirc;tre ajout&eacute; sur la page de vente</h4>';
+      echo '<h4 class="alert_success">Le badge <b>'.$badge_id.'</b> vient d\'&ecirc;tre ajouté sur la page de vente</h4>';
       } else {
       echo '<h4 class="alert_error">Le stock ne doit contenir que des chiffres</h4>';
       } } else {
@@ -117,7 +117,7 @@ if(isset($_GET['sup'])) {
 <td width='80%' class='tbl'><img src="<?PHP echo $imagepath; ?>v2/images/newcredits/purse_coin.png" align="left" /><input type='text' placeholder='Généralement 5 jetons' name='prix' value='' class='text' style='width: 150px' maxlength="5"><br/></td>
 <br/>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 <hr/>
 <span id="titre">Actions sur une vente</span><br/>
 Choisis le badge que tu veux modifier ou supprimer.

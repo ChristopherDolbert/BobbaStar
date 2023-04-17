@@ -90,7 +90,7 @@ Ici signales ton absence aux autres staffs
 <td width='80%' class='tbl'><textarea name='raison' wrap=discuss rows=3 cols=34 ></textarea><br/></td><br/>
 Date de départ : <input type="text" id="dateDebutAbsence" readonly="readonly" name="dateDebutAbsence" maxlength="10" size="10" /><br/>
 Date de retour : <input type="text" id="dateFinAbsence" readonly="readonly" name="dateFinAbsence" maxlength="10" size="10" /><br/>
-<input type='submit' name='submit' value='Ex&eacute;cuter'></form>
+<input type='submit' name='submit' value='Exécuter'></form>
 <br/>
 </body>
 </html>

@@ -21,6 +21,7 @@ if ($c['afficher'] == "Oui") {
     <a href="<?PHP echo $url; ?>/service_client/"><img src="<?PHP echo $imagepath; ?>v2/images/bouton_sc.png" style="margin-left:10px;margin-top:10px;" /></a>
 </div>
 <div id="header-container">
+
     <div id="header" class="clearfix">
         <h1><a href="<?PHP echo $url; ?>"></a></h1>
         <div id="subnavi">

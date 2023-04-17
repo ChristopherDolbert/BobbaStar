@@ -55,7 +55,7 @@ $insert_badge = $bdd->query("SELECT * FROM gabcms_config_badges WHERE club = '1'
 			$affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
             <div class=\"rounded rounded-green\"> 
-              Bien jou&eacute;! Ta demande d'abonnement &agrave; &eacute;t&eacute; accept&eacute;! Tu fais maintenant partie du <b>VIP CLUB</b>!
+              Bien joué! Ta demande d'abonnement &agrave; été accepté! Tu fais maintenant partie du <b>VIP CLUB</b>!
             </div> 
         </div> 
 </div>";
@@ -71,7 +71,7 @@ $insert_badge = $bdd->query("SELECT * FROM gabcms_config_badges WHERE club = '1'
 			$affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
             <div class=\"rounded rounded-red\"> 
-               Tu n'as pas assez de jetons pour adh&eacute;rer au VIP CLUB!
+               Tu n'as pas assez de jetons pour adhérer au VIP CLUB!
             </div> 
         </div> 
 </div>";
@@ -121,7 +121,7 @@ $insert_badge = $bdd->query("SELECT * FROM gabcms_config_badges WHERE club = '1'
 		   $affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
             <div class=\"rounded rounded-green\"> 
-              Bien jou&eacute;! Ta demande d'abonnement &agrave; &eacute;t&eacute; accept&eacute;! Tu fais maintenant partie du <b>STAFF CLUB</b>!
+              Bien joué! Ta demande d'abonnement &agrave; été accepté! Tu fais maintenant partie du <b>STAFF CLUB</b>!
             </div> 
         </div> 
 </div>";
@@ -137,7 +137,7 @@ $insert_badge = $bdd->query("SELECT * FROM gabcms_config_badges WHERE club = '1'
 			$affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
             <div class=\"rounded rounded-red\"> 
-               Tu n'as pas assez de points pour adh&eacute;rer au <b>STAFF CLUB</b>!
+               Tu n'as pas assez de points pour adhérer au <b>STAFF CLUB</b>!
             </div> 
         </div> 
 </div>";

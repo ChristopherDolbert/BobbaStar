@@ -52,7 +52,7 @@ Modifies le message du bloc-notes dans le bureau des staffs<br/><br/>
 <script>CKEDITOR.replace( 'editor1', { toolbar : 'Journalisme' });</script>
 <br/></td>
 <td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Ex&eacute;cuter' class='submit'></form>
+<input type='submit' name='submit' value='Exécuter' class='submit'></form>
 <br/>
 </body>
 </html>

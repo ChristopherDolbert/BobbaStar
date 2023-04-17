@@ -52,7 +52,7 @@ if($do == "code") {
 				$affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
             <div class=\"rounded rounded-green\"> 
-                Ton code jetons &agrave; &eacute;t&eacute; valid&eacute; ! Tu as reçu <b>".Secu($c['value'])."</b> jetons.
+                Ton code jetons &agrave; été validé ! Tu as reçu <b>".Secu($c['value'])."</b> jetons.
             </div> 
         </div> 
 </div>"; } } elseif($c['valid'] == "0") { 
@@ -73,7 +73,7 @@ if($do == "code") {
 				$affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
             <div class=\"rounded rounded-green\"> 
-                Ton code jetons &agrave; &eacute;t&eacute; valid&eacute; ! Tu as reçu <b>".Secu($c['value'])."</b> jetons.
+                Ton code jetons &agrave; été validé ! Tu as reçu <b>".Secu($c['value'])."</b> jetons.
             </div> 
         </div> 
 </div>"; } } else {

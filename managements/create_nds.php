@@ -117,7 +117,7 @@ while($b = $sql_b->fetch()) {
 <td width='80%' class='tbl'><input type="text" name="sign" placeholder="(ex:Co-gérant) n'écris pas ton pseudo" value="<?php  if (!empty($_POST["sign"])) {  echo htmlspecialchars($_POST["sign"],ENT_QUOTES);  } ?>" class="text" style="width: 240px" maxlength="500"><br/></td>
 <br/>
 <tr><td align='center' colspan='2' class='tbl'>
-<input type="submit" name="submit" value="Ex&eacute;cuter" class="submit"></form>
+<input type="submit" name="submit" value="Exécuter" class="submit"></form>
 </tr>
 <br/>
 </body>

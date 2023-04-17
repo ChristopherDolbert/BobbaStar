@@ -7,7 +7,7 @@
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
 	include("./config.php");
-	$pagename = "D&eacute;connexion";
+	$pagename = "Déconnexion";
 	$pageid = "logout";
 	
 	session_destroy();

@@ -114,21 +114,21 @@ var andSoItBegins = (new Date()).getTime();
 
 <p><u><i><h3>Ce que tu ne peux pas faire:</h3></i></u>
 <br />
-<span style="color: rgb(255, 102, 0);"><b>*</b> Harceler, arnaquer ou insulter d'autres utilisateurs: &eacute;vite les comportements racistes, violents ou aggressifs. </span><br />
+<span style="color: rgb(255, 102, 0);"><b>*</b> Harceler, arnaquer ou insulter d'autres utilisateurs: évite les comportements racistes, violents ou aggressifs. </span><br />
 
 <span style="color: rgb(128, 0, 128);"><b>*</b> Voler le mot de passe, l'argent ou les meubles d'autres utilisateurs. </span><br />
 
-<span style="color: rgb(0, 255, 0);"><b>*</b> Donner ton mot de passe, adresse &eacute;lectronique ou toute autre information personnelle qui permettrait de te localiser toi ou d'autres utilisateurs dans la vie r&eacute;elle ou demander ces informations aux autres joueurs. </span><br />
+<span style="color: rgb(0, 255, 0);"><b>*</b> Donner ton mot de passe, adresse électronique ou toute autre information personnelle qui permettrait de te localiser toi ou d'autres utilisateurs dans la vie réelle ou demander ces informations aux autres joueurs. </span><br />
 
-<span style="color: rgb(255, 0, 0);"><b>*</b> Donner, &eacute;changer, vendre tes mobiliers ou ton compte utilisateur contre de l'argent. </span><br />
+<span style="color: rgb(255, 0, 0);"><b>*</b> Donner, échanger, vendre tes mobiliers ou ton compte utilisateur contre de l'argent. </span><br />
 
-<span style="color: rgb(102, 102, 153);"><b>*</b> Prendre part dans des activit&eacute;s sexuelles, faire des propostitions sexuelles ou y r&eacute;pondre. </span><br />
+<span style="color: rgb(102, 102, 153);"><b>*</b> Prendre part dans des activités sexuelles, faire des propostitions sexuelles ou y répondre. </span><br />
 
 <span style="color: rgb(255, 204, 0);"><b>*</b> Faire la promotion ou utiliser des programmes de piratage, de scripting dans <?PHP echo $sitename;?>.</span><br />
-<span style="color: rgb(255, 0, 255);"><span><b>*</b> Faire la publicit&eacute; d'un autre serveur priv&eacute; Habbo.</span><br />
+<span style="color: rgb(255, 0, 255);"><span><b>*</b> Faire la publicité d'un autre serveur privé Habbo.</span><br />
 
 </span><br />
-<p style="text-align: center;"><br/><img src="<?PHP echo $imagepath; ?>v2/images/rules.gif" align="center"/><br/><br/><b><font color="black">Agit avec les autres utilisateurs comme tu voudrais qu'ils agissent avec toi.</b><br/> Et rappelle toi qu'un crime dans le monde virtuel est aussi s&eacute;rieux qu'un crime dans le monde r&eacute;el. <br/>Merci de contacter un mod&eacute;rateur en cas de besoin.<br/><br/><u>Rappel:</u> Les utilisateurs ne respectant pas ces r&egrave;gles se verront exclu du site.</b></font></p>
+<p style="text-align: center;"><br/><img src="<?PHP echo $imagepath; ?>v2/images/rules.gif" align="center"/><br/><br/><b><font color="black">Agit avec les autres utilisateurs comme tu voudrais qu'ils agissent avec toi.</b><br/> Et rappelle toi qu'un crime dans le monde virtuel est aussi sérieux qu'un crime dans le monde réel. <br/>Merci de contacter un modérateur en cas de besoin.<br/><br/><u>Rappel:</u> Les utilisateurs ne respectant pas ces r&egrave;gles se verront exclu du site.</b></font></p>
 <a id="save-button" class="new-button green-button save-icon" href="<?PHP echo $url;?>/securite"><b><span></span>C'est parti</b><i></i></a> 
             	</div> 
  

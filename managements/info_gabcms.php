@@ -100,8 +100,8 @@ if (typeof HabboClient != "undefined") { HabboClient.windowName = "uberClientWnd
                 <a href="<?PHP echo $url; ?>/disclaimer" target="_self">Conditions Générales d'Utilisations</a>
             </p>
             <p class="copyright">
-GabCMS est un projet ind&eacute;pendant, &agrave; but non lucratif &copy; 2012-<?PHP echo date('Y'); ?>.<br />
-Habbo est une marque d&eacute;pos&eacute;e de Sulake Corporation. Tous droits r&eacute;serv&eacute;s &agrave; leur(s) propri&eacute;taire(s) respectif(s).<br />Nous ne sommes pas approuv&eacute;s, affili&eacute;s ou offertes par Sulake Corporation LTD.<br/><br/><u>&copy; GabCMS v1.1 - Créer par l'équipe de GabCMS</u>
+GabCMS est un projet indépendant, &agrave; but non lucratif &copy; 2012-<?PHP echo date('Y'); ?>.<br />
+Habbo est une marque déposée de Sulake Corporation. Tous droits réservés &agrave; leur(s) propriétaire(s) respectif(s).<br />Nous ne sommes pas approuvés, affiliés ou offertes par Sulake Corporation LTD.<br/><br/><u>&copy; GabCMS v1.1 - Créer par l'équipe de GabCMS</u>
             </p>
 	   </div><br/><br/><br/>
     </body>
