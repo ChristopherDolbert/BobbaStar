@@ -22,10 +22,9 @@ if (isset($_GET['tab'])) {
 		$mdpnew = Secu($_POST['mdp_new']);
 		$mdpnewre = Secu($_POST['remdp_new']);
 		$date = date('d/m/Y à H:i:s');
-		$mdp5actuel = GabCMSHash($mdpactuel);
-		$md5 = GabCMSHash($mdpnew);
+		$md5 = password_hash($mdpnew, PASSWORD_BCRYPT);
 
-		if ($mdp5actuel == $user['password']) {
+		if (password_verify($mdpactuel, $user['password'])) {
 			if ($mdpnew == $mdpnewre) {
 				if (strlen($mdpnew) < 6) {
 					$result = "<div id=\"purse-redeem-result\"> 
@@ -41,7 +40,8 @@ if (isset($_GET['tab'])) {
         </div> 
 </div>";
 					} else {
-						$bdd->query("UPDATE users SET password = '" . $md5 . "' WHERE username = '" . $user['username'] . "' and password = '" . $mdp5actuel . "'");
+						$sql = $bdd->prepare("UPDATE users SET password = ? WHERE username = ?");
+                        $sql->execute([$md5, $user['username']]);
 						$result = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
             <div class=\"rounded rounded-green\"> 

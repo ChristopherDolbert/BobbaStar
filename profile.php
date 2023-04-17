@@ -11,11 +11,12 @@ $pagename = "Mes préférences";
 $pageid = "option";
 
 if (!isset($_SESSION['username'])) {
-	Redirect("" . $url . "/index");
+	Redirect($url . "/index");
 }
 
 $id = $user['id'];
-$users_settings = $bdd->query("SELECT * FROM users_settings WHERE user_id = '" . $id . "' LIMIT 1");
+$users_settings = $bdd->prepare("SELECT block_friendrequests, old_chat, block_roominvites, block_following FROM users_settings WHERE user_id = ? LIMIT 1");
+$users_settings->execute([$id]);
 $user_settings = $users_settings->fetch();
 
 if (isset($_GET['tab'])) {
@@ -31,9 +32,11 @@ if (isset($_GET['tab'])) {
 
 			if (is_numeric($textamigo) && is_numeric($block_roominvites) && is_numeric($join)) {
 				if (!empty($_POST['envoimail'])) {
-					$bdd->query("UPDATE users_settings SET block_friendrequests = '" . $textamigo . "', old_chat = '" . $old_chat . "', block_roominvites = '" . $block_roominvites . "', block_following = '" . $join . "' WHERE user_id = '" . $id . "' LIMIT 1");
+					$sql = $bdd->prepare("UPDATE users_settings SET block_friendrequests = ?, old_chat = ?, block_roominvites = ?, block_following = ? WHERE user_id = ? LIMIT 1");
+                    $sql->execute([$textamigo, $old_chat, $block_roominvites, $join, $id]);
 				} else {
-					$bdd->query("UPDATE users_settings SET block_friendrequests = '" . $textamigo . "', old_chat = '" . $old_chat . "', block_roominvites = '" . $block_roominvites . "', block_following = '" . $join . "' WHERE user_id = '" . $id . "' LIMIT 1");
+                    $sql = $bdd->prepare("UPDATE users_settings SET block_friendrequests = ?, old_chat = ?, block_roominvites = ?, block_following = ? WHERE user_id = ? LIMIT 1");
+                    $sql->execute([$textamigo, $old_chat, $block_roominvites, $join, $id]);
 				}
 				$affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
@@ -194,8 +197,8 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 									<h3>Invitation d'appart</h3>
 									<p>
 										Choisis qui peut t'inviter dans un appart:<br />
-										<label><input type="radio" name="block_roominvites" value="1" <?PHP if ($user_settings['block_roominvites'] == "0") { ?> checked="checked" <?PHP } ?> />Personne</label>
-										<label><input type="radio" name="block_roominvites" value="0" <?PHP if ($user_settings['block_roominvites'] == "1") { ?> checked="checked" <?PHP } ?> />Tout le monde</label>
+										<label><input type="radio" name="block_roominvites" value="1" <?PHP if ($user_settings['block_roominvites'] == "1") { ?> checked="checked" <?PHP } ?> />Personne</label>
+										<label><input type="radio" name="block_roominvites" value="0" <?PHP if ($user_settings['block_roominvites'] == "0") { ?> checked="checked" <?PHP } ?> />Tout le monde</label>
 									</p>
 
 
