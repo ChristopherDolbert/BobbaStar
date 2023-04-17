@@ -5,7 +5,6 @@
 #|         Copyright © 2011 SnX. All rights reserved.                     #|
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
-
 	include("./config.php");
 	$pagename = "Crée ton ".$sitename."";
 	$pageid = "accueil";
