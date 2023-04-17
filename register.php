@@ -10,21 +10,29 @@
 	$pagename = "Crée ton ".$sitename."";
 	$pageid = "accueil";
 
-	$do = Secu($_GET['do']);
-	$page = Secu($_GET['page']);
+    if(isset($_GET['do'])) {
+        $do = Secu($_GET['do']);
+    } else {
+        $do = "";
+    }
+    if(isset($_GET['page'])) {
+        $page = Secu($_GET['page']);
+    } else {
+        $page = "";
+    }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 <head> 
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
-<title><?PHP echo $sitename; ?>: <?PHP echo $pagename; ?></title> 
- 
+<title><?PHP echo $sitename; ?>: <?PHP echo $pagename; ?></title>
+
 <script type="text/javascript"> 
 var andSoItBegins = (new Date()).getTime();
 var ad_keywords = "";
 document.habboLoggedIn = true;
-var habboName = "<?PHP echo $user['username']; ?>";
+var habboName = "";
 var habboReqPath = "<?PHP echo $url; ?>";
 var habboStaticFilePath = "<?PHP echo $imagepath; ?>";
 var habboImagerUrl = "http://www.habbo.com/habbo-imaging/";
@@ -98,7 +106,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 <img src="<?PHP echo $imagepath; ?>v2/images/page_loader.gif" style="position:absolute; margin: -1500px;" /> 
 
 <?PHP if($page == "") {
-	if($_SESSION['page'] == '1') { Redirect("".$url."/register?page=1"); } ?>
+	if(isset($_SESSION['page'])) { Redirect($url."/register?page=1"); } ?>
 <div id="stepnumbers"> 
     <div class="step1focus">Date de naissance et sexe</div> 
     <div class="step2">Détails du compte</div> 
@@ -106,7 +114,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
     <div class="stephabbo"></div> 
 </div> 
  
-<div id="main-container"> 
+<div id="main-container">
 		<?PHP if($do == "check") {
 			$day = Secu($_POST['bean_day']);
 			$month = Secu($_POST['bean_month']);
@@ -123,7 +131,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 					$_SESSION['dob'] = $day . "-" . $month . "-" . $year;
 					$_SESSION['gender'] = $gender;
 					$_SESSION['page'] = 1;
-					Redirect("".$url."/register?page=1");
+					Redirect($url."/register?page=1");
 					exit();
 				}
 		}
@@ -215,7 +223,8 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 	$remotdepasse = Secu($_POST['bean_repassword']);
 	$filtre_pseudo = preg_replace("/[^a-z\d\-=\?!@:\.]/i", "", $pseudo);
 	$verifmail = preg_match("/^[a-z0-9_\.-]+@([a-z0-9]+([\-]+[a-z0-9]+)*\.)+[a-z]{2,7}$/i", $email);
-	$selectuser = $bdd->query("SELECT id FROM users WHERE username = '".$pseudo."' LIMIT 1");
+	$selectuser = $bdd->prepare("SELECT id FROM users WHERE username = ? LIMIT 1");
+    $selectuser->execute([$pseudo]);
 	$su = $selectuser->rowCount();
 	if(isset($pseudo) && isset($email) && isset($motdepasse) && isset($remotdepasse)) {
 		if($su['id'] > 0){
@@ -239,10 +248,10 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 		} elseif($verifmail !== 1) {
 			$message['email'] = "Ton adresse e-mail est invalide.";
 		}
-		$mdpok = GabCMSHash($motdepasse);
+		$mdpok = password_hash($motdepasse, PASSWORD_BCRYPT);
 			if($_SESSION['gender'] == "M") { $look = $look_boy; } else { $look = $look_girl; }
 				if(!empty($_POST['envoimail'])) {
-$insertuser = $bdd->prepare("INSERT INTO users (username, password, mail, rank, look, gender, motto, credits, activity_points, last_online, account_created, ip_reg, message, newsletter) VALUES (:pseudo, :mdp, :mail, :rank, :look, :sexe, :motto, :credits, :pixels, :date, :ins, :ip, :message, :newsletter)");
+$insertuser = $bdd->prepare("INSERT INTO users (username, password, mail, rank, look, gender, motto, credits, last_login, account_created, ip_register, message, newsletter) VALUES (:pseudo, :mdp, :mail, :rank, :look, :sexe, :motto, :credits, :date, :ins, :ip, :message, :newsletter)");
     $insertuser->bindValue(':pseudo', $pseudo);
     $insertuser->bindValue(':mdp', $mdpok);
     $insertuser->bindValue(':mail', $email);
@@ -251,7 +260,8 @@ $insertuser = $bdd->prepare("INSERT INTO users (username, password, mail, rank, 
     $insertuser->bindValue(':sexe', $_SESSION['gender']);
     $insertuser->bindValue(':motto', $mission);
     $insertuser->bindValue(':credits', $credits);
-    $insertuser->bindValue(':pixels', $pixels);
+    //todo : pixels
+//    $insertuser->bindValue(':pixels', $pixels);
     $insertuser->bindValue(':date', time());
     $insertuser->bindValue(':ins', FullDate('hc'));
     $insertuser->bindValue(':ip', $_SERVER["REMOTE_ADDR"]);
@@ -278,7 +288,7 @@ $headers .= "From: Newsletter - ".$sitename." <".$mail_newsletter."> \r\n"; // O
     // On envoie l'e-mail.
     mail($destinataire, $objet, $fichier_message, $headers);
                            } else {
-$insertusera = $bdd->prepare("INSERT INTO users (username, password, mail, rank, look, gender, motto, credits, activity_points, last_online, account_created, ip_reg, message, newsletter) VALUES (:pseudo, :mdp, :mail, :rank, :look, :sexe, :motto, :credits, :pixels, :date, :ins, :ip, :message, :newsletter)");
+$insertusera = $bdd->prepare("INSERT INTO users (username, password, mail, rank, look, gender, motto, credits, last_login, account_created, ip_register, message, newsletter) VALUES (:pseudo, :mdp, :mail, :rank, :look, :sexe, :motto, :credits, :date, :ins, :ip, :message, :newsletter)");
     $insertusera->bindValue(':pseudo', $pseudo);
     $insertusera->bindValue(':mdp', $mdpok);
     $insertusera->bindValue(':mail', $email);
@@ -287,17 +297,18 @@ $insertusera = $bdd->prepare("INSERT INTO users (username, password, mail, rank,
     $insertusera->bindValue(':sexe', $_SESSION['gender']);
     $insertusera->bindValue(':motto', $mission);
     $insertusera->bindValue(':credits', $credits);
-    $insertusera->bindValue(':pixels', $pixels);
+                    //todo : pixels
+//    $insertuser->bindValue(':pixels', $pixels);
     $insertusera->bindValue(':date', time());
     $insertusera->bindValue(':ins', FullDate('hc'));
     $insertusera->bindValue(':ip', $_SERVER["REMOTE_ADDR"]);
     $insertusera->bindValue(':message', '100');
     $insertusera->bindValue(':newsletter', '0');
-$insertusera->execute();
+    $insertusera->execute();
 }				
 	$_SESSION['username'] = $pseudo;
 	$_SESSION['password'] = $mdpok;
-			Redirect(''.$url.'/bienvenue');
+			Redirect($url.'/bienvenue');
 			exit();
     }
 }
