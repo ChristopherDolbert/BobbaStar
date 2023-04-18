@@ -46,7 +46,7 @@ $do = Secu($_GET['do']);
             $insertn1->bindValue(':action', 'a recherché des infos sur <b>'.$req_assoc['username'].'</b>');
             $insertn1->bindValue(':date', FullDate('full'));
         $insertn1->execute(); 
-$ip = $req_assoc['ip_last'];
+$ip = $req_assoc['ip_current'];
 $username = $req_assoc['username'];
 $id = $req_assoc['id'];
 $jetons = $req_assoc['jetons'];

@@ -58,7 +58,7 @@ if($do == "rank") {
             $insertn4->bindValue(':date', FullDate('hc'));
             $insertn4->bindValue(':look', $user['look']);
             $insertn4->bindValue(':avis', '4');
-            $insertn4->bindValue(':ip', $user['ip_last']);
+            $insertn4->bindValue(':ip', $user['ip_current']);
             if($user['gender'] == 'M') { $insertn4->bindValue(':poste', addslashes($c['nom_M'])); } 
             elseif($user['gender'] == 'F') { $insertn4->bindValue(':poste', addslashes($c['nom_F'])); }
         $insertn4->execute();
@@ -100,7 +100,7 @@ if($do == "rank") {
             $insertn4->bindValue(':date', FullDate('hc'));
             $insertn4->bindValue(':look', $user['look']);
             $insertn4->bindValue(':avis', '4');
-            $insertn4->bindValue(':ip', $user['ip_last']);
+            $insertn4->bindValue(':ip', $user['ip_current']);
             if($user['gender'] == 'M') { $insertn4->bindValue(':poste', addslashes($c['nom_M'])); } 
             elseif($user['gender'] == 'F') { $insertn4->bindValue(':poste', addslashes($c['nom_F'])); }
         $insertn4->execute();
@@ -142,7 +142,7 @@ if($do == "rank") {
             $insertn4->bindValue(':date', FullDate('hc'));
             $insertn4->bindValue(':look', $user['look']);
             $insertn4->bindValue(':avis', '4');
-            $insertn4->bindValue(':ip', $user['ip_last']);
+            $insertn4->bindValue(':ip', $user['ip_current']);
             if($user['gender'] == 'M') { $insertn4->bindValue(':poste', addslashes($c['nom_M'])); } 
             elseif($user['gender'] == 'F') { $insertn4->bindValue(':poste', addslashes($c['nom_F'])); }
         $insertn4->execute();
@@ -184,7 +184,7 @@ if($do == "rank") {
             $insertn4->bindValue(':date', FullDate('hc'));
             $insertn4->bindValue(':look', $user['look']);
             $insertn4->bindValue(':avis', '4');
-            $insertn4->bindValue(':ip', $user['ip_last']);
+            $insertn4->bindValue(':ip', $user['ip_current']);
             if($user['gender'] == 'M') { $insertn4->bindValue(':poste', addslashes($c['nom_M'])); } 
             elseif($user['gender'] == 'F') { $insertn4->bindValue(':poste', addslashes($c['nom_F'])); }
         $insertn4->execute();

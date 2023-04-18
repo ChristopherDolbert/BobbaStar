@@ -44,7 +44,7 @@ $timestampz=mktime(23,59,59,$date_explz[1],$date_explz[0],$date_explz[2]);
             $insertn2->bindValue(':depuis', $timestamp);
             $insertn2->bindValue(':jus', $timestampz);
             $insertn2->bindValue(':raison', $raison);
-            $insertn2->bindValue(':ip', $user['ip_last']);
+            $insertn2->bindValue(':ip', $user['ip_current']);
         $insertn2->execute();
 	 echo '<h4 class="alert_success">Ton absence a été signalé aux administrateurs.</h4>';
 	  } else {

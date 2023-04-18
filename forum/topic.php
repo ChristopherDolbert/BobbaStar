@@ -205,7 +205,7 @@ if($user['id'] != "") {
             $insertn1->bindValue(':userid', $user['id']);
             $insertn1->bindValue(':commentaire', $commentaire);
             $insertn1->bindValue(':date', time());
-            $insertn1->bindValue(':ip', $user['ip_last']);
+            $insertn1->bindValue(':ip', $user['ip_current']);
             $insertn1->bindValue(':etat', '1');
             $insertn1->execute();
             $com = $bdd->lastInsertId();

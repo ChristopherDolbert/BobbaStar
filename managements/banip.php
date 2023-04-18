@@ -39,7 +39,7 @@ $date_ban = $date_ac + $date_calcul;
 		if(!empty($ip) && !empty($raison) && !empty($date)) {
 	
 	for($n = 0; $n < $nbr; $n++):
-		$sql = $bdd->query("SELECT id FROM users WHERE ip_last = '".$ip[$n]."'");
+		$sql = $bdd->query("SELECT id FROM users WHERE ip_current = '".$ip[$n]."'");
 		$row = $sql->rowCount();
 		if($row > 0) {
         $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");

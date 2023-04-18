@@ -28,7 +28,7 @@ if (function_exists('date_default_timezone_set')){
 			if($row > 0)
 				{
 					$user = $sql->fetch(PDO::FETCH_ASSOC);
-					$bdd->query("UPDATE users SET ip_last = '".$_SERVER["REMOTE_ADDR"]."' WHERE id = '".$user['id']."'");
+					$bdd->query("UPDATE users SET ip_current = '".$_SERVER["REMOTE_ADDR"]."' WHERE id = '".$user['id']."'");
 				}
 				else {
 				session_destroy();
@@ -44,16 +44,19 @@ $maintid = "1";
                 Redirect("".$url."/maintenance");
             }
         }
-$query = $bdd->query("SELECT * FROM bans WHERE value = '".$_SERVER['REMOTE_ADDR']."' ");
+$query = $bdd->prepare("SELECT * FROM bans WHERE user_id = ? OR ip = ?");
+$sql->execute([$user['id'], $_SERVER['REMOTE_ADDR']]);
 $data = $query->fetch(PDO::FETCH_ASSOC);
 $ban = array($data['value']);
 $ip = $_SERVER['REMOTE_ADDR'];
+
 if (in_array($ip, $ban)) {
 Redirect("".$url."/banip");
 }
 if(isset($_SESSION['username']))
 		{
-$sql = $bdd->query("SELECT * FROM bans WHERE value = '".$username."'");
+$sql = $bdd->prepare("SELECT * FROM bans WHERE user_id = ? OR ip = ?");
+$sql->execute([$user['id'], $_SERVER['REMOTE_ADDR']]);
 $b = $sql->fetch(PDO::FETCH_ASSOC);
 $stamp_now = $nowtime;
 $stamp_expire = $b['expire'];
@@ -77,4 +80,3 @@ foreach($getSearch as $k=>$v){
         }
     }
 }
-?>

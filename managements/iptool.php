@@ -43,7 +43,7 @@ Pseudo :<br />
 if (isset($_POST['user']))
 {
 	$info = Secu($_POST['user']);
-	$get =  $bdd->query("SELECT ip_last FROM users WHERE username = '" . $info . "' LIMIT 1");
+	$get =  $bdd->query("SELECT ip_current FROM users WHERE username = '" . $info . "' LIMIT 1");
 	  $bdd->query("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES ('".$user['username']."','a recherché si <b>".$info."</b> a de multi-comptes.','".FullDate('full')."')");	
 	if ($get->rowCount() > 0)
 	{
@@ -57,7 +57,7 @@ if (isset($_POST['user']))
 if (isset($ip) && strlen($ip) > 0)
 {
 	echo '<br/><h2 style="background-color: #CEE3F6; padding: 2px; border: 2px dotted black; text-align: center;">Utilisateurs sur l\'adresse IP :  <span style="background-color: #CEE3F6; padding: 2px;">' . $ip . '</span></h2>';
-	$get = $bdd->query("SELECT * FROM users WHERE ip_last = '" . $ip . "' LIMIT 50");
+	$get = $bdd->query("SELECT * FROM users WHERE ip_current = '" . $ip . "' LIMIT 50");
 	
 	while ($info = $get->fetch(PDO::FETCH_ASSOC))
 	{

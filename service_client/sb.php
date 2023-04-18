@@ -27,7 +27,7 @@ if(isset($_POST['texte'])) {
             $insertn2->bindValue(':texte', addslashes($_POST['texte']));
             $insertn2->bindValue(':date', FullDate('full'));
             $insertn2->bindValue(':categorie', 'Bug');
-            $insertn2->bindValue(':ip', $user['ip_last']);
+            $insertn2->bindValue(':ip', $user['ip_current']);
             $insertn2->bindValue(':user_id', $user['id']);
         $insertn2->execute();
 				$affichage = "<div id=\"ok\">

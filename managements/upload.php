@@ -122,7 +122,7 @@ $urlt = ''.$url.'/managements/'.$repertoire.''.$nom_fichier.'';
             $insertn1->bindValue(':action', 'upload une image sur le serveur <b>(<a target="_blank" href="'.$urlt.'">'.$nom_fichier.'</a>)</b>');
             $insertn1->bindValue(':date', FullDate('full'));
         $insertn1->execute();
-        $bdd->query("INSERT INTO gabcms_upload (lien, par, date, ip) VALUES ('".$urlt."', '".$user['username']."', '".FullDate('full')."', '".$user['ip_last']."')");
+        $bdd->query("INSERT INTO gabcms_upload (lien, par, date, ip) VALUES ('".$urlt."', '".$user['username']."', '".FullDate('full')."', '".$user['ip_current']."')");
 echo '<div id="purse-redeem-result"> 
         <div class="redeem-error"> 
             <div class="rounded rounded-green"> 

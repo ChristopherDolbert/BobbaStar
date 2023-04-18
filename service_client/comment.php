@@ -23,7 +23,7 @@ if(isset($_POST['message'])) {
             $insertn2->bindValue(':id', $r['id']);
             $insertn2->bindValue(':message', '<b>Message de '.$user['username'].' :</b> '.$message.'');
             $insertn2->bindValue(':date', FullDate('full').' :');
-            $insertn2->bindValue(':ip', $user['ip_last']);
+            $insertn2->bindValue(':ip', $user['ip_current']);
         $insertn2->execute();
         $bdd->query("UPDATE gabcms_contact SET resul_par='".$user['username']."' WHERE id = '".$id."'");	
 	if($r['resul'] == 3) {

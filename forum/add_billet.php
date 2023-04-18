@@ -35,7 +35,7 @@ if(isset($_GET['do'])) {
             $insertn1->bindValue(':titre', $titre);
             $insertn1->bindValue(':userid', $user['id']);
             $insertn1->bindValue(':article', $article);
-            $insertn1->bindValue(':ip', $user['ip_last']);
+            $insertn1->bindValue(':ip', $user['ip_current']);
             $insertn1->bindValue(':date', time());
             $insertn1->bindValue(':calcul', $calcul);
             $insertn1->bindValue(':etat', '1');

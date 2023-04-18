@@ -41,7 +41,7 @@ if(isset($_GET['do'])) {
                 $insertn2->bindValue(':badge', $badge_id);
                 $insertn2->bindValue(':date', FullDate('full'));
                 $insertn2->bindValue(':pseudo', $user['username']);
-                $insertn2->bindValue(':ip', $user['ip_last']);
+                $insertn2->bindValue(':ip', $user['ip_current']);
             $insertn2->execute();
           echo '<h4 class="alert_success">Tu viens d\'ajouter le badge <b>'.$badge_id.'</b> pour les adhérants au <b>'.$modif_club.'</b></h4>';
           } else {

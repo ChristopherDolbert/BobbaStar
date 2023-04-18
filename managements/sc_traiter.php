@@ -59,7 +59,7 @@ if($etat == 8) { $retat_modif = "<span style=\"color:#DAA520\"><b>Fermé - sans 
             $insertn2->bindValue(':id', $id);
             $insertn2->bindValue(':message', '<b>'.$user['username'].'</b> passe le sujet d\'aide de l\'état '.$etat_modif.' à '.$retat_modif.'');
             $insertn2->bindValue(':date', FullDate('full').' :');
-            $insertn2->bindValue(':ip', $user['ip_last']);
+            $insertn2->bindValue(':ip', $user['ip_current']);
         $insertn2->execute();
         $insertn3 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
             $insertn3->bindValue(':userid', $assoc['id']);
@@ -98,7 +98,7 @@ if($etat == 8) { $retat_modif = "<span style=\"color:#DAA520\"><b>Fermé - sans 
             $insertn2->bindValue(':id', $id);
             $insertn2->bindValue(':message', '<b>Message de '.$user['username'].' (CTA) :</b> '.$message.'');
             $insertn2->bindValue(':date', FullDate('full').' :');
-            $insertn2->bindValue(':ip', $user['ip_last']);
+            $insertn2->bindValue(':ip', $user['ip_current']);
         $insertn2->execute();
         $insertn3 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
             $insertn3->bindValue(':userid', $assoc['id']);
@@ -139,7 +139,7 @@ $r = $infr->fetch();
             $insertn2->bindValue(':id', $r['id']);
             $insertn2->bindValue(':message', '<b>'.$user['username'].' (CTA)</b> a modifié le sujet du ticket <b>'.addslashes($sujet).'</b> (auparavant : <b>'.addslashes($r['sujet']).'</b>)');
             $insertn2->bindValue(':date', FullDate('full').' :');
-            $insertn2->bindValue(':ip', $user['ip_last']);
+            $insertn2->bindValue(':ip', $user['ip_current']);
         $insertn2->execute();
         $insertn3 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
             $insertn3->bindValue(':userid', $assoc['id']);
