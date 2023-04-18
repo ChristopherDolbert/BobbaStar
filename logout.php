@@ -5,122 +5,130 @@
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
-	include("./config.php");
-	$pagename = "Déconnexion";
-	$pageid = "logout";
-	
-	session_destroy();
+include("./config.php");
+$pagename = "Déconnexion";
+$pageid = "logout";
+
+session_destroy();
+
+$sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
+$cof = $sql->fetch(PDO::FETCH_ASSOC);
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<title><?PHP echo $sitename;?> &raquo; Deconnexion</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title><?PHP echo $sitename; ?> &raquo; Deconnexion</title>
 
-<script type="text/javascript">
-var andSoItBegins = (new Date()).getTime();
-</script>
-
-    <script>
+    <script type="text/javascript">
         var andSoItBegins = (new Date()).getTime();
-        var habboPageInitQueue = [];
-        var habboStaticFilePath = "./web-gallery";
     </script>
-<link rel="shortcut icon" href="<?PHP echo $imagepath;?>favicon.ico" type="image/vnd.microsoft.icon" /> 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700,400italic,700italic">
-<script src="<?PHP echo $imagepath;?>static/js/13389159.js"></script>
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>static/styles/v3_default.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>static/styles/v3_logout.css" type="text/css" />
-<script src="<?PHP echo $imagepath;?>static/js/v3_default_top.js" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath;?>js/tooltip.js" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath;?>static/js/visual.js" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath;?>v2/styles/styles.css" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath;?>static/js/libs.js" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath;?>static/js/common.js" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath;?>static/js/fullcontent.js" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath;?>static/js/libs2.js" type="text/javascript"></script>
-<script type="text/javascript">
-document.habboLoggedIn = false;
-var habboName = null;
-var habboReqPath = "";
-var habboStaticFilePath = "./web-gallery";
-var habboImagerUrl = "/habbo-imaging/";
-var habboPartner = "";
-window.name = "habboMain";
-
-</script>
+    <link rel="shortcut icon" href="<?PHP echo $imagepath; ?>v2/favicon.ico" type="image/vnd.microsoft.icon" />
+    <script src="<?PHP echo $imagepath; ?>static/js/libs2.js" type="text/javascript"></script>
+    <script src="<?PHP echo $imagepath; ?>static/js/landing.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>styles/local/com.css" type="text/css" />
+    <script src="<?PHP echo $imagepath; ?>js/local/com.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/process.css" type="text/css" />
 
 
+    <meta name="description" content="Join the world's largest virtual hangout where you can meet and make friends. Design your own rooms, collect cool furniture, throw parties and so much more! Create your FREE Retro today!" />
+    <meta name="keywords" content="Retro, virtual, world, join, groups, forums, play, games, online, friends, teens, collecting, social network, create, collect, connect, furniture, virtual, goods, sharing, badges, social, networking, hangout, safe, music, celebrity, celebrity visits, cele" />
 
-<meta name="description" content="<?PHP echo $description;?>" />
-<meta name="keywords" content="<?PHP echo $keyword;?>" />
-
-<!--[if lt IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/ie.css" type="text/css" />
+    <!--[if IE 8]>
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css" type="text/css" />
 <![endif]-->
-<!--[if lt IE 7]>
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/ie6.css" type="text/css" />
-<script src="<?PHP echo $imagepath;?>static/js/pngfix.js" type="text/javascript"></script>
+    <!--[if lt IE 8]>
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css" type="text/css" />
+<![endif]-->
+    <!--[if lt IE 7]>
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css" type="text/css" />
+<script src="<?PHP echo $imagepath; ?>static/js/pngfix.js" type="text/javascript"></script>
 <script type="text/javascript">
 try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
 </script>
 
 <style type="text/css">
-body { behavior: url(<?PHP echo $imagepath;?>csshover.htc); }
+body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 </style>
 <![endif]-->
-<meta name="build" content="<?PHP echo $build;?> >> <?PHP echo $version;?>" />
-    
+    <meta name="build" content="PHPRetro 4.0.10 BETA" />
 </head>
-<body>
-<div id="tooltip"></div>
-<div id="overlay"></div>
-<header>
-    <div id="border-left"></div>
-    <div id="border-right"></div>
-    <div id="header-content">
-		<a href="#home" id="habbo-logo"></a>    
-		</div>
-    <div id="top-bar-triangle"></div>
-    <div id="top-bar-triangle-border"></div>
-</header>
 
-<div id="content"><div id="page-content">
-<img src="<?PHP echo $imagepath;?>images/v3/sail.out.png" alt="placeholder"/>
+<body id="landing" class="process-template">
 
-<div id="column1" class="column">
-			     		
-				<div class="habblet-container ">		
-	
-						<div class="ad-container">
+    <div id="overlay"></div>
 
-</div>		
-				</div>
-</div>
-<div id="column2" class="column">
-</div>
-<div id="logout-container">
-    <div id="logout-content">
-        <div class="action-confirmation flash-message">
-            <p>
-                Tu t'es déconnecté
-            </p>
+    <div id="container">
+        <div class="cbb process-template-box clearfix">
+            <div id="content">
+
+                <div id="header" class="clearfix">
+                    <h1><a href="https://phpretro.bobbastar.fr/"></a></h1>
+                    <ul class="stats">
+                        <li class="stats-online"><span class="stats-fig"><?PHP $tmp = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
+                                                                            $tma = $tmp->fetch(PDO::FETCH_ASSOC);
+                                                                            echo $tma['count(id)']; ?></span> Connectés</li>
+
+
+                        <?PHP if ($cof['etat_client'] == '1' || $cof['etat_client'] == '3' && $cof['si3_debut'] < $nowtime && $cof['si3_fin'] < $nowtime) { ?>
+                            <li class="stats-visited"><img src="<?PHP echo $imagepath; ?>v2/images/online.gif" alt="online"></li>
+                        <?PHP } elseif ($cof['etat_client'] == '2') { ?>
+                            <li class="stats-visited"><img src="<?PHP echo $imagepath; ?>v2/images/offline.gif" alt="offline"></li>
+                        <?PHP } elseif ($cof['etat_client'] == '3' && $cof['si3_debut'] <= $nowtime && $cof['si3_fin'] >= $nowtime) { ?>
+                            <li class="stats-visited"><img src="<?PHP echo $imagepath; ?>v2/images/offline.gif" alt="offline"></li>
+                        <?PHP } ?>
+
+
+
+                    </ul>
+
+                </div>
+                <div id="process-content">
+
+                    <div id="process-content">
+                        <div class="action-confirmation flash-message">
+                            <div class="rounded">
+                                <div class="rounded-done">Vous avez été déconnecté avec succès</div>
+                            </div>
+
+                        </div>
+
+                        <div style="text-align: center">
+
+                            <div style="width:100px; margin: 10px auto"><a href="<?PHP echo $url; ?>" id="logout-ok" class="new-button fill"><b>OK</b><i></i></a></div>
+
+                            <div id="column1" class="column">
+                            </div>
+                            <div id="column2" class="column">
+                            </div>
+
+                        </div>
+
+
+                        <!--[if lt IE 7]>
+<script type="text/javascript">
+Pngfix.doPngImageFix();
+</script>
+<![endif]-->
+
+                        <div id="footer">
+                            <p><a href='<?PHP echo $url; ?>' target="_self">Accueil</a> | <a href='<?PHP echo $url; ?>/register' target="_self">Inscription</a> | <a href="<?PHP echo $url; ?>/disclaimer" target="_blank">Conditions Générales d'Utilisations</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="logout-message">
-        </div>
-                <a href="<?PHP echo $url;?>" id="logout-ok" class="new-button fill ok"><b>OK</b><i></i></a>
-        </div>
-</div><br/>
-</div>
-<footer>
-        <div id="partner-logo"><a href="" style="background-image: url('./web-gallery/v2/images/publishing.png')"></a></div>
-    <div id="footer-content">
-        <div id="footer"></div>
-		<div id="copyright"><?PHP include("./template/footer.php");?></div>
-    </div> 
-</footer>
-<script src="./web-gallery/static/js/v3_landing_bottom.js" type="text/javascript"></script><!--[if IE]><script src="./web-gallery/static/js/v3_ie_fixes.js" type="text/javascript"></script><![endif]-->
+
+        <script type="text/javascript">
+            HabboView.run();
+        </script>
+
 
 </body>
-</html> 
+
+</html>

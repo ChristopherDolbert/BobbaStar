@@ -98,12 +98,16 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 						<div id="notfound-looking-for" class="box-content">
 							<p>MyHabbo utilise <b>GabCMS</b>, CMS très connu qui a marqué son temps entre 2014 et 2015.</p>
 							<table>
-								<td width="10%"><img style="vertical-align:middle" src="https://www.habborator.org/archive/icons/mini/bb14.gif" /></td>
+								<td width="10%"><img style="vertical-align:middle" src="./web-gallery/v2/images/place_2.gif" /></td>
 								<td><b>Version PHP</b> : <?php echo phpversion(); ?></td>
 							</table>
 							<table>
-								<td width="10%"><img style="vertical-align:middle" src="https://www.habborator.org/archive/icons/mini/group_1.gif" /></td>
+								<td width="10%"><img style="vertical-align:middle" src="./web-gallery/v2/images/favourite_group_icon2.gif" /></td>
 								<td><b>Version MariaDB</b> : 10.5.15</td>
+							</table>
+							<table>
+								<td width="10%"><img style="vertical-align:middle" src="./web-gallery/v2/images/navi_gotohotelview_inactive.gif" /></td>
+								<td><b>Version CMS</b> : <?php echo $version; ?></td>
 							</table>
 						</div>
 
@@ -130,7 +134,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 								<td style="padding-left:15px;text-align:justify">
 									<p>MyHabbo remercie du fond du <span style="color:red">❤</span> :</p>
 									<p><a target="_blank" href="https://www.facebook.com/Gabcms">L'équipe de GabCMS</a> pour la création de ce CMS si légendaire</p>
-									<p><a target="_blank" href="https://github.com/ayrtonbardiot">Ayrton</a> pour la refonte des requêtes en base de données et l'adaptation du CMS à la nextgen</p>
+									<p><a target="_blank" href="https://github.com/ayrtonbardiot">Ayrton</a> et <a target="_blank" href="https://inshare.fr/membre/10677-sailoreudes/">SailorEudes</a> pour la refonte des requêtes en base de données et l'adaptation du CMS à la nextgen</p>
 									<p><a target="_blank" href="https://github.com/maximehery">Maxime</a> pour l'oeil neuf sur les versions "OldSchool" d'Habbo</p>
 									<p><a target="_blank" href="https://github.com/Chahine-tech">Chahine</a> pour la participation à l'élaboration du plan de relancement de MyHabbo</p>
 								</td>
