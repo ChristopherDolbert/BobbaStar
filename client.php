@@ -18,9 +18,9 @@ $client = $sql->fetch(PDO::FETCH_ASSOC);
 $sql2 = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 $cof = $sql2->fetch(PDO::FETCH_ASSOC);
 
-$ssoTicket = GenerateRandom("sso");
-$updateSSO = $bdd->prepare("UPDATE users SET auth_ticket = :sso WHERE id = :id");
-$updateSSO->execute([$ssoTicket]);
+$ssoTicket = "BBSTR-" . GenerateRandom("sso");
+$updateSSO = $bdd->prepare("UPDATE users SET auth_ticket = ? WHERE id = ?");
+$updateSSO->execute([$ssoTicket, $user['id']]);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
