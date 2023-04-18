@@ -1,8 +1,8 @@
 <?php
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 #|                                                                        #|
-#|           GabCMS - Site Web et Content Management System               #|
-#|         Copyright © 2012-2014 - Gabodd Tout droits réservés.           #|
+
+#|         Copyright ï¿½ 2012-2014 - Gabodd Tout droits rï¿½servï¿½s.           #|
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
