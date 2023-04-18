@@ -236,11 +236,7 @@ if ($c['afficher'] == "Oui") {
                     <?PHP } else { ?>
                         <li class=""><a href="<?PHP echo $url; ?>/shopbadge">Acheter des badges</a></li>
                     <?PHP } ?>
-                    <?PHP if ($pageid == "shopbots") { ?>
-                        <li class=" selected">Acheter des bots</li>
-                    <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/shopbots">Acheter des bots</a></li>
-                    <?PHP } ?>
+                   
                     <?PHP if ($pageid == "codepromo") { ?>
                         <li class=" selected">Codes promos</li>
                     <?PHP } else { ?>
