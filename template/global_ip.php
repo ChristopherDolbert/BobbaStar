@@ -1,8 +1,7 @@
 <?PHP
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 #|                                                                        #|
-#|           GabCMS - Site Web et Content Management System               #|
-#|         Copyright © 2012-2014 - Gabodd Tout droits réservés.           #|
+#|         Copyright © 2014-2023 - MyHabbo Tout droits réservés.          #|
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 	date_default_timezone_set("Europe/Paris");

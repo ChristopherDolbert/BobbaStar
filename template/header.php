@@ -1,8 +1,7 @@
 <?PHP
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 #|                                                                        #|
-#|           GabCMS - Site Web et Content Management System               #|
-#|         Copyright © 2012-2014 - Gabodd Tout droits réservés.           #|
+#|         Copyright © 2014-2023 - MyHabbo Tout droits réservés.          #|
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
@@ -124,41 +123,41 @@ if ($c['afficher'] == "Oui") {
             <ul>
                 <?PHP if ($pageid == "accueil" || $pageid == "option" || $pageid == "alert" || $pageid == "flux" || $pageid == "dossier" || $pageid == "info" || $pageid == "transactions") { ?>
                     <?PHP if ($pageid == "accueil") { ?>
-                        <li class=" selected">Mon avatar</li>
+                        <li class=" selected">Avatar</li>
                     <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/moi">Mon avatar</a></li>
+                        <li class=""><a href="<?PHP echo $url; ?>/moi">Avatar</a></li>
                     <?PHP } ?>
                     <?PHP if ($pageid == "option") { ?>
-                        <li class="selected">Mes Pr&eacute;f&eacute;rences</li>
+                        <li class="selected">Préférences</li>
                     <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/profile">Mes Pr&eacute;f&eacute;rences</a></li>
+                        <li class=""><a href="<?PHP echo $url; ?>/profile">Préférences</a></li>
                     <?PHP } ?>
                     <?PHP if ($pageid == "alert") { ?>
-                        <li class=" selected">Mes alertes</li>
+                        <li class=" selected">Alertes</li>
                     <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/alerts">Mes alertes</a></li>
+                        <li class=""><a href="<?PHP echo $url; ?>/alerts">Alertes</a></li>
                     <?PHP } ?>
                     <?PHP if ($pageid == "flux") { ?>
-                        <li class=" selected">Mes flux</li>
+                        <li class=" selected">Flux</li>
                     <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/flux">Mes flux</a></li>
+                        <li class=""><a href="<?PHP echo $url; ?>/flux">Flux</a></li>
                     <?PHP } ?>
                     <?PHP if ($pageid == "info") { ?>
-                        <li class=" selected">Mes infos</li>
+                        <li class=" selected">Infos</li>
                     <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/info?pseudo=<?PHP echo $user['username']; ?>">Mes infos</a></li>
+                        <li class=""><a href="<?PHP echo $url; ?>/info?pseudo=<?PHP echo $user['username']; ?>">Infos</a></li>
                     <?PHP } ?>
                     <?PHP if ($user['rank'] >= 4) { ?>
                         <?PHP if ($pageid == "dossier") { ?>
-                            <li class=" selected">Mon dossier</li>
+                            <li class=" selected">Dossier</li>
                         <?PHP } else { ?>
-                            <li class=""><a href="<?PHP echo $url; ?>/managements/mondossier">Mon dossier</a></li>
+                            <li class=""><a href="<?PHP echo $url; ?>/managements/mondossier">Dossier</a></li>
                         <?PHP }
                     } ?>
                     <?PHP if ($pageid == "transactions") { ?>
-                        <li class=" selected">Mes transactions</li>
+                        <li class=" selected">Transactions</li>
                     <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/transactions">Mes transactions</a></li>
+                        <li class=""><a href="<?PHP echo $url; ?>/transactions">Transactions</a></li>
                     <?PHP } ?>
                 <?PHP } ?>
                 <?PHP if ($pageid == "communaute" || $pageid == "tchat" || $pageid == "forum" || $pageid == "articles" || $pageid == "staff" || $pageid == "recrut" || $pageid == "rs" || $pageid == "sdf" || $pageid == "error") { ?>
@@ -183,14 +182,14 @@ if ($c['afficher'] == "Oui") {
                         <li class=""><a href="<?PHP echo $url; ?>/recrutement">Recrutements</a></li>
                     <?PHP } ?>
                     <?PHP if ($pageid == "rs") { ?>
-                        <li class=" selected">R&eacute;seaux sociaux</li>
+                        <li class=" selected">Réseaux</li>
                     <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/reseaux">R&eacute;seaux sociaux</a></li>
+                        <li class=""><a href="<?PHP echo $url; ?>/reseaux">Réseaux</a></li>
                     <?PHP } ?>
                     <?PHP if ($pageid == "sdf") { ?>
-                        <li class=" selected">Sites de fan</li>
+                        <li class=" selected">Fansites</li>
                     <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/fansites">Sites de fan</a></li>
+                        <li class=""><a href="<?PHP echo $url; ?>/fansites">Fansites</a></li>
                     <?PHP } ?>
                     <?PHP if ($pageid == "tchat") { ?>
                         <li class=" selected">Tchat</li>
@@ -236,11 +235,7 @@ if ($c['afficher'] == "Oui") {
                     <?PHP } else { ?>
                         <li class=""><a href="<?PHP echo $url; ?>/shopbadge">Acheter des badges</a></li>
                     <?PHP } ?>
-                    <?PHP if ($pageid == "shopbots") { ?>
-                        <li class=" selected">Acheter des bots</li>
-                    <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/shopbots">Acheter des bots</a></li>
-                    <?PHP } ?>
+                   
                     <?PHP if ($pageid == "codepromo") { ?>
                         <li class=" selected">Codes promos</li>
                     <?PHP } else { ?>
@@ -250,55 +245,55 @@ if ($c['afficher'] == "Oui") {
 
                 <?PHP if ($pageid == "tchatstaff" || $pageid == "sta" || $pageid == "nds" || $pageid == "bureau" || $pageid == "sc_index" || $pageid == "forum_index") { ?>
                     <?PHP if ($pageid == "bureau") { ?>
-                        <li class=" selected">Bureau des staffs</li>
+                        <li class=" selected">Bureau</li>
                     <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/managements/bureau">Bureau des staffs</a></li>
+                        <li class=""><a href="<?PHP echo $url; ?>/managements/bureau">Bureau</a></li>
                     <?PHP } ?>
                     <?PHP if ($pageid == "nds") { ?>
-                        <li class=" selected">Notes de Service</li>
+                        <li class=" selected">Notes</li>
                     <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/managements/nds">Notes de Service</a></li>
+                        <li class=""><a href="<?PHP echo $url; ?>/managements/nds">Notes</a></li>
                     <?PHP } ?>
                     <?PHP if ($pageid == "sta") { ?>
-                        <li class=" selected">Les absents</li>
+                        <li class=" selected">Absents</li>
                     <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/managements/absence">Les absents</a></li>
+                        <li class=""><a href="<?PHP echo $url; ?>/managements/absence">Absents</a></li>
                     <?PHP } ?>
                     <?PHP if ($pageid == "tchatstaff") { ?>
-                        <li class=" selected">Staff tchat</li>
+                        <li class=" selected">Tchat</li>
                     <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/managements/stafftchat">Staff tchat</a></li>
-                    <?PHP } ?>
-                    <?PHP if ($pageid == "admin") { ?>
-                        <li class=" selected">Administration</li>
-                    <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/managements/">Administration</a></li>
+                        <li class=""><a href="<?PHP echo $url; ?>/managements/stafftchat">Tchat</a></li>
                     <?PHP } ?>
                     <?PHP if ($pageid == "sc_index") { ?>
-                        <li class=" selected">Centre de Traitement des Aides (<b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_contact WHERE resul != '6' AND resul != '7' AND resul != '8'";
+                        <li class=" selected">Tickets (<b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_contact WHERE resul != '6' AND resul != '7' AND resul != '8'";
                                 $query = $bdd->query($req);
                                 $nb_inscrit = $query->fetch();
                                 echo $nb_inscrit['id'];
-                                ?></b> en attente)</li>
+                                ?></b>)</li>
                     <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/managements/sc_index">Centre de Traitement des Aides (<b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_contact WHERE resul != '6' AND resul != '7' AND resul != '8'";
+                        <li class=""><a href="<?PHP echo $url; ?>/managements/sc_index">Tickets (<b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_contact WHERE resul != '6' AND resul != '7' AND resul != '8'";
                                     $query = $bdd->query($req);
                                     $nb_inscrit = $query->fetch();
                                     echo $nb_inscrit['id'];
-                                    ?></b> en attente)</a></li>
+                                    ?></b>)</a></li>
                     <?PHP } ?>
                     <?PHP if ($pageid == "forum_index") { ?>
-                        <li class=" selected">Traiter les signalements (<b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_forum_signalement WHERE etat != '2'";
+                        <li class=" selected">Signalements (<b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_forum_signalement WHERE etat != '2'";
                                 $query = $bdd->query($req);
                                 $nb_inscrit = $query->fetch();
                                 echo $nb_inscrit['id'];
-                                ?></b> en attente)</li>
+                                ?></b>)</li>
                     <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/managements/forum_index">Traiter les signalements (<b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_forum_signalement WHERE etat != '2'";
+                        <li class=""><a href="<?PHP echo $url; ?>/managements/forum_index">Signalements (<b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_forum_signalement WHERE etat != '2'";
                                     $query = $bdd->query($req);
                                     $nb_inscrit = $query->fetch();
                                     echo $nb_inscrit['id'];
-                                    ?></b> en attente)</a></li>
+                                    ?></b>)</a></li>
+                    <?PHP } ?>
+                    <?PHP if ($pageid == "admin") { ?>
+                        <li style="color:red" class=" selected">Administration</li>
+                    <?PHP } else { ?>
+                        <li class=""><a style="color:red" href="<?PHP echo $url; ?>/managements/">Administration</a></li>
                     <?PHP } ?>
                 <?PHP } ?>
             </ul>
