@@ -72,14 +72,57 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
 	<?PHP include("./template/header.php"); ?>
 	<!-- FIN MENU -->
 
-
 	<div id="container">
+
+		<div id="content" style="position: relative" class="clearfix">
+			<div id="promo-box">
+				<div id="promo-bullets"></div>
+				<?PHP
+				$sql = $bdd->query("SELECT * FROM gabcms_news ORDER BY -id LIMIT 0," . $cof['nb_news'] . "");
+				$c = 0;
+				while ($news = $sql->fetch()) {
+					$c++;
+				?>
+					<div class="promo-container" style="<?php if ($c != 1) {
+															echo "display: none; ";
+														} ?> background-image: url(<?PHP echo $news['topstory_image']; ?>);">
+						<div class="promo-content">
+							<div class="title"><?PHP echo stripslashes($news['title']); ?></div>
+							<div class="body"><?PHP echo stripslashes($news['snippet']); ?></div>
+
+							<?PHP if ($news['event'] == 1) { ?><div class="promo-link-container">
+									<div class="enter-hotel-btn">
+										<div class="open enter-btn">
+											<a style="padding: 0 8px 0 19px;" href="<?PHP echo $url ?>/articles?id=<?PHP echo $news['id']; ?>"><?PHP echo $news['info']; ?></a><b></b>
+
+										</div>
+									</div>
+								</div><?PHP } ?>
+							<?PHP if ($news['event'] == 2) { ?><div class="promo-link-container">
+									<div class="enter-hotel-btn">
+										<div class="open enter-btn">
+											<a style="padding: 0 8px 0 19px;" href="<?PHP echo $news['lien_event']; ?>"><?PHP echo $news['info']; ?></a><b></b>
+
+										</div>
+									</div>
+								</div><?PHP } ?>
+						</div>
+					</div>
+				<?PHP } ?>
+				<script type="text/javascript">
+					document.observe("dom:loaded", function() {
+						PromoSlideShow.init();
+					});
+				</script>
+			</div>
+		</div>
+
+		<div style="clear:both;"></div>
+
 		<div id="content" style="position: relative" class="clearfix">
 
-
-
-
 			<div id="column1" class="column">
+
 				<script type="text/javascript">
 					if (!$(document.body).hasClassName('process-template')) {
 						Rounder.init();
@@ -117,7 +160,7 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
                     </div>
                 </div>
                 <input type=\"hidden\" id=\"active-habbo-url-%s\" value=\"" . $url . "/home/%s\"/>
-                <input type=\"hidden\" id=\"active-habbo-image-%s\" class=\"active-habbo-image\" value=\"" . "https://avatar.myhabbo.fr/?figure=" . $row["look"] . "\n\" />", $list_id, $status, $row[1], date('d/m/Y', $row['last_online']), "test", $list_id, $row[1], $list_id);
+                <input type=\"hidden\" id=\"active-habbo-image-%s\" class=\"active-habbo-image\" value=\"" . "https://avatar.myhabbo.fr/?figure=" . $row["look"] . "\n\" />", $list_id, $status, $row[1], date('d/m/Y', $row['last_online']), "", $list_id, $row[1], $list_id);
 							}
 							?>
 
@@ -175,11 +218,48 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
 
 					</div>
 				</div>
+
 				<script type="text/javascript">
 					if (!$(document.body).hasClassName('process-template')) {
 						Rounder.init();
 					}
 				</script>
+			</div>
+
+			<div id="column2" class="column">
+				<div class="habblet-container ">
+					<div class="cbb clearfix blue">
+						<h2 class="title">Le dernier inscrit</h2>
+
+						<div class="box-content">
+							<?PHP
+							$sql = $bdd->query("SELECT * FROM users ORDER BY id DESC LIMIT 0,1");
+							while ($s = $sql->fetch()) {
+
+							?>
+								<table width="111%" style="font-size: 11px;padding: 5px; margin-left: -15px; ?>">
+									<tbody>
+										<tr>
+											<td valign="middle" width="10" height="60">
+												<a href="<?PHP echo $url ?>/info?pseudo=<?PHP echo $s['username'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">
+													<div style="width: 64px; height: 70px; margin-bottom:-10px; margin-top:-15px; margin-left: -15px; float: right; background: url(http://www.habbo.co.uk/habbo-imaging/avatarimage?figure=<?PHP echo Secu($s['look']); ?>&action=sit&direction=2&head_direction=3&gesture=sml&size=b&img_format=gif);"></div>
+												</a>
+											</td>
+											<td valign="top">
+												<span style="color:#2767A7;"><b style="font-size: 110%;"><?PHP echo Secu($s['username']) ?></b></span>
+												<br />
+												<span style="color:#888"><b>Mission :</b> <?PHP echo stripslashes(Secu($s['motto'])) ?></span><br />
+												<span style="color:#888"><b>Dernière connexion :</b> <?PHP $connexion = date('d/m/Y H:i:s', $s['last_online']);
+																										echo $connexion; ?></span><br />
+												<?PHP echo (($s['online'] == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif"></td>') ?>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							<?PHP } ?>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<!--[if lt IE 7]>
