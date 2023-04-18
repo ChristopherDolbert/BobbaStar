@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+<d>
+
+	<!-- TEXT: Titles -->	
+	<scene id="1">
+	</scene>
+
+	<!-- TEXT: Introtext -->	
+	<scene id="2">
+		<template id="100"/>
+	</scene>
+	
+	
+	<!-- Scene 1 -->	
+	<scene id="3">
+		<t id="101" owner="0" type="1" />
+		<t id="102" owner="2" type="1"/>
+		<t id="103" owner="3" type="1"/>
+		<t id="104" owner="2" type="1"/>
+		<t id="105" owner="0" type="1"/>
+		<t id="106" owner="3" type="1"/>
+		<t id="107" owner="0" type="2"/>
+	</scene>
+	
+	<!-- TEXT: Bridge -->	
+	<scene id="4">
+		<template id="200"/>
+	</scene>
+
+	<!-- Entertainment deck -->	
+	<scene id="5"></scene>
+	
+	<!-- Entertainment deck -->	
+	<scene id="6">
+		<t id="201" owner="0" type="1"/>
+		<t id="202" owner="1" type="1"/>
+		<t id="203" owner="0" type="1"/>
+		<t id="204" owner="1" type="1"/>
+		<t id="205" owner="0" type="1"/>
+		<t id="206" owner="3" type="1"/>
+	</scene>
+	
+	<!-- Scene 7 -->	
+	<scene id="7">
+		<t id="301" owner="4" type="2"/>
+	</scene>
+	
+	<!-- TEXT: End -->	
+	<scene id="8">
+		<template id="400"/>
+	</scene>
+	
+	
+</d>
+
+
+
+
+

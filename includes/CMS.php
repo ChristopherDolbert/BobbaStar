@@ -6,7 +6,7 @@
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
-	$sitename = "BobbaStar";
+	$sitename = "MyHabbo";
 	$url = "http://localhost";
 	$description = "&raquo; Créer ton appart, tchat avec des centaines d'utilisateurs et fais-toi de nouveaux amis.";
 	$imagepath = "".$url."/web-gallery/"; 

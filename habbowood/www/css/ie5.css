@@ -1,0 +1,22 @@
+/* ------------------------- flag ---------------- */
+#flag { width: 209px; display: block; }
+#flag .top { width: 209px; height: 114px; background: transparent url(../../images/flag/top.gif) top left no-repeat; }
+#flag .top span { text-align: center; color: #fff; padding: 99px 0 0 35px; display: block; }
+#flag .content { width: 209px; background: transparent url(../../images/flag/bg.gif) top left repeat-y; text-align: right; }
+#flag .content span { margin-right: 10px; }
+#flag .content span img { margin: 0; }
+#flag .bottom { width: 209px; height: 45px; background: transparent url(../../images/flag/bottom.gif) top left no-repeat; }
+
+
+#key { display: hidden; }
+
+#header { display: block; }
+
+#main-content { float: left; width: 536px; padding: 9px 11px 9px 11px; \width: 558px; w\idth: 536px; /** IE 5.x fix (will use 558px width) **/ } /** main content and right side boxes are inside this container **/
+#sidebar { float: left; width: 171px; margin: 0; padding: 0; text-align: center; } /** navigation is inside this **/
+#sidebar .content { background: transparent url("../images/navigation/bg.gif") top left no-repeat; padding: 24px 0 0 0; margin: 0; z-index: 1; font-size: 110%; }
+#content-content { float: left; width: 327px; font-size: 110%; } /** main content is inside this **/
+#content-sidebar { float: right; width: 197px; } /** right side boxes are inside this **/
+#content-flag { width: 200px; float: left; }
+
+ul.faq { margin-left: 0px; padding: 0; width: 500px;  }

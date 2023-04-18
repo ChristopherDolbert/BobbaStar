@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+<d>
+
+	<texts>
+		<p id="100" t="100" />
+		
+		<t id="101" ges="1"></t>
+		<t id="102" ges="2"></t>
+		<t id="103" ges="3"></t>
+		<t id="104" ges="1"></t>
+		<t id="105" ges="2"></t>
+		<t id="106" ges="3"></t>
+		<t id="107" ges="1"></t>
+			
+		<p id="200" t="201"/>
+
+		<t id="201" ges="1"></t>
+		<t id="202" ges="2"></t>
+		<t id="203" ges="3"></t>
+		<t id="204" ges="1"></t>
+		<t id="205" ges="2"></t>
+		<t id="206" ges="3"></t>
+	
+		
+		<t id="301" ges="1"></t>
+		
+		<p id="400" t="400"/>
+	
+	</texts>
+	
+	<gfx>
+	
+		<i id="0" gfx="0" name="" desc="" />
+		<i id="1" gfx="0" name="" desc="" />
+		<i id="2" gfx="1" name="" desc="" />
+		<i id="3" gfx="2" name="" desc="" />
+		<i id="4" gfx="3" name="" desc="" />
+	
+	</gfx>
+	
+	<music id="0,0,0" />
+	
+</d>
