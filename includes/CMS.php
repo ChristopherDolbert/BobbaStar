@@ -6,13 +6,14 @@
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
+	$date = date('dmY');
 	$sitename = "MyHabbo";
 	$url = "http://localhost";
 	$description = "&raquo; Créer ton appart, tchat avec des centaines d'utilisateurs et fais-toi de nouveaux amis.";
 	$imagepath = "".$url."/web-gallery/"; 
 	$keyword = "CMS, GabCMS, Habbo, rétro, jeune, ados, love, kiff, habbo";
 	$build = "GabCMS";
-	$version = "1.1"; 
+	$version = "RELEASE".$date; 
 	$swf_badge = "http://images-eussl.habbo.com/c_images/album1584/"; # Met le lien direct vers le dossier des badges de ton site
 	$owner = "Gabodd";
 	$mail = ""; 

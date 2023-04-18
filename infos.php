@@ -98,12 +98,16 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 						<div id="notfound-looking-for" class="box-content">
 							<p>MyHabbo utilise <b>GabCMS</b>, CMS très connu qui a marqué son temps entre 2014 et 2015.</p>
 							<table>
-								<td width="10%"><img style="vertical-align:middle" src="https://www.habborator.org/archive/icons/mini/bb14.gif" /></td>
+								<td width="10%"><img style="vertical-align:middle" src="./web-gallery/v2/images/place_2.gif" /></td>
 								<td><b>Version PHP</b> : <?php echo phpversion(); ?></td>
 							</table>
 							<table>
-								<td width="10%"><img style="vertical-align:middle" src="https://www.habborator.org/archive/icons/mini/group_1.gif" /></td>
+								<td width="10%"><img style="vertical-align:middle" src="./web-gallery/v2/images/favourite_group_icon2.gif" /></td>
 								<td><b>Version MariaDB</b> : 10.5.15</td>
+							</table>
+							<table>
+								<td width="10%"><img style="vertical-align:middle" src="./web-gallery/v2/images/navi_gotohotelview_inactive.gif" /></td>
+								<td><b>Version CMS</b> : <?php echo $version; ?></td>
 							</table>
 						</div>
 
