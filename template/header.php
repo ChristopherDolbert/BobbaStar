@@ -8,13 +8,13 @@
 $sqlss = $bdd->query("SELECT * FROM gabcms_maintenance WHERE id = '1'");
 $c = $sqlss->fetch(PDO::FETCH_ASSOC);
 if ($c['activ'] == "Oui") {
-    ?><div style="background-color:#FF0000; width: 100%; color:#FFFFFF; padding:5px; margin-left:-10px;"><b>MAINTENANCE EN COURS</b></div>
+?><div style="background-color:#FF0000; width: 100%; color:#FFFFFF; padding:5px; margin-left:-10px;"><b>MAINTENANCE EN COURS</b></div>
 <?PHP } ?>
 <?PHP
 $message = $bdd->query("SELECT * FROM gabcms_header WHERE id = '1'");
 $c = $message->fetch(PDO::FETCH_ASSOC);
 if ($c['afficher'] == "Oui") {
-    ?><div style="background-color:#<?PHP echo Secu($c['couleur']); ?>; width: 100%; color:#FFFFFF; padding:5px; margin-left:-10px;"><b><?PHP echo stripslashes($c['message']); ?></b></div>
+?><div style="background-color:#<?PHP echo Secu($c['couleur']); ?>; width: 100%; color:#FFFFFF; padding:5px; margin-left:-10px;"><b><?PHP echo stripslashes($c['message']); ?></b></div>
 <?PHP } ?>
 <div style="display:block; position:fixed;" title="Contact le service client" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">
     <a href="<?PHP echo $url; ?>/service_client/"><img src="<?PHP echo $imagepath; ?>v2/images/bouton_sc.png" style="margin-left:10px;margin-top:10px;" /></a>
@@ -52,6 +52,7 @@ if ($c['afficher'] == "Oui") {
                 <div style="position:absolute;float:right;left:-390px;top:-5px;height:32px;width:380px;padding-top:2px;">
                     <p style="margin-top:9px;padding-left:5px;" class="alignleft"><a href="<?PHP echo $url; ?>/client" target="habbohelp" onclick="openOrFocusHelp(this); return false"><b>Entre sur <?PHP echo $sitename; ?></b></a> |
                         <a href="<?PHP echo $url ?>/forum/">Forum</a> |
+                        <a href="<?PHP echo $url; ?>/habbowood" target="habbowood" onclick="openOrFocusHelp(this); return false">Habbowood</a> |
                         <a href="<?PHP echo $url ?>/logout" class="userlink" id="signout">Se d&eacute;connecter</a>
                     </p>
                 </div>
@@ -96,24 +97,24 @@ if ($c['afficher'] == "Oui") {
                 <li class="selected"><a href="<?PHP echo $url; ?>/jetons">Boutique</a> <span></span>
                 </li>
             <?PHP } else { ?>
-            <li class=""><a href="<?PHP echo $url; ?>/jetons">Boutique</a> <span></span>
+                <li class=""><a href="<?PHP echo $url; ?>/jetons">Boutique</a> <span></span>
                 <?PHP } ?>
                 <!-- FIN DU BOUTON BOUTIQUE -->
                 <!-- BOUTON MANAGEMENTS -->
                 <?PHP if ($user['rank'] >= 5) { ?>
-                <?PHP if ($pageid == "tchatstaff" || $pageid == "sta" || $pageid == "nds" || $pageid == "bureau" || $pageid == "acces" || $pageid == "sc_index" || $pageid == "forum_index") { ?>
-            <li class="selected"><a href="<?PHP echo $url; ?>/managements/bureau">Managements</a><span></span>
-            </li>
-        <?PHP } else { ?>
-            <li id="tab-register-now" class="tab-register-now"><a href="<?php echo $url; ?>/managements/bureau">Managements</a><span></span></li>
+                    <?PHP if ($pageid == "tchatstaff" || $pageid == "sta" || $pageid == "nds" || $pageid == "bureau" || $pageid == "acces" || $pageid == "sc_index" || $pageid == "forum_index") { ?>
+                <li class="selected"><a href="<?PHP echo $url; ?>/managements/bureau">Managements</a><span></span>
+                </li>
+            <?PHP } else { ?>
+                <li id="tab-register-now" class="tab-register-now"><a href="<?php echo $url; ?>/managements/bureau">Managements</a><span></span></li>
         <?PHP }
-        } ?>
-            <!-- FIN BOUTTON MANAGEMENTS -->
+                } ?>
+        <!-- FIN BOUTTON MANAGEMENTS -->
         </ul>
         <div id="habbos-online">
             <div class="rounded"><span>Il y a <?PHP $tmp = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
-                    $tma = $tmp->fetch(PDO::FETCH_ASSOC);
-                    echo $tma['count(id)']; ?> connectés</span></div>
+                                                $tma = $tmp->fetch(PDO::FETCH_ASSOC);
+                                                echo $tma['count(id)']; ?> connectés</span></div>
         </div>
     </div>
 </div>
@@ -121,7 +122,7 @@ if ($c['afficher'] == "Oui") {
     <div id="navi2-container" class="pngbg">
         <div id="navi2" class="pngbg clearfix">
             <ul>
-                <?PHP if ($pageid == "accueil" || $pageid == "option" || $pageid == "alert" || $pageid == "flux" || $pageid == "dossier" || $pageid == "info" || $pageid == "transactions") { ?>
+                <?PHP if ($pageid == "accueil" || $pageid == "option" || $pageid == "alert" || $pageid == "flux" || $pageid == "dossier" || $pageid == "info" || $pageid == "transactions" || $pageid == "infos") { ?>
                     <?PHP if ($pageid == "accueil") { ?>
                         <li class=" selected">Avatar</li>
                     <?PHP } else { ?>
@@ -142,23 +143,33 @@ if ($c['afficher'] == "Oui") {
                     <?PHP } else { ?>
                         <li class=""><a href="<?PHP echo $url; ?>/flux">Flux</a></li>
                     <?PHP } ?>
+
                     <?PHP if ($pageid == "info") { ?>
                         <li class=" selected">Infos</li>
                     <?PHP } else { ?>
                         <li class=""><a href="<?PHP echo $url; ?>/info?pseudo=<?PHP echo $user['username']; ?>">Infos</a></li>
                     <?PHP } ?>
+
                     <?PHP if ($user['rank'] >= 4) { ?>
                         <?PHP if ($pageid == "dossier") { ?>
                             <li class=" selected">Dossier</li>
                         <?PHP } else { ?>
                             <li class=""><a href="<?PHP echo $url; ?>/managements/mondossier">Dossier</a></li>
-                        <?PHP }
+                    <?PHP }
                     } ?>
+
                     <?PHP if ($pageid == "transactions") { ?>
                         <li class=" selected">Transactions</li>
                     <?PHP } else { ?>
                         <li class=""><a href="<?PHP echo $url; ?>/transactions">Transactions</a></li>
                     <?PHP } ?>
+
+                    <?PHP if ($pageid == "infos") { ?>
+                        <li class=" selected">Infos</li>
+                    <?PHP } else { ?>
+                        <li class=""><a href="<?PHP echo $url; ?>/infos">Infos</a></li>
+                    <?PHP } ?>
+
                 <?PHP } ?>
                 <?PHP if ($pageid == "communaute" || $pageid == "tchat" || $pageid == "forum" || $pageid == "articles" || $pageid == "staff" || $pageid == "recrut" || $pageid == "rs" || $pageid == "sdf" || $pageid == "error") { ?>
                     <?PHP if ($pageid == "communaute") { ?>
@@ -235,7 +246,7 @@ if ($c['afficher'] == "Oui") {
                     <?PHP } else { ?>
                         <li class=""><a href="<?PHP echo $url; ?>/shopbadge">Acheter des badges</a></li>
                     <?PHP } ?>
-                   
+
                     <?PHP if ($pageid == "codepromo") { ?>
                         <li class=" selected">Codes promos</li>
                     <?PHP } else { ?>
@@ -266,29 +277,29 @@ if ($c['afficher'] == "Oui") {
                     <?PHP } ?>
                     <?PHP if ($pageid == "sc_index") { ?>
                         <li class=" selected">Tickets (<b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_contact WHERE resul != '6' AND resul != '7' AND resul != '8'";
-                                $query = $bdd->query($req);
-                                $nb_inscrit = $query->fetch();
-                                echo $nb_inscrit['id'];
-                                ?></b>)</li>
+                                                            $query = $bdd->query($req);
+                                                            $nb_inscrit = $query->fetch();
+                                                            echo $nb_inscrit['id'];
+                                                            ?></b>)</li>
                     <?PHP } else { ?>
                         <li class=""><a href="<?PHP echo $url; ?>/managements/sc_index">Tickets (<b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_contact WHERE resul != '6' AND resul != '7' AND resul != '8'";
-                                    $query = $bdd->query($req);
-                                    $nb_inscrit = $query->fetch();
-                                    echo $nb_inscrit['id'];
-                                    ?></b>)</a></li>
+                                                                                                    $query = $bdd->query($req);
+                                                                                                    $nb_inscrit = $query->fetch();
+                                                                                                    echo $nb_inscrit['id'];
+                                                                                                    ?></b>)</a></li>
                     <?PHP } ?>
                     <?PHP if ($pageid == "forum_index") { ?>
                         <li class=" selected">Signalements (<b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_forum_signalement WHERE etat != '2'";
-                                $query = $bdd->query($req);
-                                $nb_inscrit = $query->fetch();
-                                echo $nb_inscrit['id'];
-                                ?></b>)</li>
+                                                                $query = $bdd->query($req);
+                                                                $nb_inscrit = $query->fetch();
+                                                                echo $nb_inscrit['id'];
+                                                                ?></b>)</li>
                     <?PHP } else { ?>
                         <li class=""><a href="<?PHP echo $url; ?>/managements/forum_index">Signalements (<b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_forum_signalement WHERE etat != '2'";
-                                    $query = $bdd->query($req);
-                                    $nb_inscrit = $query->fetch();
-                                    echo $nb_inscrit['id'];
-                                    ?></b>)</a></li>
+                                                                                                            $query = $bdd->query($req);
+                                                                                                            $nb_inscrit = $query->fetch();
+                                                                                                            echo $nb_inscrit['id'];
+                                                                                                            ?></b>)</a></li>
                     <?PHP } ?>
                     <?PHP if ($pageid == "admin") { ?>
                         <li style="color:red" class=" selected">Administration</li>
