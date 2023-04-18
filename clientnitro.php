@@ -10,10 +10,10 @@
 	
 if(!isset($_SESSION['username']))
 	{
-		Redirect("".$url."/index");
+		Redirect($url."/index");
 	}
 	
-$sql = $bdd->query("SELECT * FROM gabcms_client WHERE id = '1'");
+$sql = $bdd->query("SELECT nitro_client FROM gabcms_client WHERE id = '1'");
 $client = $sql->fetch(PDO::FETCH_ASSOC);
 $sql2 = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 $cof = $sql2->fetch(PDO::FETCH_ASSOC);
@@ -60,7 +60,6 @@ if (typeof HabboClient != "undefined") { HabboClient.windowName = "uberClientWnd
 <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css" type="text/css" />
 <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/habboclient.css" type="text/css" />
 <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/habboflashclient.css" type="text/css" />
-<script src="<?PHP echo $imagepath; ?>static/js/habboflashclient.js" type="text/javascript"></script>
 
 <meta name="description" content="<?PHP echo $description; ?>" /> 
 <meta name="keywords" content="<?PHP echo $keyword; ?>" /> 
@@ -88,122 +87,8 @@ body { behavior: url(http://www.habbo.co.uk/js/csshover.htc); }
 
 </head> 
 <?PHP if($cof['etat_client'] == '1' || $cof['etat_client'] == '3' && $cof['si3_debut'] < $nowtime && $cof['si3_fin'] < $nowtime) { ?>
-<body id="client" class="flashclient"> 
-<script type="text/javascript"> 
-var habboDefaultClientPopupUrl = "<?PHP echo $url; ?>/client";
-</script> 
- 
-<script type="text/javascript"> 
-
- <?php
-function hexparse($int){
-return "3".$int;
-}
-$ipbit = explode(".", $client['ip']);
-$cd = chr(92).chr(120);
-$crypt0 = "";
-$bit0 = str_split($ipbit[0]);
-foreach($bit0 as $number0){
-$crypt0.= $cd.hexparse($number0);
-}
-$crypt1 = "";
-$bit1 = str_split($ipbit[1]);
-foreach($bit1 as $number1){
-$crypt1.= $cd.hexparse($number1);
-}
-$crypt2 = "";
-$bit2 = str_split($ipbit[2]);
-foreach($bit2 as $number2){
-$crypt2.= $cd.hexparse($number2);
-}
-$crypt3 = "";
-$bit3 = str_split($ipbit[3]);
-foreach($bit3 as $number3){
-$crypt3.= $cd.hexparse($number3);
-}
-$point = $cd."2E";
-$ipfinale = $crypt0.$point.$crypt1.$point.$crypt2.$point.$crypt3;
-?>
-var _CALLINFOS=["<?php echo $ipfinale; ?>"];
-
-FlashExternalInterface.loginLogEnabled = true;
- 
-FlashExternalInterface.logLoginStep("web.view.start");
- 
-if (top == self) {
-FlashHabboClient.cacheCheck();
-}
-var flashvars = {
-"client.allow.cross.domain" : "1", 
-"client.notify.cross.domain" : "0", 
-"connection.info.host" : _CALLINFOS[0], 
-"connection.info.port" : "<?PHP echo $client['port']; ?>", 
-"site.url" : "<?PHP echo $url; ?>", 
-"url.prefix" : "<?PHP echo $url; ?>", 
-"client.reload.url" : "<?PHP echo $url; ?>/client_error", 
-"client.fatal.error.url" : "<?PHP echo $url; ?>/client_error", 
-"client.connection.failed.url" : "<?PHP echo $url; ?>/client_error", 
-"external.hash" : "", 
-"external.variables.txt" : "<?PHP echo $client['variable']; ?><?php echo '?'.mt_rand(); ?>", 
-"external.texts.txt" : "<?PHP echo $client['texte']; ?><?php echo '?'.mt_rand(); ?>",
-"external.override.texts.txt" : "https://swfs.bobbastar.fr/gamedata/external_flash_override_texts.txt<?php echo '?'.mt_rand(); ?>", 
-"external.override.variables.txt" : "https://swfs.bobbastar.fr/gamedata/external_override_variables.txt<?php echo '?'.mt_rand(); ?>", 
-"productdata.load.url" : "https://swfs.bobbastar.fr/gamedata/productdata.txt<?php echo '?'.mt_rand(); ?>", 
-"furnidata.load.url" : "https://swfs.bobbastar.fr/gamedata/furnidata.txt<?php echo '?'.mt_rand(); ?>",
-"hotelview.banner.url" : "https://swfs.bobbastar.fr/gamedata/banner.png",
-"use.sso.ticket" : "1",
-"sso.ticket" : "<?PHP echo $ticket; ?>", 
-"processlog.enabled" : "0", 
-"account_id" : "<?PHP echo $user['id']; ?>", 
-"client.starting" : "<?PHP echo $client['loading_texte']; ?>", 
-"flash.client.url" : "<?PHP echo $client['version']; ?>", 
-"user.hash" : "", 
-"has.identity" : "0", 
-"flash.client.origin" : "popup" 
- };
-    var params = {
-        "base": "<?PHP echo $client['version']; ?>",
-        "allowScriptAccess": "always",
-        "menu": "false"                
-    };
- 
-        if (!(HabbletLoader.needsFlashKbWorkaround())) {
-            params["wmode"] = "opaque";
-        }
- 
-    FlashExternalInterface.signoutUrl = "<?PHP echo $url; ?>/logout";
- 
-    var clientUrl = "<?PHP echo $client['swf']; ?>";
-    swfobject.embedSWF(clientUrl, "flash-container", "100%", "100%", "10.0.0", "http://images.habbo.com/habboweb/63_1dc60c6d6ea6e089c6893ab4e0541ee0/126/web-gallery/flash/expressInstall.swf", flashvars, params);
- 
-    window.onbeforeunload = unloading;
-    function unloading() {
-        var clientObject;
-        if (navigator.appName.indexOf("Microsoft")!= -1) {
-            clientObject = window["flash-container"];
-        } else {
-            clientObject = document["flash-container"];
-        }
-        try {
-            clientObject.unloading();
-        } catch (e) {}
-    }
-</script>  
- 
-<div id="overlay"></div>
-<div id="client-ui" > 
-<div id="flash-wrapper"> 
-<div id="flash-container"> 
-<div id="content" style="width: 400px; margin: 20px auto 0 auto; display: none"> 
-<div class="cbb clearfix red"> 
-<h2 class="title">Installer Adode Flash Player</h2> 
-<div class="box-content"> 
-<p>Pour installer Flash Player : <a href="http://get.adobe.com/flashplayer/">Clique ICI</a>. More instructions for installation can be found here: <a href="http://www.adobe.com/products/flashplayer/productinfo/instructions/">More information</a></p> 
-
-<p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://images.habbo.com/habboweb/45_0061af58e257a7c6b931c91f771b4483/2/web-gallery/images/client/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p> 
-</div> 
-</div> 
-</div> 
+<body id="client" class="flashclient">
+<iframe src="<?= $client['nitro_client'] . $ssoTicket ?>" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
 <script type="text/javascript"> 
 $('content').show();
 </script> 
