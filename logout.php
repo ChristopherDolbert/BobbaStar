@@ -9,7 +9,11 @@ include("./config.php");
 $pagename = "Déconnexion";
 $pageid = "logout";
 
-session_destroy();
+if (!isset($_SESSION['username'])) {
+    Redirect("" . $url . "/index");
+} else {
+    session_destroy();
+}
 
 $sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
