@@ -1,0 +1,37 @@
+/* ------------------------- flag ---------------- */
+#flag { width: 209px; display: none;  }
+
+#key, #thechallenge-key { display: none; }
+
+#banners-top-ads { display: none;  }
+
+#container { height: 3500px;  }
+#container-bg { width: 1000px; position: relative; overflow: visible; height: 100%; }
+#main-content {display: block; float: right; width: 529px; position: absolute; top: 191px; left: 171px;  }
+
+#sidebar { float: left; } /** navigation is inside this **/
+#content-content {  float: left;  } /** main content is inside this **/
+#content-sidebar { float: right;  } /** right side boxes are inside this **/
+#content-flag {  float: left; }
+#content-content-wide { width: 200px; }
+
+#header { float: left;/*display: none;*/ }
+
+#footer-area, .footer, #footer-bg { clear: both; }
+#footer-bg { display: none; }
+
+.box-wide-bottom, .box-wide-top { height: 1px; background: none; width: 1px; }
+
+.clear { clear: both; }
+
+
+.thechallenge-box-dl { margin-top: 10px; }
+
+.nav-box, .nav-box-active { padding-left: 15px; }
+
+.padding-top { position: absolute; top: 150px; left: 0px; }
+
+.thechallenge-wide { background-color: #FFFFFF; }
+
+/* index.php */
+.right-side { position: absolute; top: 30px; left: 300px; }

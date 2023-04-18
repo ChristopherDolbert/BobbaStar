@@ -300,9 +300,6 @@ if ($c['afficher'] == "Oui") {
                                     echo $nb_inscrit['id'];
                                     ?></b> en attente)</a></li>
                     <?PHP } ?>
-                    <?PHP if ($user['rank'] == 8) { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/managements/info_gabcms">Informations CMS (dernières infos, contacter le service client...)</a></li>
-                    <?PHP } ?>
                 <?PHP } ?>
             </ul>
         </div>

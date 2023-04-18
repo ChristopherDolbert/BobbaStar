@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+<d>
+	
+	<intro>
+		<intro_characters>
+			<i id="0" col="0">Milan</i>
+			<i id="1" col="1">Johnny S.</i>
+			<i id="2" col="0">Orlando R.</i>
+		</intro_characters>
+		
+		<intro_dialogue>
+			<i owner="2">Zo... Waar is iedereen, Johnny?</i>
+			<i owner="1">Geen idee, Het lijkt hier meer een woestijn dan een studio!</i>
+			<i owner="2">Enig idee waar we 't script kunnen halen?</i>
+			
+			<i owner="0">No script, no regisseur, guys. Santini is foetsie!</i>
+			<i owner="2">Wat?! Wat doen we in deze apenpakkies, dan?</i>
+			<i owner="1">Wachten op jong talent met een leuk idee, denk ik...</i>
+		</intro_dialogue>	
+	
+	</intro>
+
+	
+	<characters>
+		<p id="0"></p>
+		<p id="1"></p>
+		<p id="2"></p>
+		<p id="3"></p>
+		<p id="4"></p>
+	</characters>
+	
+	<templates>
+		<t id="100" scene="2">Ze dachten dat hun liefde sterker was dan het lot, maar...</t>
+		<t id="101" scene="2">Donkere wolken pakten zich samen in de asgrauwe lucht...</t>
+		<t id="102" scene="2">Hun leven was maar gewoontjes, totdat...</t>
+		
+		<t id="200" scene="4">Later die dag...</t>
+		<t id="201" scene="4">Plotseling...</t>
+		<t id="202" scene="4">Een jaar later...</t>
+	
+		<t id="300" scene="8">Einde</t>
+		<t id="301" scene="8">Wordt vervolgd</t>
+	</templates>
+	
+	
+	<ui>
+		<intro_1_1>WORD BEROEMD. MAAK JE EIGEN FILM!</intro_1_1>
+		<intro_2_1>Mr. Shine zit in de puree! Na een kapitale investering in een nieuwe film ziet hij zijn nieuwste productie in duigen vallen: regisseur Donnie Santini is verdwenen!&lt;BR&gt;&lt;BR&gt;Ben jij degene die de situatie kan redden en win jij zo de beloning die Mr. Shine aan de beste regisseur zal geven?&lt;BR&gt;&lt;BR&gt;Test je creativiteit: regisseer je eigen film en doe mee aan de competitie.&lt;BR&gt;&lt;BR&gt;Bereik de sterrenstatus in Habbowood!&lt;BR&gt;&lt;BR&gt;&lt;U&gt;&lt;A HREF='asfunction:_parent._parent.control.openSupportSite'&gt;Lees meer over de Habbowood Competitie&lt;/A&gt;&lt;/U&gt;&lt;BR&gt;&lt;U&gt;&lt;A HREF='asfunction:_parent._parent.control.visitHabbo'&gt;Powered by habbohotel.nl&lt;/A&gt;&lt;/U&gt;</intro_2_1>
+		
+		<intro_1_2>WORD BEROEMD.&lt;BR&gt;MAAK JE EIGEN FILM!</intro_1_2>
+		<intro_2_2>Dit zijn de 10 filmpjes die het gehaald hebben naar de Habbowood Finals. Nu is het aan jou om de beste eruit te kiezen. De toekomst van Mr. Shine's nieuwe filmproductie ligt in jouw handen! Bekijk eerst alle inzendingen en kies dan je favoriet.&lt;BR&gt;&lt;BR&gt;&lt;U&gt;&lt;A HREF='asfunction:_parent._parent.control.openSupportSite'&gt;Lees meer over de Habbowood Competitie&lt;/A&gt;&lt;/U&gt;&lt;BR&gt;&lt;BR&gt;&lt;U&gt;&lt;A HREF='asfunction:_parent._parent.control.visitHabbo'&gt;Powered by habbohotel.nl&lt;/A&gt;&lt;/U&gt;</intro_2_2>
+
+		<intro_1_3>WORD BEROEMD.&lt;BR&gt;MAAK JE EIGEN FILM!</intro_1_3>
+		<intro_2_3>De Habbowood Finals zijn voorbij. Hier kun je nog de winnende film bekijken en alles te weten komen over de regisseur van de coolste film van het jaar.&lt;BR&gt;&lt;BR&gt;&lt;U&gt;&lt;A HREF='asfunction:_parent._parent.control.openSupportSite'&gt;Lees meer over de Habbowood Competitie&lt;/A&gt;&lt;/U&gt;&lt;BR&gt;&lt;BR&gt;&lt;U&gt;&lt;A HREF='asfunction:_parent._parent.control.visitHabbo'&gt;Powered by habbohotel.nl&lt;/A&gt;&lt;/U&gt;</intro_2_3>
+		
+		<support_url>www.habbohotel.nl/habbo/nl/community/events</support_url>
+		
+		<scene>Scène</scene>
+		<exit>Exit</exit>
+		<start>Start</start>
+		<close>Sluit</close>
+		
+		<editor_1_a>Filmtitel</editor_1_a>
+		<editor_1_b>Bedenk je filmtitel en kies je filmsterren.</editor_1_b>
+		
+		<editor_99_a>Casting</editor_99_a>
+		
+		<editor_2_a>Kies intro</editor_2_a>
+		
+		<editor_3_a>Schrijf de dialoog</editor_3_a>
+		<editor_3_b>Zet smileys aan het eind van de zin voor gezichtsuitdrukkingen:&lt;BR&gt;blij &lt;B&gt;:)&lt;/B&gt;   boos &lt;B&gt;:-/&lt;/B&gt;   sip &lt;B&gt;:(&lt;/B&gt;   verbaasd &lt;B&gt;:O&lt;/B&gt;</editor_3_b>
+		
+		<editor_4_a>Kies intro van de tweede scène</editor_4_a>
+		
+		<editor_5_a>Schrijf de dialoog</editor_5_a>
+		<editor_5_b>Zet smileys aan het eind van de zin voor gezichtsuitdrukkingen:&lt;BR&gt;blij &lt;B&gt;:)&lt;/B&gt;   boos &lt;B&gt;:-/&lt;/B&gt;   sip &lt;B&gt;:(&lt;/B&gt;   verbaasd &lt;B&gt;:O&lt;/B&gt;</editor_5_b>
+		
+		<editor_6_a>Schrijf de dialoog</editor_6_a>
+		<editor_6_b>Zet smileys aan het eind van de zin voor gezichtsuitdrukkingen:&lt;BR&gt;blij &lt;B&gt;:)&lt;/B&gt;   boos &lt;B&gt;:-/&lt;/B&gt;   sip &lt;B&gt;:(&lt;/B&gt;   verbaasd &lt;B&gt;:O&lt;/B&gt;</editor_6_b>
+
+		<editor_7_a>Kies het einde</editor_7_a>
+
+		<action>Actie!</action>
+		<action_b>Bekijk en bewaar je film.</action_b>
+		
+		<choose_character>Kies acteur/actrice</choose_character>
+		<actor>Acteur</actor>
+		
+		<name>Naam</name>
+		<desc>Missie</desc>
+		
+		<film_title>Naam van de film</film_title>
+		<film_subtitle>Ondertitel</film_subtitle>
+		<film_directed>Regisseur</film_directed>
+		
+		<play_movie>Speel de film</play_movie>
+		<create_new>Begin opnieuw</create_new>
+		<your_name>Jouw naam</your_name>
+		<your_email>Jouw mailadres</your_email>
+		<friend_email>E-mailadres van je vriend/in</friend_email>
+		<competition>Stuur in voor de wedstrijd</competition>
+		<friend>Stuur naar&lt;BR&gt;een vriend/in</friend>
+		<previous_page>Vorige pagina</previous_page>
+		<create_new>Nieuw verhaal</create_new>
+		
+		<send_to_competition_title>Stuur in voor de wedstrijd</send_to_competition_title>
+		<send_to_competition_content>Stuur je film in voor onze Habbowood Competitie pagina!&lt;BR&gt;&lt;BR&gt;Misschien ben jij een van de 10 gelukkige en getalenteerde regisseurs die doorstoten naar de Top 10 Habbowood Finals. Uit die tien kiest de jury, die bestaat uit ALLE Habbo's in Habbo Hotel NL, op 29 juni 2005 de winnaar van de sprankelnieuwe iPod!&lt;BR&gt;&lt;BR&gt;Lees alles over de instructies, regels en prijzen op onze &lt;U&gt;&lt;A HREF='asfunction:_parent._parent.control.openSupportSite'&gt;Habbowood Competitiepagina&lt;/A&gt;&lt;/U&gt;. Habbowood is powerer by &lt;U&gt;&lt;A HREF='asfunction:_parent._parent.control.visitHabbo'&gt;habbohotel.nl&lt;/A&gt;&lt;/U&gt;</send_to_competition_content>
+		
+		<send_to_friend_title>Stuur naar een vriend/in</send_to_friend_title>
+		<send_to_friend_content></send_to_friend_content>
+
+
+
+		<send>Versturen</send>
+		<back>Terug</back>
+		
+		<visit>Bezoek&lt;BR&gt;Habbo Hotel</visit>
+		<disclaimer>NOTE! You expressly understand and agree that you are solely responsible for all dialogue and other content of all Habbowood movies that you create, and that the content you create is in compliance with the Habbo Way. Therefore Sulake Inc. / Habbo Hotel assumes no responsibility for the dialogue, other texts, opinions, or other content created or published by the users of the Habbowood site.</disclaimer>
+
+		<skip_intro>Skip intro</skip_intro>
+		<intro_txt>Wil je meer weten over de Habbo wereld? Check in op:</intro_txt>
+		<intro_url>www.habbohotel.nl/habbo/nl/common/external/partner_registration/?partner=hw%26isp=hw%26code=hw</intro_url>
+		<intro_url_short>www.habbohotel.nl</intro_url_short>
+		<intro_back>Terug naar de studio</intro_back>
+		<intro_own>Maak je eigen film</intro_own>
+		<vote_this>Stem op&lt;BR&gt;deze film</vote_this>
+		<back_to_movies>Terug naar de film</back_to_movies>
+		<back_to_menu>Terug naar menu</back_to_menu>	
+		<send_vote>Verstuur je stem</send_vote>
+				
+		
+		<mail_sender>Habbo Hotel</mail_sender>
+		<mail_subject>Een vriend heeft je een Habbo filmpje gestuurd!</mail_subject>
+		<mail_content>Een vriend heeft je een film gestuurd. Klik hieronder om de film te bekijken.</mail_content>
+		
+		<reply_contest>Bedankt, je film is verstuurd naar de competitie.</reply_contest>
+		<reply_friend>Bedankt, je film is naar je vriend/in gestuurd.</reply_friend>
+
+		<reply_vote>Bedankt voor je stem!</reply_vote>
+		<reply_vote_error>Sorry, je kunt per film maar een keer je stem uitbrengen.</reply_vote_error>
+		
+		
+		<vote_title>Stem voor deze film</vote_title>
+		<vote_content>Je hebt 1 stem per film. Typ je e-mailadres</vote_content>
+		
+		
+		<actor_name_1>Bonnie Blond als</actor_name_1>
+		<actor_name_2>Johnny Squabble als</actor_name_2>
+		<actor_name_3>Orlando Room als</actor_name_3>
+		
+		<sound_mood>Kies de soundtrack bij deze scène</sound_mood>
+		<sound_1>Romantisch</sound_1>
+		<sound_2>Actie</sound_2>
+		<sound_3>Horror</sound_3>
+		<sound_4>Humor</sound_4>
+		
+		
+		
+		
+	</ui>
+
+	
+</d>
