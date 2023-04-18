@@ -12,6 +12,9 @@ include("./config.php");
 $pagename = "Accueil";
 $pageid = "index";
 
+$sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
+$cof = $sql->fetch(PDO::FETCH_ASSOC);
+
 if (isset($_SESSION['username'])) {
     Redirect($url . "/moi");
 }
@@ -64,97 +67,285 @@ if (isset($_GET['do'])) {
                         }
                     }
                 }
-
             }
         }
     }
 }
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title><?PHP echo $sitename; ?><?PHP echo $description; ?></title>
 
-    <link rel="shortcut icon" href="<?PHP echo $imagepath; ?>favicon.ico" type="image/vnd.microsoft.icon"/>
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>index/css/index.css" type="text/css"/>
-    <link rel='stylesheet' type='text/css'
-          href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,600,700,800,400italic,700italic|Ubuntu+Condensed'>
+    <script type="text/javascript">
+        var andSoItBegins = (new Date()).getTime();
+    </script>
+    <link rel="shortcut icon" href="<?PHP echo $imagepath; ?>v2/favicon.ico" type="image/vnd.microsoft.icon" />
+    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+
+    <script>
+        window.RufflePlayer = window.RufflePlayer || {};
+        window.RufflePlayer.config = {
+            // Start playing the content automatically, without audio if the browser in use does not allow audio to autoplay
+            "autoplay": "on",
+            // Do not show an overlay to unmute the content while it plays; when the content area receives its first interaction, it will unmute
+            "unmuteOverlay": "hidden",
+            // Do not show a splash screen before the content loads; the content area will remain blank until Ruffle fully loads the content
+            "splashScreen": false,
+        }
+    </script>
+
+    <script src="<?PHP echo $imagepath; ?>static/js/libs2.js" type="text/javascript"></script>
+    <script src="<?PHP echo $imagepath; ?>static/js/landing.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css" type="text/css" />
+
+    <script src="<?PHP echo $imagepath; ?>js/local/com.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/process.css" type="text/css" />
+
+
+
+    <meta name="description" content="Join the world's largest virtual hangout where you can meet and make friends. Design your own rooms, collect cool furniture, throw parties and so much more! Create your FREE Retro today!" />
+    <meta name="keywords" content="Retro, virtual, world, join, groups, forums, play, games, online, friends, teens, collecting, social network, create, collect, connect, furniture, virtual, goods, sharing, badges, social, networking, hangout, safe, music, celebrity, celebrity visits, cele" />
+
+    <!--[if IE 8]>
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css" type="text/css" />
+<![endif]-->
+    <!--[if lt IE 8]>
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css" type="text/css" />
+<![endif]-->
+    <!--[if lt IE 7]>
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css" type="text/css" />
+<script src="<?PHP echo $imagepath; ?>static/js/pngfix.js" type="text/javascript"></script>
+<script type="text/javascript">
+try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
+</script>
+
+<style type="text/css">
+body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
+</style>
+<![endif]-->
+    <meta name="build" content="<?PHP echo $sitename; ?> <?PHP echo $version; ?>" />
 </head>
-<body>
-<?PHP if (isset($erreur)) {
-    echo "<div id='error'>" . $erreur . "</div>";
-} ?>
-<div id='header'>
-    <div class='logo'>
-        <img src='<?PHP echo $imagepath; ?>v2/images/logo_gabcms.gif' onclick='window.location.href="index"'>
-    </div>
-    <form class='form' action='?do=se_connecter' method='post'>
-        <input type='hidden' name='hidden' value='1'>
-        <div id='left'>
-            <label for='username'>Pseudonyme</label>
-            <input id='username' type='text' name='username' value='' placeholder='' maxlength='25' autocomplete='off'>
+
+<body id="landing" class="process-template">
+
+    <div id="overlay"></div>
+
+    <div id="container">
+        <div class="cbb process-template-box clearfix">
+            <div id="content">
+
+                <div id="header" class="clearfix">
+                    <h1><a href="<?php echo $url; ?>/"></a></h1>
+                    <ul class="stats">
+                        <li class="stats-online"><span class="stats-fig"><?PHP $tmp = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
+                                                                            $tma = $tmp->fetch(PDO::FETCH_ASSOC);
+                                                                            echo $tma['count(id)']; ?></span> Connectés</li>
+
+                        <?PHP if ($cof['etat_client'] == '1' || $cof['etat_client'] == '3' && $cof['si3_debut'] < $nowtime && $cof['si3_fin'] < $nowtime) { ?>
+                            <li class="stats-visited"><img src="<?PHP echo $imagepath; ?>v2/images/online.gif" alt="online"></li>
+                        <?PHP } elseif ($cof['etat_client'] == '2') { ?>
+                            <li class="stats-visited"><img src="<?PHP echo $imagepath; ?>v2/images/offline.gif" alt="offline"></li>
+                        <?PHP } elseif ($cof['etat_client'] == '3' && $cof['si3_debut'] <= $nowtime && $cof['si3_fin'] >= $nowtime) { ?>
+                            <li class="stats-visited"><img src="<?PHP echo $imagepath; ?>v2/images/offline.gif" alt="offline"></li>
+                        <?PHP } ?>
+                    </ul>
+
+                </div>
+                <div id="process-content">
+
+                    <div id="column1" class="column">
+                        <div class="habblet-container " id="create-habbo">
+
+                            <div id="create-habbo-flash">
+                                <div id="create-habbo-nonflash" style="background-image: url(<?PHP echo $imagepath; ?>v2/images/landing/landing_group.png)">
+                                    <div id="landing-register-text"><a href="<?php echo $url; ?>/register"><span>Join now, it's free &raquo;</span></a></div>
+                                    <div id="landing-promotional-text"><span>Retro is a virtual world where you can meet and make friends.</span></div>
+                                </div>
+                                <div class="cbb clearfix green" id="habbo-intro-nonflash">
+                                    <h2 class="title">To get most out of Retro, do this:</h2>
+                                    <div class="box-content">
+                                        <ul>
+                                            <li id="habbo-intro-install" style="display:none"><a href="http://www.adobe.com/go/getflashplayer">Install Flash Player 8 or higher</a></li>
+                                            <noscript>
+                                                <li>Enable JavaScript</li>
+                                            </noscript>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script type="text/javascript" language="JavaScript">
+                                var swfobj = new SWFObject("<?php echo $url; ?>/flash/intro/habbos.swf", "ch", "396", "378", "8");
+                                swfobj.addParam("AllowScriptAccess", "always");
+                                swfobj.addParam("wmode", "transparent");
+                                swfobj.addVariable("base_url", "<?php echo $url; ?>/flash/intro");
+                                swfobj.addVariable("habbos_url", "<?php echo $url; ?>/xml/promo_habbos_v2.xml");
+                                swfobj.addVariable("create_button_text", "Join now, it's free &raquo;");
+                                swfobj.addVariable("in_hotel_text", "Online now!");
+                                swfobj.addVariable("slogan", "Retro is a virtual world where you can meet and make friends.");
+                                swfobj.addVariable("video_start", "PLAY VIDEO");
+                                swfobj.addVariable("video_stop", "STOP VIDEO");
+                                swfobj.addVariable("button_link", "<?php echo $url; ?>/register");
+                                swfobj.addVariable("localization_url", "<?php echo $url; ?>/xml/landing_intro.xml");
+                                swfobj.addVariable("video_link", "<?php echo $url; ?>/flash/intro/Habbo_intro.swf");
+                                swfobj.addVariable("select_button_text", "Join now, it's free &raquo;");
+                                swfobj.addVariable("header_text", "Create your Retro...");
+                                swfobj.write("create-habbo-flash");
+                                HabboView.add(function() {
+                                    if (deconcept.SWFObjectUtil.getPlayerVersion()["major"] >= 8) {
+                                        try {
+                                            $("habbo-intro-nonflash").hide();
+                                        } catch (e) {}
+                                    } else {
+                                        $("habbo-intro-install").show();
+                                    }
+                                });
+                            </script>
+
+
+
+                        </div>
+                        <script type="text/javascript">
+                            if (!$(document.body).hasClassName('process-template')) {
+                                Rounder.init();
+                            }
+                        </script>
+
+                    </div>
+                    <div id="column2" class="column">
+                        <div class="habblet-container ">
+
+                            <div class="cbb loginbox clearfix">
+                                <h2 class="title">Sign in</h2>
+
+                                <div class="box-content clearfix" id="login-habblet">
+                                    <form action='?do=se_connecter' method='post' class='login-habblet'>
+                                        <ul>
+                                            <li>
+                                                <label for="login-username" class="login-text">Pseudo</label>
+                                                <input tabindex="1" type="text" class="login-field" name="username" id="login-username" value="" required />
+                                            </li>
+                                            <li>
+                                                <label for="login-password" class="login-text">Mot de passe</label>
+                                                <input tabindex="2" type="password" class="login-field" name="password" id="login-password" required />
+                                                <input type="submit" value="Sign in" class="submit" id="login-submit-button" />
+                                                <a href="#" id="login-submit-new-button" class="new-button" style="float: left; margin-left: 0;display:none"><b style="padding-left: 10px; padding-right: 7px; width: 55px">Sign in</b><i></i></a>
+                                            </li>
+                                            <li class="no-label">
+                                                <input tabindex="3" type="checkbox" value="true" name="_login_remember_me" id="login-remember-me" checked="unchecked" />
+                                                <label for="login-remember-me">Remember me</label>
+                                            </li>
+                                            <li class="no-label">
+                                                <a href="<?php echo $url; ?>/register" class="login-register-link"><span>Inscrivez-vous</span></a>
+                                            </li>
+                                            <li class="no-label">
+                                                <a href="<?PHP echo $url; ?>/oubliemotdepasse" id="forgot-password"><span>Mot de passe oublié ?</span></a>
+                                            </li>
+                                        </ul>
+                                    </form>
+
+                                </div>
+                            </div>
+                            <div id="remember-me-notification" class="bottom-bubble" style="display:none;">
+                                <div class="bottom-bubble-t">
+                                    <div></div>
+                                </div>
+                                <div class="bottom-bubble-c">
+                                    En cochant "M&eacute;moriser ces infos" cet ordinateur se souviendra automatiquement de tes nom et mot de passe. Si cet ordinateur est accessible &agrave; partir d'un lieu public ne coche pas cette option !
+                                </div>
+                                <div class="bottom-bubble-b">
+                                    <div></div>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                HabboView.add(LoginFormUI.init);
+                                HabboView.add(RememberMeUI.init);
+                            </script>
+
+
+
+                        </div>
+                        <script type="text/javascript">
+                            if (!$(document.body).hasClassName('process-template')) {
+                                Rounder.init();
+                            }
+                        </script>
+
+                        <div class="habblet-container ">
+
+                            <div class="ad-container">
+                                <div id="geoip-ad" style="display:none"></div>
+                            </div>
+
+
+
+                        </div>
+                        <script type="text/javascript">
+                            if (!$(document.body).hasClassName('process-template')) {
+                                Rounder.init();
+                            }
+                        </script>
+
+                        <div class="habblet-container ">
+
+
+
+
+
+                        </div>
+                        <script type="text/javascript">
+                            if (!$(document.body).hasClassName('process-template')) {
+                                Rounder.init();
+                            }
+                        </script>
+
+                        <div class="habblet-container ">
+
+                            <a href="register.php"><img src="./web-gallery/v2/images/landing/uk_party_frontpage_image.gif" alt="" /></a>
+
+
+
+                        </div>
+                        <script type="text/javascript">
+                            if (!$(document.body).hasClassName('process-template')) {
+                                Rounder.init();
+                            }
+                        </script>
+                    </div>
+
+
+                    <!--[if lt IE 7]>
+<script type="text/javascript">
+Pngfix.doPngImageFix();
+</script>
+<![endif]-->
+
+                    <!--[if lt IE 7]>
+<script type="text/javascript">
+Pngfix.doPngImageFix();
+</script>
+<![endif]-->
+
+                    <div id="footer">
+                        <p><a href='<?PHP echo $url; ?>' target="_self">Accueil</a> | <a href='<?PHP echo $url; ?>/register' target="_self">Inscription</a> | <a href="<?PHP echo $url; ?>/disclaimer" target="_blank">Conditions Générales d'Utilisations</a></p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id='right'>
-            <label for='password'>Mot de passe</label>
-            <input id='password' type='password' name='password' value='' placeholder='' maxlength='20'
-                   autocomplete='off'>
-            <a href="<?PHP echo $url; ?>/oubliemotdepasse">Oublié ?</a>
-        </div>
-        <input type='submit' name='submit' id='submit' value='Connexion'>
-    </form>
-    <span>Rejoins-nous, il y a <?PHP $tmp = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
-        $tma = $tmp->fetch(PDO::FETCH_ASSOC);
-        echo $tma['count(id)']; ?> connectés</span>
-    <div id='social'>
-        <img src='<?PHP echo $imagepath; ?>index/img/fb.png'
-             onclick='window.location.href="http://facebook.com/<?PHP echo $compte_facebook; ?>"'>
-        <img src='<?PHP echo $imagepath; ?>index/img/twitter.png'
-             onclick='window.location.href="https://twitter.com/<?PHP echo $compte_twitter; ?>"'>
-    </div>
-</div>
-
-<div id='content'>
-    <div id='nbre'></div>
-    <div id='btn' onclick='window.location.href="register"'>
-        <p>Inscris toi</p>
-        <p>gratuitement</p>
-    </div>
-    <div id='sepa'></div>
-    <div id='def' class='anim'>
-        Animation 24/24h
-    </div>
-    <div id='def' class='free'>
-        Un jeu totalement gratuit
-    </div>
-    <div id='def' class='secu'>
-        Navigation sécurisée
-    </div>
-    <div id='def' class='team'>
-        Une équipe de choc
-    </div>
-    <div id='def' class='pers'>
-        Personalisation du site simple
-    </div>
-    <div id='def' class='supp'>
-        Un support efficace
     </div>
 
+    <script type="text/javascript">
+        HabboView.run();
+    </script>
 
-</div>
 
-<div id='footer'>
-    <div id='liens'>
-        <a href='<?PHP echo $url; ?>' target="_self">Accueil</a> |
-        <a href='<?PHP echo $url; ?>/register' target="_self">Inscription</a> |
-        <a href="<?PHP echo $url; ?>/disclaimer" target="_blank">Conditions Générales d'Utilisations</a>
-    </div>
-    Index basé sur une index en libre partage d'<b>Eklopsis</b> &copy;<br/>
-    <?PHP echo $sitename; ?> est un projet indépendant, &agrave; but non lucratif &copy; 2012-2014.<br/>
-    Habbo est une marque déposée de Sulake Corporation. Tous droits réservés &agrave;
-    leur(s) propriétaire(s) respectif(s).<br/>Nous ne sommes pas approuvés, affiliés ou offertes
-    par Sulake Corporation LTD.<br><br><u>&copy; GabCMS v<?PHP echo $version; ?> - Créer par l'équipe de GabCMS</u>
-</div>
 </body>
+
 </html>
