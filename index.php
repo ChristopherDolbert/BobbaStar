@@ -223,7 +223,7 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
                         <div class="habblet-container ">
 
                             <div class="cbb loginbox clearfix">
-                                <h2 class="title">Sign in</h2>
+                                <h2 class="title">Connexion</h2>
 
                                 <div class="box-content clearfix" id="login-habblet">
                                     <form action='?do=se_connecter' method='post' class='login-habblet'>
@@ -235,12 +235,12 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
                                             <li>
                                                 <label for="login-password" class="login-text">Mot de passe</label>
                                                 <input tabindex="2" type="password" class="login-field" name="password" id="login-password" required />
-                                                <input type="submit" value="Sign in" class="submit" id="login-submit-button" />
+                                                <input type="submit" value="Connexion" class="submit" id="login-submit-button" />
                                                 <a href="#" id="login-submit-new-button" class="new-button" style="float: left; margin-left: 0;display:none"><b style="padding-left: 10px; padding-right: 7px; width: 55px">Sign in</b><i></i></a>
                                             </li>
                                             <li class="no-label">
                                                 <input tabindex="3" type="checkbox" value="true" name="_login_remember_me" id="login-remember-me" checked="unchecked" />
-                                                <label for="login-remember-me">Remember me</label>
+                                                <label for="login-remember-me">Se souvenir de moi</label>
                                             </li>
                                             <li class="no-label">
                                                 <a href="<?php echo $url; ?>/register" class="login-register-link"><span>Inscrivez-vous</span></a>

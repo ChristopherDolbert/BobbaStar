@@ -72,14 +72,57 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
 	<?PHP include("./template/header.php"); ?>
 	<!-- FIN MENU -->
 
-
 	<div id="container">
+
+		<div id="content" style="position: relative" class="clearfix">
+			<div id="promo-box">
+				<div id="promo-bullets"></div>
+				<?PHP
+				$sql = $bdd->query("SELECT * FROM gabcms_news ORDER BY -id LIMIT 0," . $cof['nb_news'] . "");
+				$c = 0;
+				while ($news = $sql->fetch()) {
+					$c++;
+				?>
+					<div class="promo-container" style="<?php if ($c != 1) {
+															echo "display: none; ";
+														} ?> background-image: url(<?PHP echo $news['topstory_image']; ?>);">
+						<div class="promo-content">
+							<div class="title"><?PHP echo stripslashes($news['title']); ?></div>
+							<div class="body"><?PHP echo stripslashes($news['snippet']); ?></div>
+
+							<?PHP if ($news['event'] == 1) { ?><div class="promo-link-container">
+									<div class="enter-hotel-btn">
+										<div class="open enter-btn">
+											<a style="padding: 0 8px 0 19px;" href="<?PHP echo $url ?>/articles?id=<?PHP echo $news['id']; ?>"><?PHP echo $news['info']; ?></a><b></b>
+
+										</div>
+									</div>
+								</div><?PHP } ?>
+							<?PHP if ($news['event'] == 2) { ?><div class="promo-link-container">
+									<div class="enter-hotel-btn">
+										<div class="open enter-btn">
+											<a style="padding: 0 8px 0 19px;" href="<?PHP echo $news['lien_event']; ?>"><?PHP echo $news['info']; ?></a><b></b>
+
+										</div>
+									</div>
+								</div><?PHP } ?>
+						</div>
+					</div>
+				<?PHP } ?>
+				<script type="text/javascript">
+					document.observe("dom:loaded", function() {
+						PromoSlideShow.init();
+					});
+				</script>
+			</div>
+		</div>
+
+		<div style="clear:both;"></div>
+
 		<div id="content" style="position: relative" class="clearfix">
 
-
-
-
 			<div id="column1" class="column">
+
 				<script type="text/javascript">
 					if (!$(document.body).hasClassName('process-template')) {
 						Rounder.init();
@@ -117,7 +160,7 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
                     </div>
                 </div>
                 <input type=\"hidden\" id=\"active-habbo-url-%s\" value=\"" . $url . "/home/%s\"/>
-                <input type=\"hidden\" id=\"active-habbo-image-%s\" class=\"active-habbo-image\" value=\"" . "https://avatar.myhabbo.fr/?figure=" . $row["look"] . "\n\" />", $list_id, $status, $row[1], date('d/m/Y', $row['last_online']), "test", $list_id, $row[1], $list_id);
+                <input type=\"hidden\" id=\"active-habbo-image-%s\" class=\"active-habbo-image\" value=\"" . "https://avatar.myhabbo.fr/?figure=" . $row["look"] . "\n\" />", $list_id, $status, $row[1], date('d/m/Y', $row['last_online']), "", $list_id, $row[1], $list_id);
 							}
 							?>
 
@@ -175,11 +218,61 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
 
 					</div>
 				</div>
+
 				<script type="text/javascript">
 					if (!$(document.body).hasClassName('process-template')) {
 						Rounder.init();
 					}
 				</script>
+			</div>
+
+			<div id="column2" class="column">
+				<div class="habblet-container ">
+					<div class="cbb clearfix green">
+						<h2 class="title">Apparts aléatoires</h2>
+
+						<div class="box-content">
+							<style>
+								table {
+									background-color: #fff;
+									font-size: 11px;
+									padding: 4px;
+									margin-left: -14px;
+									width: 107%;
+								}
+
+								table:nth-child(2n+1) {
+									background-color: #fffcaf;
+									font-size: 11px;
+									padding: 4px;
+									margin-left: -14px;
+									width: 107%;
+								}
+							</style>
+							<?php
+							$i = 0;
+							$rooms = $bdd->query("SELECT rooms.id, username, look, name FROM rooms, users WHERE rooms.owner_id = users.id ORDER BY RAND() LIMIT 3");
+							while ($room = $rooms->fetch()) {
+								$i++;
+								$list_id = $i - 1;
+							?>
+								<table>
+									<tbody>
+										<tr>
+											<td valign="middle" width="10" height="60">
+												<a href="<?PHP echo $url ?>/info?pseudo=<?PHP echo $room['username'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><div style="width: 64px; height: 65px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: right; background: url(https://avatar.myhabbo.fr/?figure=<?PHP echo $room['look'] ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div></a>
+											</td>
+											<td valign="midle">
+												<span style="color:#333333;"><b style="font-size: 110%;"><?PHP echo $room['name'] ?></span></b><br />
+												<span style="color:#000000"><?PHP echo $room['username'] ?></span><br />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							<?PHP } ?>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<!--[if lt IE 7]>
