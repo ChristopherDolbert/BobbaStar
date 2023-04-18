@@ -287,7 +287,7 @@ function GenerateRandom($type = "sso", $length = 0)
 	switch($type)
 	{
 		case "sso":
-			$data = GenerateRandom("random",8)."-".GenerateRandom("random",4)."-".GenerateRandom("random",4)."-".GenerateRandom("random",4)."-".GenerateRandom("random",12);
+			$data = GenerateRandom("random",8)."-".GenerateRandom("random",8)."-".GenerateRandom("random",8)."-".GenerateRandom("random",8)."-".GenerateRandom("random",12);
 			return $data;
 		break; 
 		case "app_key":
