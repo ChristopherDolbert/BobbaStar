@@ -22,8 +22,17 @@ if (isset($_GET['referral'])) {
         $referrow = $db->fetch_row($bdd->select1($referral));
     }
 }
-$figure = $input->Secu($_GET['figure']);
-$gender = $input->Secu($_GET['gender']);
+if(isset($_GET['figure'])) {
+    $figure = $input->Secu($_GET['figure']);
+} else {
+    $figure = "";
+}
+
+if(isset($_GET['gender'])) {
+    $gender = $input->Secu($_GET['gender']);
+} else {
+    $gender = "";
+}
 if (isset($_POST['bean_avatarName'])) {
 
     $name = $input->Secu($_POST['bean_avatarName']);
