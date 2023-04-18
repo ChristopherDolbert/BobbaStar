@@ -37,7 +37,7 @@ $do = Secu($_GET['do']);
                 $insertn2->bindValue(':date', $nowtime);
                 $insertn2->bindValue(':staff', $user['id']);
                 $insertn2->bindValue(':avis', $avis);
-                $insertn2->bindValue(':ip', $user['ip_last']);
+                $insertn2->bindValue(':ip', $user['ip_current']);
                 $insertn2->bindValue(':etat', '1');
             $insertn2->execute();
             echo '<h4 class="alert_success">La demande a été enregistrée</h4>';
@@ -59,7 +59,7 @@ $modifierrecrut = Secu($_GET['modifierrecrut']);
                     $assoc1 = $sql1->fetch(PDO::FETCH_ASSOC);
         if($avis2 != "" && $avisdef == "1" && $user['id'] != $a['staff1']) {
         $bdd->query("TRUNCATE TABLE gabcms_stafflog");
-        $bdd->query("UPDATE gabcms_stafflog_delete SET etat = '2', staff2 = '".$user['id']."', avisstaff2 = '".$avis2."', avis = '".$avisdef."', ipstaff2 = '".$user['ip_last']."' WHERE id = '".$modifierrecrut."'");
+        $bdd->query("UPDATE gabcms_stafflog_delete SET etat = '2', staff2 = '".$user['id']."', avisstaff2 = '".$avis2."', avis = '".$avisdef."', ipstaff2 = '".$user['ip_current']."' WHERE id = '".$modifierrecrut."'");
         $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
             $insertn1->bindValue(':pseudo', $user['username']);
             $insertn1->bindValue(':action', 'en accord avec <b>'.$assoc1['username'].'</b> a vidé les <b>logs des staffs</b>');
@@ -74,7 +74,7 @@ $modifierrecrut = Secu($_GET['modifierrecrut']);
         $insertn2->execute();
         echo '<div id="ok">Les logs ont été vidés.</div>';
         } else if($avis2 != "" && $avisdef == "2" && $user['id'] != $a['staff1']) {
-        $bdd->query("UPDATE gabcms_stafflog_delete SET etat = '3', staff2 = '".$user['id']."', avisstaff2 = '".$avis2."', avis = '".$avisdef."', ipstaff2 = '".$user['ip_last']."' WHERE id = '".$modifierrecrut."'");
+        $bdd->query("UPDATE gabcms_stafflog_delete SET etat = '3', staff2 = '".$user['id']."', avisstaff2 = '".$avis2."', avis = '".$avisdef."', ipstaff2 = '".$user['ip_current']."' WHERE id = '".$modifierrecrut."'");
         $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
             $insertn1->bindValue(':pseudo', $user['username']);
             $insertn1->bindValue(':action', 'a refusé la demande de <b>'.$assoc1['username'].'</b> pour vider les <b>logs des staffs</b>');

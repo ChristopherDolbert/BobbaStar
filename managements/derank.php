@@ -82,7 +82,7 @@ $do = Secu($_GET['do']);
             $insertn4->bindValue(':date', FullDate('hc'));
             $insertn4->bindValue(':look', $user['look']);
             $insertn4->bindValue(':avis', '3');
-            $insertn4->bindValue(':ip', $user['ip_last']);
+            $insertn4->bindValue(':ip', $user['ip_current']);
             if($user['gender'] == 'M') { $insertn4->bindValue(':poste', addslashes($c['nom_M'])); } 
             elseif($user['gender'] == 'F') { $insertn4->bindValue(':poste', addslashes($c['nom_F'])); }
         $insertn4->execute();
@@ -191,7 +191,7 @@ $date = date('d/m/Y H:i', $r['last_online']);
         <tr class="bas">
             <td class="bas"><?PHP echo $r['username']; ?></td>
             <td class="bas"><?PHP echo $date; ?></td>
-            <td class="bas"><?PHP echo $r['ip_last']; ?></td>
+            <td class="bas"><?PHP echo $r['ip_current']; ?></td>
             <td class="bas"><a href="#" onclick="insert_texte('<?PHP echo $r['username']; ?>;')">Ajouter</a></td>
         </tr>
 <?PHP } ?>

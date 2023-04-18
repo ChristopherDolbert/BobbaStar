@@ -33,7 +33,7 @@ if($user['id'] != "") {
                     $insertn2->bindValue(':username', $user['username']);
                     $insertn2->bindValue(':date', FullDate('full'));
                     $insertn2->bindValue(':raison', $raison);
-                    $insertn2->bindValue(':ip', $user['ip_last']);
+                    $insertn2->bindValue(':ip', $user['ip_current']);
                     $insertn2->bindValue(':etat', '0');
                     $insertn2->execute();
 	  echo '<h4 class="alert_success">Le signalement a bien eu lieu</h4>';

@@ -37,7 +37,7 @@ if(!isset($_SESSION['username']))
             $insertn3->bindValue(':raison', $raison);
             $insertn3->bindValue(':par', $user['username']);
             $insertn3->bindValue(':date', FullDate('full'));
-            $insertn3->bindValue(':ip', $user['ip_last']);
+            $insertn3->bindValue(':ip', $user['ip_current']);
             $insertn3->bindValue(':look', $user['look']);
         $insertn3->execute();
 		$insertn4 = $bdd->prepare("INSERT INTO gabcms_dossier (userid, commentaire, par, date, look, avis, ip, poste) VALUES (:id, :com, :par, :date, :look, :avis, :ip, :poste)");
@@ -47,7 +47,7 @@ if(!isset($_SESSION['username']))
             $insertn4->bindValue(':date', FullDate('hc'));
             $insertn4->bindValue(':look', $user['look']);
             $insertn4->bindValue(':avis', '2');
-            $insertn4->bindValue(':ip', $user['ip_last']);
+            $insertn4->bindValue(':ip', $user['ip_current']);
             if($user['gender'] == 'M') { $insertn4->bindValue(':poste', addslashes($c['nom_M'])); } 
             elseif($user['gender'] == 'F') { $insertn4->bindValue(':poste', addslashes($c['nom_F'])); }
         $insertn4->execute();

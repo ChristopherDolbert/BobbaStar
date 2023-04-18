@@ -28,7 +28,7 @@ if(isset($_GET['do'])) {
         $insertn2 = $bdd->prepare("INSERT INTO gabcms_tchat (pseudo, message, ip, date, look, rank, alert) VALUES (:user, :msg, :ip, :date, :look, :rank, :alert)");
             $insertn2->bindValue(':user', $user['username']);
             $insertn2->bindValue(':msg', Secu($_POST['message']));
-            $insertn2->bindValue(':ip', $user['ip_last']);
+            $insertn2->bindValue(':ip', $user['ip_current']);
             $insertn2->bindValue(':date', FullDate('full'));
             $insertn2->bindValue(':look', $user['look']);
             $insertn2->bindValue(':rank', $user['rank']);

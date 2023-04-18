@@ -34,7 +34,7 @@ if(isset($_GET['do'])) {
                 $insertn1->bindValue(':action', 'a recherché l\'IP de <b>'.$req_assoc['username'].'</b>');
                 $insertn1->bindValue(':date', FullDate('full'));
             $insertn1->execute(); 
-    $ip = $req_assoc['ip_last'];
+    $ip = $req_assoc['ip_current'];
     $username = $req_assoc['username'];
     echo '<h4 class="alert_success">L\'IP du compte <b>'.$username.'</b> à la dernière connexion est la suivante : <b>'.$ip.'</b></h4>';
             } else { echo '<h4 class="alert_error">Le compte n\'existe pas</h4>';

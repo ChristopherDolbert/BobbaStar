@@ -33,7 +33,7 @@ $captcha_code = Secu($_POST['captcha_code']);
 	        $insertn1 = $bdd->prepare("INSERT INTO gabcms_tchat_staff (pseudo, message, ip, date, look, rank) VALUES (:pseudo, :message, :ip, :date, :look, :rank)");
                 $insertn1->bindValue(':pseudo', $user['username']);
                 $insertn1->bindValue(':message', Secu($_POST['message']));
-                $insertn1->bindValue(':ip', $user['ip_last']);
+                $insertn1->bindValue(':ip', $user['ip_current']);
                 $insertn1->bindValue(':date', FullDate('full'));
                 $insertn1->bindValue(':look', $user['look']);
                 $insertn1->bindValue(':rank', $user['rank']);

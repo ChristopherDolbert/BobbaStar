@@ -158,7 +158,7 @@ Modifies des données d'un utilisateur par ce que tu souhaites. Il sera averti p
 <td width="100" class="tbl"><b>IP à l'inscription :</b><br/></td>
 <td width="80%" class="tbl"><input type="text" name="ip_reg" value="<?PHP echo $modif_a['ip_reg']; ?>" class="text" style="width: 240px" disabled="disabled"><br/></td>
 <td width="100" class="tbl"><b>IP de la dernière connexion :</b><br/></td>
-<td width="80%" class="tbl"><input type="text" name="ip_last" value="<?PHP echo $modif_a['ip_last']; ?>" class="text" style="width: 240px" disabled="disabled"><br/></td>
+<td width="80%" class="tbl"><input type="text" name="ip_current" value="<?PHP echo $modif_a['ip_current']; ?>" class="text" style="width: 240px" disabled="disabled"><br/></td>
 <td width="100" class="tbl"><b>Mail :</b><br/></td>
 <td width="80%" class="tbl"><input type="text" name="mail" value="<?PHP echo $modif_a['mail']; ?>" class="text" style="width: 240px"><br/></td>
 <td width="100" class="tbl"><b>Phrase d'humeur :</b><br/></td>
