@@ -2,7 +2,7 @@
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 #|                                                                        #|
 
-#|         Copyright © 2012-2015 - Gabodd Tout droits réservés.           #|
+#|         Copyright © 2014-2023 - MyHabbo Tout droits réservés.          #|
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
@@ -136,7 +136,7 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
 										<tr>
 											<td valign="middle" width="10" height="60">
 												<a href="<?PHP echo $url ?>/info?pseudo=<?PHP echo $s['username'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">
-													<div style="width: 64px; height: 70px; margin-bottom:-10px; margin-top:-15px; margin-left: -15px; float: right; background: url(http://www.habbo.co.uk/habbo-imaging/avatarimage?figure=<?PHP echo Secu($s['look']); ?>&action=sit&direction=2&head_direction=3&gesture=sml&size=b&img_format=gif);"></div>
+													<div style="width: 64px; height: 70px; margin-bottom:-10px; margin-top:-15px; margin-left: -15px; float: right; background: url(https://avatar.myhabbo.fr/?figure=figure=<?PHP echo Secu($s['look']); ?>&action=sit&direction=2&head_direction=3&gesture=sml&size=b&img_format=gif);"></div>
 												</a>
 											</td>
 											<td valign="top">
