@@ -228,30 +228,43 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
 
 			<div id="column2" class="column">
 				<div class="habblet-container ">
-					<div class="cbb clearfix blue">
-						<h2 class="title">Le dernier inscrit</h2>
+					<div class="cbb clearfix green">
+						<h2 class="title">Apparts aléatoires</h2>
 
 						<div class="box-content">
-							<?PHP
-							$sql = $bdd->query("SELECT * FROM users ORDER BY id DESC LIMIT 0,1");
-							while ($s = $sql->fetch()) {
+							<style>
+								table {
+									background-color: #fff;
+									font-size: 11px;
+									padding: 4px;
+									margin-left: -14px;
+									width: 107%;
+								}
 
+								table:nth-child(2n+1) {
+									background-color: #fffcaf;
+									font-size: 11px;
+									padding: 4px;
+									margin-left: -14px;
+									width: 107%;
+								}
+							</style>
+							<?php
+							$i = 0;
+							$rooms = $bdd->query("SELECT rooms.id, username, look, name FROM rooms, users WHERE rooms.owner_id = users.id ORDER BY RAND() LIMIT 3");
+							while ($room = $rooms->fetch()) {
+								$i++;
+								$list_id = $i - 1;
 							?>
-								<table width="111%" style="font-size: 11px;padding: 5px; margin-left: -15px; ?>">
+								<table>
 									<tbody>
 										<tr>
 											<td valign="middle" width="10" height="60">
-												<a href="<?PHP echo $url ?>/info?pseudo=<?PHP echo $s['username'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">
-													<div style="width: 64px; height: 70px; margin-bottom:-10px; margin-top:-15px; margin-left: -15px; float: right; background: url(http://www.habbo.co.uk/habbo-imaging/avatarimage?figure=<?PHP echo Secu($s['look']); ?>&action=sit&direction=2&head_direction=3&gesture=sml&size=b&img_format=gif);"></div>
-												</a>
+												<a href="<?PHP echo $url ?>/info?pseudo=<?PHP echo $room['username'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><div style="width: 64px; height: 65px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: right; background: url(https://avatar.myhabbo.fr/?figure=<?PHP echo $room['look'] ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div></a>
 											</td>
-											<td valign="top">
-												<span style="color:#2767A7;"><b style="font-size: 110%;"><?PHP echo Secu($s['username']) ?></b></span>
-												<br />
-												<span style="color:#888"><b>Mission :</b> <?PHP echo stripslashes(Secu($s['motto'])) ?></span><br />
-												<span style="color:#888"><b>Dernière connexion :</b> <?PHP $connexion = date('d/m/Y H:i:s', $s['last_online']);
-																										echo $connexion; ?></span><br />
-												<?PHP echo (($s['online'] == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif"></td>') ?>
+											<td valign="midle">
+												<span style="color:#333333;"><b style="font-size: 110%;"><?PHP echo $room['name'] ?></span></b><br />
+												<span style="color:#000000"><?PHP echo $room['username'] ?></span><br />
 											</td>
 										</tr>
 									</tbody>
