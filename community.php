@@ -159,7 +159,7 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
                             <p class=\"moto\">%s</p>
                     </div>
                 </div>
-                <input type=\"hidden\" id=\"active-habbo-url-%s\" value=\"" . $url . "/home/%s\"/>
+                <input type=\"hidden\" id=\"active-habbo-url-%s\" value=\"" . $url . "./info?pseudo=%s\"/>
                 <input type=\"hidden\" id=\"active-habbo-image-%s\" class=\"active-habbo-image\" value=\"" . "https://avatar.myhabbo.fr/?figure=" . $row["look"] . "\n\" />", $list_id, $status, $row[1], date('d/m/Y', $row['last_online']), "", $list_id, $row[1], $list_id);
 							}
 							?>
