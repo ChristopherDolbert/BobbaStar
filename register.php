@@ -391,9 +391,15 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
             $selectuser = $bdd->prepare("SELECT id FROM users WHERE username = ? LIMIT 1");
             $selectuser->execute([$pseudo]);
             $su = $selectuser->rowCount();
+            $selectmail = $bdd->prepare("SELECT id FROM users WHERE mail = ? LIMIT 1");
+            $selectmail->execute([$email]);
+            $sm = $selectmail->rowCount();
             if (isset($pseudo) && isset($email) && isset($motdepasse) && isset($remotdepasse)) {
                 if ($su > 0) {
                     $message['name'] = "Ton pseudo est déj&agrave; utilisé.";
+                }
+                if ($sm > 0) {
+                    $message['name'] = "Ton adresse e-mail est déjà utilisé.";
                 } elseif ($filtre_pseudo !== $pseudo) {
                     $message['name'] = "Ton pseudo contient des caract&egrave;res non-autorisé.";
                 } elseif (strlen($pseudo) > 24) {
