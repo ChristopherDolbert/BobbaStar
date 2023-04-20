@@ -90,7 +90,7 @@ body { behavior: url(http://www.habbo.co.uk/js/csshover.htc); }
 <?PHP if ($cof['etat_client'] == '1' || $cof['etat_client'] == '3' && $cof['si3_debut'] < $nowtime && $cof['si3_fin'] < $nowtime) { ?>
 
   <body id="client" class="flashclient">
-    <iframe src="<?= $client['nitro_client'] . $ssoTicket ?>" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+    <iframe src="<?= ClientNitro() . $ssoTicket ?>" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
     <script type="text/javascript">
       $('content').show();
     </script>
