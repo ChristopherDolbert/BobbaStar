@@ -14,8 +14,8 @@ $query = $bdd->query("SELECT * FROM bans WHERE value = '".$_SERVER['REMOTE_ADDR'
 $data = $query->fetch(PDO::FETCH_ASSOC);
 
 									$stamp_now = mktime(date('H:i:s d-m-Y'));
-									$stamp_expire = $b['expire'];
-									$expire = date('d/m/Y H:i:s', $data['expire']);
+									$stamp_expire = $b['ban_expire'];
+									$expire = date('d/m/Y H:i:s', $data['ban_expire']);
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"

@@ -304,7 +304,7 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 					<div class="left-column">
 
 						<?php if (!empty($affichage)) { ?>
-									<p><?php echo "<div align='center'><b>" . $affichage . "</b></div>"; ?></p>
+							<p><?php echo "<div align='center'><b>" . $affichage . "</b></div>"; ?></p>
 						<?php } ?>
 
 						<?PHP if (!isset($_GET['changement']) && !isset($_GET['u']) && !isset($_GET['e']) && !isset($_GET['c'])) { ?>
@@ -398,7 +398,8 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 	</div>
 
 	<div id="footer">
-		<p><a href='<?PHP echo $url; ?>' target="_self">Accueil</a> | <a href='<?PHP echo $url; ?>/register' target="_self">Inscription</a> | <a href="<?PHP echo $url; ?>/disclaimer" target="_blank">Conditions Générales d'Utilisations</a></p>
+		<p><a href='<?PHP echo $url; ?>' target="_self"><?php echo $locale['link_homepage']; ?></a> | <a href='<?PHP echo $url; ?>/vieprivee' target="_self"><?php echo $locale['link_privacy']; ?></a> | <a href="<?PHP echo $url; ?>/disclaimer" target="_blank"><?php echo $locale['link_disclaimer']; ?></a></p>
+		<p><?php echo $locale['copyright_habbo']; ?></p>
 	</div>
 
 

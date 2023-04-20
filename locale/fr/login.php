@@ -78,10 +78,7 @@ $locale['error_not_logged_in'] = "Tu n'es pas connect&eacute;";
 $locale['ok'] = "OK";
 
 // Footer
-$locale['copyright_habbo'] = "&copy; 2008 Sulake Corporation LTD. Les marques d&eacute;pos&eacute;es, contenus et bases de donn&eacute;es pr&eacute;sentes sur ce site sont prot&eacute;g&eacute;s par les lois sur la propri&eacute;t&eacute; intellectuelle et appartiennent exclusivement &agrave; Sulake. Tous droits r&eacute;serv&eacute;s. D&eacute;velopp&eacute; gr&acirc;ce &agrave; la technologie Sulake.
-NakedCMS est un CMS cr&eacute;e par Knock et Bubble, avec l'aimable participation de Nidalos.
-Naked Emulator, cod&eacute; par Nidalos, est un serveur cr&eacute;e sp&eacute;cialement pour le Projet Naked.
-NakedGroup, tous droits r&eacute;serv&eacute;s.";
+$locale['copyright_habbo'] = "<p>&copy; 2008 Sulake Corporation LTD. Les marques d&eacute;pos&eacute;es, contenus et bases de donn&eacute;es pr&eacute;sentes sur ce site sont prot&eacute;g&eacute;s par les lois sur la propri&eacute;t&eacute; intellectuelle et appartiennent exclusivement &agrave; Sulake. Tous droits r&eacute;serv&eacute;s. D&eacute;velopp&eacute; gr&acirc;ce &agrave; la technologie Sulake.</p>";
 $locale['link_privacy'] = "Charte de protection des donn&eacute;es";
 $locale['link_disclaimer'] = "Conditions d'utilisation";
 $locale['link_homepage'] = "Accueil";

@@ -31,7 +31,7 @@ if (function_exists('date_default_timezone_set')){
 			if($row > 0)
 				{
 					$user = $sql->fetch(PDO::FETCH_ASSOC);
-					$bdd->query("UPDATE users SET ip_current = '".$_SERVER["REMOTE_ADDR"]."' WHERE id = '".$user['id']."'");
+					$bdd->query("UPDATE users SET ip_last = '".$_SERVER["REMOTE_ADDR"]."' WHERE id = '".$user['id']."'");
 				}
 				else {
 				session_destroy();
@@ -54,4 +54,3 @@ foreach($getSearch as $k=>$v){
         }
     }
 }
-?>
