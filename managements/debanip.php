@@ -53,7 +53,7 @@ $do = Secu($_GET['do']);
 	}
 }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 <span id="titre">Débannir des adresses IP</span><br />
 Débannis des IP que vous avez bannis précédemment.<br/><br/>
 <form name='editor' method='post' action="?do=ban">
@@ -78,8 +78,8 @@ Voici la liste des bannis actuel.
  $sql = $bdd->query("SELECT * FROM bans WHERE bantype='ip' ORDER BY id DESC");
  while($a = $sql->fetch()) {
     $stamp_now = mktime(date('H:i:s d-m-Y'));
-    $stamp_expire = $a['expire'];
-    $expire = date('d/m/Y H:i', $a['expire']);
+    $stamp_expire = $a['ban_expire'];
+    $expire = date('d/m/Y H:i', $a['ban_expire']);
 ?>
         <tr class="bas">
             <td class="bas"><?PHP echo $a['value']; ?></td>

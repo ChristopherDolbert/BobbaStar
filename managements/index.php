@@ -54,9 +54,9 @@ if ($user['rank'] == 5 && $user['gender'] == 'F') {
     <title><?PHP echo $sitename; ?> &raquo; <?PHP echo $pagename; ?></title>
 
     <link rel="shortcut icon" href="<?PHP echo $imagepath; ?>favicon.ico" type="image/vnd.microsoft.icon" />
-    <link rel="stylesheet" href="css/layout.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/layout.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" />
     <!--[if lt IE 9]>
-        <link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="css/ie.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" />
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
     <script src="js/jquery-1.5.2.min.js" type="text/javascript"></script>
@@ -99,7 +99,7 @@ if ($user['rank'] == 5 && $user['gender'] == 'F') {
     <header id="header">
         <hgroup>
             <h1 class="site_title">
-                <div style="width: 61px; height: 93px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: left; background: url(https://avatar.myhabbo.fr/?figure=<?PHP echo $user['look']; ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div>
+                <div style="width: 61px; height: 93px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: left; background: url(<?php echo $avatarimage; ?><?PHP echo $user['look']; ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div>
             </h1>
             <h2 class="section_title">Administration</h2>
             <div class="btn_view_site"><a href="<?PHP echo $url; ?>/moi">Aller sur le site</a></div>

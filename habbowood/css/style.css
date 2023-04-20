@@ -1,11 +1,11 @@
-/** box.css has all the styles for different boxes **/
-@import url(box.css);
+/** box.css<?php echo '?'.mt_rand(); ?> has all the styles for different boxes **/
+@import url(box.css<?php echo '?'.mt_rand(); ?>);
 
 /** When you add new sections with new headers/bg then remember to add the new values here **/
-@import url(sections.css);
+@import url(sections.css<?php echo '?'.mt_rand(); ?>);
 
 /** The Challenge values here **/
-@import url(thechallenge.css);
+@import url(thechallenge.css<?php echo '?'.mt_rand(); ?>);
 
 
 
@@ -29,7 +29,7 @@ body {
 }
 */
 
-body, html { margin: 0; padding: 0; height: 100%; }  /** (check sections.css) **/
+body, html { margin: 0; padding: 0; height: 100%; }  /** (check sections.css<?php echo '?'.mt_rand(); ?>) **/
 body { color: #000; background: #292929 top left repeat-y; font: 60% verdana, sans-serif; text-align: left; }
 a:link, a:visited { color: #F75E00; text-decoration: none; font-weight: bold; }
 a:hover { text-decoration:underline; }
@@ -52,13 +52,13 @@ img { border: 0; }
 
 
 
-/* ------------------------- body (check sections.css) ---------------- */
+/* ------------------------- body (check sections.css<?php echo '?'.mt_rand(); ?>) ---------------- */
 #banners-top { position: relative; margin: 0; padding: 0; width: 100%; height: 12px; background: #000 url("../images/bg/header_line.gif") bottom left repeat-x; text-align:left; }
 #banners-top-ads { margin: 0; padding: 0; width: 100%; height: 107px; background: transparent url("../images/bg/header_ads.gif") bottom left repeat-x; text-align:center; }
 #banners-top-ads div { text-align: center; padding: 8px 0 0 15px; float: left; display: block; color: #fff; }
 #container { position: relative; width: 941px; margin: 0; padding: 0; background: transparent; }
 
-/* ------------------------- headers (check sections.css) ---------------- */
+/* ------------------------- headers (check sections.css<?php echo '?'.mt_rand(); ?>) ---------------- */
 #header { margin: 0; padding: 0; width: 770px; height: 115px; background: transparent; float: left; }
 #header a, #header a:visited { color: #000; }
 #header div { text-transform: uppercase; font-weight: bold; font-size: 160%; padding: 55px 0 0 13px; }
@@ -76,7 +76,7 @@ body#body-homepage #main-content { padding-right: 0px; padding-left: 8px; width:
 body#body-homepage #content-content { width: 332px; }
 body#body-homepage #content-sidebar { margin: 0; padding: 0; }
 
-/* ------------------------- footers (check sections.css) ---------------- */
+/* ------------------------- footers (check sections.css<?php echo '?'.mt_rand(); ?>) ---------------- */
 .footer { color: #C60; text-align: center; clear: both; /** width: 519px; **/ }
 .footer a:link, .footer a:visited { color: #c60; }
 #footer-area { width: 327px; }

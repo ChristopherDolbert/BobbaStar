@@ -52,7 +52,7 @@ if(isset($_POST['message']) || isset($_POST['pseudo'])) {
 	  }
   }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 <span id="titre">Ajoutes des messages</span><br />
 Donnes des messages à quelques utilisateurs. Tu peux donner par dons pas plus de 200 messages et pas moins de 5.<br/><br/>
 <form name='editor' method='post' action="">

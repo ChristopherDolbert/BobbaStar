@@ -21,7 +21,7 @@ if(!isset($_SESSION['username']))
 	Redirect("".$url."/managements/acces_neg");
 	exit();
 	}	
-?><link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+?><link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Logs des staffs</span><br/>
 Toutes les actions des staffs sont marquées ici.<br/><br/>
 <?php

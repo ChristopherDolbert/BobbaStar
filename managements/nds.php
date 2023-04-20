@@ -103,25 +103,25 @@ if (typeof HabboClient != "undefined") { HabboClient.windowName = "uberClientWnd
 <script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
 <script src="<?PHP echo $imagepath; ?>js/tooltip.js" type="text/javascript"></script>
 <script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/habboclub.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/myhabbo/control.textarea.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/myhabbo/control.textarea.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/minimail.js" type="text/javascript"></script>
 <meta name="description" content="<?PHP echo $description; ?>" /> 
 <meta name="keywords" content="<?PHP echo $keyword; ?>" />  
 <!--[if IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <![endif]--> 
 <!--[if lt IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <![endif]--> 
 <!--[if lt IE 7]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/pngfix.js" type="text/javascript"></script>
 <script type="text/javascript">
 try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
@@ -251,11 +251,11 @@ $ok = $search->fetch();
 
 if($ok['pseudo'] != $user['username'] && $n['annuler'] == '0') {
 	?><form method="post" action="<?PHP echo $url; ?>/managements/nds?id=<?PHP echo $n['id']; ?>#">
-<div id="article_haut"><span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(https://avatar.myhabbo.fr/?figure=<?PHP echo Secu($n['look']); ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span><span style="color: #000000; font-size: 11px;"><br/><b>Posté par :</b> <?PHP echo Secu($n['par']); ?><br/><b>Date :</b> <?PHP echo Secu($n['date']); ?><br/><input type="text" value="" name="message"> <input type='submit' name='submit' value='Lire et approuver' class='submit'></form></span></div>
+<div id="article_haut"><span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(<?php echo $avatarimage; ?><?PHP echo Secu($n['look']); ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span><span style="color: #000000; font-size: 11px;"><br/><b>Posté par :</b> <?PHP echo Secu($n['par']); ?><br/><b>Date :</b> <?PHP echo Secu($n['date']); ?><br/><input type="text" value="" name="message"> <input type='submit' name='submit' value='Lire et approuver' class='submit'></form></span></div>
 <?PHP } if($ok['pseudo'] == $user['username'] && $n['annuler'] == '0') {?>
-<div id="article_haut"><span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(https://avatar.myhabbo.fr/?figure=<?PHP echo $n['look']; ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span><span style="color: #000000; font-size: 11px;"><br/><b>Posté par :</b> <?PHP echo Secu($n['par']); ?><br/><b>Date :</b> <?PHP echo Secu($n['date']); ?><br/></span></div>
+<div id="article_haut"><span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(<?php echo $avatarimage; ?><?PHP echo $n['look']; ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span><span style="color: #000000; font-size: 11px;"><br/><b>Posté par :</b> <?PHP echo Secu($n['par']); ?><br/><b>Date :</b> <?PHP echo Secu($n['date']); ?><br/></span></div>
 <?PHP } if($n['annuler'] == '1') {?>
-<div id="article_haut"><span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(https://avatar.myhabbo.fr/?figure=<?PHP echo $n['look']; ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span><span style="color: #000000; font-size: 11px;"><br/><b>Posté par :</b> <?PHP echo Secu($n['par']); ?><br/><b>Date :</b> <?PHP echo Secu($n['date']); ?><br/><br/>Note de service annulée le <?PHP echo Secu($n['date_annuler']); ?> par <b><?PHP echo Secu($n['user_annuler']); ?></b></span></div>
+<div id="article_haut"><span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(<?php echo $avatarimage; ?><?PHP echo $n['look']; ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span><span style="color: #000000; font-size: 11px;"><br/><b>Posté par :</b> <?PHP echo Secu($n['par']); ?><br/><b>Date :</b> <?PHP echo Secu($n['date']); ?><br/><br/>Note de service annulée le <?PHP echo Secu($n['date_annuler']); ?> par <b><?PHP echo Secu($n['user_annuler']); ?></b></span></div>
 <?PHP } ?>
 </div></div></div></div>
 <?PHP } } else { ?> 

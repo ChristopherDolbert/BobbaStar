@@ -53,7 +53,7 @@ if(isset($_GET['sup'])) {
         elseif($assoc2['gender'] == 'F') { echo '<h4 class="alert_success"><b>'.$assoc2['username'].'</b> a bien été destitué de son poste <b>('.$c['nom_F'].')</b></h4>';    }
         }
 }
-?><link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+?><link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Déstitue une personne de son poste</span><br/>
 Déstitues un staff de son ou ses postes.<br/><br/> 
 <form method="post" action="?do=recherche">

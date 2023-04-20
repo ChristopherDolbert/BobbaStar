@@ -57,7 +57,7 @@ if($user['rank'] >=5) {
 echo '<h4 class="alert_error">Tu n\'as pas l\'autorisation de modifier ce topic.</h4>';
 }
 ?>
-<link href="<?PHP echo $url ?>/managements/css/contenu.css" rel="stylesheet" type="text/css">
+<link href="<?PHP echo $url ?>/managements/css/contenu.css<?php echo '?'.mt_rand(); ?>" rel="stylesheet" type="text/css">
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" /><body>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/ckeditor.js"></script>

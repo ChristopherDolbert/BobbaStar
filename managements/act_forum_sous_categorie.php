@@ -106,7 +106,7 @@ $deplacement = Secu($_GET['deplacement']);
     }
 }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 	<?php if(!isset($_GET['modif']) && !isset($_GET['deplace'])) { ?>
 <span id="titre">Créer des sous-catégories</span><br/>

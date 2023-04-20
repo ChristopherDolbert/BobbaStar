@@ -42,21 +42,21 @@ if (typeof HabboClient != "undefined") { HabboClient.windowName = "uberClientWnd
 <script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
 <script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
 <script src="<?PHP echo $imagepath; ?>js/tooltip.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
 <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/ckeditor.js"></script>
 <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/habboclub.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/myhabbo/control.textarea.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/newcredits.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/myhabbo/control.textarea.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/newcredits.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/minimail.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?PHP echo $url; ?>/service_client/css/index.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $url; ?>/service_client/css/index.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <style>
 #raison{
 background-color:#cecece;
@@ -159,7 +159,7 @@ $modif = "<span style=\"color:#DAA520\"><b>Fermé - sans suite</b></span>";
 ?>
 <table width="103%" style="margin-left: -14px; background-color:<?PHP echo (($oe == 2) ? '#fff' : '#DFDFDF') ?>;">
 	<tbody>
-		<tr><td valign="middle" width="10" height="60"><div style="width: 64px; height: 65px; margin-bottom:-9px; margin-top:-5px; margin-left: -5px; float: left; background: url(https://avatar.myhabbo.fr/?figure=<?PHP echo $user['look'] ?>);"></div></td>
+		<tr><td valign="middle" width="10" height="60"><div style="width: 64px; height: 65px; margin-bottom:-9px; margin-top:-5px; margin-left: -5px; float: left; background: url(<?php echo $avatarimage; ?><?PHP echo $user['look'] ?>);"></div></td>
 	<td valign="top">Sujet : <b><?PHP echo stripslashes($t['sujet']); ?></b> - Le : <b><?PHP echo Secu($t['date']); ?></b> dans la catégorie <b><i><?PHP echo Secu($t['categorie']); ?></i></b> - Ticket <b>#<?PHP echo Secu($t['id']); ?></b><br>
 	<div id="cta_01"></div><div id="cta_02"><?PHP echo smileyforum(stripslashes($t['texte'])); ?></div><div id="cta_03"></div><br>
 	Historique :<br>

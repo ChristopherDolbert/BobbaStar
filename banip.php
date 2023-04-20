@@ -14,8 +14,8 @@ $query = $bdd->query("SELECT * FROM bans WHERE value = '".$_SERVER['REMOTE_ADDR'
 $data = $query->fetch(PDO::FETCH_ASSOC);
 
 									$stamp_now = mktime(date('H:i:s d-m-Y'));
-									$stamp_expire = $b['expire'];
-									$expire = date('d/m/Y H:i:s', $data['expire']);
+									$stamp_expire = $b['ban_expire'];
+									$expire = date('d/m/Y H:i:s', $data['ban_expire']);
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -47,13 +47,13 @@ if (typeof HabboClient!= "undefined") { HabboClient.windowName = "uberClientWnd"
 <meta name="description" content="<?PHP echo $description;?>" /> 
 <meta name="keywords" content="<?PHP echo $keyword;?>" />  
 <!--[if IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/ie8.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/ie8.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <![endif]--> 
 <!--[if lt IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/ie.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/ie.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <![endif]--> 
 <!--[if lt IE 7]>
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/ie6.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/ie6.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath;?>static/js/pngfix.js" type="text/javascript"></script>
 <script type="text/javascript">
 try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
@@ -71,7 +71,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 var andSoItBegins = (new Date()).getTime();
 </script> 
 
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/process.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/process.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 
 <script src="<?PHP echo $imagepath;?>static/js/libs2.js" type="text/javascript"></script>
 <script src="<?PHP echo $imagepath;?>static/js/visual.js" type="text/javascript"></script>
@@ -80,12 +80,12 @@ var andSoItBegins = (new Date()).getTime();
 <script src="<?PHP echo $imagepath;?>static/js/fullcontent.js" type="text/javascript"></script>
 <script src="<?PHP echo $imagepath;?>js/tooltip.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/style.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/buttons.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/boxes.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/tooltips.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/changepassword.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/process.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/style.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/buttons.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/boxes.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/changepassword.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/process.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 
 <body id="intermediate" class="process-template"> 
 <div id="tooltip"></div>

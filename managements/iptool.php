@@ -24,7 +24,7 @@ if(!isset($_SESSION['username']))
 	
 $ip = '';
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 
 <?PHP 
 if (isset($_POST['ip'])) { $ip = Secu($_POST['ip']); }	

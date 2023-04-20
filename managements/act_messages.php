@@ -50,7 +50,7 @@ if(!isset($_SESSION['username']))
 	  }
   }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 <span id="titre">Supprimes tous les messages</span><br />
 Enleves tous les messages des utilisateurs qui spam le plus !<br/><br/>
 <form name='editor' method='post' action="#">

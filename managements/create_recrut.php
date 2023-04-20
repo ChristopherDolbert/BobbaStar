@@ -56,7 +56,7 @@ $seconde = 59;
 	  echo '<h4 class="alert_error">Merci de remplir les champs vides.</h4>';
 	  }
   } 
-?><link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+?><link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Ouvres une session</span><br/>
 Ouvres une session de recrutement, afin de voir les candidatures pour le poste en question.
  <br/><br/>

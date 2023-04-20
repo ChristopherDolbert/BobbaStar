@@ -42,7 +42,7 @@ $c = $sql->fetch(PDO::FETCH_ASSOC);
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/ckeditor.js"></script>
 <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Message du bloc-notes</span><br/>
 Modifies le message du bloc-notes dans le bureau des staffs<br/><br/>
 <form name='editor' method='post' action="?do=modif">

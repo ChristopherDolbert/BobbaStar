@@ -56,14 +56,14 @@ if (!isset($_SESSION['username'])) {
 	<script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>js/tooltip.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/lightweightmepage.css" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/lightweightmepage.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 	<script src="<?PHP echo $imagepath; ?>static/js/lightweightmepage.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css" type="text/css" />
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css" type="text/css" />
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css" type="text/css" />
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css" type="text/css" />
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 
 	<meta name="description" content="<?PHP echo $description; ?>" />
 	<meta name="keywords" content="<?PHP echo $keyword; ?>" />
@@ -109,9 +109,10 @@ if (!isset($_SESSION['username'])) {
 							</h2>
 							<div id="notfound-looking-for" class="box-content">
 								<form method="post" action="#">
-									<td class='tbl'><input style='width:94%' type="text" placeholder="Pseudo..." name="recherche_pseudo" value="<?php if (!empty($_POST["recherche_pseudo"])) {
-																														echo htmlspecialchars($_POST["recherche_pseudo"], ENT_QUOTES);
-																													} ?>" class="text" style="width: 240px"><br /><br />
+									<td class='tbl'>
+										<input style='width:97%' type="text" placeholder="Pseudo..." name="recherche_pseudo" value="<?php if (!empty($_POST["recherche_pseudo"])) {
+																																					echo htmlspecialchars($_POST["recherche_pseudo"], ENT_QUOTES);
+																																				} ?>" class="text" style="width: 240px"><br /><br />
 										<input style='width:100%' type="submit" value="Rechercher" />
 								</form><br />
 								<table>
@@ -126,7 +127,7 @@ if (!isset($_SESSION['username'])) {
 										?>
 												<tr class="bas">
 													<td class="bas">
-														<div style="width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url(https://avatar.myhabbo.fr/?figure=<?PHP echo Secu($a['look']); ?>&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);"></div><a href="<?PHP echo $url; ?>/info?pseudo=<?PHP echo Secu($a['username']); ?>"><?PHP echo Secu($a['username']); ?></a>
+														<div style="width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url(<?php echo $avatarimage; ?><?PHP echo Secu($a['look']); ?>&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);"></div><a href="<?PHP echo $url; ?>/info?pseudo=<?PHP echo Secu($a['username']); ?>"><?PHP echo Secu($a['username']); ?></a>
 							</div>
 							</td>
 							</tr>
@@ -193,8 +194,8 @@ if (!isset($_SESSION['username'])) {
 		$search = $bdd->query("SELECT * FROM bans WHERE user_id = '" . $pseudo['id'] . "' OR ip = '" . $pseudo['ip_current'] . "' ");
 		$ok = $search->fetch();
 		$stamp_now = time();
-		$stamp_expire = $ok['expire'];
-		$expire = date('d/m/Y H:i', $ok['expire']);
+		$stamp_expire = $ok['ban_expire'];
+		$expire = date('d/m/Y H:i', $ok['ban_expire']);
 		?>
 		<div id="column1" class="column">
 			<div class="habblet-container ">
@@ -203,7 +204,7 @@ if (!isset($_SESSION['username'])) {
 					<h2 class="title">Quelques infos sur son compte
 					</h2>
 					<div id="notfound-looking-for" class="box-content">
-						<img style="float: left;" alt="<?PHP echo Secu($pseudo['username']); ?>" src="https://avatar.myhabbo.fr/?figure=<?PHP echo Secu($pseudo['look']); ?>&action=crr=667&direction=2&head_direction=3&gesture=sml&size=big&img_format=gif" />
+						<img style="float: left;" alt="<?PHP echo Secu($pseudo['username']); ?>" src="<?php echo $avatarimage; ?><?PHP echo Secu($pseudo['look']); ?>&action=crr=667&direction=2&head_direction=3&gesture=sml&size=big&img_format=gif" />
 						<?PHP if ($pseudo['disabled'] == '1') { ?><b><span style="color:#FF0000;">
 									<center>COMPTE DéSACTIVé</center>
 								</span></b><?PHP } ?>
@@ -216,7 +217,14 @@ if (!isset($_SESSION['username'])) {
 																														echo '<span style="color: #ff0000;">déconnecté</span>';
 																													} ?><br />
 
-						Sa phrase perso : <b><span style="color: #0000ff;"><?PHP echo Secu($pseudo['motto']); ?></b></span><br />
+						Sa phrase perso : <b><span style="color: #0000ff;">
+								<?PHP
+								if (empty($pseudo['motto'])) {
+									echo "Pas de mission";
+								} else {
+									echo Secu($pseudo['motto']);
+								}
+								?></b></span><br />
 						<?PHP echo $pseudo['username']; ?> a crée son compte le <b><span style="color: #0000ff;"><?PHP $inscription = date('d/m/Y', $pseudo['account_created']);
 																													echo $inscription; ?></b></span><br />
 						Sa dernière connexion remonte au <b><span style="color: #0000ff;"><?PHP $connexion = date('d/m/Y', $pseudo['last_online']);
@@ -249,7 +257,7 @@ if (!isset($_SESSION['username'])) {
 						?>
 							<tr>
 								<td>
-									<img title="<?php echo Secu($userbadge['badge_id']); ?>" src="<?PHP echo $swf_badge;
+									<img title="<?php echo Secu($userbadge['badge_code']); ?>" src="<?PHP echo $swf_badge;
 																									echo Secu($userbadge['badge_code']); ?>.gif" border="0" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)" />
 								</td>
 							</tr>

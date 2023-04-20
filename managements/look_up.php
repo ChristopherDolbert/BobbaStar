@@ -42,7 +42,7 @@ if(isset($_GET['do'])) {
     }
 }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Detection IP.</span><br />
 Cet outil peut &ecirc;tre utilisé pour la recherche de l'IP d'un utilisateur, particuli&egrave;rement utilisé lorsque vous avez besoin d'exclure une personne d'ordinateur plut&ocirc;t qu'un simple compte. <a href="banip" target="main">Bannir une IP</a><br/><br/>
 <form method='post' action="?do=lookup">

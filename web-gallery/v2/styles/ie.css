@@ -135,4 +135,23 @@ div.welcome-intro { height: expression(this.scrollHeight < 250 ? "250px" : "auto
     margin-top: 6px;
 }
 
-#friend-management-container .new-button { margin: 0; padding: 0 0 5px 10px;}
+#friend-management-container .new-button, #guestbook-form .new-button { margin: 0; padding: 0 0 5px 10px;}
+
+/* new front page login box margin tweaks */
+#fp-container #login-password, #fp-container #captcha-container, #fp-container #captcha-code,
+#fp-container #recaptcha_response_field {
+    margin-bottom: 4px;
+}
+#fp-container .loginbox a.new-button {
+	margin-bottom: -3px;
+}
+#fp-container #remember-me input {
+    margin-left: -4px;
+}
+#fp-container #login-username {
+    margin-bottom: 2px;
+    margin-top: 0;
+}
+#fp-container #login-password {
+    margin-top: 0;
+}

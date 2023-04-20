@@ -71,7 +71,7 @@ $r2 = $rdo2->fetch();
 	  echo '<h4 class="alert_success">La demande a bien été refusée.</h4>';
 	  }	
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Supprimes une alerte</span><br/>
 Supprimes une alerte sur une demande d'un(e) modérateur(trice) au minimum.<br/><br/>
 <table>

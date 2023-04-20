@@ -60,7 +60,7 @@ $do = Secu($_GET['do']);
 	}
 }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 <span id="titre">Débannir des utilisateurs</span><br />
 Débannis plusieurs utilisateurs en m&ecirc;me temps pour cela apr&egrave;s chaque pseudo mettez un point virgule (;).<br/><br/>
 <form name='editor' method='post' action="?do=ban">
@@ -83,7 +83,7 @@ Voici la liste des bannis actuel.<br />
 <?PHP
 $sql = $bdd->query("SELECT * FROM bans WHERE bantype='user' ORDER BY id DESC");
  while($a = $sql->fetch()) {
-    $expire = date('d/m/Y H:i', $a['expire']);
+    $expire = date('d/m/Y H:i', $a['ban_expire']);
 ?>
         <tr class="bas">
             <td class="bas"><?PHP echo $a['value']; ?></td>

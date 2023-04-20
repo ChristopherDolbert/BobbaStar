@@ -13,7 +13,7 @@ if(!isset($_SESSION['username']))
 		exit();
 	}
 ?>
-<link href="./template/style.css" rel="stylesheet" type="text/css">
+<link href="./template/style.css<?php echo '?'.mt_rand(); ?>" rel="stylesheet" type="text/css">
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" /><body>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <div class="content">

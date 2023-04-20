@@ -43,7 +43,7 @@ if(!isset($_SESSION['username']))
 $sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Configuration générale</span><br/>
 Modifie les données sur le nombre de news, flux, tchat affiché par page. Saches que tu ne dois pas mettre un nombre égal ou inférieur à 0. <br/><br/>
 <script type="text/javascript" src="editeur_html/jscripts/tiny_mce/tiny_mce.js"></script>

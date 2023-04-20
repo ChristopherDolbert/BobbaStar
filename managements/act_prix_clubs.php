@@ -51,7 +51,7 @@ if(!isset($_SESSION['username']))
 $sql = $bdd->query("SELECT * FROM gabcms_config_prix WHERE id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 <span id="titre">Configuration générales</span><br/>
 Modifies le nombre de jetons donnés à l'achat, le prix du staff club...
  <br/><br/>

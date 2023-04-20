@@ -85,7 +85,7 @@ $headers .= "Bcc: ".$destinataire." \r\n"; // On définit les destinataires en c
 }
 }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/ckeditor.js"></script>
 <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>

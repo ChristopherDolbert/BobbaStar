@@ -220,7 +220,7 @@ if($do == "rank") {
 			} 
 	}
 }
-?><link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body> 
+?><link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body> 
 <span id="titre">Attribues un rank.</span><br />
 Attribues un rang &agrave; un utilisateur.<br/><br/>
 <form name='editor' method='post' action="?do=rank">

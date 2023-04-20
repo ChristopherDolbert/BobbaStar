@@ -1,4 +1,3 @@
-@charset 'UTF-8';
 #navi2-container {
 	background-image: url(../images/navi2-bottom-wide.png);
 }
@@ -64,7 +63,7 @@ div.myhabbo-view-tools {
 /* buttons */
 
 #inventory-button, #webstore-button, 
-#join-group-button, #leave-group-button, 
+#join-group-button, #leave-group-button, #join-group-with-invite-button,
 #reporting-button, #stop-reporting-button, .create-report-button,
 #select-favorite-button, #deselect-favorite-button, .delete-button {
 	background-image: url(../images/myhabbo_icons.png);
@@ -83,7 +82,7 @@ div.myhabbo-view-tools {
 }
 
 #webstore-button { background-position: 0 -47px; }
-#join-group-button { background-position: 0 -239px; padding-left: 15px; margin-left: 10px; }
+#join-group-button, #join-group-with-invite-button { background-position: 0 -239px; padding-left: 15px; margin-left: 10px; }
 #leave-group-button { background-position: 0 -198px; padding-left: 15px; margin-left: 10px; }
 #reporting-button, .create-report-button { background-position: 0 -101px; }
 #stop-reporting-button { background-position: 0 -155px; }
@@ -238,3 +237,6 @@ a.group-info-room:hover {
     background-repeat: no-repeat;
     background-position: center center;
 }
+
+#invite-code-dialog-content { background: transparent url(../images/personal_info/BE2.png) no-repeat 3px 6px; padding-left: 50px; }
+#group-invitation-code { margin-top: 5px; padding: 3px }

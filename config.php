@@ -36,11 +36,6 @@ if (isset($_SESSION['username'])) {
 $maintid = "1";
 $sqlss = $bdd->query("SELECT * FROM gabcms_maintenance WHERE id = '1'");
 $c = $sqlss->fetch(PDO::FETCH_ASSOC);
-if ($c['activ'] == "Oui") {
-	if ($user['rank'] < "5") {
-		Redirect("" . $url . "/maintenance");
-	}
-}
 $query = $bdd->query("SELECT * FROM bans WHERE ip = '" . $_SERVER['REMOTE_ADDR'] . "' ");
 $data = $query->fetch(PDO::FETCH_ASSOC);
 $ban = array($data['value']);
@@ -52,8 +47,8 @@ if (isset($_SESSION['username'])) {
 	$sql = $bdd->query("SELECT * FROM bans WHERE user_id = '" . $user['id'] . "'");
 	$b = $sql->fetch(PDO::FETCH_ASSOC);
 	$stamp_now = $nowtime;
-	$stamp_expire = $b['expire'];
-	$expire = date('d/m/Y H:i', $b['expire']);
+	$stamp_expire = $b['ban_expire'];
+	$expire = date('d/m/Y H:i', $b['ban_expire']);
 	if ($stamp_now < $stamp_expire) {
 		Redirect("" . $url . "/banned");
 	}

@@ -91,7 +91,7 @@ if($_REQUEST['habbletKey'] == "news")
 
 
 <!-- dependencies
-<link rel="stylesheet" href="<?php echo $imagepath;?>static/styles/news.css?ncaches" type="text/css" />
+<link rel="stylesheet" href="<?php echo $imagepath;?>static/styles/news.css<?php echo '?'.mt_rand(); ?>?ncaches" type="text/css" />
 <script src="<?php echo $imagepath;?>static/js/news.js?ncaches" type="text/javascript"></script>
 -->   
 
@@ -172,11 +172,11 @@ $avatar_selected = '<div id="name-suggestions">
 }
 ?>
 
-<link rel="stylesheet" href="https://images-eussl.habbo.com/habboweb/<?php echo $WebBuild;?>/web-gallery/static/styles/embed.css" type="text/css" /><script src="https://images-eussl.habbo.com/habboweb/<?php echo $WebBuild;?>/web-gallery/static/js/embed.js" type="text/javascript"></script>
-<link rel="stylesheet" href="/styles/local/fr.css" type="text/css" />
+<link rel="stylesheet" href="https://images-eussl.habbo.com/habboweb/<?php echo $WebBuild;?>/web-gallery/static/styles/embed.css<?php echo '?'.mt_rand(); ?>" type="text/css" /><script src="https://images-eussl.habbo.com/habboweb/<?php echo $WebBuild;?>/web-gallery/static/js/embed.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/styles/local/fr.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 
 
-<link rel="stylesheet" href="https://images-eussl.habbo.com/habboweb/<?php echo $WebBuild;?>/web-gallery/static/styles/common.css" type="text/css" /><link rel="stylesheet" href="https://images-eussl.habbo.com/habboweb/<?php echo $WebBuild;?>/web-gallery/static/styles/avatarselection.css" type="text/css" />
+<link rel="stylesheet" href="https://images-eussl.habbo.com/habboweb/<?php echo $WebBuild;?>/web-gallery/static/styles/common.css<?php echo '?'.mt_rand(); ?>" type="text/css" /><link rel="stylesheet" href="https://images-eussl.habbo.com/habboweb/<?php echo $WebBuild;?>/web-gallery/static/styles/avatarselection.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 
 <div id="container">
 

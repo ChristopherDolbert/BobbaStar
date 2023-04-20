@@ -162,7 +162,7 @@ if(isset($_GET['datep'])) {
 	  echo '<h4 class="alert_success">La vacance de poste a été prolongée de 3 jours !</h4>';
 	  }
 }
-?><link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+?><link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Traites une vacance de poste</span><br />
 Vois toutes les candidatures pour un poste.<br/><br/>
 Voici les informations sur ce poste :<br/>

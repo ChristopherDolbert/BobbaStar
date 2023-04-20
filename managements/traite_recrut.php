@@ -22,7 +22,7 @@ if(!isset($_SESSION['username']))
 	}	
 	
 if(isset($_GET['do'])) { $do = Secu($_GET['do']); }
-?><link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body> 
+?><link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body> 
 <span id="titre">Choisis le poste vacant</span><br />
 Cliques sur un poste vacant pour voir toutes les informations et candidatures...<br/><br/>
 <table>

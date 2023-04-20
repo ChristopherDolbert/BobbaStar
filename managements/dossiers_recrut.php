@@ -66,7 +66,7 @@ $t1 = $tdo1->fetch();
 	  echo '<h4 class="alert_success">La candidature de <b>'.$t1['pseudo'].'</b> a été refusée.</h4>';
 	  }	
 }
-?><link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+?><link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Refuses une candidature</span><br />
 Vois ou refuses une candidature. Pour accepté une candidature tu devras attendre la fin de la session de recrutement (date butoire)<br/><br/>
 <b>Voici les informations sur ce poste :</b><br/>

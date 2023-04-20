@@ -8,12 +8,17 @@
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
 include("./config.php");
+include("./locale/$language/login.php");
 
 $pagename = "Accueil";
 $pageid = "index";
 
-$sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
+$sql = $bdd->query("SELECT * FROM gabcms_config, gabcms_maintenance WHERE gabcms_config.id = '1' AND gabcms_maintenance.id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
+
+if($cof['activ'] == "Oui") {
+    Redirect($url . "/maintenance");
+}
 
 if (isset($_SESSION['username'])) {
     Redirect($url . "/moi");
@@ -35,7 +40,7 @@ if (isset($_GET['do'])) {
                 $userId = $assoc['id'];
 
                 if ($row < 1 || !password_verify($password, $pass)) {
-                    $erreur = "Ton <b>pseudo</b> et/ou <b>ton mot de passe</b> est incorrect.";
+                    $erreur = $locale['error_1'];;
                 } else {
 
                     if ($assoc['disabled'] == 1) {
@@ -71,6 +76,7 @@ if (isset($_GET['do'])) {
         }
     }
 }
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -100,13 +106,13 @@ if (isset($_GET['do'])) {
 
     <script src="<?PHP echo $imagepath; ?>static/js/libs2.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/landing.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 
     <script src="<?PHP echo $imagepath; ?>js/local/com.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/process.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/process.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 
 
 
@@ -114,13 +120,13 @@ if (isset($_GET['do'])) {
     <meta name="keywords" content="Retro, virtual, world, join, groups, forums, play, games, online, friends, teens, collecting, social network, create, collect, connect, furniture, virtual, goods, sharing, badges, social, networking, hangout, safe, music, celebrity, celebrity visits, cele" />
 
     <!--[if IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 <![endif]-->
     <!--[if lt IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 <![endif]-->
     <!--[if lt IE 7]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/pngfix.js" type="text/javascript"></script>
 <script type="text/javascript">
 try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
@@ -146,7 +152,7 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
                     <ul class="stats">
                         <li class="stats-online"><span class="stats-fig"><?PHP $tmp = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
                                                                             $tma = $tmp->fetch(PDO::FETCH_ASSOC);
-                                                                            echo $tma['count(id)']; ?></span> Connectés</li>
+                                                                            echo $tma['count(id)']; ?></span> <?php echo $locale['users_online_now']; ?></li>
 
                         <?PHP if ($cof['etat_client'] == '1' || $cof['etat_client'] == '3' && $cof['si3_debut'] < $nowtime && $cof['si3_fin'] < $nowtime) { ?>
                             <li class="stats-visited"><img src="<?PHP echo $imagepath; ?>v2/images/online.gif" alt="online"></li>
@@ -163,10 +169,16 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
                     <div id="column1" class="column">
                         <div class="habblet-container " id="create-habbo">
 
+                            <?php
+                            if (isset($erreur)) {
+                                echo "\n<div class=\"action-error flash-message\">\n <div class=\"rounded\">\n  <ul>\n   <li>" . $erreur . "</li>\n  </ul>\n </div>\n</div>\n";
+                            }
+                            ?>
+
                             <div id="create-habbo-flash">
                                 <div id="create-habbo-nonflash" style="background-image: url(<?PHP echo $imagepath; ?>v2/images/landing/landing_group.png)">
-                                    <div id="landing-register-text"><a href="<?php echo $url; ?>/register"><span>Join now, it's free &raquo;</span></a></div>
-                                    <div id="landing-promotional-text"><span>Retro is a virtual world where you can meet and make friends.</span></div>
+                                    <div id="landing-register-text"><a href="<?php echo $url; ?>/register"><span><?php echo $locale['slogan']; ?> &raquo;</span></a></div>
+                                    <div id="landing-promotional-text"><span><?php echo $locale['slogan']; ?></span></div>
                                 </div>
                                 <div class="cbb clearfix green" id="habbo-intro-nonflash">
                                     <h2 class="title">To get most out of Retro, do this:</h2>
@@ -187,16 +199,16 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
                                 swfobj.addParam("wmode", "transparent");
                                 swfobj.addVariable("base_url", "<?php echo $url; ?>/flash/intro");
                                 swfobj.addVariable("habbos_url", "<?php echo $url; ?>/xml/promo_habbos_v2.xml");
-                                swfobj.addVariable("create_button_text", "Join now, it's free &raquo;");
+                                swfobj.addVariable("create_button_text", "<?php echo $locale['register_today']; ?>");
                                 swfobj.addVariable("in_hotel_text", "Online now!");
-                                swfobj.addVariable("slogan", "Retro is a virtual world where you can meet and make friends.");
-                                swfobj.addVariable("video_start", "PLAY VIDEO");
-                                swfobj.addVariable("video_stop", "STOP VIDEO");
+                                swfobj.addVariable("slogan", "<?php echo $locale['slogan']; ?>");
+                                swfobj.addVariable("video_start", "<?php echo $locale['play']; ?>");
+                                swfobj.addVariable("video_stop", "<?php echo $locale['stop']; ?>");
                                 swfobj.addVariable("button_link", "<?php echo $url; ?>/register");
                                 swfobj.addVariable("localization_url", "<?php echo $url; ?>/xml/landing_intro.xml");
                                 swfobj.addVariable("video_link", "<?php echo $url; ?>/flash/intro/Habbo_intro.swf");
-                                swfobj.addVariable("select_button_text", "Join now, it's free &raquo;");
-                                swfobj.addVariable("header_text", "Create your Retro...");
+                                swfobj.addVariable("select_button_text", "<?php echo $locale['register_today']; ?>");
+                                swfobj.addVariable("header_text", "Créez votre Habbo");
                                 swfobj.write("create-habbo-flash");
                                 HabboView.add(function() {
                                     if (deconcept.SWFObjectUtil.getPlayerVersion()["major"] >= 8) {
@@ -229,24 +241,24 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
                                     <form action='?do=se_connecter' method='post' class='login-habblet'>
                                         <ul>
                                             <li>
-                                                <label for="login-username" class="login-text">Pseudo</label>
+                                                <label for="login-username" class="login-text"><?php echo $locale['username']; ?></label>
                                                 <input tabindex="1" type="text" class="login-field" name="username" id="login-username" value="" required />
                                             </li>
                                             <li>
-                                                <label for="login-password" class="login-text">Mot de passe</label>
+                                                <label for="login-password" class="login-text"><?php echo $locale['password']; ?></label>
                                                 <input tabindex="2" type="password" class="login-field" name="password" id="login-password" required />
-                                                <input type="submit" value="Connexion" class="submit" id="login-submit-button" />
-                                                <a href="#" id="login-submit-new-button" class="new-button" style="float: left; margin-left: 0;display:none"><b style="padding-left: 10px; padding-right: 7px; width: 55px">Sign in</b><i></i></a>
+                                                <input type="submit" value="<?php echo $locale['login']; ?>" class="submit" id="login-submit-button" />
+                                                <a href="#" id="login-submit-new-button" class="new-button" style="float: left; margin-left: 0;display:none"><b style="padding-left: 10px; padding-right: 7px; width: 55px"><?php echo $locale['login']; ?></b><i></i></a>
                                             </li>
                                             <li class="no-label">
                                                 <input tabindex="3" type="checkbox" value="true" name="_login_remember_me" id="login-remember-me" checked="unchecked" />
                                                 <label for="login-remember-me">Se souvenir de moi</label>
                                             </li>
                                             <li class="no-label">
-                                                <a href="<?php echo $url; ?>/register" class="login-register-link"><span>Inscrivez-vous</span></a>
+                                                <a href="<?php echo $url; ?>/register" class="login-register-link"><span><?php echo $locale['register']; ?></span></a>
                                             </li>
                                             <li class="no-label">
-                                                <a href="<?PHP echo $url; ?>/oubliemotdepasse" id="forgot-password"><span>Mot de passe oublié ?</span></a>
+                                                <a href="<?PHP echo $url; ?>/oubliemotdepasse" id="forgot-password"><span><?php echo $locale['forgot_pass']; ?></span></a>
                                             </li>
                                         </ul>
                                     </form>
@@ -334,7 +346,8 @@ Pngfix.doPngImageFix();
 <![endif]-->
 
                     <div id="footer">
-                        <p><a href='<?PHP echo $url; ?>' target="_self">Accueil</a> | <a href='<?PHP echo $url; ?>/register' target="_self">Inscription</a> | <a href="<?PHP echo $url; ?>/disclaimer" target="_blank">Conditions Générales d'Utilisations</a></p>
+                        <p><a href='<?PHP echo $url; ?>' target="_self"><?php echo $locale['link_homepage']; ?></a> | <a href='<?PHP echo $url; ?>/vieprivee' target="_self"><?php echo $locale['link_privacy']; ?></a> | <a href="<?PHP echo $url; ?>/disclaimer" target="_blank"><?php echo $locale['link_disclaimer']; ?></a></p>
+                        <p><?php echo $locale['copyright_habbo']; ?></p>
                     </div>
                 </div>
             </div>

@@ -52,8 +52,8 @@ $timestampz=mktime(23,59,59,$date_explz[1],$date_explz[0],$date_explz[2]);
 	  }
  }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" type="text/css" />
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="//code.jquery.com/jquery-1.9.1.js" type="text/javascript" ></script>
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js" type="text/javascript" ></script>
 <script>

@@ -87,7 +87,7 @@ $modifierrecrut = Secu($_GET['modifierrecrut']);
     } 
 }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <style>
 #raison{
 background-color:#cecece;

@@ -43,7 +43,7 @@ $do = Secu($_GET['do']);
 }
 }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Info messages</span><br />
 Cet outil est fait pour savoir combien l'utilisateur a de message(s).<br/><br/>
 <form method='post' action="?do=lookmes">

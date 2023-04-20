@@ -75,7 +75,7 @@ $cof9 = $sql9->fetch(PDO::FETCH_ASSOC);
 $sql10 = $bdd->query("SELECT * FROM gabcms_bureau_rappels WHERE id = 10");
 $cof10 = $sql10->fetch(PDO::FETCH_ASSOC);
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Modifies les rappels</span><br/>
 Choisis si tu affiches ou pas certains rappels sur la page <b>bureau des staffs</b>
  <br/><br/>

@@ -62,7 +62,7 @@ $date_ban = $date_ac + $date_calcul;
 }
 ?>
 	
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Bannir des adresses IP</span><br />
 Bannis plusieurs adresses IP en m&ecirc;me temps pour cela apr&egrave;s chaque IP mettez un point virgule (;). <a href="look_up" target="main">Trouver une adresse IP</a><br/><br/>
 <form name='editor' method='post' action="?do=ban">

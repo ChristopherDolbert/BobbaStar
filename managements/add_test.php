@@ -81,7 +81,7 @@ if(isset($_POST['pseudo']) && isset($_POST['tuteur'])) {
   }
   }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 <span id="titre">Envois un staff en test</span><br/>
 Ajoutes un staff en test, afin qu'il fasse ses preuves.
  <br/>

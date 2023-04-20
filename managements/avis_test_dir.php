@@ -100,7 +100,7 @@ if($avis == 2) {
 	  }
   }	
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <?php if(!isset($_GET['modif'])) { ?>
 <span id="titre">Donnes ton avis sur des tests</span><br/>

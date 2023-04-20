@@ -53,7 +53,7 @@ if(!isset($_SESSION['username']))
 	  echo '<h4 class="alert_error">Merci de remplir les champs vides.</h4>';
 	} 
 }
-?><link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+?><link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Donnes des fonctions précises</span><br/>
 Ces fonctions ne jouent en rien dans l'accès aux pages, mais affiche sur la page staff le poste au survole du pseudo.<br/><br/>
  <script type="text/javascript" src="editeur_html/jscripts/tiny_mce/tiny_mce.js"></script>

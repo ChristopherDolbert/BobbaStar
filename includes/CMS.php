@@ -8,6 +8,7 @@
 
 	$date = date('dmY');
 	$sitename = "MyHabbo";
+	$shortname = "Habbo";
 	$url = "http://bobbastar.test";
 	$description = "&raquo; Créer ton appart, tchat avec des centaines d'utilisateurs et fais-toi de nouveaux amis.";
 	$imagepath = "".$url."/web-gallery/"; 
@@ -15,11 +16,13 @@
 	$build = "GabCMS";
 	$version = "RELEASE".$date; 
 	$swf_badge = "http://images-eussl.habbo.com/c_images/album1584/"; # Met le lien direct vers le dossier des badges de ton site
-	$owner = "Gabodd";
-	$mail = ""; 
-	$mail_newsletter = "";
+	$avatarimage = "https://avatar.myhabbo.fr/?figure=";
+	$owner = "Eudes";
+	$mail = "contact@myhabbo.fr"; 
+	$mail_newsletter = "contact@myhabbo.fr";
 	$compte_twitter = "GabCMS";
 	$compte_facebook = "Gabcms";
+	$language = "fr";
 
    //Config Starpass
    $id_document = 444508; //Identifiant du document starpass

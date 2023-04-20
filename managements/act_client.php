@@ -94,8 +94,8 @@ if($cof['etat_client'] == '3') {
 $sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" type="text/css" />
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="//code.jquery.com/jquery-1.9.1.js" type="text/javascript" ></script>
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js" type="text/javascript" ></script>
 <script>
