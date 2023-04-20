@@ -53,7 +53,7 @@ $do = Secu($_GET['do']);
 	}
 }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 <span id="titre">Débannir des adresses IP</span><br />
 Débannis des IP que vous avez bannis précédemment.<br/><br/>
 <form name='editor' method='post' action="?do=ban">

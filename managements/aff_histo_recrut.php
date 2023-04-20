@@ -26,7 +26,7 @@ if(!isset($_SESSION['username']))
 	
 $info = $bdd->query("SELECT * FROM gabcms_recrutement_dossier WHERE id_recrut = '".$pseudo."'");
 $i = $info->fetch();
-?><link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" />
+?><link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" />
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" /><body>
 <span id="titre">Historique des candidatures</span><br />
 <title>Historique des candidatures de <?PHP echo $pseudo ?></title>

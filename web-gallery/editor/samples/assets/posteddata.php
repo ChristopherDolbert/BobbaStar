@@ -9,7 +9,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 <head>
 	<meta charset="utf-8">
 	<title>Sample &mdash; CKEditor</title>
-	<link rel="stylesheet" href="sample.css">
+	<link rel="stylesheet" href="sample.css<?php echo '?'.mt_rand(); ?>">
 </head>
 <body>
 	<h1 class="samples">

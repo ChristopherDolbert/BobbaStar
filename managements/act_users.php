@@ -55,7 +55,7 @@ if(isset($_GET['modifierrecrut'])) {
   }
 		}
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <?php if(!isset($_GET['modif'])) { ?>
 <span id="titre">Modifies les données</span><br/>
 Modifies des données d'un utilisateur par ce que tu souhaites.<br/><br/> 

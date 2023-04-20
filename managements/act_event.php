@@ -61,7 +61,7 @@ if(isset($_GET['do'])) {
 	
 <head> 
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script src="editeur_html/ckeditor/ckeditor.js"></script>
 </head>

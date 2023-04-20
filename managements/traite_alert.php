@@ -47,7 +47,7 @@ $t1 = $tdo1->fetch();
  }
 }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Demandes a effacer une alerte</span><br/>
 Cette page te permet de demander une suppression d'une alerte.<br/><br/>
 <table>

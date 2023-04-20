@@ -54,7 +54,7 @@ if(!isset($_SESSION['username']))
 	  }
   } 
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 <span id="titre">Publies une note de service</span><br/>
 Les notes de service permettent une cohésion optimal au sein du rétro. Ces notes de service sont un peu le réglement intérieur du rétro pour les staffs.
  <br/><br/>

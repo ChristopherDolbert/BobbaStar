@@ -43,7 +43,7 @@ if($user['id'] != "") {
   }
 }
 ?>
-<link href="<?PHP echo $url ?>/managements/css/contenu.css" rel="stylesheet" type="text/css">
+<link href="<?PHP echo $url ?>/managements/css/contenu.css<?php echo '?'.mt_rand(); ?>" rel="stylesheet" type="text/css">
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" /><body>
 <title>Signaler un commentaire </title>
 	<?php if ($signale == "") { ?>

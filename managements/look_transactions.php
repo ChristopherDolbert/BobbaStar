@@ -22,7 +22,7 @@ if(!isset($_SESSION['username']))
 	exit();
 	}			
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Transactions des utilisateurs</span><br />
 Regardes les transactions des utilisateurs que tu souhaites.<br/><br/>
 <form method='post' action="?do=lookup">

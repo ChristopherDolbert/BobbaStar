@@ -22,7 +22,7 @@ if(!isset($_SESSION['username']))
 <title><?PHP echo $sitename;?> &raquo; <?PHP echo $pagename;?></title>
 <link rel="shortcut icon" href="<?PHP echo $imagepath;?>favicon.ico" type="image/vnd.microsoft.icon" />
 <script src="<?PHP echo $imagepath;?>js/tooltip.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/style.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/style.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 	<style>
 		.img {
 			width:500px;

@@ -44,7 +44,7 @@ if (typeof HabboClient != "undefined") { HabboClient.windowName = "uberClientWnd
 </script> 
 <link rel="shortcut icon" href="<?PHP echo $imagepath; ?>favicon.ico" type="image/vnd.microsoft.icon" /> 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700,400italic,700italic">
-<link rel="stylesheet" type="text/css" href="<?PHP echo $imagepath; ?>v2/styles/maj.css">
+<link rel="stylesheet" type="text/css" href="<?PHP echo $imagepath; ?>v2/styles/maj.css<?php echo '?'.mt_rand(); ?>">
     </head>
     <body>
         <div id="page">

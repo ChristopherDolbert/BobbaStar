@@ -69,7 +69,7 @@ if(isset($_POST['username']) && isset($_POST['alerte'])) {
   }
   }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" />
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" /><body>
 <title>Envoyer une alerte suite à un topic</title> 
  <script language="javascript" type="text/javascript">

@@ -34,12 +34,12 @@ if (!isset($_SESSION['username'])) {
     <link rel="shortcut icon" href="<?PHP echo $imagepath; ?>favicon.ico" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700,400italic,700italic">
     <script src="<?PHP echo $imagepath; ?>static/js/13389159.js"></script>
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/v3_default.css" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/v3_logout.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/v3_default.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/v3_logout.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
     <script src="<?PHP echo $imagepath; ?>static/js/v3_default_top.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>js/tooltip.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/visual.js" type="text/javascript"></script>
-    <script src="<?PHP echo $imagepath; ?>v2/styles/styles.css" type="text/javascript"></script>
+    <script src="<?PHP echo $imagepath; ?>v2/styles/styles.css<?php echo '?'.mt_rand(); ?>" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
@@ -60,10 +60,10 @@ if (!isset($_SESSION['username'])) {
     <meta name="keywords" content="<?PHP echo $keyword; ?>" />
 
     <!--[if lt IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <![endif]-->
     <!--[if lt IE 7]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/pngfix.js" type="text/javascript"></script>
 <script type="text/javascript">
 try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}

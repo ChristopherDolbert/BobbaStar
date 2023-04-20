@@ -23,7 +23,7 @@ if(!isset($_SESSION['username']))
 	}	
 		
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 <span id="titre">Info utilisateur</span><br />
 Entres le nom de l'utilisateur pour afficher ses infos<br/><br/>
 <form method='post' action="?do=lookup">

@@ -25,7 +25,7 @@ if(!isset($_SESSION['username']))
 	$id = Secu($_GET['id']);
 ?>
 <title>Historique stafflog - Demande #<?PHP echo $id; ?></title>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" />
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" /><body>
 <span id="titre">Historique stafflog</span><br />
 Ici est affiché l'historique des avis d'une demande<br/><br/>

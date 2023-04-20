@@ -58,7 +58,7 @@ if(isset($_GET['sup'])) {
 $sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);	
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Ajouter un site de fan</span><br />
 Ajoutes plusieurs sites de fans qui seront affichés sur le site.
 <br/><br/><img src="<?PHP echo $imagepath; ?>images/sitedefan/habbo_friends<?PHP echo $cof['img_sdf']; ?>.png" ALIGN=RIGHT>

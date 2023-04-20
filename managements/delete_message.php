@@ -55,7 +55,7 @@ if(!isset($_SESSION['username']))
 	  }
   }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 <span id="titre">Enlèves des messages</span><br />
 Enlèves un certain nombre de messages à des utilisateurs.<br/><br/>
 <form name='editor' method='post' action="">

@@ -4,15 +4,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Habbo, Habbo Hotel, Habbo World, Sulake" />
 <meta name="description" content="In Habbo Hotel, real people create characters to have authentic conversations, play games, enter competitions, and develop new friendships." />
-<link rel="stylesheet" type="text/css" href="../css/style.css" />
-<link rel="stylesheet" type="text/css" media="print" href="../css/print.css" />
-<!-- .css fixes for Mac IE -->
+<link rel="stylesheet" type="text/css" href="../css/style.css<?php echo '?'.mt_rand(); ?>" />
+<link rel="stylesheet" type="text/css" media="print" href="../css/print.css<?php echo '?'.mt_rand(); ?>" />
+<!-- .css<?php echo '?'.mt_rand(); ?> fixes for Mac IE -->
 <style type="text/css">
-@import_url("css/macie5.css");
+@import_url("css/macie5.css<?php echo '?'.mt_rand(); ?>");
 </style>
-<!-- .css fixes for IE 5.0 -->
+<!-- .css<?php echo '?'.mt_rand(); ?> fixes for IE 5.0 -->
 <style type="text/css">
-\@import url("css/ie5.css");
+\@import url("css/ie5.css<?php echo '?'.mt_rand(); ?>");
 </style>
 <script type="text/javascript" src="../js/flashobject.js"></script>
 </head>

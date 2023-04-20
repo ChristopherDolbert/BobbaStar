@@ -22,7 +22,7 @@ if(!isset($_SESSION['username']))
 	exit();
 	}	
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Affiches les images uploadés</span><br/>
 Toutes les images hébergés sur le site sont inscrites ici.<br/><br/>
 <table>

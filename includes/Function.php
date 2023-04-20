@@ -7,6 +7,17 @@
 
 # Nombre de fonctions: 14 #
 
+// Validate the langauge
+$language_path = "./" . $language . "index.php";
+$language_path_2 = "../" . $language . "index.php";
+
+if (file_exists($language_path) || file_exists($language_path_2)) {
+	$valid_language = true;
+} else {
+	$language = "en";
+	$valid_language = false;
+}
+
 function smileys($texte)
 {
 	$texte = stripslashes($texte);
@@ -368,4 +379,12 @@ function ClientNitro()
 	$sql = $bdd->query("SELECT nitro_client FROM gabcms_client WHERE id = '1'");
 	$client = $sql->fetch(PDO::FETCH_ASSOC);
 	return $client['nitro_client'];
+}
+
+function GetConfig()
+{
+	include('SQL.php');
+	$sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
+	$cof = $sql->fetch(PDO::FETCH_ASSOC);
+	return $cof;
 }

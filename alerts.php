@@ -42,15 +42,15 @@ if (typeof HabboClient!= "undefined") { HabboClient.windowName = "uberClientWnd"
 <script src="<?PHP echo $imagepath;?>static/js/common.js" type="text/javascript"></script>
 <script src="<?PHP echo $imagepath;?>js/tooltip.js" type="text/javascript"></script>
 <script src="<?PHP echo $imagepath;?>static/js/fullcontent.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/style.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/buttons.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/boxes.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/tooltips.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/personal.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/style.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/buttons.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/boxes.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/personal.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath;?>static/js/habboclub.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/minimail.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/myhabbo/control.textarea.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/newcredits.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/minimail.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/myhabbo/control.textarea.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/newcredits.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath;?>static/js/minimail.js" type="text/javascript"></script>
 
  
@@ -58,13 +58,13 @@ if (typeof HabboClient!= "undefined") { HabboClient.windowName = "uberClientWnd"
 <meta name="description" content="<?PHP echo $description;?>" /> 
 <meta name="keywords" content="<?PHP echo $keyword;?>" />  
 <!--[if IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>///v2/styles/ie8.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>///v2/styles/ie8.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <![endif]--> 
 <!--[if lt IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>///v2/styles/ie.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>///v2/styles/ie.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <![endif]--> 
 <!--[if lt IE 7]>
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>///v2/styles/ie6.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>///v2/styles/ie6.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath;?>///static/js/pngfix.js" type="text/javascript"></script>
 <script type="text/javascript">
 try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
@@ -128,7 +128,7 @@ Tu n'as pas encore d'alerte. Tu peux recevoir des alertes pour les cas suivants:
 
             <tbody><tr> 
                     <td valign="middle" width="10" height="60">
-			<?PHP if($alert['par'] != 'Système') { ?><a href="<?PHP echo $url ?>/info.php?pseudo=<?PHP echo $alert['par'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP } ?><div alt="<?PHP echo Secu($alert['par']);?>" style="width: 64px; height: 70px; margin-top:-10px; margin-left:-10px; float: right; background: url(https://avatar.myhabbo.fr/?figure=<?PHP echo $alert['look'];?>&action=&direction=2&head_direction=2&gesture=<?PHP echo $alert['action'];?>&size=1&img_format=gif);"></div></a>
+			<?PHP if($alert['par'] != 'Système') { ?><a href="<?PHP echo $url ?>/info.php?pseudo=<?PHP echo $alert['par'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP } ?><div alt="<?PHP echo Secu($alert['par']);?>" style="width: 64px; height: 70px; margin-top:-10px; margin-left:-10px; float: right; background: url(<?php echo $avatarimage; ?><?PHP echo $alert['look'];?>&action=&direction=2&head_direction=2&gesture=<?PHP echo $alert['action'];?>&size=1&img_format=gif);"></div></a>
 			</td> 
                     <td valign="top"><span style="color:#778899;">Alerte envoyée le <u><?php echo Secu(stripslashes($alert['date']));?></u> par <b><?php echo Secu($alert['par']);?></b>.</span><br/>
 					<span style="font-family: tahoma,arial,helvetica,sans-serif; color: #333333;">Sujet </span>: <b><?PHP echo stripslashes($alert['sujet']);?></b><br/><br/>

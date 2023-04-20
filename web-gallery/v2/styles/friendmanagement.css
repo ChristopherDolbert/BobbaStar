@@ -1,4 +1,3 @@
-@charset 'UTF-8';
 #friend-management {
     width: 560px;
     float:left;
@@ -212,3 +211,4 @@
 
 #friend-list-table a.sort:hover {
     text-decoration: underline;
+}

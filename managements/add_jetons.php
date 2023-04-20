@@ -55,7 +55,7 @@ $do = Secu($_GET['do']);
 		}
 }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 <SCRIPT LANGUAGE="JavaScript">
 function newPopup(url, name_page)
 {
