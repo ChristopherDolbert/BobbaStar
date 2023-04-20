@@ -78,7 +78,7 @@ if (isset($_GET['do'])) {
     <title><?PHP echo $sitename; ?><?PHP echo $description; ?></title>
 
     <link rel="shortcut icon" href="<?PHP echo $imagepath; ?>favicon.ico" type="image/vnd.microsoft.icon"/>
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>index/css/index.css" type="text/css"/>
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>index/css/index.css<?php echo '?'.mt_rand(); ?>" type="text/css"/>
     <link rel='stylesheet' type='text/css'
           href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,600,700,800,400italic,700italic|Ubuntu+Condensed'>
 </head>

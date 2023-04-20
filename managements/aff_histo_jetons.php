@@ -25,7 +25,7 @@ if(!isset($_SESSION['username']))
 	$id = Secu($_GET['id']);
 ?>
 <title>Historique utilisation de codes jetons - Code #<?PHP echo $id; ?></title>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" />
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" /><body>
 <span id="titre">Historique utilisation de codes jetons</span><br />
 Ici est affiché l'historique des utilisations de codes jetons, ainsi vous pouvez voir, qui à utiliser le plus de codes.<br/><br/>

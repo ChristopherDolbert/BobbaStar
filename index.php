@@ -71,6 +71,7 @@ if (isset($_GET['do'])) {
         }
     }
 }
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -100,13 +101,13 @@ if (isset($_GET['do'])) {
 
     <script src="<?PHP echo $imagepath; ?>static/js/libs2.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/landing.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 
     <script src="<?PHP echo $imagepath; ?>js/local/com.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/process.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/process.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 
 
 
@@ -114,13 +115,13 @@ if (isset($_GET['do'])) {
     <meta name="keywords" content="Retro, virtual, world, join, groups, forums, play, games, online, friends, teens, collecting, social network, create, collect, connect, furniture, virtual, goods, sharing, badges, social, networking, hangout, safe, music, celebrity, celebrity visits, cele" />
 
     <!--[if IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 <![endif]-->
     <!--[if lt IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 <![endif]-->
     <!--[if lt IE 7]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/pngfix.js" type="text/javascript"></script>
 <script type="text/javascript">
 try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
@@ -162,6 +163,12 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 
                     <div id="column1" class="column">
                         <div class="habblet-container " id="create-habbo">
+
+                            <?php
+                            if (isset($erreur)) {
+                                echo "\n<div class=\"action-error flash-message\">\n <div class=\"rounded\">\n  <ul>\n   <li>" . $erreur . "</li>\n  </ul>\n </div>\n</div>\n";
+                            }
+                            ?>
 
                             <div id="create-habbo-flash">
                                 <div id="create-habbo-nonflash" style="background-image: url(<?PHP echo $imagepath; ?>v2/images/landing/landing_group.png)">

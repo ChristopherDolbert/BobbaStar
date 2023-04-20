@@ -52,7 +52,7 @@ function parseStylesheets() {
 	}
 
 	function parseCSSRule(rule) {
-		var select = rule.selectorText, style = rule.style.cssText;
+		var select = rule.selectorText, style = rule.style.css<?php echo '?'.mt_rand(); ?>Text;
 		if(!csshoverReg.test(select) || !style) return;
 
 		var pseudo = select.replace(/[^:]+:([a-z-]+).*/i, 'on$1');

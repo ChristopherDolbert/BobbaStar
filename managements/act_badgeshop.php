@@ -99,7 +99,7 @@ if(isset($_GET['sup'])) {
 }    
 ?>
 <div id="tooltip"></div>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <script src="<?PHP echo $imagepath; ?>js/tooltip.js" type="text/javascript"></script>
 <?php if(!isset($_GET['modif'])) { ?>
 <span id="titre">Mets un badge à la vente</span><br/>

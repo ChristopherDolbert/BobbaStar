@@ -71,7 +71,7 @@ $sup = Secu($_GET['sup']);
 }
 ?>
 
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Badges pour les clubs</span><br/>
 Ajoute, modifie ou supprime un badge qui devrait être donné pour un club.
  <br/><br/>

@@ -47,7 +47,7 @@ if($do == "filtre") {
 	}
 }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 <span id="titre">Filtres un mot.</span><br />
 Ici vous pourriez filtrer plusieurs mots en les séparents d'un point virgule (;). Ces mots seront filtrés sur le tchat, et sur le client !<br/><br/>
 <form name='editor' method='post' action="?do=filtre">

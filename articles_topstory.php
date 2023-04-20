@@ -24,12 +24,12 @@
 <script src="<?PHP echo $imagepath;?>static/js/fullcontent.js" type="text/javascript"></script>
 <script src="<?PHP echo $imagepath;?>js/tooltip.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/style.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/buttons.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/boxes.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/tooltips.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/changepassword.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/process.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/style.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/buttons.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/boxes.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/changepassword.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>v2/styles/process.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <link rel="shortcut icon" href="<?PHP echo $imagepath;?>favicon.ico" type="image/vnd.microsoft.icon" /> 
 <div id="container"> 
 <div id="tooltip"></div>

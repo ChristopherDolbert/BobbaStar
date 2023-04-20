@@ -55,24 +55,24 @@ $updateSSO->execute([$ssoTicket, $user['id']]);
   <script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
 
   <script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css" type="text/css" />
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css" type="text/css" />
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css" type="text/css" />
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css" type="text/css" />
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/habboclient.css" type="text/css" />
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/habboflashclient.css" type="text/css" />
+  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/habboclient.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/habboflashclient.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 
   <meta name="description" content="<?PHP echo $description; ?>" />
   <meta name="keywords" content="<?PHP echo $keyword; ?>" />
 
   <!--[if IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <![endif]-->
   <!--[if lt IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <![endif]-->
   <!--[if lt IE 7]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/pngfix.js" type="text/javascript"></script>
 <script type="text/javascript">
 try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
@@ -82,7 +82,7 @@ try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
 body { behavior: url(http://www.habbo.co.uk/js/csshover.htc); }
 </style>
 <![endif]-->
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/news.css" type="text/css" />
+  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/news.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
   <script src="<?PHP echo $imagepath; ?>static/js/news.js" type="text/javascript"></script>
   <meta name="build" content="<?PHP echo $build; ?> >> <?PHP echo $version; ?>" />
 

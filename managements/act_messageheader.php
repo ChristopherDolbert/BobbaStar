@@ -41,7 +41,7 @@ if(!isset($_SESSION['username']))
 $sql = $bdd->query("SELECT * FROM gabcms_header WHERE id = '1'");
 $c = $sql->fetch(PDO::FETCH_ASSOC);
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Message de l'header</span><br/>
 Modifies le message de l'header, la couleur de fond...
  <br/><br/>

@@ -75,7 +75,7 @@ $etat4 = "&nbsp;(".stripslashes(addslashes($modif_z['avisdir_pseudo'])).")";
 					$correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '".$modif_a['poste']."'");
 					$c = $correct->fetch();
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Regardes les périodes de tests</span><br/>
 Regardes les avis qu'il y a eu durant les périodes de tests.<br/><br/>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">

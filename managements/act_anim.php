@@ -81,7 +81,7 @@ if($sup != "") {
 	}
 }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Crées une session d'animation</span><br/>
 Ouvres une session d'animation, qui sera visible que par les staffs de l'hôtel.
  <br/><br/>

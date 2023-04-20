@@ -30,9 +30,9 @@ var andSoItBegins = (new Date()).getTime();
 <script src="<?PHP echo $imagepath;?>static/js/common.js" type="text/javascript"></script>
 <script src="<?PHP echo $imagepath;?>js/tooltip.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>static/styles/process.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>static/styles/habboflashclient.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath;?>static/styles/v3_habblet.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>static/styles/process.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>static/styles/habboflashclient.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath;?>static/styles/v3_habblet.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath;?>static/js/habboflashclient.js" type="text/javascript"></script>
 <link href='//fonts.googleapis.com/css?family=Ubuntu:400,700,400italic,700italic|Ubuntu+Medium' rel='stylesheet' type='text/css'>
 

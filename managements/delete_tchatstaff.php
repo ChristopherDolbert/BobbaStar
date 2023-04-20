@@ -47,7 +47,7 @@ $r = $infr->fetch();
 	echo '<h4 class="alert_success">Un tchat a été supprimé avec succès !</h4>';
 }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Modères un tchat</span><br/>
 Modères un tchat qui a été posté sur le stafftchat du rétro.<br/><br/>
 <table>

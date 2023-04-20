@@ -284,14 +284,14 @@ if (typeof HabboClient != "undefined") { HabboClient.windowName = "uberClientWnd
 <script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
 <script src="<?PHP echo $imagepath;?>js/tooltip.js" type="text/javascript"></script>
 <script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/habboclub.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/myhabbo/control.textarea.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/myhabbo/control.textarea.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/minimail.js" type="text/javascript"></script>
 <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/ckeditor.js"></script>
 <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
@@ -304,13 +304,13 @@ window.open (url, name_page, config='height=300, width=700, toolbar=no, menubar=
 <meta name="description" content="<?PHP echo $description; ?>" /> 
 <meta name="keywords" content="<?PHP echo $keyword; ?>" />  
 <!--[if IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <![endif]--> 
 <!--[if lt IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <![endif]--> 
 <!--[if lt IE 7]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/pngfix.js" type="text/javascript"></script>
 <script type="text/javascript">
 try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
@@ -568,7 +568,7 @@ $vraie_date = date('d/m/Y à H:i', $n['date']);
 <div class="article-meta">
 	<p class="summary"></p> 
 	<div class="article-body"><?php echo smileyforum(stripslashes($n['texte'])); ?></div><br/><br/>
-<div id="article_haut"><a href="<?PHP echo $url ?>/info?pseudo=<?PHP echo $assoc['username'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(https://avatar.myhabbo.fr/?figure=<?PHP echo $assoc['look']; ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span></a><span style="color: #000000; font-size: 11px;"><br/><b>Posté par :</b> <?PHP echo $assoc['username']; ?><br/><b>Date :</b> <?PHP echo $vraie_date; ?><br/><br/><?PHP if($n['modif'] == 1) { ?>Topic modifié par <b><?PHP echo $assoc2['username']; ?></b> le <i><?PHP echo $n['modif_le']; ?></i><?PHP } ?></span></div>
+<div id="article_haut"><a href="<?PHP echo $url ?>/info?pseudo=<?PHP echo $assoc['username'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(<?php echo $avatarimage; ?><?PHP echo $assoc['look']; ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span></a><span style="color: #000000; font-size: 11px;"><br/><b>Posté par :</b> <?PHP echo $assoc['username']; ?><br/><b>Date :</b> <?PHP echo $vraie_date; ?><br/><br/><?PHP if($n['modif'] == 1) { ?>Topic modifié par <b><?PHP echo $assoc2['username']; ?></b> le <i><?PHP echo $n['modif_le']; ?></i><?PHP } ?></span></div>
 <?PHP if($user['rank'] >= 5 && $n['user_id'] != $user['id']) { ?><br/><?PHP if($n['epingle'] == 0) { ?><a href="<?PHP echo $url; ?>/forum/topic?id=<?PHP echo $n['categorie_forum']; ?>&topic=<?PHP echo $n['id']; ?>&epingle=1"><img src="<?PHP echo $url ?>/forum/img/epingle.png" /> Épingler</a><?PHP } elseif($n['epingle'] == 1) { ?><a href="<?PHP echo $url; ?>/forum/topic?id=<?PHP echo $n['categorie_forum']; ?>&topic=<?PHP echo $n['id']; ?>&epingle=0"><img src="<?PHP echo $url ?>/forum/img/epingle.png" /> Désépingler</a><?PHP } ?> | 
 <?PHP if($n['etat'] == 1) { ?><a href="<?PHP echo $url; ?>/forum/topic?id=<?PHP echo $n['categorie_forum']; ?>&topic=<?PHP echo $n['id']; ?>&fermer=2"><img src="<?PHP echo $url ?>/forum/img/fermer.png" /> Fermer le topic sans commentaires</a> | <a href="<?PHP echo $url; ?>/forum/topic?id=<?PHP echo $n['categorie_forum']; ?>&topic=<?PHP echo $n['id']; ?>&fermer=3"><img src="<?PHP echo $url ?>/forum/img/fermer.png" /> Fermer le topic</a><?PHP } elseif($n['etat'] != 1) { ?><a href="<?PHP echo $url; ?>/forum/topic?id=<?PHP echo $n['categorie_forum']; ?>&topic=<?PHP echo $n['id']; ?>&fermer=1"><img src="<?PHP echo $url ?>/forum/img/fermer.png" /> Ré-ouvrir</a><?PHP } ?> | 
 <a href="#" onclick="newPopup('<?PHP echo $url ?>/forum/deplace_topic?deplace=<?PHP echo $n['id']; ?>', 'Déplacer un topic');return false;"><img src="<?PHP echo $url ?>/forum/img/deplace.gif" /> Déplacer</a> | 
@@ -650,7 +650,7 @@ $vraie_date = date('d/m/Y à H:i', $a['date']);
 <table>
             <tbody><tr> 
                     <td valign="middle" width="10" height="60"> 
-                    <a href="<?PHP echo $url; ?>/info?pseudo=<?PHP echo $as['username']; ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><div style="width: 64px; height: 65px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: right; background: url(https://avatar.myhabbo.fr/?figure=<?PHP echo $as['look']; ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div></a>
+                    <a href="<?PHP echo $url; ?>/info?pseudo=<?PHP echo $as['username']; ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><div style="width: 64px; height: 65px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: right; background: url(<?php echo $avatarimage; ?><?PHP echo $as['look']; ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div></a>
 					</td> 
                     <td valign="top">
                       <span style="color:<?PHP echo $modifier_r; ?>;"><b style="font-size: 110%;"><?PHP echo $as['username']; ?></span></b><span style="float: right; color:#000000;"><?PHP echo $vraie_date; ?> <a href="#" onclick="newPopup('<?PHP echo $url; ?>/forum/signale_commentaire?signale=<?PHP echo $a['id']; ?>', 'Signaler un commentaire');return false;">[signaler]</a></span> <br/>
@@ -768,7 +768,7 @@ $vraie_date = date('d/m/Y à H:i', $a['date']);
 	echo '<table>
             <tbody><tr> 
                     <td valign="middle" width="10" height="60"> 
-                    <a href="'.$url.'/info?pseudo='.$as['username'].'" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><div style="width: 64px; height: 65px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: right; background: url(https://avatar.myhabbo.fr/?figure='.$as['look'].'&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div></a>
+                    <a href="'.$url.'/info?pseudo='.$as['username'].'" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><div style="width: 64px; height: 65px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: right; background: url(<?php echo $avatarimage; ?>'.$as['look'].'&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div></a>
 					</td> 
                     <td valign="top">
                       <span style="color:'.$modifier_r.';"><b style="font-size: 110%;">'.$as['username'].'</span></b><span style="float: right; color:#000000;">'.$vraie_date.' <a href="#" onclick="newPopup(\''.$url.'/forum/signale_commentaire?signale='.$a['id'].'\', \'Signaler un commentaire\');return false;">[signaler]</a></span> <br/>

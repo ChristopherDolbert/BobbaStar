@@ -59,7 +59,7 @@ $date_ban = $date_ac + $date_calcul;
 }
 ?>
 	
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 <span id="titre">Bannir des utilisateurs</span><br />
 Bannis plusieurs utilisateurs en m&ecirc;me temps pour cela apr&egrave;s chaque utilisateur mettez un point virgule (;).<br/><br/>
 <form name='editor' method='post' action="?do=ban">

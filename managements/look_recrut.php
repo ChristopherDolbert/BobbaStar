@@ -31,7 +31,7 @@ $r = $infr->fetch();
 					$c = $correct->fetch();
         $date_but = date('d/m/Y', $r['date_butoire']);
 }
-?><link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+?><link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Regardes une vacance de poste</span><br />
 Regardes les lettres de motivation de postes vacant traités.<br/><br/>
 <SCRIPT LANGUAGE="JavaScript">

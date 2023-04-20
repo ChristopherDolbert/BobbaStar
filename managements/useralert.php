@@ -60,7 +60,7 @@ if(isset($_POST['username']) && isset($_POST['alerte'])) {
   }
   }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
  <script language="javascript" type="text/javascript">
    function insert_texte(texte)
    {

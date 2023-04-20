@@ -56,7 +56,7 @@ if(isset($_GET['signale'])) {
 	$n = $sql->fetch(PDO::FETCH_ASSOC);
 }
 ?>
-<link href="<?PHP echo $url ?>/managements/css/contenu.css" rel="stylesheet" type="text/css">
+<link href="<?PHP echo $url ?>/managements/css/contenu.css<?php echo '?'.mt_rand(); ?>" rel="stylesheet" type="text/css">
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" /><body>
 <title>Signaler un topic (<?PHP echo $n['titre'] ?>)</title>
 	<?php if(!isset($_GET['signale'])) { ?>

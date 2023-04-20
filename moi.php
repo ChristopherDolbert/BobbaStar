@@ -11,6 +11,7 @@ $pageid = "accueil";
 
 if (!isset($_SESSION['username'])) {
     Redirect("" . $url . "/index");
+    exit;
 }
 $sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
@@ -45,14 +46,14 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
     <script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>js/tooltip.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/lightweightmepage.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/lightweightmepage.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
     <script src="<?PHP echo $imagepath; ?>static/js/lightweightmepage.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 
     <meta name="description" content="<?PHP echo $description; ?>" />
     <meta name="keywords" content="<?PHP echo $keyword; ?>" />
@@ -72,7 +73,7 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
 
                     <div id="habbo-plate">
                         <a href="<?PHP echo $url; ?>/profile">
-                            <img src="https://avatar.myhabbo.fr/?figure=<?php echo $user['look']; ?>">
+                            <img src="<?php echo $avatarimage; ?><?php echo $user['look']; ?>">
                         </a>
                     </div>
 
@@ -193,7 +194,7 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
                                     <tbody>
                                         <tr>
                                             <td valign="middle" width="10" height="60">
-                                                <?PHP if ($a['auteur'] != 'Système') { ?><a href="<?PHP echo $url ?>/info?pseudo=<?PHP echo $a['auteur'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP } ?><div style="width: 64px; height: 65px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: right; background: url(https://avatar.myhabbo.fr/?figure=<?PHP echo $a['look'] ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div></a>
+                                                <?PHP if ($a['auteur'] != 'Système') { ?><a href="<?PHP echo $url ?>/info?pseudo=<?PHP echo $a['auteur'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP } ?><div style="width: 64px; height: 65px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: right; background: url(<?php echo $avatarimage; ?><?PHP echo $a['look'] ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div></a>
                                             </td>
                                             <td valign="top">
                                                 <span style="color:#333333;"><b style="font-size: 110%;"><?PHP echo $a['auteur'] ?></span></b><span style="float: right; color:#000000;"><?PHP echo $a['date'] ?></span><br />
@@ -219,11 +220,7 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
                         <h2 class="title">Radio</h2>
 
                         <div class="box-content">
-                            <object width="245" height="90">
-                                <param name="allowscriptaccess" value="always" />
-                                <param name="movie" value="http://static.radionomy.com/cdn/flash/BannerEmbed.swf?RadUID=9f28195c-0c1d-4698-b4e0-269cb5e9d5b9&amp;titlesColor=ffffff&amp;color=1c4a98&amp;autoPlay=yes&amp;lang=fr" />
-                                <param name="wmode" value="transparent" /><embed src="http://static.radionomy.com/cdn/flash/BannerEmbed.swf?RadUID=9f28195c-0c1d-4698-b4e0-269cb5e9d5b9&amp;titlesColor=ffffff&amp;color=1c4a98&amp;autoPlay=yes&amp;lang=fr" wmode="transparent" type="application/x-shockwave-flash" allowscriptaccess="always" width="245" height="90"></embed>
-                            </object>
+                            <iframe width="100%" height="405" src="https://www.youtube.com/watch?v=QvLVvTqpv0A" frameborder="0" allowfullscreen>
                         </div>
                     </div>
                 </div>

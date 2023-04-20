@@ -60,7 +60,7 @@ $do = Secu($_GET['do']);
 	}
 }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 <span id="titre">Débannir des utilisateurs</span><br />
 Débannis plusieurs utilisateurs en m&ecirc;me temps pour cela apr&egrave;s chaque pseudo mettez un point virgule (;).<br/><br/>
 <form name='editor' method='post' action="?do=ban">

@@ -2,7 +2,7 @@
 /*===================================================+
 || # HoloCMS - Website and Content Management System
 |+===================================================+
-|| # Copyright © 2008 Meth0d. All rights reserved.
+|| # Copyright ï¿½ 2008 Meth0d. All rights reserved.
 || # http://www.meth0d.org
 |+===================================================+
 || # HoloCMS is provided "as is" and comes without
@@ -47,7 +47,7 @@ function writeconfig($host, $username, $password, $db, $sitepath, $encryption, $
 /*===================================================+
 || # HoloCMS - Website and Content Management System
 |+===================================================+
-|| # Copyright © 2008 Meth0d. All rights reserved.
+|| # Copyright ï¿½ 2008 Meth0d. All rights reserved.
 || # http://www.meth0d.org
 |+===================================================+
 || # HoloCMS is provided \"as is\" and comes without
@@ -123,7 +123,7 @@ echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://
 <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />
 <title>HoloCMS - Setup</title>
 <link rel=\"shortcut icon\" href=\"favicon.ico\" type=\"image/vnd.microsoft.icon\" />
-<link rel=\"stylesheet\" href=\"web-gallery/v2/styles/install.css\" type=\"text/css\" />
+<link rel=\"stylesheet\" href=\"web-gallery/v2/styles/install.css<?php echo '?'.mt_rand(); ?>\" type=\"text/css\" />
 
 </head>
 <body>

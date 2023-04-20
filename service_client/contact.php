@@ -56,21 +56,21 @@ if (isset($_POST['texte'])) {
 	<script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>js/tooltip.js" type="text/javascript"></script>
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 	<script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
 	<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/ckeditor.js"></script>
 	<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css" type="text/css" />
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css" type="text/css" />
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css" type="text/css" />
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css" type="text/css" />
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 	<script src="<?PHP echo $imagepath; ?>static/js/habboclub.js" type="text/javascript"></script>
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css" type="text/css" />
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/myhabbo/control.textarea.css" type="text/css" />
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/newcredits.css" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/myhabbo/control.textarea.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/newcredits.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 	<script src="<?PHP echo $imagepath; ?>static/js/minimail.js" type="text/javascript"></script>
-	<link rel="stylesheet" href="<?PHP echo $url; ?>/service_client/css/index.css" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $url; ?>/service_client/css/index.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 
 
 	<script type="text/javascript">

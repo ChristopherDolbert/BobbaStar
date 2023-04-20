@@ -117,7 +117,7 @@ $annule = Secu($_GET['annule']);
 	  }
   }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 <span id="titre">Envois un avertissement</span><br/>
 Tu peux envoyer un ou des avertissement(s) à des staffs, pour différente raison, ça figurera dans leur dossier.<br/><br/>
  <script type="text/javascript" src="editeur_html/jscripts/tiny_mce/tiny_mce.js"></script>

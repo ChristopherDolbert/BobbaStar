@@ -22,7 +22,7 @@ if(!isset($_SESSION['username']))
 	exit();
 	}	
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" />
 <style>
 #cta_01 {
 	background-image: url('../web-gallery/images/cta/cta_01.png');
@@ -72,7 +72,7 @@ while($a = $sql->fetch()) {
     <tbody>
         <tr> 
             <td valign="middle" width="10" height="60">
-			<div alt="<?PHP echo $a['par']; ?>" style="width: 64px; height: 70px; margin-top:-10px; margin-left:-10px; float: right; background: url(https://avatar.myhabbo.fr/?figure=<?PHP echo $a['look']; ?>&action=&direction=2&head_direction=2&gesture=0&size=1&img_format=gif);"></div>
+			<div alt="<?PHP echo $a['par']; ?>" style="width: 64px; height: 70px; margin-top:-10px; margin-left:-10px; float: right; background: url(<?php echo $avatarimage; ?><?PHP echo $a['look']; ?>&action=&direction=2&head_direction=2&gesture=0&size=1&img_format=gif);"></div>
 			</td> 
             <td valign="top"><span style="color:#008000; font-size:9px;"><?PHP echo $a['date']; ?></span> par <span style="color:blue;"><b><?PHP echo stripslashes($a['par']); ?> (<?PHP echo stripslashes($a['poste']); ?>)</b></span> <img src="<?PHP echo $url; ?>/managements/img/dossier/<?PHP echo $a['avis']; ?>.png" /><br/>
 			<div id="cta_01"></div><div id="cta_02"><?PHP echo stripslashes($a['commentaire']); ?></div><div id="cta_03"></div>

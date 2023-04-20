@@ -32,11 +32,11 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
     <script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>styles/local/com.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>styles/local/com.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 
     <script src="<?PHP echo $imagepath; ?>js/local/com.js" type="text/javascript"></script>
 
@@ -54,11 +54,11 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
         }
     </script>
 
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal2.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal2.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
     <script src="<?PHP echo $imagepath; ?>static/js/habboclub.js" type="text/javascript"></script>
 
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>styles/myhabbo/control.textarea.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>styles/myhabbo/control.textarea.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
     <script src="<?PHP echo $imagepath; ?>static/js/minimail.js" type="text/javascript"></script>
 
 
@@ -66,13 +66,13 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
     <meta name="keywords" content="Retro, virtual, world, join, groups, forums, play, games, online, friends, teens, collecting, social network, create, collect, connect, furniture, virtual, goods, sharing, badges, social, networking, hangout, safe, music, celebrity, celebrity visits, cele" />
 
     <!--[if IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <![endif]-->
     <!--[if lt IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <![endif]-->
     <!--[if lt IE 7]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/pngfix.js" type="text/javascript"></script>
 <script type="text/javascript">
 try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
@@ -124,7 +124,7 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 
                         <div id="habbo-plate">
                             <a href="<?PHP echo $url; ?>/profile">
-                                <img alt="<?PHP echo $user['username']; ?>" src="https://avatar.myhabbo.fr/?figure=<?PHP echo $user['look']; ?>" width="64" height="110">
+                                <img alt="<?PHP echo $user['username']; ?>" src="<?php echo $avatarimage; ?><?PHP echo $user['look']; ?>" width="64" height="110">
                             </a>
                         </div>
 

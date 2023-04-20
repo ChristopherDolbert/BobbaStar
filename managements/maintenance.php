@@ -82,7 +82,7 @@ if(isset($_GET['modif_etat'])) {
 	}
 }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <span id="titre">Maintenance</span><br/>
 Affiches un message sur la page de maintenance.<br/><br/>
  <script type="text/javascript" src="editeur_html/jscripts/tiny_mce/tiny_mce.js"></script>

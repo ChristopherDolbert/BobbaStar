@@ -64,7 +64,7 @@ if($user['rank'] >= 5) {
 	$sql = $bdd->query("SELECT * FROM gabcms_forum_topic WHERE id = '".$deplace."'");
 	$n = $sql->fetch(PDO::FETCH_ASSOC);
 ?>
-<link href="<?PHP echo $url ?>/managements/css/contenu.css" rel="stylesheet" type="text/css">
+<link href="<?PHP echo $url ?>/managements/css/contenu.css<?php echo '?'.mt_rand(); ?>" rel="stylesheet" type="text/css">
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" /><body>
 <title>Déplace un topic (<?PHP echo $n['titre'] ?>)</title>
 	<?php if ($deplace == "") { ?>

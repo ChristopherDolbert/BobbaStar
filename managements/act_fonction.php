@@ -62,7 +62,7 @@ $modifierrecrut = Secu($_GET['modifierrecrut']);
 	  }
   }
 		}
-?><link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body>
+?><link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body>
 <?php if(!isset($_GET['modif'])) { ?>
 <span id="titre">Modifies une fonction</span><br/>
 Modifies une fonction d'un utilisateur par ce que tu souhaites. Il sera averti par alerte de ce changement.

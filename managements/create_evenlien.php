@@ -47,7 +47,7 @@ $bdd->query("INSERT INTO gabcms_news (`topstory_image`,`title`,`snippet`,`info`,
 }
 }
 ?>
-<link rel="stylesheet" href="css/contenu.css" type="text/css" media="screen" /><body></body>
+<link rel="stylesheet" href="css/contenu.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" /><body></body>
 <span id="titre">Crée un événement</span><br/>
 Crées un événement avec un lien afin que tout l'hôtel puisse le voir. Penses à bien compléter tous les champs.
  <br/><br/>
