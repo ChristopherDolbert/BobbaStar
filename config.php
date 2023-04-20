@@ -37,7 +37,7 @@ $maintid = "1";
 $sqlss = $bdd->query("SELECT * FROM gabcms_maintenance WHERE id = '1'");
 $c = $sqlss->fetch(PDO::FETCH_ASSOC);
 if ($c['activ'] == "Oui") {
-	if ($user['rank'] < "5") {
+	if ($user['rank'] > "5") {
 		Redirect("" . $url . "/maintenance");
 	}
 }

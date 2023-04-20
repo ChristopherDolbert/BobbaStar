@@ -17,7 +17,7 @@
 	$version = "RELEASE".$date; 
 	$swf_badge = "http://images-eussl.habbo.com/c_images/album1584/"; # Met le lien direct vers le dossier des badges de ton site
 	$avatarimage = "https://avatar.myhabbo.fr/?figure=";
-	$owner = "Gabodd";
+	$owner = "Eudes";
 	$mail = "contact@myhabbo.fr"; 
 	$mail_newsletter = "contact@myhabbo.fr";
 	$compte_twitter = "GabCMS";
