@@ -32,7 +32,7 @@ if (isset($_GET['do'])) {
             if (empty($username) || empty($password)) {
                 $erreur = "Merci de remplir les champs vides.";
             } else {
-                $sql = $bdd->prepare("SELECT id,disabled,password FROM users WHERE username = ? LIMIT 1");
+                $sql = $bdd->prepare("SELECT id,disabled,password,rank FROM users WHERE username = ? LIMIT 1");
                 $sql->execute([$username]);
                 $row = $sql->rowCount();
                 $assoc = $sql->fetch(PDO::FETCH_ASSOC);
@@ -68,6 +68,7 @@ if (isset($_GET['do'])) {
                             $sql->execute([time(), $_SERVER['REMOTE_ADDR'], $username]);
                             $_SESSION['username'] = $username;
                             $_SESSION['password'] = $password;
+                            $_SESSION['rank'] = $assoc['rank'];
                             Redirect($url . "/moi");
                         }
                     }

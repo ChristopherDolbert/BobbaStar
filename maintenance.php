@@ -16,8 +16,13 @@ include("locale/" . $language . "/maintenance.php");
 $pageid = "maintenance";
 
 if (isset($_SESSION['username'])) {
-    Redirect("" . $url . "/moi");
+    if($_SESSION['rank'] >= 9) {
+        Redirect("" . $url . "/moi");
+    } else {
+        session_destroy();
+    }
 }
+
 if (isset($_GET['do'])) {
     $do = Secu($_GET['do']);
     if ($do == "se_connecter") {
