@@ -46,14 +46,14 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
     <script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>js/tooltip.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/lightweightmepage.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/lightweightmepage.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
     <script src="<?PHP echo $imagepath; ?>static/js/lightweightmepage.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 
     <meta name="description" content="<?PHP echo $description; ?>" />
     <meta name="keywords" content="<?PHP echo $keyword; ?>" />
@@ -83,7 +83,15 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
                     </div>
                     <div id="motto-box" class="info-box">
                         <div class="label">Mission :</div>
-                        <div class="content"><?PHP echo $user['motto']; ?></div>
+                        <div class="content">
+                            <?PHP
+                            if (empty($user['motto'])) {
+                                echo "Pas de mission";
+                            } else {
+                                echo Secu($user['motto']);
+                            }
+                            ?>
+                        </div>
                     </div>
                     <div id="last-logged-in-box" class="info-box">
                         <div class="label">Dernière connexion:</div>
