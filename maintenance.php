@@ -105,7 +105,7 @@ if ($m['activ'] == "Non") {
                 <div class="fireman">
 
                     <h1>Maintenance break!</h1>
-
+                    
                     <p>
                         Nous sommes d&eacute;sol&eacute;s mais tu ne peux pas te connecter &agrave; <?php echo $shortname; ?> pour l'instant.<br>
                         Nous sommes en train de mettre &agrave; jour <?php echo $shortname; ?>.
