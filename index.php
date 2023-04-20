@@ -208,7 +208,7 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
                                 swfobj.addVariable("button_link", "<?php echo $url; ?>/register");
                                 swfobj.addVariable("localization_url", "<?php echo $url; ?>/xml/landing_intro.xml");
                                 swfobj.addVariable("video_link", "<?php echo $url; ?>/flash/intro/Habbo_intro.swf");
-                                swfobj.addVariable("select_button_text", "<?php echo $locale['register_today']; ?>");
+                                swfobj.addVariable("select_button_text", "Test");
                                 swfobj.addVariable("header_text", "Créez votre Habbo");
                                 swfobj.write("create-habbo-flash");
                                 HabboView.add(function() {
