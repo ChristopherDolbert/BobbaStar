@@ -10,6 +10,7 @@
 |+===================================================*/
 
 include("./config.php");
+include("./locale/$language/login.php");
 $pagename = "Inscription";
 $pageid = "inscription";
 
@@ -698,11 +699,8 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 
                 </div>
                 <div id="footer">
-                    <p><a href="index.php" target="_self">Accueil</a> | <a href="./disclaimer.php" target="_self">Conditions d'utilisation</a> | <a href="./privacy.php" target="_self">Informations pratiques</a></p><br>
-                    <?php /*@@* DO NOT EDIT OR REMOVE THE LINE BELOW WHATSOEVER! *@@*/ ?>
-                    <p>Powered by HoloCMS &copy; 2008 Meth0d & Parts by Yifan, sisija.<br />
-                        Les marques, copyright et bases de donn�es du site Habbo ainsi que son contenu sont tous la propri�t� de Sulake Inc.<br /><strong>HRW Cms�, Une Production <a href="http://habboretroweb.net">HabboRetroWeb</a> Cr��e Par Victor. Tous Droits R�serv�s.</strong><br />
-
+                    <p><a href='<?PHP echo $url; ?>' target="_self"><?php echo $locale['link_homepage']; ?></a> | <a href='<?PHP echo $url; ?>/vieprivee' target="_self"><?php echo $locale['link_privacy']; ?></a> | <a href="<?PHP echo $url; ?>/disclaimer" target="_blank"><?php echo $locale['link_disclaimer']; ?></a></p>
+                    <p><?php echo $locale['copyright_habbo']; ?></p>
                 </div>
             </div>
         </div>
