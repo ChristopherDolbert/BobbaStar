@@ -303,6 +303,10 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 				<div id="process-content">
 					<div class="left-column">
 
+						<?php if (!empty($affichage)) { ?>
+									<p><?php echo "<div align='center'><b>" . $affichage . "</b></div>"; ?></p>
+						<?php } ?>
+
 						<?PHP if (!isset($_GET['changement']) && !isset($_GET['u']) && !isset($_GET['e']) && !isset($_GET['c'])) { ?>
 							<div class="cbb clearfix">
 								<h2 class="title">Etape 1/2 - Renseignements divers</h2>
