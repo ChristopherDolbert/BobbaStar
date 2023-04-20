@@ -265,7 +265,7 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
 												</a>
 											</td>
 											<td valign="midle">
-												<span style="color:#333333;"><b style="font-size: 110%;"><?PHP echo $room['name'] ?></span></b><br />
+												<span style="color:#333333;"><b style="font-size: 110%;"><a href="<?PHP echo $url ?>/client?room=<?PHP echo $room['id'] ?>" onclick="openOrFocusHabbo(this); return false;" target="client"><?PHP echo $room['name'] ?></a></span></b><br />
 												<span style="color:#000000"><?PHP echo $room['username'] ?></span><br />
 											</td>
 										</tr>

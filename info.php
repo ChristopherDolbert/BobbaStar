@@ -109,7 +109,8 @@ if (!isset($_SESSION['username'])) {
 							</h2>
 							<div id="notfound-looking-for" class="box-content">
 								<form method="post" action="#">
-									<td class='tbl'><input style='width:94%' type="text" placeholder="Pseudo..." name="recherche_pseudo" value="<?php if (!empty($_POST["recherche_pseudo"])) {
+									<td class='tbl'>
+										<input style='width:97%' type="text" placeholder="Pseudo..." name="recherche_pseudo" value="<?php if (!empty($_POST["recherche_pseudo"])) {
 																																					echo htmlspecialchars($_POST["recherche_pseudo"], ENT_QUOTES);
 																																				} ?>" class="text" style="width: 240px"><br /><br />
 										<input style='width:100%' type="submit" value="Rechercher" />
@@ -193,8 +194,8 @@ if (!isset($_SESSION['username'])) {
 		$search = $bdd->query("SELECT * FROM bans WHERE user_id = '" . $pseudo['id'] . "' OR ip = '" . $pseudo['ip_current'] . "' ");
 		$ok = $search->fetch();
 		$stamp_now = time();
-		$stamp_expire = $ok['expire'];
-		$expire = date('d/m/Y H:i', $ok['expire']);
+		$stamp_expire = $ok['ban_expire'];
+		$expire = date('d/m/Y H:i', $ok['ban_expire']);
 		?>
 		<div id="column1" class="column">
 			<div class="habblet-container ">

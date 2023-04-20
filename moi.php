@@ -72,7 +72,7 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
                 <div id="wide-personal-info">
 
                     <div id="habbo-plate">
-                        <a href="<?PHP echo $url; ?>/profile">
+                        <a href="<?PHP echo $url; ?>/info">
                             <img src="<?php echo $avatarimage; ?><?php echo $user['look']; ?>">
                         </a>
                     </div>
