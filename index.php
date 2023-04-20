@@ -13,8 +13,12 @@ include("./locale/$language/login.php");
 $pagename = "Accueil";
 $pageid = "index";
 
-$sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
+$sql = $bdd->query("SELECT * FROM gabcms_config, gabcms_maintenance WHERE gabcms_config.id = '1' AND gabcms_maintenance.id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
+
+if($cof['activ'] == "Oui") {
+    Redirect($url . "/maintenance");
+}
 
 if (isset($_SESSION['username'])) {
     Redirect($url . "/moi");
@@ -28,7 +32,7 @@ if (isset($_GET['do'])) {
             if (empty($username) || empty($password)) {
                 $erreur = "Merci de remplir les champs vides.";
             } else {
-                $sql = $bdd->prepare("SELECT id,disabled,password FROM users WHERE username = ? LIMIT 1");
+                $sql = $bdd->prepare("SELECT id,disabled,password,rank FROM users WHERE username = ? LIMIT 1");
                 $sql->execute([$username]);
                 $row = $sql->rowCount();
                 $assoc = $sql->fetch(PDO::FETCH_ASSOC);
@@ -64,6 +68,7 @@ if (isset($_GET['do'])) {
                             $sql->execute([time(), $_SERVER['REMOTE_ADDR'], $username]);
                             $_SESSION['username'] = $username;
                             $_SESSION['password'] = $password;
+                            $_SESSION['rank'] = $assoc['rank'];
                             Redirect($url . "/moi");
                         }
                     }

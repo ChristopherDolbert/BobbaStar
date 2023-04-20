@@ -16,49 +16,63 @@ include("locale/" . $language . "/maintenance.php");
 $pageid = "maintenance";
 
 if (isset($_SESSION['username'])) {
-    Redirect("" . $url . "/moi");
+    if($_SESSION['rank'] >= 9) {
+        Redirect("" . $url . "/moi");
+    } else {
+        session_destroy();
+    }
 }
+
 if (isset($_GET['do'])) {
     $do = Secu($_GET['do']);
     if ($do == "se_connecter") {
         if (isset($_POST['username']) && isset($_POST['password'])) {
             $username = Secu($_POST['username']);
-            $password = GabCMSHash($_POST['password']);
+            $password = Secu($_POST['password']);
             if (empty($username) || empty($password)) {
                 $erreur = "Merci de remplir les champs vides.";
             } else {
-                $sql = $bdd->query("SELECT id,disabled,rank FROM users WHERE username = '" . $username . "' AND password = '" . $password . "' LIMIT 1");
+                $sql = $bdd->prepare("SELECT id,disabled,password,rank FROM users WHERE username = ? LIMIT 1");
+                $sql->execute([$username]);
                 $row = $sql->rowCount();
                 $assoc = $sql->fetch(PDO::FETCH_ASSOC);
+                $pass = $assoc['password'];
+                $userId = $assoc['id'];
+                $rank = $assoc['rank'];
 
-                if ($row < 1) {
+                if ($row < 1 || !password_verify($password, $pass)) {
                     $erreur = "Ton <b>pseudo</b> et/ou <b>ton mot de passe</b> est incorrect.";
                 } else {
+
                     if ($assoc['disabled'] == 1) {
                         $erreur = "Ton compte a été désactivé par l'administration! En cas d'erreur merci de nous contacter.";
                     } else {
-                        $sql = $bdd->query("SELECT * FROM bans WHERE value = '" . $username . "'");
+                        $sql = $bdd->prepare("SELECT * FROM bans WHERE user_id = ? OR ip = ?");
+                        $sql->execute([$userId, $_SERVER['REMOTE_ADDR']]);
                         $b = $sql->fetch(PDO::FETCH_ASSOC);
                         $row_ban = $sql->rowCount();
 
 
                         $stamp_now = time();
-                        $stamp_expire = $b['expire'];
-                        $expire = date('d/m/Y H:i:s', $b['expire']);
+                        $stamp_expire = $b['ban_expire'];
+                        $expire = date('d/m/Y H:i:s', $stamp_expire);
 
                         if ($stamp_now < $stamp_expire) {
+
                             $erreur = "Ton compte a été bannis pour la raison suivante :<br/> <b>" . $b['reason'] . "</b>. Il expira le: <b>" . $expire . "</b>";
                         } else {
                             if ($row_ban > 0) {
-                                $bdd->query("DELETE FROM bans WHERE value = '" . $username . "'");
+                                $sql = $bdd->prepare("DELETE FROM bans WHERE user_id = ? OR ip = ?");
+                                $sql->execute([$userId, $_SERVER['REMOTE_ADDR']]);
                             }
-                            if ($assoc['rank'] < '5') {
-                                $erreur = "Tu n'as pas le rank requis.";
-                            } else {
-                                $bdd->query("UPDATE users SET last_online = '" . time() . "' WHERE username = '" . $username . "'");
+                            if ($rank >= 9) {
+                                $sql = $bdd->prepare("UPDATE users SET last_login = ?, ip_current = ? WHERE username = ?");
+                                $sql->execute([time(), $_SERVER['REMOTE_ADDR'], $username]);
                                 $_SESSION['username'] = $username;
                                 $_SESSION['password'] = $password;
-                                Redirect("" . $url . "/moi");
+                                Redirect($url . "/moi");
+                            } else {
+                                $erreur = "Tu ne fais pas parti de l'équipe de maintenance.";
                             }
                         }
                     }
@@ -72,10 +86,8 @@ $maintenance = $bdd->query("SELECT * FROM gabcms_maintenance WHERE id = '1'");
 $m = $maintenance->fetch(PDO::FETCH_ASSOC);
 
 if ($m['activ'] == "Non") {
-    Redirect("" . $url . "/moi");
+    Redirect($url);
 }
-
-
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
