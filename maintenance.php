@@ -45,8 +45,8 @@ if(isset($_GET['do'])) {
 										
 										
 									$stamp_now = time();
-									$stamp_expire = $b['expire'];
-									$expire = date('d/m/Y H:i:s', $b['expire']);
+									$stamp_expire = $b['ban_expire'];
+									$expire = date('d/m/Y H:i:s', $b['ban_expire']);
 									
 									if($stamp_now < $stamp_expire){
 									$erreur = "Ton compte a été bannis pour la raison suivante :<br/> <b>".$b['reason']."</b>. Il expira le: <b>".$expire."</b>";

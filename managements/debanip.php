@@ -78,8 +78,8 @@ Voici la liste des bannis actuel.
  $sql = $bdd->query("SELECT * FROM bans WHERE bantype='ip' ORDER BY id DESC");
  while($a = $sql->fetch()) {
     $stamp_now = mktime(date('H:i:s d-m-Y'));
-    $stamp_expire = $a['expire'];
-    $expire = date('d/m/Y H:i', $a['expire']);
+    $stamp_expire = $a['ban_expire'];
+    $expire = date('d/m/Y H:i', $a['ban_expire']);
 ?>
         <tr class="bas">
             <td class="bas"><?PHP echo $a['value']; ?></td>

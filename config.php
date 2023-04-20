@@ -52,8 +52,8 @@ if (isset($_SESSION['username'])) {
 	$sql = $bdd->query("SELECT * FROM bans WHERE user_id = '" . $user['id'] . "'");
 	$b = $sql->fetch(PDO::FETCH_ASSOC);
 	$stamp_now = $nowtime;
-	$stamp_expire = $b['expire'];
-	$expire = date('d/m/Y H:i', $b['expire']);
+	$stamp_expire = $b['ban_expire'];
+	$expire = date('d/m/Y H:i', $b['ban_expire']);
 	if ($stamp_now < $stamp_expire) {
 		Redirect("" . $url . "/banned");
 	}

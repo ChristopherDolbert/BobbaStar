@@ -228,7 +228,7 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
                         <h2 class="title">Radio</h2>
 
                         <div class="box-content">
-                            <iframe width="100%" height="405" src="https://www.youtube.com/watch?v=QvLVvTqpv0A" frameborder="0" allowfullscreen>
+                            <p style="text-align:center">Bientôt...</p>
                         </div>
                     </div>
                 </div>

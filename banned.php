@@ -11,7 +11,7 @@
 
 $query = $bdd->query("SELECT * FROM bans WHERE value = '".$username."'"); 
 $data = $query->fetch(PDO::FETCH_ASSOC);
-$expire = date('d/m/Y H:i', $data['expire']);
+$expire = date('d/m/Y H:i', $data['ban_expire']);
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
