@@ -18,6 +18,7 @@ $locale['register'] = "Inscription";
 $locale['forgot'] = "J'ai perdu mon mot de passe/pseudo";
 $locale['tags'] = "Les Habbos aiment...";
 $locale['users_online_now'] = "Joueurs en ligne!";
+$locale['create_habbo'] = "Créez votre Habbo";
 
 // Flash promo
 $locale['slogan'] = "".$sitename." est un monde virtuel o&ugrave; vous pourrez faire de nouvelles rencontres";
@@ -81,7 +82,7 @@ $locale['copyright_habbo'] = "&copy; 2008 Sulake Corporation LTD. Les marques d&
 NakedCMS est un CMS cr&eacute;e par Knock et Bubble, avec l'aimable participation de Nidalos.
 Naked Emulator, cod&eacute; par Nidalos, est un serveur cr&eacute;e sp&eacute;cialement pour le Projet Naked.
 NakedGroup, tous droits r&eacute;serv&eacute;s.";
-$locale['link_privacy'] = "La Charte de protection des donn&eacute;es";
+$locale['link_privacy'] = "Charte de protection des donn&eacute;es";
 $locale['link_disclaimer'] = "Conditions d'utilisation";
 $locale['link_homepage'] = "Accueil";
 ?>
