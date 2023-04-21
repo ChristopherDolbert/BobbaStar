@@ -17,12 +17,15 @@ $sql = $bdd->query("SELECT * FROM gabcms_config, gabcms_maintenance WHERE gabcms
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
 
 if($cof['activ'] == "Oui") {
-    Redirect($url . "/maintenance");
+    header("Location: $url/maintenance");
+    exit;
 }
 
 if (isset($_SESSION['username'])) {
-    Redirect($url . "/moi");
+    header("Location: $url/moi");
+    exit;
 }
+
 if (isset($_GET['do'])) {
     $do = Secu($_GET['do']);
     if ($do == "se_connecter") {
@@ -40,7 +43,7 @@ if (isset($_GET['do'])) {
                 $userId = $assoc['id'];
 
                 if ($row < 1 || !password_verify($password, $pass)) {
-                    $erreur = $locale['error_1'];;
+                    $erreur = $locale['error_1'];
                 } else {
 
                     if ($assoc['disabled'] == 1) {
@@ -51,14 +54,12 @@ if (isset($_GET['do'])) {
                         $b = $sql->fetch(PDO::FETCH_ASSOC);
                         $row_ban = $sql->rowCount();
 
-
                         $stamp_now = time();
                         $stamp_expire = $b['ban_expire'];
                         $expire = date('d/m/Y H:i:s', $stamp_expire);
 
                         if ($stamp_now < $stamp_expire) {
-
-                            $erreur = "Ton compte a été bannis pour la raison suivante :<br/> <b>" . $b['reason'] . "</b>. Il expira le: <b>" . $expire . "</b>";
+                            $erreur = "Ton compte a été banni pour la raison suivante :<br/> <b>" . $b['reason'] . "</b>. Il expire le: <b>" . $expire . "</b>";
                         } else {
                             if ($row_ban > 0) {
                                 $sql = $bdd->prepare("DELETE FROM bans WHERE user_id = ? OR ip = ?");
@@ -69,7 +70,8 @@ if (isset($_GET['do'])) {
                             $_SESSION['username'] = $username;
                             $_SESSION['password'] = $password;
                             $_SESSION['rank'] = $assoc['rank'];
-                            Redirect($url . "/moi");
+                            header("Location: $url/moi");
+                            exit;
                         }
                     }
                 }
@@ -77,6 +79,7 @@ if (isset($_GET['do'])) {
         }
     }
 }
+
 
 ?>
 

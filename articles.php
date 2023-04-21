@@ -6,35 +6,44 @@
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
-include("./config.php");
+include "./config.php";
 $pagename = "Articles";
 $pageid = "articles";
 
+session_start();
+
 if (!isset($_SESSION['username'])) {
-	Redirect("" . $url . "/index");
+	Redirect($url . "/index");
 }
+
 $sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
-$cof = $sql->fetch();
+$cof = $sql->fetch(PDO::FETCH_ASSOC);
+
 if (isset($_GET['id'])) {
 	$id = Secu($_GET['id']);
 
-	$sqle = $bdd->query("SELECT * FROM gabcms_news WHERE id = '" . $id . "'");
+	$sqle = $bdd->prepare("SELECT * FROM gabcms_news WHERE id = :id");
+	$sqle->bindValue(':id', $id);
+	$sqle->execute();
+
 	$n = $sqle->fetch(PDO::FETCH_ASSOC);
 
 	if (isset($_POST['message'])) {
 		$message = Secu($_POST['message']);
-		if ($message != "" && $id != "") {
+
+		if ($message !== "" && $id !== "") {
 			$insertn1 = $bdd->prepare("INSERT INTO gabcms_news_recommande (news_id,message,pseudo,date,ip) VALUES (:news_id, :message, :pseudo, :date, :ip)");
 			$insertn1->bindValue(':news_id', $n['id']);
 			$insertn1->bindValue(':message', $message);
-			$insertn1->bindValue(':pseudo', $user['username']);
+			$insertn1->bindValue(':pseudo', $_SESSION['username']);
 			$insertn1->bindValue(':date', FullDate('full'));
-			$insertn1->bindValue(':ip', $user['ip_current']);
+			$insertn1->bindValue(':ip', $_SERVER['REMOTE_ADDR']);
 			$insertn1->execute();
+
 			$affichage = "<div id=\"purse-redeem-result\">
         <div class=\"redeem-error\">
             <div class=\"rounded rounded-green\">
-              Tu as bien voter pour cet article!
+              Tu as bien voté pour cet article!
             </div>
         </div>
 </div>";
@@ -49,6 +58,7 @@ if (isset($_GET['id'])) {
 		}
 	}
 }
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
@@ -81,25 +91,25 @@ if (isset($_GET['id'])) {
 	<script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>js/tooltip.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 	<script src="<?PHP echo $imagepath; ?>static/js/habboclub.js" type="text/javascript"></script>
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/myhabbo/control.textarea.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/myhabbo/control.textarea.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 	<script src="<?PHP echo $imagepath; ?>static/js/minimail.js" type="text/javascript"></script>
 	<meta name="description" content="<?PHP echo $description; ?>" />
 	<meta name="keywords" content="<?PHP echo $keyword; ?>" />
 	<!--[if IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 <![endif]-->
 	<!--[if lt IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 <![endif]-->
 	<!--[if lt IE 7]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/pngfix.js" type="text/javascript"></script>
 <script type="text/javascript">
 try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
