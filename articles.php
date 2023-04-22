@@ -10,7 +10,6 @@ include "./config.php";
 $pagename = "Articles";
 $pageid = "articles";
 
-session_start();
 
 if (!isset($_SESSION['username'])) {
 	Redirect($url . "/index");
