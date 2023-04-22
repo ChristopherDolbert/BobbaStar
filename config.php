@@ -21,18 +21,21 @@ if (function_exists('date_default_timezone_set')) {
 
 if (isset($_SESSION['username'])) {
 	$username = Secu($_SESSION['username']);
-	$sql = $bdd->query("SELECT * FROM users WHERE username = '" . $username . "' LIMIT 1");
-	$row = $sql->rowCount();
+	$stmt = $bdd->prepare("SELECT * FROM users WHERE username = :username LIMIT 1");
+	$stmt->execute(['username' => $_SESSION['username']]);
+	$row = $stmt->rowCount();
 
 	if ($row > 0) {
-		$user = $sql->fetch(PDO::FETCH_ASSOC);
-		$bdd->query("UPDATE users SET ip_current = '" . $_SERVER["REMOTE_ADDR"] . "' WHERE id = '" . $user['id'] . "'");
+		$user = $stmt->fetch(PDO::FETCH_ASSOC);
+		$stmt = $bdd->prepare("UPDATE users SET ip_current = :ip_address WHERE id = :user_id");
+		$stmt->execute(['ip_address' => $_SERVER["REMOTE_ADDR"], 'user_id' => $user['id']]);
 	} else {
 		session_destroy();
-		Redirect("" . $url . "");
+		Redirect($url);
 		exit();
 	}
 }
+
 $maintid = "1";
 $sqlss = $bdd->query("SELECT * FROM gabcms_maintenance WHERE id = '1'");
 $c = $sqlss->fetch(PDO::FETCH_ASSOC);
@@ -59,12 +62,12 @@ if (isset($_SESSION['username'])) {
 #|          Sécurité            #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
-$injection = 'INSERT|UNION|SELECT|NULL|COUNT|FROM|LIKE|DROP|TABLE|WHERE|COUNT|COLUMN|TABLES|INFORMATION_SCHEMA|OR';
 foreach ($_GET as $getSearchs) {
 	$getSearch = explode(" ", $getSearchs);
 	foreach ($getSearch as $k => $v) {
-		if (in_array(strtoupper(trim($v)), explode('|', $injection))) {
-			exit;
+		$v = trim(strip_tags($v)); // Nettoyer les valeurs d'entrée et éviter les failles XSS
+		if (preg_match('/\b(?:insert|union|select|null|count|from|like|drop|table|where|column|tables|information_schema|or)\b/i', $v)) {
+			exit; // Utiliser des expressions régulières pour détecter les motifs d'injection plutôt que d'utiliser un tableau de chaînes
 		}
 	}
 }
