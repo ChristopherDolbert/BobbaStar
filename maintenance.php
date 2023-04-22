@@ -16,7 +16,7 @@ include("locale/" . $language . "/maintenance.php");
 $pageid = "maintenance";
 
 if (isset($_SESSION['username'])) {
-    if($_SESSION['rank'] >= 9) {
+    if ($_SESSION['rank'] >= 9) {
         Redirect("" . $url . "/moi");
     } else {
         session_destroy();
@@ -117,7 +117,7 @@ if ($m['activ'] == "Non") {
                 <div class="fireman">
 
                     <h1>Maintenance break!</h1>
-                    
+
                     <p>
                         Nous sommes d&eacute;sol&eacute;s mais tu ne peux pas te connecter &agrave; <?php echo $shortname; ?> pour l'instant.<br>
                         Nous sommes en train de mettre &agrave; jour <?php echo $shortname; ?>.
