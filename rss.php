@@ -9,18 +9,18 @@ echo "
     <link>" . $url . "</link>
     <description>The latest happenings on " . $shortname . " direct to your news reader</description>";
 
-$sql = $bdd->query("SELECT * FROM gabcms_news ORDER BY -id");
+$sql = $bdd->query("SELECT * FROM gabcms_news ORDER BY id ASC");
 $c = 0;
 while ($news = $sql->fetch()) {
   $c++;
   echo "
     <item>
-      <title>" . $news[title]  . "</title>
-      <link>" . $url . "articles.php?id=" . $news[id] . "</link>
-      <description>" . $news[shortstory] . "</description>
-      <pubDate>" . $news[date] . "</pubDate>
-      <guid isPermaLink=\"true\">" . $url . "news.php?id=" . $news[id] . "</guid>
-      <dc:date>" . $news[id] . "</dc:date>
+      <title>" . $news['title']  . "</title>
+      <link>" . $url . "/articles.php?id=" . $news['id'] . "</link>
+      <description>" . $news['snippet'] . "</description>
+      <pubDate>" . date('d/m/Y à H:i', $news['date']) . "</pubDate>
+      <guid isPermaLink=\"true\">" . $url . "/articles.php?id=" . $news['id'] . "</guid>
+      <dc:date>" . $news['id'] . "</dc:date>
     </item>";
 }
 
