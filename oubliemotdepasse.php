@@ -386,6 +386,11 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 						</div>
 
 					</div>
+
+					<div id="footer">
+						<p><a href='<?PHP echo $url; ?>' target="_self"><?php echo $locale['link_homepage']; ?></a> | <a href='<?PHP echo $url; ?>/vieprivee' target="_self"><?php echo $locale['link_privacy']; ?></a> | <a href="<?PHP echo $url; ?>/disclaimer" target="_blank"><?php echo $locale['link_disclaimer']; ?></a></p>
+						<p><?php echo $locale['copyright_habbo']; ?></p>
+					</div>
 				</div>
 
 
@@ -395,11 +400,6 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 				HabboView.run();
 			</script>
 		</div>
-	</div>
-
-	<div id="footer">
-		<p><a href='<?PHP echo $url; ?>' target="_self"><?php echo $locale['link_homepage']; ?></a> | <a href='<?PHP echo $url; ?>/vieprivee' target="_self"><?php echo $locale['link_privacy']; ?></a> | <a href="<?PHP echo $url; ?>/disclaimer" target="_blank"><?php echo $locale['link_disclaimer']; ?></a></p>
-		<p><?php echo $locale['copyright_habbo']; ?></p>
 	</div>
 
 
