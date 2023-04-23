@@ -612,13 +612,11 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                         <label>
 
                             <input type='checkbox' name='bean_condition' id='terms' value='true'
-                                   class='checkbox-field' checked/>
+                                   class='checkbox-field' required/>
 
                             J'accepte les <a href="#" target="_blank"
                                              onclick="window.open('../disclaimer'); return false;">conditions générales
                                 d'utilisations</a><br/>
-                            <input type='checkbox' name='envoimail' value='1' checked/> Oui, je souhaite recevoir les
-                            newsletters envoyées par <b><?PHP echo $sitename; ?></b>
 
                         </label>
 
