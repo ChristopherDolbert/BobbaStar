@@ -1,3 +1,17 @@
-var Pngfix={doPngImageFix:function(){var B=navigator.appVersion.split("MSIE");var A=parseFloat(B[1]);if((A>=5.5)&&(document.body.filters)){$$(".ad-container").each(function(F){var I=F.getElementsByTagName("img");for(var G=0,D=I.length;G<D;G++){var H=I[G];if(H){var L=H.src.toUpperCase();if(L.substring(L.length-3,L.length)=="PNG"){var J=(H.id)?"id='"+H.id+"' ":"";
-var M=(H.className)?"class='"+H.className+"' ":"";var E=(H.title)?"title='"+H.title+"' ":"title='"+H.alt+"' ";var K="display:inline-block;"+H.style.cssText;if(H.align=="left"){K="float:left;"+K}if(H.align=="right"){K="float:right;"+K}var C="<span "+J+M+E+' style="width:'+H.width+"px; height:"+H.height+"px;"+K+";filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+H.src+"', sizingMethod='scale');\"></span>";
-H.outerHTML=C}}}})}}};
+var Pngfix={doPngImageFix:function(){var arVersion=navigator.appVersion.split("MSIE");
+var version=parseFloat(arVersion[1]);
+if((version>=5.5)&&(document.body.filters)){document.getElementsByClassName("ad-container").each(function(element){var imageElements=element.getElementsByTagName("img");
+for(var i=0,length=imageElements.length;
+i<length;
+i++){var img=imageElements[i];
+if(img){var imageName=img.src.toUpperCase();
+if(imageName.substring(imageName.length-3,imageName.length)=="PNG"){var imgID=(img.id)?"id='"+img.id+"' ":"";
+var imgClass=(img.className)?"class='"+img.className+"' ":"";
+var imgTitle=(img.title)?"title='"+img.title+"' ":"title='"+img.alt+"' ";
+var imgStyle="display:inline-block;"+img.style.cssText;
+if(img.align=="left"){imgStyle="float:left;"+imgStyle
+}if(img.align=="right"){imgStyle="float:right;"+imgStyle
+}var strNewHTML="<span "+imgID+imgClass+imgTitle+" style=\"width:"+img.width+"px; height:"+img.height+"px;"+imgStyle+";filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+img.src+"', sizingMethod='scale');\"></span>";
+img.outerHTML=strNewHTML
+}}}})
+}}}

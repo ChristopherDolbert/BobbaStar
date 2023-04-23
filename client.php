@@ -5,11 +5,14 @@
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
-include("./config.php");
+require_once("./config.php");
+
 $pagename = "Hôtel";
 
 if (!isset($_SESSION['username'])) {
   Redirect($url . "/index");
+  header("Location: " . $url . "/index");
+  exit;
 }
 
 $sql = $bdd->query("SELECT nitro_client FROM gabcms_client WHERE id = '1'");
@@ -20,6 +23,7 @@ $cof = $sql2->fetch(PDO::FETCH_ASSOC);
 $ssoTicket = "BBSTR-" . GenerateRandom("sso");
 $updateSSO = $bdd->prepare("UPDATE users SET auth_ticket = ? WHERE id = ?");
 $updateSSO->execute([$ssoTicket, $user['id']]);
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -55,24 +59,24 @@ $updateSSO->execute([$ssoTicket, $user['id']]);
   <script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
 
   <script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/habboclient.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/habboflashclient.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/habboclient.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/habboflashclient.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 
   <meta name="description" content="<?PHP echo $description; ?>" />
   <meta name="keywords" content="<?PHP echo $keyword; ?>" />
 
   <!--[if IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 <![endif]-->
   <!--[if lt IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 <![endif]-->
   <!--[if lt IE 7]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/pngfix.js" type="text/javascript"></script>
 <script type="text/javascript">
 try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
@@ -82,7 +86,7 @@ try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
 body { behavior: url(http://www.habbo.co.uk/js/csshover.htc); }
 </style>
 <![endif]-->
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/news.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/news.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
   <script src="<?PHP echo $imagepath; ?>static/js/news.js" type="text/javascript"></script>
   <meta name="build" content="<?PHP echo $build; ?> >> <?PHP echo $version; ?>" />
 
