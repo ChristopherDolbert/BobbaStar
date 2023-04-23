@@ -141,12 +141,12 @@ if ($row['noob'] != "Oui") {
                     <div id="column2" class="column">
                         <div class="habblet-container ">
 
-                            <div class="cbb clearfix lightgreen">
+                            <div style="background-color:white !important" class="cbb clearfix lightgreen">
 
                                 <div class="welcome-intro clearfix">
                                     <img alt="Prince-Cutie9" src="https://avatar.myhabbo.fr/?figure=<?php echo $user['look']; ?>&size=b&action=crr=667&direction=3&head_direction=3&gesture=srp
                                     " width="64" height="110" class="welcome-habbo" />
-                                    <div style="padding-bottom:5px !important;text-align:center" id="welcome-intro-welcome-user">Bienvenue <?php echo $sitename; ?>!</div>
+                                    <div style="padding-bottom:5px !important;text-align:center" id="welcome-intro-welcome-user"><?php echo $user['username']; ?>, bienvenue <?php echo $sitename; ?>!</div>
                                     <div style="padding-top:0 !important;text-align:center" id="welcome-intro-welcome-party" class="box-content">Choisis ton appart, et deviens officiellement propriétaire de ton premier appart !</div>
                                 </div>
 
