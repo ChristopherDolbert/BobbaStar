@@ -9,7 +9,7 @@ echo "
     <link>" . $url . "</link>
     <description>The latest happenings on " . $shortname . " direct to your news reader</description>";
 
-$sql = $bdd->query("SELECT * FROM gabcms_news ORDER BY id ASC");
+$sql = $bdd->query("SELECT * FROM gabcms_news ORDER BY id DESC");
 $c = 0;
 while ($news = $sql->fetch()) {
   $c++;
