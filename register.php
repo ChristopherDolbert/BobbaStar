@@ -331,7 +331,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                 <div id="gender-selection">
                     <div class="select_gender boy selected">
                         <div class="select-container">
-                            <input type="radio" id="radio-button-boy" name="bean_gender" value="M" checked="checked"/>
+                            <input type='radio' id='radio-button-boy' name='bean_gender' value='M' checked='checked'/>
                             <label for="radio-button-boy">Garçon</label>
                         </div>
                         <div class="silhouette">
@@ -340,7 +340,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                     </div>
                     <div class="select_gender girl">
                         <div class="select-container">
-                            <input type="radio" id="radio-button-girl" name="bean_gender" value="F"/>
+                            <input type='radio' id='radio-button-girl' name='bean_gender' value='F'/>
                             <label for="radio-button-girl">Fille</label>
                         </div>
                         <div class="silhouette">
@@ -530,7 +530,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                             <div class="label" class="registration-text"><b><span
                                             style="font-size:11px; color: #22b9f1;">Pseudo</span></b></div>
 
-                            <input type="text" id="pseudo" name="bean_name" value=""/>
+                            <input type='text' id='pseudo' name='bean_name' value='' required/>
 
                         </div>
 
@@ -550,7 +550,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                             <div class="label" class="registration-text"><span
                                         style="font-size:11px; color: #22b9f1;"><b>Email</b></span></div>
 
-                            <input type="text" id="email-address" name="bean_email" value=""/>
+                            <input type='text' id='email-address' name='bean_email' value='' required/>
 
                         </div>
 
@@ -572,8 +572,8 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                 <div class="label" class="registration-text"><span
                                             style="font-size:11px; color: #22b9f1;"><b>Mot de passe</b></span></div>
 
-                                <input type="password" name="bean_password" id="register-password" maxlength="32"
-                                       value=""/>
+                                <input type='password' name='bean_password' id='register-password' maxlength='32'
+                                       value='' required/>
 
                             </div>
 
@@ -583,8 +583,8 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                             style="font-size:11px; color: #22b9f1;"><b>Re-tape ton Mot de Passe</b>
                                 </div>
 
-                                <input type="password" name="bean_repassword" id="register-password2" maxlength="32"
-                                       value=""/>
+                                <input type='password' name='bean_repassword' id='register-password2' maxlength='32'
+                                       value='' required/>
 
                             </div>
 
@@ -611,13 +611,13 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 
                         <label>
 
-                            <input type="checkbox" name="bean_condition" id="terms" value="true"
-                                   class="checkbox-field"/>
+                            <input type='checkbox' name='bean_condition' id='terms' value='true'
+                                   class='checkbox-field' required/>
 
                             J'accepte les <a href="#" target="_blank"
                                              onclick="window.open('../disclaimer'); return false;">conditions générales
                                 d'utilisations</a><br/>
-                            <input type="checkbox" name="envoimail" value="1"/> Oui, je souhaite recevoir les
+                            <input type='checkbox' name='envoimail' value='1'/> Oui, je souhaite recevoir les
                             newsletters envoyées par <b><?PHP echo $sitename; ?></b>
 
                         </label>

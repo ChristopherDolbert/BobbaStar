@@ -194,7 +194,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
             <div id="column1" class="column">
                 <div class="habblet-container ">
                     <div class="cbb clearfix yellow">
-                        <h2 class="title"><span style="float: left;">Managers</span> <span style="float: right; font-weight: normal; font-size: 75%;">Ils gèrent l'hôtel</span>
+                        <h2 class="title"><span style="float: left;">Administrateurs</span> <span style="float: right; font-weight: normal; font-size: 75%;">Ils gèrent l'hôtel</span>
 
                         </h2>
                         <div class="box-content">
@@ -273,7 +273,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                 </script>
                 <div class="habblet-container ">
                     <div class="cbb clearfix green">
-                        <h2 class="title"><span style="float: left;">Administrateurs</span> <span style="float: right; font-weight: normal; font-size: 75%;">Ils animent l'hôtel</span>
+                        <h2 class="title"><span style="float: left;">Animateurs</span> <span style="float: right; font-weight: normal; font-size: 75%;">Ils animent l'hôtel</span>
 
                         </h2>
                         <div class="box-content">
