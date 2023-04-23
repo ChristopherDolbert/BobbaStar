@@ -324,7 +324,7 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 
                         <div class="habblet-container ">
 
-                            <a href="register.php"><img src="./web-gallery/v2/images/landing/uk_party_frontpage_image.gif" alt="" /></a>
+                            <a href="register.php"><img src="./web-gallery/v2/images/landing/le_toit.gif" alt="" /></a>
 
 
 
