@@ -101,7 +101,7 @@ if ($row['noob'] != "Oui") {
                         <div class="habblet-container ">
                             <div class="cbb clearfix lightgreen ">
 
-                                <h2 class="title">Choisis ton appart pour avoir des mobis gratuitement!
+                                <h2 class="title">Choisis ton appart gratuitement!
                                 </h2>
                                 <div id="roomselection-welcome-intro" class="box-content">
                                     Choisis ton appart pour avoir des mobis gratuitement tous les jours !
