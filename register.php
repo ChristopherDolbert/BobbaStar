@@ -612,7 +612,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                         <label>
 
                             <input type='checkbox' name='bean_condition' id='terms' value='true'
-                                   class='checkbox-field' checked/>
+                                   class='checkbox-field' required/>
 
                             J'accepte les <a href="#" target="_blank"
                                              onclick="window.open('../disclaimer'); return false;">conditions générales

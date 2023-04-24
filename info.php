@@ -15,14 +15,15 @@ if (isset($_GET['pseudo'])) {
 } else {
 	$pseudo = $_SESSION['username'];
 }
-$sql = $bdd->query("SELECT * FROM users WHERE username = '" . $pseudo . "' LIMIT 1");
+$sql = $bdd->prepare("SELECT * FROM users WHERE username = ? LIMIT 1");
+$sql->execute([$pseudo]);
 $row = $sql->rowCount();
 if ($row > 0) {
 	$pseudo = $sql->fetch(PDO::FETCH_ASSOC);
 }
 
 if (!isset($_SESSION['username'])) {
-	Redirect("" . $url . "/index");
+	Redirect($url . "/index");
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -122,7 +123,8 @@ if (!isset($_SESSION['username'])) {
 										</tr>
 										<?php
 										if (isset($_POST['recherche_pseudo'])) {
-											$sql2 = $bdd->query("SELECT * FROM users WHERE username LIKE '%" . $_POST['recherche_pseudo'] . "%' ORDER BY username ASC LIMIT 0,10");
+											$sql2 = $bdd->prepare("SELECT * FROM users WHERE username LIKE ? ORDER BY username ASC LIMIT 0,10");
+                                            $sql2->execute(['%' . $_POST['recherche_pseudo'] . '%']);
 											while ($a = $sql2->fetch()) {
 										?>
 												<tr class="bas">
@@ -191,7 +193,8 @@ if (!isset($_SESSION['username'])) {
 		if ($pseudo['rank'] == 8 && $pseudo['gender'] == "F") {
 			$modif_info = "est <b>fondatrice</b>";
 		}
-		$search = $bdd->query("SELECT * FROM bans WHERE user_id = '" . $pseudo['id'] . "' OR ip = '" . $pseudo['ip_current'] . "' ");
+		$search = $bdd->prepare("SELECT * FROM bans WHERE user_id = ? OR ip = ?");
+        $search->execute([$pseudo['id'], $pseudo['ip_current']]);
 		$ok = $search->fetch();
 		$stamp_now = time();
 		$stamp_expire = $ok['ban_expire'];
@@ -249,7 +252,8 @@ if (!isset($_SESSION['username'])) {
 					</h2>
 					<div id="notfound-looking-for" class="box-content">
 						<?php
-						$userbadges = $bdd->query("SELECT DISTINCT * FROM users_badges WHERE user_id = '" . $pseudo['id'] . "'");
+						$userbadges = $bdd->prepare("SELECT DISTINCT * FROM users_badges WHERE user_id = ?");
+                        $userbadges->execute([$pseudo['id']]);
 						if ($userbadges->rowCount() == 0) {
 							echo "<center>Aucun badge</center>";
 						}
