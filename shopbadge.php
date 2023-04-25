@@ -240,7 +240,6 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                         <h2 class='title'>Ton porte monnaie
                         </h2>
                         <div id="purse-habblet">
-
                             <ul>
                                 <li class="even icon-purse">
                                     <div>Tu as actuellement:</div>
@@ -250,7 +249,6 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                             </ul>
                             <div id="purse-redeem-result">
                             </div>
-
                         </div>
                     </div>
                     <script type="text/javascript">

@@ -189,12 +189,14 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 							</h2>
 							<div id="purse-habblet">
 								<ul>
-									<li class="even icon-purse-jetons">
-										<div>Vous avez actuellement:</div>
-										<span class="purse-balance-amount"><?PHP echo $user['jetons']; ?> Jetons</span>
+									<li class="even icon-purse">
+										<div>Tu as actuellement:</div>
+										<span class="purse-balance-amount"><?php echo $user['jetons']; ?> Jetons</span>
+										<div class="purse-tx"><a href="jetons">Acheter des jetons</a></div>
 									</li>
 								</ul>
-								</ul>
+								<div id="purse-redeem-result">
+								</div>
 							</div>
 						</div>
 						<script type="text/javascript">
