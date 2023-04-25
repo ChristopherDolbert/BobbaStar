@@ -441,9 +441,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 Pngfix.doPngImageFix();
 </script>
 <![endif]-->
-    <!-- FOOTER -->
-    <?PHP include("./template/footer.php"); ?>
-    <!-- FIN FOOTER -->
+
     <div style="clear: both;"></div>
     <script type="text/javascript">
         HabboView.run();

@@ -136,9 +136,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 	    </script>
 
 	    </div>
-	    <!-- FOOTER -->
-	    <?PHP include("./template/footer.php"); ?>
-	    <!-- FIN FOOTER -->
+
 	</body>
 
 	</html>

@@ -244,9 +244,6 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 			HabboView.run();
 		</script>
 
-		<!-- FOOTER -->
-		<?PHP include("./template/footer.php"); ?>
-		<!-- FIN FOOTER -->
 	</body>
 
 	</html>
