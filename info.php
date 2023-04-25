@@ -25,6 +25,10 @@ if ($row > 0) {
 if (!isset($_SESSION['username'])) {
 	Redirect($url . "/index");
 }
+
+if (!isset($pseudo['credits'])) {
+	Redirect($url . "/error");
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
@@ -114,7 +118,8 @@ if (!isset($_SESSION['username'])) {
 										<input style='width:97%' type="text" placeholder="Pseudo..." name="recherche_pseudo" value="<?php if (!empty($_POST["recherche_pseudo"])) {
 																																		echo htmlspecialchars($_POST["recherche_pseudo"], ENT_QUOTES);
 																																	} ?>" class="text" style="width: 240px" required><br /><br />
-										<input style='width:100%' type="submit" value="Rechercher" />
+
+										<input class="submit" style='width:100%' type="submit" value="Rechercher" />
 								</form><br />
 								<table>
 									<tbody>
@@ -130,17 +135,17 @@ if (!isset($_SESSION['username'])) {
 										?>
 													<tr class="bas">
 														<td class="bas">
-															<div style="width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url(<?php echo $avatarimage; ?><?PHP echo Secu($a['look']); ?>&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);"></div><a href="<?PHP echo $url; ?>/info?pseudo=<?PHP echo Secu($a['username']); ?>"><?PHP echo Secu($a['username']); ?></a>
+															<div style="width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url(<?php echo $avatarimage; ?>&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);"></div><a href="<?PHP echo $url; ?>/info?pseudo=<?PHP echo Secu($a['username']); ?>"><?PHP echo Secu($a['username']); ?></a>
 							</div>
 							</td>
 							</tr>
-										<?PHP  
+				<?PHP
+												}
+											} else {
+												echo "<tr class=\"bas\"><td class=\"bas\"><div style=\"width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url($avatarimage&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);\"></div><a>Aucun utilisateur en base.</a></div></td></tr>";
+											}
 										}
-										} else { 
-											echo "<tr class=\"bas\"><td class=\"bas\"><div style=\"width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url($avatarimage&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);\"></div><a>Aucun utilisateur en base.</a></div></td></tr>"; 
-										}
-										} 
-										?>
+				?>
 				</tbody>
 				</table>
 						</div>
@@ -203,8 +208,9 @@ if (!isset($_SESSION['username'])) {
 		$search->execute([$pseudo['id'], $pseudo['ip_current']]);
 		$ok = $search->fetch();
 		$stamp_now = time();
-		$stamp_expire = $ok['ban_expire'];
-		$expire = date('d/m/Y H:i', $ok['ban_expire']);
+		$stamp_expire = $ok['ban_expire'] ?? 0;
+		$expire = date('d/m/Y H:i', $stamp_expire);
+
 		?>
 		<div id="column1" class="column">
 			<div class="habblet-container ">

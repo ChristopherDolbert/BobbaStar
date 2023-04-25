@@ -6,9 +6,9 @@
     #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
     include("./config.php");
+	$pageid = "transactions";
     $pagename = "Mes transactions";
-    $pageid = "transactions";
-
+    
     if (!isset($_SESSION['username'])) {
         Redirect("" . $url . "/index");
     }
@@ -136,9 +136,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 	    </script>
 
 	    </div>
-	    <!-- FOOTER -->
-	    <?PHP include("./template/footer.php"); ?>
-	    <!-- FIN FOOTER -->
+
 	</body>
 
 	</html>

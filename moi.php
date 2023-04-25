@@ -13,6 +13,7 @@ if (!isset($_SESSION['username'])) {
     Redirect("" . $url . "/index");
     exit;
 }
+
 $sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
 ?>

@@ -116,26 +116,29 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 
                             while ($s = $sql->fetch()) {
 
-                                $infe = $bdd->query("SELECT * FROM gabcms_postes WHERE user_id = '" . $s['id'] . "'");
+                                $infe = $bdd->prepare("SELECT * FROM gabcms_postes WHERE user_id = ?");
+                                $infe->execute([$s['id']]);
                                 $rt = $infe->fetch();
-
-                                $tera = $bdd->query("SELECT * FROM gabcms_absence_staff WHERE pseudo = '" . $s['username'] . "' AND jusqua >= '" . $nowtime . "'");
+                                
+                                $tera = $bdd->prepare("SELECT * FROM gabcms_absence_staff WHERE pseudo = ? AND jusqua >= ?");
+                                $tera->execute([$s['username'], $nowtime]);
                                 $t = $tera->fetch();
-
-                                if ($s['staff_test'] == 0) {
-                                    $etat_modif = '';
-                                }
+                                
+                                $etat_modif = '';
                                 if ($s['staff_test'] == 1) {
                                     $etat_modif = '<span style="color:#FF0000">(staff en test)</span>';
                                 }
-
-                                $date_jusqua = date('d/m/Y', $t['jusqua']);
-
-                                if ($t['depuis'] <= $nowtime && $t['jusqua'] >= $nowtime && $t['etat'] == 1) {
-                                    $etat8 = '<span style="color:#2767A7;">est absent(e) jusqu\'au ' . $date_jusqua . '</span>';
-                                } else {
-                                    $etat8 = '';
+                                
+                                $date_jusqua = '';
+                                if ($t && $t['jusqua']) {
+                                    $date_jusqua = date('d/m/Y', $t['jusqua']);
                                 }
+                                
+                                $etat8 = '';
+                                if ($t && $t['depuis'] <= $nowtime && $t['jusqua'] >= $nowtime && $t['etat'] == 1) {
+                                    $etat8 = '<span style="color:#2767A7;">est absent(e) jusqu\'au ' . $date_jusqua . '</span>';
+                                }
+                                
                             ?>
                                 <table class="fondateur">
                                     <tbody>
@@ -438,9 +441,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 Pngfix.doPngImageFix();
 </script>
 <![endif]-->
-    <!-- FOOTER -->
-    <?PHP include("./template/footer.php"); ?>
-    <!-- FIN FOOTER -->
+
     <div style="clear: both;"></div>
     <script type="text/javascript">
         HabboView.run();
