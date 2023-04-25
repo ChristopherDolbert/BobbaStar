@@ -115,7 +115,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 						<div id="notfound-looking-for" class="box-content">
 							<table style="text-align:center">
 								<td style="padding-left:15px;text-align:justify">
-									<p><a target="_blank" href="https://github.com/brenoepics">BrenoEpic</a>, for the creation of a UI that blends entirely with the CMS while keeping the "modern" side.</p>
+									<p><a target="_blank" href="https://github.com/brenoepics">BrenoEpic</a>, for the creation of our "Client UI" that blends entirely with the CMS while keeping the "modern" side.</p>
 									<p><a style="text-decoration:underline">Meth0d (Roy)</a>, for its commitment, and especially for HoloCMS, one of the bases of MyHabbo which allowed us to start again, this good old design and its functionalities.</p>
 									<p><a target="_blank" href="https://git.krews.org/explore">Arcturus Krews</a>, for their emulator that has always won us over since its launch.</p>
 								</td>
