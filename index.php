@@ -152,7 +152,7 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
                 <div id="header" class="clearfix">
                     <h1><a href="<?php echo $url; ?>/"></a></h1>
                     <ul class="stats">
-                        <li class="stats-online"><?PHP echo Connected(); ?></li>
+                        <li class="stats-online"><?PHP echo Connected($pageid); ?></li>
 
                         <?PHP if ($cof['etat_client'] == '1' || $cof['etat_client'] == '3' && $cof['si3_debut'] < $nowtime && $cof['si3_fin'] < $nowtime) { ?>
                             <li class="stats-visited"><img src="<?PHP echo $imagepath; ?>v2/images/online.gif" alt="online"></li>

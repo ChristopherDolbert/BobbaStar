@@ -8,7 +8,7 @@
 include("./config.php");
 include("./locale/$language/login.php");
 $pagename = "Inscription";
-$pageid = "inscription";
+$pageid = "index";
 
 if (isset($_SESSION['id'])) {
     header("Location: index.php");
@@ -293,7 +293,7 @@ body { behavior: url(https://bobbastar.fr/web-gallery/csshover.htc); }
                 <div id="header" class="clearfix">
                     <h1><a href="index.php"></a></h1>
                     <ul class="stats">
-                        <li class="stats-online"><?PHP echo Connected(); ?></li>
+                        <li class="stats-online"><?PHP echo Connected($pageid); ?></li>
                     </ul>
                 </div>
                 <div id="process-content">

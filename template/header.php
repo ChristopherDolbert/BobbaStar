@@ -111,7 +111,7 @@ if ($c['afficher'] == "Oui") {
         <!-- FIN BOUTTON MANAGEMENTS -->
         </ul>
         <div id="habbos-online">
-            <div class="rounded"><span>Il y a <?PHP echo Connected(); ?></span></div>
+            <div class="rounded"><span><?PHP echo Connected("other"); ?></span></div>
         </div>
     </div>
 </div>

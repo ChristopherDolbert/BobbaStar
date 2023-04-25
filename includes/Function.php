@@ -390,16 +390,24 @@ function GetConfig()
 	return $cof;
 }
 
-function Connected()
+function Connected($pageid)
 {
 	include('SQL.php');
 	$connected = "";
 	$tmp = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
 	$tma = $tmp->fetch(PDO::FETCH_ASSOC);
 	if ($tma['count(id)'] < 1) {
-		$connected = "<span class=\"stats-fig\">" . $tma['count(id)'] . "</span> Connecté";
+		if ($pageid == "index") {
+			$connected = "<span class=\"stats-fig\">" . $tma['count(id)'] . "</span> Connecté";
+		} else {
+			$connected = $tma['count(id)'] . " Connecté";
+		}
 	} else {
-		$connected = "<span class=\"stats-fig\">" . $tma['count(id)'] . "</span> Connectés";
+		if ($pageid == "index") {
+			$connected = "<span class=\"stats-fig\">" . $tma['count(id)'] . "</span> Connectés";
+		} else {
+			$connected = $tma['count(id)'] . " Connectés";
+		}
 	}
 	return $connected;
 }
