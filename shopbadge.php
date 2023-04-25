@@ -18,7 +18,7 @@ if (isset($_GET['do'])) {
     if ($do == "buy") {
         if (isset($_POST['badge'])) {
             $code_badge = Secu($_POST['badge']);
-            
+
             $selectcode = $bdd->query("SELECT * FROM gabcms_shopbadge WHERE badge_id = '" . $code_badge . "'");
             $codet = $selectcode->fetch();
 
@@ -237,24 +237,20 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                 <div class="habblet-container">
 
                     <div class="cbb clearfix green ">
-                        <h2 class='title'>Votre porte monnaie
+                        <h2 class='title'>Ton porte monnaie
                         </h2>
                         <div id="purse-habblet">
+
                             <ul>
-                                <li class="even icon-purse-jetons">
-                                    <div>Vous avez actuellement:</div>
-                                    <span class="purse-balance-amount"><?PHP echo $user['jetons']; ?> Jetons</span>
-                                </li>
-                                <li class="odd">
-                                    <div class="box-content">
-                                        Tu as un code promo de jetons ? <a href="<?PHP echo $url; ?>/code_promo">Clique ici pour l'utiliser</a>
-                                        <?PHP if (isset($affichage)) {
-                                            echo "<br/>" . $affichage . "";
-                                        } ?>
-                                    </div>
+                                <li class="even icon-purse">
+                                    <div>Tu as actuellement:</div>
+                                    <span class="purse-balance-amount"><?php echo $user['jetons']; ?> Jetons</span>
+                                    <div class="purse-tx"><a href="jetons">Acheter des jetons</a></div>
                                 </li>
                             </ul>
-                            </ul>
+                            <div id="purse-redeem-result">
+                            </div>
+
                         </div>
                     </div>
                     <script type="text/javascript">
