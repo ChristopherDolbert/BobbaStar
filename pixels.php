@@ -101,11 +101,11 @@ if (isset($_GET['generatePixels'])) {
                             <div class="pixels-infobox-text">
                                 <h3>Vous pouvez gagner des pixels de différentes manières :</h3>
                                 <ul>
-                                    <li>* Depuis cette page, si vous avez moins de 10 Pixels, regardez en dessous de votre porte-monnaie, vous devrez y voir le bouton "<b>Générer 100 pixels</b>".</li><br />
+                                    <li>* En cliquant sur "<b>Générer 100 pixels</b>".</li><br />
                                     <li>* En restant connecté sur le client.</li><br />
-                                    <li>* Il n'y a pas d'autre moyen de gagner des pixels pour le moment. Veuillez consulter cet espace à l'avenir pour obtenir des informations sur l'obtention de pixels.</li>
                                 </ul>
-                                <p>Comment dépenser ? Consultez le catalogue et la boutique Pixel !</p>
+                                <p style="color:red">Aucun autre moyen de gagner des pixels pour le moment.</p>
+                                <br />
                                 <p><a href="<?php echo $url; ?>/service_client" target="_blank">Service Client</a></p>
 
                             </div>
