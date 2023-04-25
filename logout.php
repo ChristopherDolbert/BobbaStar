@@ -112,6 +112,10 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
                             <div id="column2" class="column">
                             </div>
 
+                            <!-- FOOTER -->
+                            <?PHP include("./template/footer.php"); ?>
+                            <!-- FIN FOOTER -->
+
                         </div>
 
 
@@ -121,10 +125,6 @@ Pngfix.doPngImageFix();
 </script>
 <![endif]-->
 
-                        <div id="footer">
-                            <p><a href='<?PHP echo $url; ?>' target="_self"><?php echo $locale['link_homepage']; ?></a> | <a href='<?PHP echo $url; ?>/vieprivee' target="_self"><?php echo $locale['link_privacy']; ?></a> | <a href="<?PHP echo $url; ?>/disclaimer" target="_blank"><?php echo $locale['link_disclaimer']; ?></a></p>
-                            <p><?php echo $locale['copyright_habbo']; ?></p>
-                        </div>
                     </div>
                 </div>
             </div>

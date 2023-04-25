@@ -92,11 +92,10 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 			<div id="column2" class="column">
 				<div class="habblet-container ">
 					<div class="cbb clearfix green">
-
 						<h2 class="title">Informations sur le CMS
 						</h2>
 						<div id="notfound-looking-for" class="box-content">
-							<p>MyHabbo utilise <b>GabCMS</b>, CMS très connu qui a marqué son temps entre 2014 et 2015.</p>
+							<p><?php echo $sitename; ?> a repris <b>HoloCMS</b> et <b>GabCMS</b>, de manière à ne garder que le meilleur.</p>
 							<table>
 								<td width="10%"><img style="vertical-align:middle" src="./web-gallery/v2/images/place_2.gif" /></td>
 								<td><b>Version PHP</b> : <?php echo phpversion(); ?></td>
@@ -110,8 +109,18 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 								<td><b>Version CMS</b> : <?php echo $version; ?></td>
 							</table>
 						</div>
-
-
+					</div>
+					<div class="cbb clearfix red">
+						<h2 class="title">Special thanks to...</h2>
+						<div id="notfound-looking-for" class="box-content">
+							<table style="text-align:center">
+								<td style="padding-left:15px;text-align:justify">
+									<p><a target="_blank" href="https://github.com/brenoepics">BrenoEpic</a>, for the creation of our "Client UI" that blends entirely with the CMS while keeping the "modern" side.</p>
+									<p><a style="text-decoration:underline">Meth0d (Roy)</a>, for its commitment, and especially for HoloCMS, one of the bases of MyHabbo which allowed us to start again, this good old design and its functionalities.</p>
+									<p><a target="_blank" href="https://git.krews.org/explore">Arcturus Krews</a>, for their emulator that has always won us over since its launch.</p>
+								</td>
+							</table>
+						</div>
 					</div>
 				</div>
 				<script type="text/javascript">
@@ -123,30 +132,26 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 			</div>
 
 			<div id="column1" class="column">
+
 				<div class="habblet-container ">
 					<div class="cbb clearfix blue">
-
-						<h2 class="title">Remerciements
-						</h2>
+						<h2 class="title">Remerciements</h2>
 						<div id="notfound-looking-for" class="box-content">
 							<table style="text-align:center">
 								<td><img src="./web-gallery/v2/images/hotel.png" alt="\" width="67\" height="118" /></td>
 								<td style="padding-left:15px;text-align:justify">
-									<p>MyHabbo remercie du fond du <span style="color:red">❤</span> :</p>
-									<p><a target="_blank" href="https://www.facebook.com/Gabcms">L'équipe de GabCMS</a> pour la création de ce CMS si légendaire</p>
-									<p><a target="_blank" href="https://github.com/ayrtonbardiot">Ayrton</a> et <a target="_blank" href="https://inshare.fr/membre/10677-sailoreudes/">Chris</a> pour la refonte des requêtes en base de données et l'adaptation du CMS à la nextgen</p>
-									<p><a target="_blank" href="https://github.com/maximehery">Maxime</a> pour l'oeil neuf sur les versions "OldSchool" d'Habbo</p>
-									<p><a target="_blank" href="https://github.com/Chahine-tech">Chahine</a> pour la participation à l'élaboration du plan de relancement de MyHabbo</p>
-									<p><a target="_blank" href="https://inshare.fr/membre/9773-supra/">Erwan</a> et <a target="_blank" href="https://github.com/ayrtonbardiot">Ayrton</a> pour l'analyse des failles et la correction</p>
+									<p>Nous remercions du fond du <span style="color:red">❤</span> :</p>
+									<p><a target="_blank" href="https://www.facebook.com/Gabcms">L'équipe de GabCMS</a> pour la création de toutes ces fonctionnalités uniques.</p>
+									<p><a target="_blank" href="https://github.com/ayrtonbardiot">Ayrton</a> et <a target="_blank" href="https://inshare.fr/membre/10677-sailoreudes/">Chris</a> pour la refonte des requêtes en base de données et l'adaptation du CMS à la nextgen.</p>
+									<p><a target="_blank" href="https://github.com/maximehery">Maxime</a> pour l'oeil neuf sur les versions "OldSchool" d'Habbo.</p>
+									<p><a target="_blank" href="https://github.com/Chahine-tech">Chahine</a> pour la participation à l'élaboration du plan de relancement de MyHabbo.</p>
+									<p><a target="_blank" href="https://inshare.fr/membre/9773-supra/">Erwan</a> et <a target="_blank" href="https://github.com/ayrtonbardiot">Ayrton</a> pour l'analyse des failles et la correction.</p>
 								</td>
 							</table>
-
-
 						</div>
-
-
 					</div>
 				</div>
+
 				<script type="text/javascript">
 					if (!$(document.body).hasClassName('process-template')) {
 						Rounder.init();

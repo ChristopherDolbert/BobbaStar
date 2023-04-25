@@ -18,36 +18,52 @@ if (isset($_GET['do'])) {
     if ($do == "buy") {
         if (isset($_POST['badge'])) {
             $code_badge = Secu($_POST['badge']);
+            
             $selectcode = $bdd->query("SELECT * FROM gabcms_shopbadge WHERE badge_id = '" . $code_badge . "'");
             $codet = $selectcode->fetch();
-            if ($user['jetons'] >= $codet['prix'] && $code_badge == $codet['badge_id']) {
-                if ($code_badge == "ADM" || $code_badge == "HBA" || $code_badge == "EXH" || $code_badge == "NWB" || $code_badge == "HS1" || $code_badge == "XXX" || $code_badge == "Z0" || $codet['stock'] == "0") {
-                    $affichage = "<div id=\"purse-redeem-result\"> 
+
+            $havebadge = $bdd->query("SELECT * FROM users_badges WHERE user_id = " . $user['id'] . " AND badge_code = '" . $code_badge . "'");
+            $have = $havebadge->fetch();
+
+            if ($have == false) {
+
+                if ($user['jetons'] >= $codet['prix'] && $code_badge == $codet['badge_id']) {
+                    if ($code_badge == "ADM" || $code_badge == "HBA" || $code_badge == "EXH" || $code_badge == "NWB" || $code_badge == "HS1" || $code_badge == "XXX" || $code_badge == "Z0" || $codet['stock'] == "0") {
+                        $affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
             <div class=\"rounded rounded-red\"> 
               Ce badge ne peut être acheté.
             </div> 
         </div> 
 </div>";
-                } else {
-                    $bdd->query("UPDATE gabcms_shopbadge SET stock = stock - 1 WHERE badge_id = '" . $codet['badge_id'] . "'");
-                    $bdd->query("UPDATE users SET jetons = jetons - " . $codet['prix'] . " WHERE username = '" . $user['username'] . "'");
-                    $insertn2 = $bdd->prepare("INSERT INTO users_badges (user_id,slot_id,badge_id) VALUES (:userid, :slot, :badge)");
-                    $insertn2->bindValue(':userid', $user['id']);
-                    $insertn2->bindValue(':slot', '0');
-                    $insertn2->bindValue(':badge', $codet['badge_id']);
-                    $insertn2->execute();
-                    $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
-                    $insertn1->bindValue(':userid', $user['id']);
-                    $insertn1->bindValue(':produit', 'Achat badge (' . $codet['badge_id'] . ')');
-                    $insertn1->bindValue(':prix', $codet['prix']);
-                    $insertn1->bindValue(':gain', '-');
-                    $insertn1->bindValue(':date', FullDate('full'));
-                    $insertn1->execute();
-                    $affichage = "<div id=\"purse-redeem-result\"> 
+                    } else {
+                        $bdd->query("UPDATE gabcms_shopbadge SET stock = stock - 1 WHERE badge_id = '" . $codet['badge_id'] . "'");
+                        $bdd->query("UPDATE users SET jetons = jetons - " . $codet['prix'] . " WHERE username = '" . $user['username'] . "'");
+                        $insertn2 = $bdd->prepare("INSERT INTO users_badges (user_id,slot_id,badge_code) VALUES (:userid, :slot, :badge)");
+                        $insertn2->bindValue(':userid', $user['id']);
+                        $insertn2->bindValue(':slot', '0');
+                        $insertn2->bindValue(':badge', $codet['badge_id']);
+                        $insertn2->execute();
+                        $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
+                        $insertn1->bindValue(':userid', $user['id']);
+                        $insertn1->bindValue(':produit', 'Achat badge (' . $codet['badge_id'] . ')');
+                        $insertn1->bindValue(':prix', $codet['prix']);
+                        $insertn1->bindValue(':gain', '-');
+                        $insertn1->bindValue(':date', FullDate('full'));
+                        $insertn1->execute();
+                        $affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
             <div class=\"rounded rounded-green\"> 
               Bravo! Tu viens d'acheter le badge pour seulement <b>" . $codet['prix'] . " jetons</b>!
+            </div> 
+        </div> 
+</div>";
+                    }
+                } else {
+                    $affichage = "<div id=\"purse-redeem-result\"> 
+        <div class=\"redeem-error\"> 
+            <div class=\"rounded rounded-red\"> 
+               Tu n'as pas assez de jetons pour acheter ce badge!
             </div> 
         </div> 
 </div>";
@@ -56,20 +72,20 @@ if (isset($_GET['do'])) {
                 $affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
             <div class=\"rounded rounded-red\"> 
-               Tu n'as pas assez de jetons pour acheter ce badge!
+              Vous avez déjà ce badge.
             </div> 
         </div> 
 </div>";
             }
-        } else {
-            $affichage = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-red\"> 
-              Le badge n'est pas en vente.
-            </div> 
-        </div> 
-</div>";
         }
+    } else {
+        $affichage = "<div id=\"purse-redeem-result\"> 
+<div class=\"redeem-error\"> 
+    <div class=\"rounded rounded-red\"> 
+      Le badge n'est pas en vente.
+    </div> 
+</div> 
+</div>";
     }
 }
 ?>

@@ -140,12 +140,9 @@ if ($m['activ'] == "Non") {
 
                 </div>
 
-                <div id="footer">
-                    <p class="copyright">
-                    <p>Powered by HoloCMS &copy; 2008 Meth0d & Parts by Yifan, sisija.<br />
-                        HABBO est une marque d&eacute;pos&eacute;e de Sulake Corporation LTD. Tous droits r&eacute;verv&eacute;s.<br />BioCMS est un CMS traduit et modifi&eacute; par Kiiwi.</br> Merci de respecter le travail de Kiiwi est ne pas copier, ou enlever ce copyright.<br />2008/2009</p>
-                    </p>
-                </div>
+                <!-- FOOTER -->
+                <?PHP include("./template/footer.php"); ?>
+                <!-- FIN FOOTER -->
 
             </div>
         </div>
