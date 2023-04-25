@@ -19,11 +19,13 @@ if (isset($_GET['demande'])) {
 			$email = Secu($_POST['email']);
 			if (isset($_POST['pseudo'])) {
 				$pseudo = Secu($_POST['pseudo']);
-				$verif_user = $bdd->query("SELECT * FROM users WHERE username = '" . $pseudo . "' LIMIT 1");
+				$verif_user = $bdd->prepare("SELECT * FROM users WHERE username = ? LIMIT 1");
+                $verif_user->execute([$pseudo]);
 				$row = $verif_user->rowCount();
 				if ($row > 0) {
 					$user = $verif_user->fetch(PDO::FETCH_ASSOC);
-					$verif_mail = $bdd->query("SELECT * FROM users WHERE id = '" . $user['id'] . "' AND mail = '" . $email . "' LIMIT 1");
+					$verif_mail = $bdd->prepare("SELECT * FROM users WHERE id = ? AND mail = ? LIMIT 1");
+                    $verif_mail->execute([$user['id'], $email]);
 					$row_mail = $verif_mail->rowCount();
 					if ($row_mail > 0) {
 						$code = "" . Genere_code(8) . "-" . Genere_code(8) . "-" . Genere_code(8) . "-" . Genere_code(8) . "";
@@ -130,21 +132,24 @@ if (isset($_GET['changement'])) {
 			$lien_concret = "&u=" . $u . "&e=" . $e . "&c=" . $c . "";
 			if (isset($_POST['code']) && isset($_POST['bean_repassword']) && isset($_POST['bean_password'])) {
 				$code = Secu($_POST['code']);
-				$motdepasse = GabCMSHash($_POST['bean_password']);
-				$remotdepasse = GabCMSHash($_POST['bean_repassword']);
-				if ($motdepasse == $remotdepasse) {
+				$motdepasse = password_hash($_POST['bean_password'], PASSWORD_BCRYPT);
+				$remotdepasse = $_POST['bean_repassword'];
+				if (password_verify($remotdepasse, $motdepasse)) {
 					if (strlen($motdepasse) >= 6) {
-						$verif_mdp = $bdd->query("SELECT * FROM gabcms_motdepasse_oublier WHERE code = '" . $code . "' && lien = '" . $lien_concret . "' LIMIT 1");
-						$row_mdp = $verif_mdp->rowCount();
+						$verif_mdp = $bdd->prepare("SELECT * FROM gabcms_motdepasse_oublier WHERE code = ? AND lien = ? LIMIT 1");
+						$verif_mdp->execute([$code, $lien_concret]);
+                        $row_mdp = $verif_mdp->rowCount();
 						if ($row_mdp > 0) {
 							$mdpo = $verif_mdp->fetch(PDO::FETCH_ASSOC);
 							if ($mdpo['utilise'] == '1') {
 								if ($mdpo['ip'] == $_SERVER['REMOTE_ADDR']) {
 									if ($mdpo['lien'] == $lien_concret) {
 										if ($mdpo['code'] == $code) {
-											$bdd->query("UPDATE users SET password = '" . $motdepasse . "' WHERE username = '" . $u . "' AND mail = '" . $e . "' LIMIT 1");
-											$bdd->query("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = '" . $mdpo['id'] . "' LIMIT 1");
-											$affichage = "<div id=\"purse-redeem-result\"> 
+											$update_mdp = $bdd->prepare("UPDATE users SET password = ? WHERE username = ? AND mail = ? LIMIT 1");
+                                            $update_mdp->execute([$motdepasse, $u, $e]);
+											$set_use = $bdd->prepare("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = ? LIMIT 1");
+											$set_use->execute([$mdpo['id']]);
+                                            $affichage = "<div id=\"purse-redeem-result\"> 
                                         <div class=\"redeem-error\"> 
                                         <div class=\"rounded rounded-green\"> 
                                         Ton nouveau mot de passe à bien été modifié, reconnecte-toi!
@@ -159,8 +164,9 @@ if (isset($_GET['changement'])) {
                                     </div> 
                                     </div> 
                                     </div>";
-											$bdd->query("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = '" . $mdpo['id'] . "'");
-										}
+                                            $set_use = $bdd->prepare("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = ?");
+                                            $set_use->execute([$mdpo['id']]);
+                                        }
 									} else {
 										$affichage = "<div id=\"purse-redeem-result\"> 
                                 <div class=\"redeem-error\"> 
@@ -169,7 +175,8 @@ if (isset($_GET['changement'])) {
                                 </div> 
                                 </div> 
                                 </div>";
-										$bdd->query("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = '" . $mdpo['id'] . "'");
+                                        $set_use = $bdd->prepare("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = ?");
+                                        $set_use->execute([$mdpo['id']]);
 									}
 								} else {
 									$affichage = "<div id=\"purse-redeem-result\"> 
@@ -179,7 +186,8 @@ if (isset($_GET['changement'])) {
                             </div> 
                             </div> 
                             </div>";
-									$bdd->query("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = '" . $mdpo['id'] . "'");
+                                    $set_use = $bdd->prepare("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = ?");
+                                    $set_use->execute([$mdpo['id']]);
 								}
 							} else {
 								$affichage = "<div id=\"purse-redeem-result\"> 

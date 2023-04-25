@@ -11,7 +11,7 @@
 	
 if(!isset($_SESSION['username']))
 	{
-		Redirect("".$url."/index");
+		Redirect($url."/index");
 	}
 $cof_prix = $bdd->query("SELECT * FROM gabcms_config_prix WHERE id = '1'");
 $cp = $cof_prix->fetch();
