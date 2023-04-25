@@ -16,79 +16,83 @@
 	if (isset($_GET['do'])) {
 		$do = Secu($_GET['do']);
 		if ($do == "code") {
-			$code = Secu($_POST['code']);
-			$sql = $bdd->query("SELECT * FROM gabcms_jetons WHERE code = '" . $code . "' AND nombremax != '0'");
-			$row = $sql->rowCount();
-			$c = $sql->fetch(PDO::FETCH_ASSOC);
-			if ($row > 0) {
-				if ($c['valid'] == '1') {
-					$verif = $bdd->query("SELECT COUNT(*) AS nb FROM gabcms_jetons_logs WHERE code_id = '" . $c['id'] . "' AND user_id = '" . $user['id'] . "'");
-					$sec_ver = $verif->fetch();
-					if ($sec_ver['nb'] != "0") {
-						$affichage = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-red\"> 
-                Ce code est utilisable une seule fois par personne.
-            </div> 
-        </div> 
-</div>";
-					} elseif ($sec_ver['nb'] == "0") {
-						$bdd->query("UPDATE users SET jetons = jetons + '" . $c['value'] . "' WHERE username = '" . $user['username'] . "'");
-						$bdd->query("UPDATE gabcms_jetons SET nombremax = nombremax - 1 WHERE code = '" . $code . "'");
-						$insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
-						$insertn1->bindValue(':userid', $user['id']);
-						$insertn1->bindValue(':produit', 'Code jetons offert (' . $code . ')');
-						$insertn1->bindValue(':prix', $c['value']);
-						$insertn1->bindValue(':gain', '+');
-						$insertn1->bindValue(':date', FullDate('full'));
-						$insertn1->execute();
-						$insertn2 = $bdd->prepare("INSERT INTO gabcms_jetons_logs (user_id, code_id, date) VALUES (:userid, :codeid, :date)");
-						$insertn2->bindValue(':userid', $user['id']);
-						$insertn2->bindValue(':codeid', $c['id']);
-						$insertn2->bindValue(':date', $nowtime);
-						$insertn2->execute();
-						$affichage = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-green\"> 
-                Ton code jetons &agrave; été validé ! Tu as reçu <b>" . Secu($c['value']) . "</b> jetons.
-            </div> 
-        </div> 
-</div>";
+			if (isset($_POST['code'])) {
+				$code = Secu($_POST['code']);
+				$sql = $bdd->prepare("SELECT * FROM gabcms_jetons WHERE code = :code AND nombremax != '0'");
+				$sql->execute(array(':code' => $code));
+				$row = $sql->rowCount();
+				$c = $sql->fetch(PDO::FETCH_ASSOC);
+				if ($row > 0) {
+					if ($c['valid'] == '1') {
+						$verif = $bdd->prepare("SELECT COUNT(*) AS nb FROM gabcms_jetons_logs WHERE code_id = :id AND user_id = :uid");
+						$verif->execute(array(':id' => $c['id'], ':uid' => $user['id']));
+						$sec_ver = $verif->fetch();
+						if ($sec_ver['nb'] != "0") {
+							$affichage = "<div id=\"purse-redeem-result\">
+			<div class=\"redeem-error\">
+				<div class=\"rounded rounded-red\">
+					Ce code est utilisable une seule fois par personne.
+				</div>
+			</div>
+	</div>";
+						} else {
+							$bdd->beginTransaction();
+							try {
+								$bdd->query("UPDATE users SET jetons = jetons + :value WHERE username = :username");
+								$bdd->query("UPDATE gabcms_jetons SET nombremax = nombremax - 1 WHERE code = :code");
+								$insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
+								$insertn1->execute(array(':userid' => $user['id'], ':produit' => 'Code jetons offert (' . $code . ')', ':prix' => $c['value'], ':gain' => '+', ':date' => FullDate('full')));
+								$insertn2 = $bdd->prepare("INSERT INTO gabcms_jetons_logs (user_id, code_id, date) VALUES (:userid, :codeid, :date)");
+								$insertn2->execute(array(':userid' => $user['id'], ':codeid' => $c['id'], ':date' => $nowtime));
+								$bdd->commit();
+								$affichage = "<div id=\"purse-redeem-result\">
+			<div class=\"redeem-error\">
+				<div class=\"rounded rounded-green\">
+					Ton code jetons &agrave; été validé ! Tu as reçu <b>" . Secu($c['value']) . "</b> jetons.
+				</div>
+			</div>
+	</div>";
+							} catch (PDOException $e) {
+								$bdd->rollback();
+								throw $e;
+							}
+						}
+					} elseif ($c['valid'] == "0") {
+						$bdd->beginTransaction();
+						try {
+							$bdd->query("UPDATE users SET jetons = jetons + :value WHERE username = :username");
+							$bdd->query("UPDATE gabcms_jetons SET nombremax = nombremax - 1 WHERE code = :code");
+							$insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
+							$insertn1->execute(array(':userid' => $user['id'], ':produit' => 'Code jetons offert (' . $code . ')', ':prix' => $c['value'], ':gain' => '+', ':date' => FullDate('full')));
+							$insertn2 = $bdd->prepare("INSERT INTO gabcms_jetons_logs (user_id, code_id, date) VALUES (:userid, :codeid, :date)");
+							$insertn2->execute(array(':userid' => $user['id'], ':codeid' => $c['id'], ':date' => $nowtime));
+							$bdd->commit();
+							$affichage = "<div id=\"purse-redeem-result\">
+			<div class=\"redeem-error\">
+				<div class=\"rounded rounded-green\">
+					Ton code jetons &agrave; été validé ! Tu as reçu <b>" . Secu($c['value']) . "</b> jetons.
+				</div>
+			</div>
+	</div>";
+						} catch (PDOException $e) {
+							$bdd->rollback();
+							throw $e;
+						}
 					}
-				} elseif ($c['valid'] == "0") {
-					$bdd->query("UPDATE users SET jetons = jetons + '" . $c['value'] . "' WHERE username = '" . $user['username'] . "'");
-					$bdd->query("UPDATE gabcms_jetons SET nombremax = nombremax - 1 WHERE code = '" . $code . "'");
-					$insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
-					$insertn1->bindValue(':userid', $user['id']);
-					$insertn1->bindValue(':produit', 'Code jetons offert (' . $code . ')');
-					$insertn1->bindValue(':prix', $c['value']);
-					$insertn1->bindValue(':gain', '+');
-					$insertn1->bindValue(':date', FullDate('full'));
-					$insertn1->execute();
-					$insertn2 = $bdd->prepare("INSERT INTO gabcms_jetons_logs (user_id, code_id, date) VALUES (:userid, :codeid, :date)");
-					$insertn2->bindValue(':userid', $user['id']);
-					$insertn2->bindValue(':codeid', $c['id']);
-					$insertn2->bindValue(':date', $nowtime);
-					$insertn2->execute();
-					$affichage = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-green\"> 
-                Ton code jetons &agrave; été validé ! Tu as reçu <b>" . Secu($c['value']) . "</b> jetons.
-            </div> 
-        </div> 
-</div>";
+				} else {
+					$affichage = "<div id=\"purse-redeem-result\">
+			<div class=\"redeem-error\">
+				<div class=\"rounded rounded-red\">
+					Ton code jetons est incorrect ou est déjà totalement épuisé.
+				</div>
+			</div>
+	</div>";
 				}
-			} else {
-				$affichage = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-red\"> 
-                Ton code jetons est incorrect ou est déjà totalement épuisé.
-            </div> 
-        </div> 
-</div>";
 			}
 		}
 	}
+
+
 	?>
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
