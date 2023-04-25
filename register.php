@@ -604,7 +604,7 @@ body { behavior: url(https://bobbastar.fr/web-gallery/csshover.htc); }
 
                                                         <noscript>
                                                             <fieldset id="register-fieldset-captcha">
-                                                                <div class="register-label"><img src="demo/CaptchaSecurityImages.php?width=170&height=40&characters=10" /></div>
+                                                                <div class="register-label"><img src="./captcha/CaptchaSecurityImages.php?width=170&height=40&characters=10" /></div>
                                                                 <div id="captcha-error-box">
                                                                     <?php if (isset($error['captcha'])) { ?>
                                                                         <div class="register-error">

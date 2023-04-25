@@ -411,3 +411,31 @@ function Connected($pageid)
 	}
 	return $connected;
 }
+
+function SendMUSData($data)
+{
+
+	include('SQL.php');
+	$configsql = $bdd->query("SELECT * FROM gabcms_client WHERE id = '1'");
+	$config = $configsql->fetch(PDO::FETCH_ASSOC);
+
+	$mus_ip = $config['ip'];
+	$mus_port = $config['mus_port'];
+
+	if (!is_numeric($mus_port)) {
+		echo "<b>System Error</b><br />Invalid MUS Port!";
+		exit;
+	}
+
+	$sock = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tcp'));
+	socket_connect($sock, $mus_ip, $mus_port);
+
+	if (!is_resource($sock)) {
+		return false;
+	} else {
+		socket_send($sock, $data, strlen($data), MSG_DONTROUTE);
+		return true;
+	}
+
+	socket_close($sock);
+}

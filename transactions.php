@@ -6,9 +6,9 @@
     #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
     include("./config.php");
+	$pageid = "transactions";
     $pagename = "Mes transactions";
-    $pageid = "transactions";
-
+    
     if (!isset($_SESSION['username'])) {
         Redirect("" . $url . "/index");
     }

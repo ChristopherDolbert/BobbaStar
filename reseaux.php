@@ -6,11 +6,13 @@
 	#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
 	include("./config.php");
-	$pagename = "Réseaux sociaux";
 	$pageid = "rs";
+	$pagename = "Réseaux sociaux";
+	
 
 	if (!isset($_SESSION['username'])) {
 		Redirect("" . $url . "/index");
+		exit;
 	}
 	?>
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
