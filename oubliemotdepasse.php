@@ -326,17 +326,20 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 									</p>
 
 									<div class="clear"></div>
+									<br />
+									<form style="text-align:center !important" action="?demande=rempli" method="post" id="forgottenpw-form">
+										<tr>
+											<td width="50%">
+												<input type="text" placeholder="Pseudo" name="pseudo" id="pseudoe" value="" required />
+											</td>
 
-									<form action="?demande=rempli" method="post" id="forgottenpw-form">
-										<p>
-											<label for="pseudo">Nom d'utilisateur</label>
-											<input type="text" name="pseudo" id="pseudoe" value="" required />
-										</p>
+											<td>
+												<input placeholder="E-mail" type="text" name="email" id="email" value="" required />
+											</td>
+										</tr>
 
-										<p>
-											<label for="email">E-mail</label>
-											<input type="text" name="email" id="email" value="" required />
-										</p>
+										<div class="clear"></div>
+										<br /><br />
 
 										<p>
 											<input type="submit" id="envoyer" value="Envoyer" class="submit process-button" id="forgottenpw-submit">
@@ -353,26 +356,26 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 									<p> Si tu es arrivé ici, c'est que tu as reçu le mail. Dans le formulaire ci-contre, merci de renseigner ton code ainsi que ton nouveau mot de passe.</p>
 
 									<div class="clear"></div>
+									<br />
 
-									<form id="forgottenpw-form" action="?changement=ok&u=<?PHP echo $_GET['u']; ?>&e=<?PHP echo $_GET['e']; ?>&c=<?PHP echo $_GET['c']; ?>" method="post">
-										<p>
-											<label for="code">Code</label>
-											<input type="text" name="code" id="code" value="" required />
-										</p>
+									<form style="text-align:center !important" id="forgottenpw-form" action="?changement=ok&u=<?PHP echo $_GET['u']; ?>&e=<?PHP echo $_GET['e']; ?>&c=<?PHP echo $_GET['c']; ?>" method="post">
+										<tr>
+											<td>
+												<input placeholder="Code" type="number" name="code" id="code" value="" required />
+											</td>
 
-										<p>
-											<label for="bean_password">Nouveau mot de passe</label>
-											<input type="password" name="bean_password" id="bean_password" value="" required />
-										</p>
+											<td>
+												<input placeholder="Nouveau mot de passe" type="password" name="bean_password" id="bean_password" value="" required />
+											</td>
 
-										<p>
-											<label for="bean_repassword">Confirmer le mot de passe</label>
-											<input type="password" name="bean_repassword" id="bean_repassword" value="" required />
-										</p>
+											<td>
+												<input placeholder="Confirmer le mot de passe" type="password" name="bean_repassword" id="bean_repassword" value="" required />
+											</td>
 
-										<p>
-											<input class="submit process-button" id="forgottenpw-submit" type="submit" id="envoyer" class="new-button fill" value="Réinitialiser le mot de passe">
-										</p>
+											<td>
+												<input class="submit process-button" id="forgottenpw-submit" type="submit" id="envoyer" class="new-button fill" value="Réinitialiser le mot de passe">
+											</td>
+										</tr>
 										<input type="hidden" value="default" name="origin" />
 									</form>
 								</div>
