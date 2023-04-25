@@ -94,9 +94,13 @@ if (isset($_GET['generateCredits'])) {
             <div id='column1' class='column'>
                 <div class='habblet-container '>
                     <div class='cbb clearfix green '>
-
                         <h2 class='title'>Obtenir des crédits !</h2>
-                        <p class='credits-countries-select'><img class='credits-image' src='./web-gallery/album1/palmchair.gif' align='left' />Pour acheter des mobis ou jouer à des jeux, il faut des <b>crédits</b>. Nous vous fournissons des crédits gratuits lors de votre inscription et, si vous n'en avez plus, vous pouvez gagner des crédits de différentes manières:<li>* Recommandez l'hôtel à un ami et gagnez des crédits</p>
+                        <p class='credits-countries-select'><img class='credits-image' src='./web-gallery/album1/palmchair.gif' align='left' />Pour acheter des mobis ou jouer à des jeux, il faut des <b>crédits</b>. </p>
+                        <p>Nous vous fournissons des crédits gratuits lors de votre inscription et, si vous n'en avez plus, vous pouvez gagner des crédits de différentes manières:</p>
+                        <ul>
+                            <li>* En cliquant sur "<b>Générer 5000 crédits</b>".</li><br />
+                            <li>* En restant connecté sur le client.</li>
+                        </ul>
                     </div>
                 </div>
                 <script type='text/javascript'>

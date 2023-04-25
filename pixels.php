@@ -96,14 +96,14 @@ if (isset($_GET['generatePixels'])) {
                 <div class="habblet-container ">
                     <div class="cbb clearfix pixelblue ">
 
-                        <h2 class="title">Apprenez à obtenir vos pixels et profitez-en !</h2>
+                        <h2 class="title">Obtenir des pixels !</h2>
                         <div class="pixels-infobox-container">
                             <div class="pixels-infobox-text">
                                 <h3>Vous pouvez gagner des pixels de différentes manières :</h3>
                                 <ul>
-                                    <li>
-                                        <p>Il n'y a pas encore de moyen de gagner des pixels. Veuillez consulter cet espace à l'avenir pour obtenir des informations sur l'obtention de pixels.</p>
-                                    </li>
+                                    <li>* Depuis cette page, si vous avez moins de 10 Pixels, regardez en dessous de votre porte-monnaie, vous devrez y voir le bouton "<b>Générer 100 pixels</b>".</li><br />
+                                    <li>* En restant connecté sur le client.</li><br />
+                                    <li>* Il n'y a pas d'autre moyen de gagner des pixels pour le moment. Veuillez consulter cet espace à l'avenir pour obtenir des informations sur l'obtention de pixels.</li>
                                 </ul>
                                 <p>Comment dépenser ? Consultez le catalogue et la boutique Pixel !</p>
                                 <p><a href="<?php echo $url; ?>/service_client" target="_blank">Service Client</a></p>
@@ -186,7 +186,8 @@ if (isset($_GET['generatePixels'])) {
                         <div id="pixels-info" class="box-content pixels-info">
                             <div class="pixels-info-text clearfix">
                                 <img class="pixels-image" src="<?php echo $url; ?>/web-gallery/v2/images/activitypoints/pixelpage_personaleffect.png" alt="" />
-                                <p class="pixels-text">Ajustez votre personnage à l'aide d'effets cool adaptés à l'occasion. Voulez-vous vous envoler avec le tapis rouge ou être sous les feux de la rampe ? C'est l'occasion ou jamais !</p>
+                                <p class="pixels-text">Grâce aux Pixels, vous pouvez sortir du lot grâce à des effets sensationnels, voiture, hoverbard...</p>
+                                <p class="pixels-text"><b>Le choix te reviens !</b></p>
                             </div>
 
                         </div>
@@ -205,12 +206,13 @@ if (isset($_GET['generatePixels'])) {
                 <div class="habblet-container ">
                     <div class="cbb clearfix pixeldarkblue ">
 
-                        <h2 class="title">Des offres alléchantes ?</h2>
+                        <h2 class="title">En manque de Pixels ?</h2>
                         <div id="pixels-info" class="box-content pixels-info">
                             <div class="pixels-info-text clearfix">
 
                                 <img class="pixels-image" src="<?php echo $url; ?>/web-gallery/v2/images/activitypoints/pixelpage_discounts.png" alt="" />
-                                <p class="pixels-text">Les codes promo vous offre la possibilité d'obtenir des pixels sans devoir passer des heures en ligne !</p>
+                                <p class="pixels-text">Tu as moins de 10 Pixels, et tu souhaites refaire le plein ?</p>
+                                <p class="pixels-text"><b>Génère dès maintenant 100 Pixels !</b></p>
                             </div>
                         </div>
 
