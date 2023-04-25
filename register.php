@@ -10,18 +10,19 @@ include("./locale/$language/login.php");
 $pagename = "Inscription";
 $pageid = "index";
 
+echo "la!!!";
+
+$reqUserOnline = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
+$nbUserOnline = $reqUserOnline->fetchColumn();
+
+$reqUserInscrits = $bdd->query("SELECT count(id) FROM users");
+$nbUserInscrits = $reqUserInscrits->fetchColumn();
+
 if (isset($_SESSION['id'])) {
-    header("Location: index.php");
-    exit;
+    Redirect($url . "/me.php");
 }
 
 if (isset($_POST['bean_avatarName'])) {
-    $refer = $_SERVER['HTTP_REFERER'];
-    $pos = strrpos($refer, "register.php");
-    if ($pos === false) {
-        exit;
-    }
-
     // Collect the variables we should've recieved
     $name = Secu($_POST['bean_avatarName']);
     $password = Secu($_POST['password']);
@@ -32,16 +33,24 @@ if (isset($_POST['bean_avatarName'])) {
     $email = Secu($_POST['bean_email']);
     $retypedemail = Secu($_POST['bean_retypedEmail']);
     $accept_tos = $_POST['bean_termsOfServiceSelection'];
-    $spam_me = $_POST['bean_marketing'];
+    //todo: a check svp
+//    $spam_me = $_POST['bean_marketing'];
     $figure = $_POST['bean_figure'];
     $gender = $_POST['bean_gender'];
+
+    echo "testlà";
 
     // Start validating the stuff the user has submitted
     $filter = preg_replace("/[^a-z\d]/i", "", $name);
     $email_check = preg_match("/^[a-z0-9_\.-]+@([a-z0-9]+([\-]+[a-z0-9]+)*\.)+[a-z]{2,7}$/i", $email);
 
-    $sql = $bdd->query("SELECT id FROM users WHERE username = '" . $name . "' LIMIT 1");
+    $sql = $bdd->prepare("SELECT id FROM users WHERE username = ? LIMIT 1");
+    $sql->execute([$name]);
     $tmp = $sql->fetchColumn(PDO::FETCH_ASSOC);
+
+    $reqCheckMail = $bdd->prepare("SELECT mail FROM users WHERE mail = ?");
+    $reqCheckMail->execute([$email]);
+    $nbMail = $reqCheckMail->rowCount();
 
     // If this variable stays false, we're safe and can add the user. If not, it means that
     // we've encountered errors and we can not proceed, so instead show the errors and do not
@@ -64,8 +73,8 @@ if (isset($_POST['bean_avatarName'])) {
     }
 
     // MOD- Names validation
-    $pos = strrpos($refer, "MOD-");
-    if ($pos === true) {
+    $pos = strrpos($name, "MOD-");
+    if ($pos === 0) {
         $error['name'] = "This name is not allowed.";
         $failure = true;
     }
@@ -91,6 +100,9 @@ if (isset($_POST['bean_avatarName'])) {
         $failure = true;
     } elseif ($email !== $retypedemail) {
         $error['mail'] = "The e-mail addresses don't match.";
+        $failure = true;
+    } elseif($nbMail >= 1) {
+        $error['mail'] = "The e-mail address is already used.";
         $failure = true;
     }
 
@@ -129,12 +141,14 @@ if (isset($_POST['bean_avatarName'])) {
         $failure = true;
     }
 
+    echo "ici ??";
+
     // Finally, if everything's OK we add the user to the database, log him in, etc
-    if ($failure == false) {
+    if (!$failure) {
         $dob = $day . "-" . $month . "-" . $year;
         $password = password_hash($password, PASSWORD_BCRYPT); // and HoloCMS will never know the password again...
-
-        $insertuser = $bdd->prepare("INSERT INTO users (username, password, mail, account_day_of_birth, rank, look, gender, motto, credits, pixels, last_login, account_created, ip_register, message, newsletter) VALUES (:pseudo, :mdp, :mail, :account_day_of_birth, :rank, :look, :sexe, :motto, :credits, :pixels, :date, :ins, :ip, :message, :newsletter)");
+        echo "test";
+        $insertuser = $bdd->prepare("INSERT INTO users (username, password, mail, account_day_of_birth, rank, look, gender, motto, credits, last_login, account_created, ip_register, message, newsletter) VALUES (:pseudo, :mdp, :mail, :account_day_of_birth, :rank, :look, :sexe, :motto, :credits, :date, :ins, :ip, :message, :newsletter)");
         $insertuser->bindValue(':pseudo', $name);
         $insertuser->bindValue(':mdp', $password);
         $insertuser->bindValue(':mail', $email);
@@ -144,25 +158,25 @@ if (isset($_POST['bean_avatarName'])) {
         $insertuser->bindValue(':sexe', $gender);
         $insertuser->bindValue(':motto', $mission);
         $insertuser->bindValue(':credits', $credits);
-        $insertuser->bindValue(':pixels', $pixels);
+        // les pixels sont dans users_currency normalement
+//        $insertuser->bindValue(':pixels', $pixels);
         $insertuser->bindValue(':date', time());
         $insertuser->bindValue(':ins', FullDate('hc'));
-        $insertuser->bindValue(':ip', $remote_ip);
+        $insertuser->bindValue(':ip', $_SERVER['REMOTE_ADDR']);
         $insertuser->bindValue(':message', '100');
         $insertuser->bindValue(':newsletter', '1');
         $insertuser->execute();
 
 
-        $check = $bdd->query("SELECT id FROM users WHERE name = '" . $name . "' ORDER BY id ASC LIMIT 1");
+        $check = $bdd->prepare("SELECT id FROM users WHERE name = ? ORDER BY id ASC LIMIT 1");
+        $check->execute([$name]);
         $row = $sql->fetchColumn(PDO::FETCH_ASSOC);
         $userid = $row['id'];
 
         $_SESSION['username'] = $name;
         $_SESSION['password'] = $password;
 
-        header("Location: security_check.php");
-
-        exit; // cut off the script
+        Redirect($url . "/starter_room");
 
         // And we're done!
     }
@@ -293,7 +307,8 @@ body { behavior: url(https://bobbastar.fr/web-gallery/csshover.htc); }
                 <div id="header" class="clearfix">
                     <h1><a href="index.php"></a></h1>
                     <ul class="stats">
-                        <li class="stats-online"><?PHP echo Connected($pageid); ?></li>
+                        <li class="stats-online"><span class="stats-fig"><?= $nbUserOnline ?></span> Joueurs en ligne!</li>
+                        <li class="stats-visited"><span class="stats-fig"><?= $nbUserInscrits ?></span> Joueurs inscrits</li>
                     </ul>
                 </div>
                 <div id="process-content">
