@@ -118,7 +118,8 @@ if (!isset($pseudo['credits'])) {
 										<input style='width:97%' type="text" placeholder="Pseudo..." name="recherche_pseudo" value="<?php if (!empty($_POST["recherche_pseudo"])) {
 																																		echo htmlspecialchars($_POST["recherche_pseudo"], ENT_QUOTES);
 																																	} ?>" class="text" style="width: 240px" required><br /><br />
-										<input style='width:100%' type="submit" value="Rechercher" />
+										
+										<input class="submit" style='width:100%' type="submit" value="Rechercher" />
 								</form><br />
 								<table>
 									<tbody>
