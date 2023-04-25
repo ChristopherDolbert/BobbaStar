@@ -1,7 +1,6 @@
 <?PHP
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 #|                                                                        #|
-
 #|         Copyright © 2014-2023 - MyHabbo Tout droits réservés.          #|
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
@@ -335,7 +334,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 						if (isset($_GET['id'])) {
 							$id = Secu($_GET['id']);
 							$sql = $bdd->prepare("SELECT * FROM gabcms_news WHERE id = ? LIMIT 1");
-                            $sql->execute([$id]);
+							$sql->execute([$id]);
 							$row = $sql->rowCount();
 							$n = $sql->fetch(PDO::FETCH_ASSOC);
 							if (empty($id)) { ?>
@@ -378,12 +377,12 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 											<div class="article-author"><?PHP echo stripslashes($n['sign']); ?></div>
 											<?PHP
 											$search = $bdd->prepare("SELECT pseudo FROM gabcms_news_recommande WHERE news_id = ? AND pseudo = ?");
-                                            $search->execute([$n['id'], $user['username']]);
+											$search->execute([$n['id'], $user['username']]);
 											$ok = $search->fetch();
 
 											if ($ok['pseudo'] != $user['username']) {
 												$query = $bdd->prepare("SELECT COUNT(*) AS id FROM gabcms_news_recommande WHERE news_id = ?");
-                                                $query->execute([$n['id']]);
+												$query->execute([$n['id']]);
 												$nb_inscrit = $query->fetch();
 												if ($nb_inscrit['id'] == 0) {
 													$modifier_r = "<b>Aucun utilisateur</b> a trouvé";
@@ -406,7 +405,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 											}
 											if ($ok['pseudo'] == $user['username']) {
 												$query = $bdd->prepare("SELECT COUNT(*) AS id FROM gabcms_news_recommande WHERE news_id = ?");
-                                                $query->execute([$n['id']]);
+												$query->execute([$n['id']]);
 												$nb_inscrit = $query->fetch();
 												$resultatfinal = $nb_inscrit['id'] - 1;
 												if ($resultatfinal == 0) {
