@@ -76,4 +76,6 @@ $characters = isset($_GET['characters']) && $_GET['characters'] > 1 ? $_GET['cha
 
 $captcha = new CaptchaSecurityImages($width,$height,$characters);
 
+
+
 ?>
