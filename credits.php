@@ -98,9 +98,11 @@ if (isset($_GET['generateCredits'])) {
                         <p class='credits-countries-select'><img class='credits-image' src='./web-gallery/album1/palmchair.gif' align='left' />Pour acheter des mobis ou jouer à des jeux, il faut des <b>crédits</b>. </p>
                         <p>Nous vous fournissons des crédits gratuits lors de votre inscription et, si vous n'en avez plus, vous pouvez gagner des crédits de différentes manières:</p>
                         <ul>
-                            <li>* En cliquant sur "<b>Générer 5000 crédits</b>".</li><br />
-                            <li>* En restant connecté sur le client.</li>
+                            <li>&nbsp;&nbsp;&nbsp;* En cliquant sur "<b>Générer 5000 crédits</b>".</li><br />
+                            <li>&nbsp;&nbsp;&nbsp;* En restant connecté sur le client.</li>
                         </ul>
+                        <br />
+                        <p style="color:red">Aucun autre moyen de gagner des crédits pour le moment.</p>
                     </div>
                 </div>
                 <script type='text/javascript'>
