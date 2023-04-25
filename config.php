@@ -53,11 +53,12 @@ if (isset($_SESSION['username'])) {
 	$sql->execute(array('user_id' => $user['id']));
 	$b = $sql->fetch(PDO::FETCH_ASSOC);
 	$now = time();
-	$expire = date('d/m/Y H:i', $b['ban_expire']);
 	if ($b && $now < $b['ban_expire']) {
+		$expire = date('d/m/Y H:i', $b['ban_expire']);
 		Redirect($url . "/banned");
 	}
 }
+
 
 
 
