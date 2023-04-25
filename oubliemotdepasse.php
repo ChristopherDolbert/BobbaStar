@@ -20,12 +20,12 @@ if (isset($_GET['demande'])) {
 			if (isset($_POST['pseudo'])) {
 				$pseudo = Secu($_POST['pseudo']);
 				$verif_user = $bdd->prepare("SELECT * FROM users WHERE username = ? LIMIT 1");
-                $verif_user->execute([$pseudo]);
+				$verif_user->execute([$pseudo]);
 				$row = $verif_user->rowCount();
 				if ($row > 0) {
 					$user = $verif_user->fetch(PDO::FETCH_ASSOC);
 					$verif_mail = $bdd->prepare("SELECT * FROM users WHERE id = ? AND mail = ? LIMIT 1");
-                    $verif_mail->execute([$user['id'], $email]);
+					$verif_mail->execute([$user['id'], $email]);
 					$row_mail = $verif_mail->rowCount();
 					if ($row_mail > 0) {
 						$code = "" . Genere_code(8) . "-" . Genere_code(8) . "-" . Genere_code(8) . "-" . Genere_code(8) . "";
@@ -138,7 +138,7 @@ if (isset($_GET['changement'])) {
 					if (strlen($motdepasse) >= 6) {
 						$verif_mdp = $bdd->prepare("SELECT * FROM gabcms_motdepasse_oublier WHERE code = ? AND lien = ? LIMIT 1");
 						$verif_mdp->execute([$code, $lien_concret]);
-                        $row_mdp = $verif_mdp->rowCount();
+						$row_mdp = $verif_mdp->rowCount();
 						if ($row_mdp > 0) {
 							$mdpo = $verif_mdp->fetch(PDO::FETCH_ASSOC);
 							if ($mdpo['utilise'] == '1') {
@@ -146,10 +146,10 @@ if (isset($_GET['changement'])) {
 									if ($mdpo['lien'] == $lien_concret) {
 										if ($mdpo['code'] == $code) {
 											$update_mdp = $bdd->prepare("UPDATE users SET password = ? WHERE username = ? AND mail = ? LIMIT 1");
-                                            $update_mdp->execute([$motdepasse, $u, $e]);
+											$update_mdp->execute([$motdepasse, $u, $e]);
 											$set_use = $bdd->prepare("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = ? LIMIT 1");
 											$set_use->execute([$mdpo['id']]);
-                                            $affichage = "<div id=\"purse-redeem-result\"> 
+											$affichage = "<div id=\"purse-redeem-result\"> 
                                         <div class=\"redeem-error\"> 
                                         <div class=\"rounded rounded-green\"> 
                                         Ton nouveau mot de passe à bien été modifié, reconnecte-toi!
@@ -164,9 +164,9 @@ if (isset($_GET['changement'])) {
                                     </div> 
                                     </div> 
                                     </div>";
-                                            $set_use = $bdd->prepare("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = ?");
-                                            $set_use->execute([$mdpo['id']]);
-                                        }
+											$set_use = $bdd->prepare("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = ?");
+											$set_use->execute([$mdpo['id']]);
+										}
 									} else {
 										$affichage = "<div id=\"purse-redeem-result\"> 
                                 <div class=\"redeem-error\"> 
@@ -175,8 +175,8 @@ if (isset($_GET['changement'])) {
                                 </div> 
                                 </div> 
                                 </div>";
-                                        $set_use = $bdd->prepare("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = ?");
-                                        $set_use->execute([$mdpo['id']]);
+										$set_use = $bdd->prepare("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = ?");
+										$set_use->execute([$mdpo['id']]);
 									}
 								} else {
 									$affichage = "<div id=\"purse-redeem-result\"> 
@@ -186,8 +186,8 @@ if (isset($_GET['changement'])) {
                             </div> 
                             </div> 
                             </div>";
-                                    $set_use = $bdd->prepare("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = ?");
-                                    $set_use->execute([$mdpo['id']]);
+									$set_use = $bdd->prepare("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = ?");
+									$set_use->execute([$mdpo['id']]);
 								}
 							} else {
 								$affichage = "<div id=\"purse-redeem-result\"> 
@@ -395,10 +395,9 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 
 					</div>
 
-					<div id="footer">
-						<p><a href='<?PHP echo $url; ?>' target="_self"><?php echo $locale['link_homepage']; ?></a> | <a href='<?PHP echo $url; ?>/vieprivee' target="_self"><?php echo $locale['link_privacy']; ?></a> | <a href="<?PHP echo $url; ?>/disclaimer" target="_blank"><?php echo $locale['link_disclaimer']; ?></a></p>
-						<p><?php echo $locale['copyright_habbo']; ?></p>
-					</div>
+					<!-- FOOTER -->
+					<?PHP include("./template/footer.php"); ?>
+					<!-- FIN FOOTER -->
 				</div>
 
 

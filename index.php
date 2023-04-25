@@ -16,7 +16,7 @@ $pageid = "index";
 $sql = $bdd->query("SELECT * FROM gabcms_config, gabcms_maintenance WHERE gabcms_config.id = '1' AND gabcms_maintenance.id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
 
-if($cof['activ'] == "Oui") {
+if ($cof['activ'] == "Oui") {
     header("Location: $url/maintenance");
     exit;
 }
@@ -349,10 +349,9 @@ Pngfix.doPngImageFix();
 </script>
 <![endif]-->
 
-                    <div id="footer">
-                        <p><a href='<?PHP echo $url; ?>' target="_self"><?php echo $locale['link_homepage']; ?></a> | <a href='<?PHP echo $url; ?>/vieprivee' target="_self"><?php echo $locale['link_privacy']; ?></a> | <a href="<?PHP echo $url; ?>/disclaimer" target="_blank"><?php echo $locale['link_disclaimer']; ?></a></p>
-                        <p><?php echo $locale['copyright_habbo']; ?></p>
-                    </div>
+                    <!-- FOOTER -->
+                    <?PHP include("./template/footer.php"); ?>
+                    <!-- FIN FOOTER -->
                 </div>
             </div>
         </div>
