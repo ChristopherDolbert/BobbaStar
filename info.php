@@ -113,7 +113,7 @@ if (!isset($_SESSION['username'])) {
 									<td class='tbl'>
 										<input style='width:97%' type="text" placeholder="Pseudo..." name="recherche_pseudo" value="<?php if (!empty($_POST["recherche_pseudo"])) {
 																																		echo htmlspecialchars($_POST["recherche_pseudo"], ENT_QUOTES);
-																																	} ?>" class="text" style="width: 240px"><br /><br />
+																																	} ?>" class="text" style="width: 240px" required><br /><br />
 										<input style='width:100%' type="submit" value="Rechercher" />
 								</form><br />
 								<table>
