@@ -118,7 +118,7 @@ if (!isset($pseudo['credits'])) {
 										<input style='width:97%' type="text" placeholder="Pseudo..." name="recherche_pseudo" value="<?php if (!empty($_POST["recherche_pseudo"])) {
 																																		echo htmlspecialchars($_POST["recherche_pseudo"], ENT_QUOTES);
 																																	} ?>" class="text" style="width: 240px" required><br /><br />
-										
+
 										<input class="submit" style='width:100%' type="submit" value="Rechercher" />
 								</form><br />
 								<table>
@@ -208,8 +208,9 @@ if (!isset($pseudo['credits'])) {
 		$search->execute([$pseudo['id'], $pseudo['ip_current']]);
 		$ok = $search->fetch();
 		$stamp_now = time();
-		$stamp_expire = $ok['ban_expire'];
-		$expire = date('d/m/Y H:i', $ok['ban_expire']);
+		$stamp_expire = $ok['ban_expire'] ?? 0;
+		$expire = date('d/m/Y H:i', $stamp_expire);
+
 		?>
 		<div id="column1" class="column">
 			<div class="habblet-container ">
