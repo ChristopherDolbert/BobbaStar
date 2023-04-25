@@ -184,8 +184,8 @@ if (isset($_GET['generateCredits'])) {
                         <h2 class='title'>Que sont les crédits ?</h2>
                         <div id='credits-promo' class='box-content credits-info'>
                             <div class='credit-info-text clearfix'>
-                                <p><img class="credits-image" src="./web-gallery/v2/images/credits_permission.png" align="left" width="114" height="136" />
-                                    Les crédits sont la monnaie de <?php echo $sitename; ?>. Vous pouvez les utiliser pour acheter toutes sortes de choses, des canards en caoutchouc aux canapés, en passant par l'adhésion au <?php echo $shortname; ?> Club, les juke-boxes et les téléports.</p>
+                                <p><img class="credits-image" src="./web-gallery/v2/images/credits_permission.png" align="left" width="114" height="136" />Les crédits sont la monnaie de <?php echo $sitename; ?>.</p> 
+                                <p>Vous pouvez les utiliser pour acheter toutes sortes de choses, des canards en caoutchouc aux canapés, en passant par l'adhésion au <?php echo $shortname; ?> Club, les juke-boxes et les téléports.</p>
                             </div>
 
 
