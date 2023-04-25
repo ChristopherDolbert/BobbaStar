@@ -21,7 +21,7 @@ if (isset($_GET['generateCredits'])) {
         $reqCredits->execute([$user['id']]);
         $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
         $insertn1->bindValue(':userid', $user['id']);
-        $insertn1->bindValue(':produit', 'Génération de 5000 crédits');
+        $insertn1->bindValue(':produit', 'Offre SCF (Sans crédit fixe) +5000');
         $insertn1->bindValue(':prix', 0);
         $insertn1->bindValue(':gain', '+');
         $insertn1->bindValue(':date', FullDate('full'));
