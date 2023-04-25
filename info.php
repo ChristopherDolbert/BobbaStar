@@ -125,18 +125,24 @@ if (!isset($_SESSION['username'])) {
 										if (isset($_POST['recherche_pseudo'])) {
 											$sql2 = $bdd->prepare("SELECT * FROM users WHERE username LIKE ? ORDER BY username ASC LIMIT 0,10");
 											$sql2->execute(['%' . $_POST['recherche_pseudo'] . '%']);
-											while ($a = $sql2->fetch()) {
+											if ($sql2->rowCount() > 0) {
+												while ($a = $sql2->fetch()) {
 										?>
-												<tr class="bas">
-													<td class="bas">
-														<div style="width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url(<?php echo $avatarimage; ?><?PHP echo Secu($a['look']); ?>&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);"></div><a href="<?PHP echo $url; ?>/info?pseudo=<?PHP echo Secu($a['username']); ?>"><?PHP echo Secu($a['username']); ?></a>
+													<tr class="bas">
+														<td class="bas">
+															<div style="width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url(<?php echo $avatarimage; ?><?PHP echo Secu($a['look']); ?>&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);"></div><a href="<?PHP echo $url; ?>/info?pseudo=<?PHP echo Secu($a['username']); ?>"><?PHP echo Secu($a['username']); ?></a>
 							</div>
 							</td>
 							</tr>
-					<?PHP }
-										} ?>
-					</tbody>
-					</table>
+										<?PHP  
+										}
+										} else { 
+											echo "<tr class=\"bas\"><td class=\"bas\"><div style=\"width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url($avatarimage&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);\"></div><a>Aucun utilisateur en base.</a></div></td></tr>"; 
+										}
+										} 
+										?>
+				</tbody>
+				</table>
 						</div>
 
 
