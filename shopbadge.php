@@ -72,7 +72,7 @@ if (isset($_GET['do'])) {
                 $affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
             <div class=\"rounded rounded-red\"> 
-              Vous avez déjà le badge.
+              Vous avez déjà ce badge.
             </div> 
         </div> 
 </div>";
