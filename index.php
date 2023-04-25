@@ -1,9 +1,7 @@
 <?PHP
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 #|                                                                        #|
-#|         GabCMS - Site Web et Content Management System                 #|
-#|         Copyright © 2013-2015 Gabodd Tout droits réservés.             #|
-#|			    INDEX BY EKLOPSIS - IBUILD.FR 							  #|
+#|         Copyright © 2014-2023 - MyHabbo Tout droits réservés.          #|
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
