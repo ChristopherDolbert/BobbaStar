@@ -117,10 +117,8 @@ Pngfix.doPngImageFix();
 </script>
 <![endif]-->
      <!-- FOOTER -->
-     <div id="column3" class="column">
-     </div>
-     <div id="footer">
-     </div><!-- FIN FOOTER -->
+     <?PHP include("./template/footer.php"); ?>
+     <!-- FIN FOOTER -->
      <div style="clear: both;"></div>
      </div>
      </div>
