@@ -293,8 +293,7 @@ body { behavior: url(https://bobbastar.fr/web-gallery/csshover.htc); }
                 <div id="header" class="clearfix">
                     <h1><a href="index.php"></a></h1>
                     <ul class="stats">
-                        <li class="stats-online"><span class="stats-fig">0</span> Joueurs en ligne!</li>
-                        <li class="stats-visited"><span class="stats-fig">1</span> Joueurs inscrits</li>
+                        <li class="stats-online"><?PHP echo Connected(); ?></li>
                     </ul>
                 </div>
                 <div id="process-content">
