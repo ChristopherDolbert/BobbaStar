@@ -111,9 +111,7 @@ if ($c['afficher'] == "Oui") {
         <!-- FIN BOUTTON MANAGEMENTS -->
         </ul>
         <div id="habbos-online">
-            <div class="rounded"><span>Il y a <?PHP $tmp = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
-                                                $tma = $tmp->fetch(PDO::FETCH_ASSOC);
-                                                echo $tma['count(id)']; ?> connectés</span></div>
+            <div class="rounded"><span>Il y a <?PHP echo Connected(); ?></span></div>
         </div>
     </div>
 </div>

@@ -389,3 +389,17 @@ function GetConfig()
 	$cof = $sql->fetch(PDO::FETCH_ASSOC);
 	return $cof;
 }
+
+function Connected()
+{
+	include('SQL.php');
+	$connected = "";
+	$tmp = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
+	$tma = $tmp->fetch(PDO::FETCH_ASSOC);
+	if ($tma['count(id)'] < 1) {
+		$connected = $tma['count(id)'] . " Connecté";
+	} else {
+		$connected = $tma['count(id)'] . " Connectés";
+	}
+	return $connected;
+}

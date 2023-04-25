@@ -75,9 +75,7 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
                 <div id="header" class="clearfix">
                     <h1><a href="https://phpretro.bobbastar.fr/"></a></h1>
                     <ul class="stats">
-                        <li class="stats-online"><span class="stats-fig"><?PHP $tmp = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
-                                                                            $tma = $tmp->fetch(PDO::FETCH_ASSOC);
-                                                                            echo $tma['count(id)']; ?></span> Connectés</li>
+                        <li class="stats-online"><span class="stats-fig"><?PHP echo Connected(); ?></span></li>
 
 
                         <?PHP if ($cof['etat_client'] == '1' || $cof['etat_client'] == '3' && $cof['si3_debut'] < $nowtime && $cof['si3_fin'] < $nowtime) { ?>
