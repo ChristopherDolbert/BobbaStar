@@ -380,29 +380,30 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 											$search->execute([$n['id'], $user['username']]);
 											$ok = $search->fetch();
 
-											if ($ok['pseudo'] != $user['username']) {
+											if ($ok['pseudo'] !== $user['username']) {
 												$query = $bdd->prepare("SELECT COUNT(*) AS id FROM gabcms_news_recommande WHERE news_id = ?");
 												$query->execute([$n['id']]);
 												$nb_inscrit = $query->fetch();
+											
 												if ($nb_inscrit['id'] == 0) {
-													$modifier_r = "<b>Aucun utilisateur</b> a trouvé";
+													$modifier_r = "<b>Aucun utilisateur</b> n'a été trouvé";
+												} elseif ($nb_inscrit['id'] == 1) {
+													$modifier_r = "<b>" . $nb_inscrit['id'] . " utilisateur</b> a été trouvé";
+												} else {
+													$modifier_r = "<b>" . $nb_inscrit['id'] . " utilisateurs</b> ont été trouvés";
 												}
-												if ($nb_inscrit['id'] == 1) {
-													$modifier_r = "<b>" . $nb_inscrit['id'] . " utilisateur</b> a trouvé";
-												}
-												if ($nb_inscrit['id'] >= 2) {
-													$modifier_r = "<b>" . $nb_inscrit['id'] . " utilisateurs</b> ont trouvés";
-												}
+											
 												if ($nb_inscrit['id'] == 0) {
-													$modifier_a = "Être le premier!";
-												}
-												if ($nb_inscrit['id'] >= 1) {
+													$modifier_a = "Soyez le premier!";
+												} else {
 													$modifier_a = "Moi aussi!";
 												}
-												if ($ok['pseudo'] != $user['username']) {
+											
+												if ($ok['pseudo'] !== $user['username']) {
 													$modifier_br = "<br/><br/><br/>";
 												}
 											}
+											
 											if ($ok['pseudo'] == $user['username']) {
 												$query = $bdd->prepare("SELECT COUNT(*) AS id FROM gabcms_news_recommande WHERE news_id = ?");
 												$query->execute([$n['id']]);
