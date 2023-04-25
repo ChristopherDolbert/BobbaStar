@@ -191,22 +191,22 @@ if ($row['noob'] != "Oui") {
                             </div>
                             <ul class="roomselection-welcome clearfix">
                                 <li class="odd">
-                                    <a class="roomselection-select new-button" href="startroom.php?createRoom=0"><b>Sélectionner</b><i></i></a>
+                                    <a class="roomselection-select new-button" href="starter_room?createRoom=0"><b>Sélectionner</b><i></i></a>
                                 </li>
                                 <li class="even">
-                                    <a class="roomselection-select new-button" href="startroom.php?createRoom=1"><b>Sélectionner</b><i></i></a>
+                                    <a class="roomselection-select new-button" href="starter_room?createRoom=1"><b>Sélectionner</b><i></i></a>
                                 </li>
                                 <li class="odd">
-                                    <a class="roomselection-select new-button" href="startroom.php?createRoom=2"><b>Sélectionner</b><i></i></a>
+                                    <a class="roomselection-select new-button" href="starter_room?createRoom=2"><b>Sélectionner</b><i></i></a>
                                 </li>
                                 <li class="even">
-                                    <a class="roomselection-select new-button" href="startroom.php?createRoom=3"><b>Sélectionner</b><i></i></a>
+                                    <a class="roomselection-select new-button" href="starter_room?createRoom=3"><b>Sélectionner</b><i></i></a>
                                 </li>
                                 <li class="odd">
-                                    <a class="roomselection-select new-button" href="startroom.php?createRoom=4"><b>Sélectionner</b><i></i></a>
+                                    <a class="roomselection-select new-button" href="starter_room?createRoom=4"><b>Sélectionner</b><i></i></a>
                                 </li>
                                 <li class="even">
-                                    <a class="roomselection-select new-button" href="startroom.php?createRoom=5"><b>Sélectionner</b><i></i></a>
+                                    <a class="roomselection-select new-button" href="starter_room?createRoom=5"><b>Sélectionner</b><i></i></a>
                                 </li>
                             </ul>
 
