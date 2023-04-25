@@ -397,9 +397,9 @@ function Connected()
 	$tmp = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
 	$tma = $tmp->fetch(PDO::FETCH_ASSOC);
 	if ($tma['count(id)'] < 1) {
-		$connected = $tma['count(id)'] . " Connecté";
+		$connected = "<b>" . $tma['count(id)'] . "</b> Connecté";
 	} else {
-		$connected = $tma['count(id)'] . " Connectés";
+		$connected = "<b>" . $tma['count(id)'] . "</b> Connectés";
 	}
 	return $connected;
 }

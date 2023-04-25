@@ -302,7 +302,7 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 				<div id="header" class="clearfix">
 					<h1><a href="index.php"></a></h1>
 					<ul class="stats">
-						<li class="stats-online"><span class="stats-fig"><?PHP echo Connected(); ?></span></li>
+						<li class="stats-online"><?PHP echo Connected(); ?></li>
 					</ul>
 				</div>
 				<div id="process-content">
