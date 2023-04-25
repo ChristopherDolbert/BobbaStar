@@ -32,7 +32,7 @@
 	
 	# INSCRIPTION (Configuration de l'utilisateur) ÇA NE SERT À RIEN DE TOUCHER! (Sauf les looks bien sûr) #
 	$credits = "10000";
-	$pixels = "10";
+	$pixels = "100";
 	$mission = "#OldSchoolGeneration par ".$sitename."!";
 	$rank = "1";
 	$look_boy = "sh-3016-63.ch-215-63.hd-209-8.lg-275-63.hr-831-31";

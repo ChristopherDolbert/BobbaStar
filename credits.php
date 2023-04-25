@@ -9,6 +9,29 @@ require_once('./config.php');
 
 $pageid = "credits";
 $pagename = "Crédits";
+
+if (!isset($_SESSION['username'])) {
+    Redirect("" . $url . "/index");
+    exit;
+}
+
+if (isset($_GET['generateCredits'])) {
+    if ($user['credits'] <= 1000) {
+        $reqCredits = $bdd->prepare("UPDATE users SET credits = credits + 5000  WHERE id = ?");
+        $reqCredits->execute([$user['id']]);
+        $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
+        $insertn1->bindValue(':userid', $user['id']);
+        $insertn1->bindValue(':produit', 'Génération de 5000 crédits');
+        $insertn1->bindValue(':prix', 0);
+        $insertn1->bindValue(':gain', '+');
+        $insertn1->bindValue(':date', FullDate('full'));
+        $insertn1->execute();
+
+        $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-green\"> Nous venons de t'envoyer <b>5000 crédits</b>!</div></div></div>";
+    } else {
+        $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-red\">Tu as assez de crédits.</div></div></div>";
+    }
+}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -25,7 +48,7 @@ $pagename = "Crédits";
         var habboName = "<?PHP echo $user['username']; ?>";
         var habboReqPath = "<?PHP echo $url; ?>";
         var habboStaticFilePath = "<?PHP echo $imagepath; ?>";
-        var habboImagerUrl = "http://www.habbo.com/habbo-imaging/";
+        var habboImagerUrl = "<?PHP echo $avatarimage; ?>";
         var habboPartner = "";
         var habboDefaultClientPopupUrl = "<?PHP echo $url; ?>/client";
         window.name = "habboMain";
@@ -91,33 +114,34 @@ $pagename = "Crédits";
                         </h2>
                         <div id="purse-habblet">
 
-                            <form method="post" action="credits" id="voucher-form">
-                                <ul>
-                                    <li class="even icon-purse">
-                                        <div>Tu as actuellement:</div>
-                                        <span class="purse-balance-amount"><?php echo $user['credits']; ?> Cr&eacute;dits</span>
-                                        <div class="purse-tx"><a href="transactions">Mes transactions</a></div>
+                            <ul>
+                                <li class="even icon-purse">
+                                    <div>Tu as actuellement:</div>
+                                    <span class="purse-balance-amount"><?php echo $user['credits']; ?> Cr&eacute;dits</span>
+                                    <div class="purse-tx"><a href="transactions">Mes transactions</a></div>
+                                </li>
+                                <?php if ($user['credits'] <= 1000) { ?>
+                                    <li class="odd">
+                                        <div style="text-align:center" class="box-content">
+                                            <a href="credits?generateCredits" id="purse-redeemcode-button" class="new-button purse-icon"><b><span></span>Générer 5000 crédits</b><i></i></a>
+                                        </div>
                                     </li>
-                                    <?php if ($user['credits'] <= 1000) { ?>
-                                        <li class="odd">
-                                            <div style="text-align:center" class="box-content">
-                                                <a id="purse-redeemcode-button" class="new-button purse-icon"><b><span></span>Générer 10000 crédits</b><i></i></a>
+                                    <?php if (isset($affichage)) {
+                                        echo $affichage;
+                                    } ?>
+                                <?php } else { ?>
+                                    <br />
+                                    <center>
+                                        <div style="width:80%;" class="redeem-error">
+                                            <div style="text-align:center" class="rounded rounded-green">
+                                                Génial, tu as assez de crédits !
                                             </div>
-                                        </li>
-                                    <?php } else { ?>
-                                        <br />
-                                        <center>
-                                            <div style="width:80%;" class="redeem-error">
-                                                <div style="text-align:center" class="rounded rounded-green">
-                                                    Génial, tu as assez de crédits !
-                                                </div>
-                                            </div>
-                                        </center>
-                                    <?php } ?>
-                                </ul>
-                                <div id="purse-redeem-result">
-                                </div>
-                            </form>
+                                        </div>
+                                    </center>
+                                <?php } ?>
+                            </ul>
+                            <div id="purse-redeem-result">
+                            </div>
 
                         </div>
 

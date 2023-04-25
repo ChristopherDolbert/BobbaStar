@@ -9,6 +9,29 @@ require_once('./config.php');
 
 $pageid = "pixels";
 $pagename = "Pixels";
+
+if (!isset($_SESSION['username'])) {
+    Redirect("" . $url . "/index");
+    exit;
+}
+
+if (isset($_GET['generatePixels'])) {
+    if ($user['pixels'] <= 10) {
+        $reqCredits = $bdd->prepare("UPDATE users SET pixels = pixels + 100  WHERE id = ?");
+        $reqCredits->execute([$user['id']]);
+        $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
+        $insertn1->bindValue(':userid', $user['id']);
+        $insertn1->bindValue(':produit', 'Génération de 100 pixels');
+        $insertn1->bindValue(':prix', 0);
+        $insertn1->bindValue(':gain', '+');
+        $insertn1->bindValue(':date', FullDate('full'));
+        $insertn1->execute();
+
+        $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-green\"> Nous venons de t'envoyer <b>100 pixels</b>!</div></div></div>";
+    } else {
+        $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-red\">Tu as assez de crédits.</div></div></div>";
+    }
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
@@ -104,14 +127,45 @@ $pagename = "Pixels";
                 <div class="habblet-container ">
                     <div class="cbb clearfix pixelgreen ">
 
-                        <h2 class="title">Louez des objets !</h2>
+                        <h2 class="title">Ton porte monnaie
+                        </h2>
+                        <div id="purse-habblet">
 
-                        <div id="pixels-info" class="box-content pixels-info">
-                            <div class="pixels-info-text clearfix">
-                                <img class="pixels-image" src="<?php echo $url; ?>/web-gallery/v2/images/activitypoints/pixelpage_effectmachine.png" alt="" />
-                                <p class="pixels-text">Créez un appart cool, avec ces effets d'appart à bascule, vous pouvez élargir l'expérience de vos amis..</p>
+                            <ul>
+                                <li class="even icon-pixels">
+                                    <div>Tu as actuellement:</div>
+                                    <span class="purse-balance-amount"><?php echo $user['pixels']; ?> Pixels</span>
+                                    <div class="purse-tx"><a href="transactions">Mes transactions</a></div>
+                                </li>
+                                <?php if ($user['pixels'] <= 10) { ?>
+
+                                    <li class="odd">
+                                        <div style="text-align:center" class="box-content">
+                                            <a href="pixels?generatePixels" id="purse-redeemcode-button" class="new-button purse-icon"><b><span></span>Générer 100 pixels</b><i></i></a>
+                                        </div>
+                                    </li>
+                                    <?php if (isset($affichage)) {
+                                        echo $affichage;
+                                    } ?>
+                                <?php } else { ?>
+                                    <br />
+                                    <center>
+                                        <div style="width:80%;" class="redeem-error">
+                                            <div style="text-align:center" class="rounded rounded-green">
+                                                Génial, tu as assez de pixels !
+                                            </div>
+                                        </div>
+                                    </center>
+                                <?php } ?>
+                            </ul>
+                            <div id="purse-redeem-result">
                             </div>
+
                         </div>
+
+                        <script type="text/javascript">
+                            new PurseHabblet();
+                        </script>
 
 
                     </div>

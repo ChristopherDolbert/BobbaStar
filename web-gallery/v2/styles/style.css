@@ -2059,6 +2059,14 @@ input.invitation-input {
 	padding: 10px 0 15px 60px;
 }
 
+#purse-habblet li.icon-pixels {
+	background-image: url(../../images/purse/pixels.gif);
+	background-repeat: no-repeat;
+	vertical-align: middle;
+	background-position: 22px 9px;
+	padding: 10px 0 15px 60px;
+}
+
 span.purse-balance-amount {
 	font-size: 1.2em;
 	font-weight: bold;
