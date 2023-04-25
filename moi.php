@@ -13,6 +13,9 @@ if (!isset($_SESSION['username'])) {
     Redirect("" . $url . "/index");
     exit;
 }
+
+echo getLocationInfoByIp($_SERVER['REMOTE_ADDR']);
+
 $sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
 ?>

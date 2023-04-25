@@ -25,6 +25,10 @@ if ($row > 0) {
 if (!isset($_SESSION['username'])) {
 	Redirect($url . "/index");
 }
+
+if (!isset($pseudo['credits'])) {
+	Redirect($url . "/error");
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
@@ -134,13 +138,13 @@ if (!isset($_SESSION['username'])) {
 							</div>
 							</td>
 							</tr>
-										<?PHP  
+				<?PHP
+												}
+											} else {
+												echo "<tr class=\"bas\"><td class=\"bas\"><div style=\"width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url($avatarimage&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);\"></div><a>Aucun utilisateur en base.</a></div></td></tr>";
+											}
 										}
-										} else { 
-											echo "<tr class=\"bas\"><td class=\"bas\"><div style=\"width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url($avatarimage&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);\"></div><a>Aucun utilisateur en base.</a></div></td></tr>"; 
-										}
-										} 
-										?>
+				?>
 				</tbody>
 				</table>
 						</div>
