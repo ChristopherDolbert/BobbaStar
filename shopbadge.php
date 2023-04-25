@@ -18,36 +18,52 @@ if (isset($_GET['do'])) {
     if ($do == "buy") {
         if (isset($_POST['badge'])) {
             $code_badge = Secu($_POST['badge']);
+
             $selectcode = $bdd->query("SELECT * FROM gabcms_shopbadge WHERE badge_id = '" . $code_badge . "'");
             $codet = $selectcode->fetch();
-            if ($user['jetons'] >= $codet['prix'] && $code_badge == $codet['badge_id']) {
-                if ($code_badge == "ADM" || $code_badge == "HBA" || $code_badge == "EXH" || $code_badge == "NWB" || $code_badge == "HS1" || $code_badge == "XXX" || $code_badge == "Z0" || $codet['stock'] == "0") {
-                    $affichage = "<div id=\"purse-redeem-result\"> 
+
+            $havebadge = $bdd->query("SELECT * FROM users_badges WHERE user_id = " . $user['id'] . " AND badge_code = '" . $code_badge . "'");
+            $have = $havebadge->fetch();
+
+            if ($have == false) {
+
+                if ($user['jetons'] >= $codet['prix'] && $code_badge == $codet['badge_id']) {
+                    if ($code_badge == "ADM" || $code_badge == "HBA" || $code_badge == "EXH" || $code_badge == "NWB" || $code_badge == "HS1" || $code_badge == "XXX" || $code_badge == "Z0" || $codet['stock'] == "0") {
+                        $affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
             <div class=\"rounded rounded-red\"> 
               Ce badge ne peut être acheté.
             </div> 
         </div> 
 </div>";
-                } else {
-                    $bdd->query("UPDATE gabcms_shopbadge SET stock = stock - 1 WHERE badge_id = '" . $codet['badge_id'] . "'");
-                    $bdd->query("UPDATE users SET jetons = jetons - " . $codet['prix'] . " WHERE username = '" . $user['username'] . "'");
-                    $insertn2 = $bdd->prepare("INSERT INTO users_badges (user_id,slot_id,badge_id) VALUES (:userid, :slot, :badge)");
-                    $insertn2->bindValue(':userid', $user['id']);
-                    $insertn2->bindValue(':slot', '0');
-                    $insertn2->bindValue(':badge', $codet['badge_id']);
-                    $insertn2->execute();
-                    $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
-                    $insertn1->bindValue(':userid', $user['id']);
-                    $insertn1->bindValue(':produit', 'Achat badge (' . $codet['badge_id'] . ')');
-                    $insertn1->bindValue(':prix', $codet['prix']);
-                    $insertn1->bindValue(':gain', '-');
-                    $insertn1->bindValue(':date', FullDate('full'));
-                    $insertn1->execute();
-                    $affichage = "<div id=\"purse-redeem-result\"> 
+                    } else {
+                        $bdd->query("UPDATE gabcms_shopbadge SET stock = stock - 1 WHERE badge_id = '" . $codet['badge_id'] . "'");
+                        $bdd->query("UPDATE users SET jetons = jetons - " . $codet['prix'] . " WHERE username = '" . $user['username'] . "'");
+                        $insertn2 = $bdd->prepare("INSERT INTO users_badges (user_id,slot_id,badge_code) VALUES (:userid, :slot, :badge)");
+                        $insertn2->bindValue(':userid', $user['id']);
+                        $insertn2->bindValue(':slot', '0');
+                        $insertn2->bindValue(':badge', $codet['badge_id']);
+                        $insertn2->execute();
+                        $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
+                        $insertn1->bindValue(':userid', $user['id']);
+                        $insertn1->bindValue(':produit', 'Achat badge (' . $codet['badge_id'] . ')');
+                        $insertn1->bindValue(':prix', $codet['prix']);
+                        $insertn1->bindValue(':gain', '-');
+                        $insertn1->bindValue(':date', FullDate('full'));
+                        $insertn1->execute();
+                        $affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
             <div class=\"rounded rounded-green\"> 
               Bravo! Tu viens d'acheter le badge pour seulement <b>" . $codet['prix'] . " jetons</b>!
+            </div> 
+        </div> 
+</div>";
+                    }
+                } else {
+                    $affichage = "<div id=\"purse-redeem-result\"> 
+        <div class=\"redeem-error\"> 
+            <div class=\"rounded rounded-red\"> 
+               Tu n'as pas assez de jetons pour acheter ce badge!
             </div> 
         </div> 
 </div>";
@@ -56,20 +72,20 @@ if (isset($_GET['do'])) {
                 $affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
             <div class=\"rounded rounded-red\"> 
-               Tu n'as pas assez de jetons pour acheter ce badge!
+              Vous avez déjà ce badge.
             </div> 
         </div> 
 </div>";
             }
-        } else {
-            $affichage = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-red\"> 
-              Le badge n'est pas en vente.
-            </div> 
-        </div> 
-</div>";
         }
+    } else {
+        $affichage = "<div id=\"purse-redeem-result\"> 
+<div class=\"redeem-error\"> 
+    <div class=\"rounded rounded-red\"> 
+      Le badge n'est pas en vente.
+    </div> 
+</div> 
+</div>";
     }
 }
 ?>
@@ -105,14 +121,14 @@ if (isset($_GET['do'])) {
     <script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
 
     <script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
     <script src="<?PHP echo $imagepath; ?>static/js/habboclub.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/myhabbo/control.textarea.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/myhabbo/control.textarea.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
     <script src="<?PHP echo $imagepath; ?>static/js/minimail.js" type="text/javascript"></script>
 
 
@@ -120,13 +136,13 @@ if (isset($_GET['do'])) {
     <meta name="description" content="<?PHP echo $description; ?>" />
     <meta name="keywords" content="<?PHP echo $keyword; ?>" />
     <!--[if IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 <![endif]-->
     <!--[if lt IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 <![endif]-->
     <!--[if lt IE 7]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/pngfix.js" type="text/javascript"></script>
 <script type="text/javascript">
 try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
@@ -221,24 +237,18 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                 <div class="habblet-container">
 
                     <div class="cbb clearfix green ">
-                        <h2 class='title'>Votre porte monnaie
+                        <h2 class='title'>Ton porte monnaie
                         </h2>
                         <div id="purse-habblet">
                             <ul>
-                                <li class="even icon-purse-jetons">
-                                    <div>Vous avez actuellement:</div>
-                                    <span class="purse-balance-amount"><?PHP echo $user['jetons']; ?> Jetons</span>
-                                </li>
-                                <li class="odd">
-                                    <div class="box-content">
-                                        Tu as un code promo de jetons ? <a href="<?PHP echo $url; ?>/code_promo">Clique ici pour l'utiliser</a>
-                                        <?PHP if (isset($affichage)) {
-                                            echo "<br/>" . $affichage . "";
-                                        } ?>
-                                    </div>
+                                <li class="even icon-purse">
+                                    <div>Tu as actuellement:</div>
+                                    <span class="purse-balance-amount"><?php echo $user['jetons']; ?> Jetons</span>
+                                    <div class="purse-tx"><a href="jetons">Acheter des jetons</a></div>
                                 </li>
                             </ul>
-                            </ul>
+                            <div id="purse-redeem-result">
+                            </div>
                         </div>
                     </div>
                     <script type="text/javascript">

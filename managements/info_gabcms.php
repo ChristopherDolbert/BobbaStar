@@ -107,10 +107,9 @@ if ($user['rank'] > 8) {
         </div>
         <div id="page_footer"></div>
     </div>
-    <div id="footer">
-        <p><a href='<?PHP echo $url; ?>' target="_self"><?php echo $locale['link_homepage']; ?></a> | <a href='<?PHP echo $url; ?>/vieprivee' target="_self"><?php echo $locale['link_privacy']; ?></a> | <a href="<?PHP echo $url; ?>/disclaimer" target="_blank"><?php echo $locale['link_disclaimer']; ?></a></p>
-        <p><?php echo $locale['copyright_habbo']; ?></p>
-    </div>
+    <!-- FOOTER -->
+    <?PHP include("./template/footer.php"); ?>
+    <!-- FIN FOOTER -->
 </body>
 
 </html>

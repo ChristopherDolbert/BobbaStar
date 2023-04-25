@@ -1,9 +1,7 @@
 <?PHP
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 #|                                                                        #|
-#|         GabCMS - Site Web et Content Management System                 #|
-#|         Copyright © 2013-2015 Gabodd Tout droits réservés.             #|
-#|			    INDEX BY EKLOPSIS - IBUILD.FR 							  #|
+#|         Copyright © 2014-2023 - MyHabbo Tout droits réservés.          #|
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
@@ -16,7 +14,7 @@ $pageid = "index";
 $sql = $bdd->query("SELECT * FROM gabcms_config, gabcms_maintenance WHERE gabcms_config.id = '1' AND gabcms_maintenance.id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
 
-if($cof['activ'] == "Oui") {
+if ($cof['activ'] == "Oui") {
     header("Location: $url/maintenance");
     exit;
 }
@@ -154,9 +152,7 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
                 <div id="header" class="clearfix">
                     <h1><a href="<?php echo $url; ?>/"></a></h1>
                     <ul class="stats">
-                        <li class="stats-online"><span class="stats-fig"><?PHP $tmp = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
-                                                                            $tma = $tmp->fetch(PDO::FETCH_ASSOC);
-                                                                            echo $tma['count(id)']; ?></span> <?php echo $locale['users_online_now']; ?></li>
+                        <li class="stats-online"><?PHP echo Connected($pageid); ?></li>
 
                         <?PHP if ($cof['etat_client'] == '1' || $cof['etat_client'] == '3' && $cof['si3_debut'] < $nowtime && $cof['si3_fin'] < $nowtime) { ?>
                             <li class="stats-visited"><img src="<?PHP echo $imagepath; ?>v2/images/online.gif" alt="online"></li>
@@ -349,10 +345,9 @@ Pngfix.doPngImageFix();
 </script>
 <![endif]-->
 
-                    <div id="footer">
-                        <p><a href='<?PHP echo $url; ?>' target="_self"><?php echo $locale['link_homepage']; ?></a> | <a href='<?PHP echo $url; ?>/vieprivee' target="_self"><?php echo $locale['link_privacy']; ?></a> | <a href="<?PHP echo $url; ?>/disclaimer" target="_blank"><?php echo $locale['link_disclaimer']; ?></a></p>
-                        <p><?php echo $locale['copyright_habbo']; ?></p>
-                    </div>
+                    <!-- FOOTER -->
+                    <?PHP include("./template/footer.php"); ?>
+                    <!-- FIN FOOTER -->
                 </div>
             </div>
         </div>

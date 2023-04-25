@@ -348,6 +348,7 @@ function UpdateSSO($id)
 
 function Genere_code($size)
 {
+	$code = "";
 	$characters = array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
 	for ($i = 0; $i < $size; $i++) {
 		$code .= ($i % 2) ? strtoupper($characters[array_rand($characters)]) : $characters[array_rand($characters)];
@@ -387,4 +388,54 @@ function GetConfig()
 	$sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 	$cof = $sql->fetch(PDO::FETCH_ASSOC);
 	return $cof;
+}
+
+function Connected($pageid)
+{
+	include('SQL.php');
+	$connected = "";
+	$tmp = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
+	$tma = $tmp->fetch(PDO::FETCH_ASSOC);
+	if ($tma['count(id)'] < 1) {
+		if ($pageid == "index") {
+			$connected = "<span class=\"stats-fig\">" . $tma['count(id)'] . "</span> Connecté";
+		} else {
+			$connected = $tma['count(id)'] . " Connecté";
+		}
+	} else {
+		if ($pageid == "index") {
+			$connected = "<span class=\"stats-fig\">" . $tma['count(id)'] . "</span> Connectés";
+		} else {
+			$connected = $tma['count(id)'] . " Connectés";
+		}
+	}
+	return $connected;
+}
+
+function SendMUSData($data)
+{
+
+	include('SQL.php');
+	$configsql = $bdd->query("SELECT * FROM gabcms_client WHERE id = '1'");
+	$config = $configsql->fetch(PDO::FETCH_ASSOC);
+
+	$mus_ip = $config['ip'];
+	$mus_port = $config['mus_port'];
+
+	if (!is_numeric($mus_port)) {
+		echo "<b>System Error</b><br />Invalid MUS Port!";
+		exit;
+	}
+
+	$sock = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tcp'));
+	socket_connect($sock, $mus_ip, $mus_port);
+
+	if (!is_resource($sock)) {
+		return false;
+	} else {
+		socket_send($sock, $data, strlen($data), MSG_DONTROUTE);
+		return true;
+	}
+
+	socket_close($sock);
 }

@@ -1,7 +1,6 @@
 <?PHP
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 #|                                                                        #|
-
 #|         Copyright © 2014-2023 - MyHabbo Tout droits réservés.          #|
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
@@ -19,11 +18,13 @@ if (isset($_GET['demande'])) {
 			$email = Secu($_POST['email']);
 			if (isset($_POST['pseudo'])) {
 				$pseudo = Secu($_POST['pseudo']);
-				$verif_user = $bdd->query("SELECT * FROM users WHERE username = '" . $pseudo . "' LIMIT 1");
+				$verif_user = $bdd->prepare("SELECT * FROM users WHERE username = ? LIMIT 1");
+				$verif_user->execute([$pseudo]);
 				$row = $verif_user->rowCount();
 				if ($row > 0) {
 					$user = $verif_user->fetch(PDO::FETCH_ASSOC);
-					$verif_mail = $bdd->query("SELECT * FROM users WHERE id = '" . $user['id'] . "' AND mail = '" . $email . "' LIMIT 1");
+					$verif_mail = $bdd->prepare("SELECT * FROM users WHERE id = ? AND mail = ? LIMIT 1");
+					$verif_mail->execute([$user['id'], $email]);
 					$row_mail = $verif_mail->rowCount();
 					if ($row_mail > 0) {
 						$code = "" . Genere_code(8) . "-" . Genere_code(8) . "-" . Genere_code(8) . "-" . Genere_code(8) . "";
@@ -130,11 +131,12 @@ if (isset($_GET['changement'])) {
 			$lien_concret = "&u=" . $u . "&e=" . $e . "&c=" . $c . "";
 			if (isset($_POST['code']) && isset($_POST['bean_repassword']) && isset($_POST['bean_password'])) {
 				$code = Secu($_POST['code']);
-				$motdepasse = GabCMSHash($_POST['bean_password']);
-				$remotdepasse = GabCMSHash($_POST['bean_repassword']);
-				if ($motdepasse == $remotdepasse) {
+				$motdepasse = password_hash($_POST['bean_password'], PASSWORD_BCRYPT);
+				$remotdepasse = $_POST['bean_repassword'];
+				if (password_verify($remotdepasse, $motdepasse)) {
 					if (strlen($motdepasse) >= 6) {
-						$verif_mdp = $bdd->query("SELECT * FROM gabcms_motdepasse_oublier WHERE code = '" . $code . "' && lien = '" . $lien_concret . "' LIMIT 1");
+						$verif_mdp = $bdd->prepare("SELECT * FROM gabcms_motdepasse_oublier WHERE code = ? AND lien = ? LIMIT 1");
+						$verif_mdp->execute([$code, $lien_concret]);
 						$row_mdp = $verif_mdp->rowCount();
 						if ($row_mdp > 0) {
 							$mdpo = $verif_mdp->fetch(PDO::FETCH_ASSOC);
@@ -142,8 +144,10 @@ if (isset($_GET['changement'])) {
 								if ($mdpo['ip'] == $_SERVER['REMOTE_ADDR']) {
 									if ($mdpo['lien'] == $lien_concret) {
 										if ($mdpo['code'] == $code) {
-											$bdd->query("UPDATE users SET password = '" . $motdepasse . "' WHERE username = '" . $u . "' AND mail = '" . $e . "' LIMIT 1");
-											$bdd->query("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = '" . $mdpo['id'] . "' LIMIT 1");
+											$update_mdp = $bdd->prepare("UPDATE users SET password = ? WHERE username = ? AND mail = ? LIMIT 1");
+											$update_mdp->execute([$motdepasse, $u, $e]);
+											$set_use = $bdd->prepare("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = ? LIMIT 1");
+											$set_use->execute([$mdpo['id']]);
 											$affichage = "<div id=\"purse-redeem-result\"> 
                                         <div class=\"redeem-error\"> 
                                         <div class=\"rounded rounded-green\"> 
@@ -159,7 +163,8 @@ if (isset($_GET['changement'])) {
                                     </div> 
                                     </div> 
                                     </div>";
-											$bdd->query("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = '" . $mdpo['id'] . "'");
+											$set_use = $bdd->prepare("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = ?");
+											$set_use->execute([$mdpo['id']]);
 										}
 									} else {
 										$affichage = "<div id=\"purse-redeem-result\"> 
@@ -169,7 +174,8 @@ if (isset($_GET['changement'])) {
                                 </div> 
                                 </div> 
                                 </div>";
-										$bdd->query("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = '" . $mdpo['id'] . "'");
+										$set_use = $bdd->prepare("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = ?");
+										$set_use->execute([$mdpo['id']]);
 									}
 								} else {
 									$affichage = "<div id=\"purse-redeem-result\"> 
@@ -179,7 +185,8 @@ if (isset($_GET['changement'])) {
                             </div> 
                             </div> 
                             </div>";
-									$bdd->query("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = '" . $mdpo['id'] . "'");
+									$set_use = $bdd->prepare("UPDATE gabcms_motdepasse_oublier SET utilise = '2' WHERE id = ?");
+									$set_use->execute([$mdpo['id']]);
 								}
 							} else {
 								$affichage = "<div id=\"purse-redeem-result\"> 
@@ -295,9 +302,7 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 				<div id="header" class="clearfix">
 					<h1><a href="index.php"></a></h1>
 					<ul class="stats">
-						<li class="stats-online"><span class="stats-fig"><?PHP $tmp = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
-																			$tma = $tmp->fetch(PDO::FETCH_ASSOC);
-																			echo $tma['count(id)']; ?></span> Connectés</li>
+						<li class="stats-online"><?PHP echo Connected($pageid); ?></li>
 					</ul>
 				</div>
 				<div id="process-content">
@@ -319,17 +324,20 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 									</p>
 
 									<div class="clear"></div>
+									<br />
+									<form style="text-align:center !important" action="?demande=rempli" method="post" id="forgottenpw-form">
+										<tr>
+											<td width="50%">
+												<input type="text" placeholder="Pseudo" name="pseudo" id="pseudoe" value="" required />
+											</td>
 
-									<form action="?demande=rempli" method="post" id="forgottenpw-form">
-										<p>
-											<label for="pseudo">Nom d'utilisateur</label>
-											<input type="text" name="pseudo" id="pseudoe" value="" required />
-										</p>
+											<td>
+												<input placeholder="E-mail" type="text" name="email" id="email" value="" required />
+											</td>
+										</tr>
 
-										<p>
-											<label for="email">E-mail</label>
-											<input type="text" name="email" id="email" value="" required />
-										</p>
+										<div class="clear"></div>
+										<br /><br />
 
 										<p>
 											<input type="submit" id="envoyer" value="Envoyer" class="submit process-button" id="forgottenpw-submit">
@@ -346,26 +354,26 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 									<p> Si tu es arrivé ici, c'est que tu as reçu le mail. Dans le formulaire ci-contre, merci de renseigner ton code ainsi que ton nouveau mot de passe.</p>
 
 									<div class="clear"></div>
+									<br />
 
-									<form id="forgottenpw-form" action="?changement=ok&u=<?PHP echo $_GET['u']; ?>&e=<?PHP echo $_GET['e']; ?>&c=<?PHP echo $_GET['c']; ?>" method="post">
-										<p>
-											<label for="code">Code</label>
-											<input type="text" name="code" id="code" value="" required />
-										</p>
+									<form style="text-align:center !important" id="forgottenpw-form" action="?changement=ok&u=<?PHP echo $_GET['u']; ?>&e=<?PHP echo $_GET['e']; ?>&c=<?PHP echo $_GET['c']; ?>" method="post">
+										<tr>
+											<td>
+												<input placeholder="Code" type="number" name="code" id="code" value="" required />
+											</td>
 
-										<p>
-											<label for="bean_password">Nouveau mot de passe</label>
-											<input type="password" name="bean_password" id="bean_password" value="" required />
-										</p>
+											<td>
+												<input placeholder="Nouveau mot de passe" type="password" name="bean_password" id="bean_password" value="" required />
+											</td>
 
-										<p>
-											<label for="bean_repassword">Confirmer le mot de passe</label>
-											<input type="password" name="bean_repassword" id="bean_repassword" value="" required />
-										</p>
+											<td>
+												<input placeholder="Confirmer le mot de passe" type="password" name="bean_repassword" id="bean_repassword" value="" required />
+											</td>
 
-										<p>
-											<input class="submit process-button" id="forgottenpw-submit" type="submit" id="envoyer" class="new-button fill" value="Réinitialiser le mot de passe">
-										</p>
+											<td>
+												<input class="submit process-button" id="forgottenpw-submit" type="submit" id="envoyer" class="new-button fill" value="Réinitialiser le mot de passe">
+											</td>
+										</tr>
 										<input type="hidden" value="default" name="origin" />
 									</form>
 								</div>
@@ -387,10 +395,9 @@ body { behavior: url(<?PHP echo $imagepath; ?>js/csshover.htc); }
 
 					</div>
 
-					<div id="footer">
-						<p><a href='<?PHP echo $url; ?>' target="_self"><?php echo $locale['link_homepage']; ?></a> | <a href='<?PHP echo $url; ?>/vieprivee' target="_self"><?php echo $locale['link_privacy']; ?></a> | <a href="<?PHP echo $url; ?>/disclaimer" target="_blank"><?php echo $locale['link_disclaimer']; ?></a></p>
-						<p><?php echo $locale['copyright_habbo']; ?></p>
-					</div>
+					<!-- FOOTER -->
+					<?PHP include("./template/footer.php"); ?>
+					<!-- FIN FOOTER -->
 				</div>
 
 

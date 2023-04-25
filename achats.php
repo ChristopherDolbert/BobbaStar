@@ -1,7 +1,6 @@
 <?PHP
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 #|                                                                        #|
-
 #|         Copyright © 2014-2023 - MyHabbo Tout droits réservés.          #|
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
@@ -211,7 +210,7 @@ if (isset($_GET['do'])) {
         var habboName = "<?PHP echo $user['username']; ?>";
         var habboReqPath = "<?PHP echo $url; ?>";
         var habboStaticFilePath = "<?PHP echo $imagepath; ?>";
-        var habboImagerUrl = "http://www.habbo.co.uk/habbo-imaging/";
+        var habboImagerUrl = "<?php echo $avatarimage ?>";
         var habboPartner = "";
         var habboDefaultClientPopupUrl = "<?PHP echo $url; ?>/client";
         window.name = "habboMain";
@@ -227,18 +226,18 @@ if (isset($_GET['do'])) {
     <script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
 
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
     <script src="<?PHP echo $imagepath; ?>static/js/habboclub.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/myhabbo/control.textarea.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/myhabbo/control.textarea.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
     <script src="<?PHP echo $imagepath; ?>static/js/minimail.js" type="text/javascript"></script>
 
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/cbs2credits.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
-    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/newcredits.css<?php echo '?'.mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/cbs2credits.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/newcredits.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
     <script src="<?PHP echo $imagepath; ?>static/js/cbs2credits.js" type="text/javascript"></script>
 
     <meta name="build" content="<?PHP echo $build; ?> >> <?PHP echo $version; ?>" />

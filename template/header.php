@@ -16,6 +16,13 @@ $c = $message->fetch(PDO::FETCH_ASSOC);
 if ($c['afficher'] == "Oui") {
 ?><div style="background-color:#<?PHP echo Secu($c['couleur']); ?>; width: 100%; color:#FFFFFF; padding:5px; margin-left:-10px;"><b><?PHP echo stripslashes($c['message']); ?></b></div>
 <?PHP } ?>
+<?php if (!empty($user['topbg'])) { ?>
+    <style>
+        #header-container {
+            background-image: url(<?php echo $user['topbg']; ?>);
+        }
+    </style>
+<?php } ?>
 <div style="display:block; position:fixed;" title="Contact le service client" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">
     <a href="<?PHP echo $url; ?>/service_client/"><img src="<?PHP echo $imagepath; ?>v2/images/bouton_sc.png" style="margin-left:10px;margin-top:10px;" /></a>
 </div>
@@ -51,7 +58,6 @@ if ($c['afficher'] == "Oui") {
                 </div>
                 <div style="position:absolute;float:right;left:-390px;top:-5px;height:32px;width:380px;padding-top:2px;">
                     <p style="margin-top:9px;padding-left:5px;" class="alignleft"><a href="<?PHP echo $url; ?>/client" target="habbohelp" onclick="openOrFocusHelp(this); return false"><b>Entre sur <?PHP echo $sitename; ?></b></a> |
-                        <a href="<?PHP echo $url ?>/forum/">Forum</a> |
                         <a href="<?PHP echo $url; ?>/habbowood" target="habbowood" onclick="openOrFocusHelp(this); return false">Habbowood</a> |
                         <a href="<?PHP echo $url ?>/logout" class="userlink" id="signout">Se d&eacute;connecter</a>
                     </p>
@@ -112,9 +118,7 @@ if ($c['afficher'] == "Oui") {
         <!-- FIN BOUTTON MANAGEMENTS -->
         </ul>
         <div id="habbos-online">
-            <div class="rounded"><span>Il y a <?PHP $tmp = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
-                                                $tma = $tmp->fetch(PDO::FETCH_ASSOC);
-                                                echo $tma['count(id)']; ?> connectés</span></div>
+            <div class="rounded"><span><?PHP echo Connected("other"); ?></span></div>
         </div>
     </div>
 </div>
@@ -171,7 +175,7 @@ if ($c['afficher'] == "Oui") {
                     <?PHP } ?>
 
                 <?PHP } ?>
-                <?PHP if ($pageid == "communaute" || $pageid == "tchat" || $pageid == "forum" || $pageid == "articles" || $pageid == "staff" || $pageid == "recrut" || $pageid == "rs" || $pageid == "sdf" || $pageid == "error") { ?>
+                <?PHP if ($pageid == "communaute" || $pageid == "tchat" || $pageid == "articles" || $pageid == "staff" || $pageid == "recrut" || $pageid == "rs" || $pageid == "sdf" || $pageid == "error") { ?>
                     <?PHP if ($pageid == "communaute") { ?>
                         <li class=" selected">Communaut&eacute;</li>
                     <?PHP } else { ?>
@@ -207,11 +211,6 @@ if ($c['afficher'] == "Oui") {
                     <?PHP } else { ?>
                         <li class=""><a href="<?PHP echo $url; ?>/tchat">Tchat</a></li>
                     <?PHP } ?>
-                    <?PHP if ($pageid == "forum") { ?>
-                        <li class=" selected">Forum</li>
-                    <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/forum/">Forum</a></li>
-                    <?PHP } ?>
                 <?PHP } ?>
                 <?PHP if ($pageid == "safety" || $pageid == "habbo_way") { ?>
                     <?PHP if ($pageid == "safety") { ?>
@@ -225,11 +224,21 @@ if ($c['afficher'] == "Oui") {
                         <li class=""><a href="<?PHP echo $url; ?>/habbo_way"><?PHP echo $sitename; ?> attitude</a></li>
                     <?PHP } ?>
                 <?PHP } ?>
-                <?PHP if ($pageid == "badgeshop" || $pageid == "achats" || $pageid == "codepromo" || $pageid == "jetons" || $pageid == "clubs" || $pageid == "shopbots") { ?>
+                <?PHP if ($pageid == "badgeshop" || $pageid == "achats" || $pageid == "codepromo" || $pageid == "jetons" || $pageid == "clubs" || $pageid == "shopbots" || $pageid == "pixels" || $pageid == "credits") { ?>
                     <?PHP if ($pageid == "jetons") { ?>
                         <li class=" selected">Jetons</li>
                     <?PHP } else { ?>
                         <li class=""><a href="<?PHP echo $url; ?>/jetons">Jetons</a></li>
+                    <?PHP } ?>
+                    <?PHP if ($pageid == "pixels") { ?>
+                        <li class=" selected">Pixels</li>
+                    <?PHP } else { ?>
+                        <li class=""><a href="<?PHP echo $url; ?>/pixels">Pixels</a></li>
+                    <?PHP } ?>
+                    <?PHP if ($pageid == "credits") { ?>
+                        <li class=" selected">Crédits</li>
+                    <?PHP } else { ?>
+                        <li class=""><a href="<?PHP echo $url; ?>/credits">Crédits</a></li>
                     <?PHP } ?>
                     <?PHP if ($pageid == "achats") { ?>
                         <li class=" selected">Achats</li>
@@ -254,7 +263,7 @@ if ($c['afficher'] == "Oui") {
                     <?PHP } ?>
                 <?PHP } ?>
 
-                <?PHP if ($pageid == "tchatstaff" || $pageid == "sta" || $pageid == "nds" || $pageid == "bureau" || $pageid == "sc_index" || $pageid == "forum_index") { ?>
+                <?PHP if ($pageid == "tchatstaff" || $pageid == "sta" || $pageid == "nds" || $pageid == "bureau" || $pageid == "sc_index") { ?>
                     <?PHP if ($pageid == "bureau") { ?>
                         <li class=" selected">Bureau</li>
                     <?PHP } else { ?>

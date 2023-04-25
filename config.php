@@ -1,7 +1,6 @@
 <?PHP
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 #|                                                                        #|
-
 #|         Copyright © 2014-2023 - MyHabbo Tout droits réservés.          #|
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
@@ -41,21 +40,26 @@ $sqlss = $bdd->query("SELECT * FROM gabcms_maintenance WHERE id = '1'");
 $c = $sqlss->fetch(PDO::FETCH_ASSOC);
 $query = $bdd->query("SELECT * FROM bans WHERE ip = '" . $_SERVER['REMOTE_ADDR'] . "' ");
 $data = $query->fetch(PDO::FETCH_ASSOC);
-$ban = array($data['value']);
+$ban = array();
+if ($data) {
+	$ban[] = $data['value'];
+}
 $ip = $_SERVER['REMOTE_ADDR'];
 if (in_array($ip, $ban)) {
 	Redirect("" . $url . "/banip");
 }
 if (isset($_SESSION['username'])) {
-	$sql = $bdd->query("SELECT * FROM bans WHERE user_id = '" . $user['id'] . "'");
+	$sql = $bdd->prepare("SELECT * FROM bans WHERE user_id = :user_id");
+	$sql->execute(array('user_id' => $user['id']));
 	$b = $sql->fetch(PDO::FETCH_ASSOC);
-	$stamp_now = $nowtime;
-	$stamp_expire = $b['ban_expire'];
-	$expire = date('d/m/Y H:i', $b['ban_expire']);
-	if ($stamp_now < $stamp_expire) {
-		Redirect("" . $url . "/banned");
+	$now = time();
+	if ($b && $now < $b['ban_expire']) {
+		$expire = date('d/m/Y H:i', $b['ban_expire']);
+		Redirect($url . "/banned");
 	}
 }
+
+
 
 
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
