@@ -51,7 +51,6 @@ if ($c['afficher'] == "Oui") {
                 </div>
                 <div style="position:absolute;float:right;left:-390px;top:-5px;height:32px;width:380px;padding-top:2px;">
                     <p style="margin-top:9px;padding-left:5px;" class="alignleft"><a href="<?PHP echo $url; ?>/client" target="habbohelp" onclick="openOrFocusHelp(this); return false"><b>Entre sur <?PHP echo $sitename; ?></b></a> |
-                        <a href="<?PHP echo $url ?>/forum/">Forum</a> |
                         <a href="<?PHP echo $url; ?>/habbowood" target="habbowood" onclick="openOrFocusHelp(this); return false">Habbowood</a> |
                         <a href="<?PHP echo $url ?>/logout" class="userlink" id="signout">Se d&eacute;connecter</a>
                     </p>
@@ -171,7 +170,7 @@ if ($c['afficher'] == "Oui") {
                     <?PHP } ?>
 
                 <?PHP } ?>
-                <?PHP if ($pageid == "communaute" || $pageid == "tchat" || $pageid == "forum" || $pageid == "articles" || $pageid == "staff" || $pageid == "recrut" || $pageid == "rs" || $pageid == "sdf" || $pageid == "error") { ?>
+                <?PHP if ($pageid == "communaute" || $pageid == "tchat" || $pageid == "articles" || $pageid == "staff" || $pageid == "recrut" || $pageid == "rs" || $pageid == "sdf" || $pageid == "error") { ?>
                     <?PHP if ($pageid == "communaute") { ?>
                         <li class=" selected">Communaut&eacute;</li>
                     <?PHP } else { ?>
@@ -206,11 +205,6 @@ if ($c['afficher'] == "Oui") {
                         <li class=" selected">Tchat</li>
                     <?PHP } else { ?>
                         <li class=""><a href="<?PHP echo $url; ?>/tchat">Tchat</a></li>
-                    <?PHP } ?>
-                    <?PHP if ($pageid == "forum") { ?>
-                        <li class=" selected">Forum</li>
-                    <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/forum/">Forum</a></li>
                     <?PHP } ?>
                 <?PHP } ?>
                 <?PHP if ($pageid == "safety" || $pageid == "habbo_way") { ?>
@@ -254,7 +248,7 @@ if ($c['afficher'] == "Oui") {
                     <?PHP } ?>
                 <?PHP } ?>
 
-                <?PHP if ($pageid == "tchatstaff" || $pageid == "sta" || $pageid == "nds" || $pageid == "bureau" || $pageid == "sc_index" || $pageid == "forum_index") { ?>
+                <?PHP if ($pageid == "tchatstaff" || $pageid == "sta" || $pageid == "nds" || $pageid == "bureau" || $pageid == "sc_index") { ?>
                     <?PHP if ($pageid == "bureau") { ?>
                         <li class=" selected">Bureau</li>
                     <?PHP } else { ?>

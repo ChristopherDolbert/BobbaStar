@@ -1,7 +1,6 @@
 <?PHP
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 #|                                                                        #|
-
 #|         Copyright © 2014-2023 - MyHabbo Tout droits réservés.          #|
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
@@ -160,7 +159,7 @@ if (isset($_GET['do'])) {
         var habboName = "<?PHP echo $user['username']; ?>";
         var habboReqPath = "<?PHP echo $url; ?>";
         var habboStaticFilePath = "<?PHP echo $imagepath; ?>";
-        var habboImagerUrl = "http://www.habbo.co.uk/habbo-imaging/";
+        var habboImagerUrl = "<?php echo $avatarimage ?>";
         var habboPartner = "";
         var habboDefaultClientPopupUrl = "<?PHP echo $url; ?>/client";
         window.name = "habboMain";

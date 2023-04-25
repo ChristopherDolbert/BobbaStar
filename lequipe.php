@@ -1,7 +1,6 @@
 <?PHP
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 #|                                                                        #|
-
 #|         Copyright © 2014-2023 - MyHabbo Tout droits réservés.          #|
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
@@ -152,15 +151,15 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                                                                                                                         $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $rt['poste'] . "'");
                                                                                                                                         $caz = $correct->fetch();
                                                                                                                                         if ($s['gender'] == "M") { ?> <?PHP echo stripslashes(Secu($caz['nom_M'])) ?>, <?PHP }
-                                                                                                                                        if ($s['gender'] == "F") { ?><?PHP echo stripslashes(Secu($caz['nom_F'])) ?>, <?PHP }
-                                                                                                                                                                        } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']) ?></span></b> <?PHP echo $etat8; ?> <?PHP echo $etat_modif; ?> <br />
+                                                                                                                                                                                                                    if ($s['gender'] == "F") { ?><?PHP echo stripslashes(Secu($caz['nom_F'])) ?>, <?PHP }
+                                                                                                                                                                                                                } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']) ?></span></b> <?PHP echo $etat8; ?> <?PHP echo $etat_modif; ?> <br />
                                                 <span style="color:#888"><b>Mission:</b> <?PHP
-                            if (empty($s['motto'])) {
-                                echo "Pas de mission";
-                            } else {
-                                echo Secu($s['motto']);
-                            }
-                            ?></span><br />
+                                                                                            if (empty($s['motto'])) {
+                                                                                                echo "Pas de mission";
+                                                                                            } else {
+                                                                                                echo Secu($s['motto']);
+                                                                                            }
+                                                                                            ?></span><br />
                                                 <span style="color:#888"><b>Fonction:</b> <?PHP echo stripslashes(Secu($s['fonction'])) ?></span><br />
                                                 <?PHP echo (($s['online'] == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif"></td>') ?>
                                             </td>
@@ -253,8 +252,8 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                                                                                                                         $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $rt['poste'] . "'");
                                                                                                                                         $caz = $correct->fetch();
                                                                                                                                         if ($s['gender'] == "M") { ?> <?PHP echo stripslashes(Secu($caz['nom_M'])); ?>, <?PHP }
-                                                                                                                                        if ($s['gender'] == "F") { ?><?PHP echo stripslashes(Secu($caz['nom_F'])); ?>, <?PHP }
-                                                                                                                                                                            } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']); ?> </span></b> <?PHP echo $etat7; ?> <?PHP echo $etat_modif; ?><br />
+                                                                                                                                                                                                                    if ($s['gender'] == "F") { ?><?PHP echo stripslashes(Secu($caz['nom_F'])); ?>, <?PHP }
+                                                                                                                                                                                                                } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']); ?> </span></b> <?PHP echo $etat7; ?> <?PHP echo $etat_modif; ?><br />
                                                 <span style="color:#888"><b>Mission:</b> <?PHP echo stripslashes(Secu($s['motto'])) ?></span><br />
                                                 <span style="color:#888"><b>Fonction:</b> <?PHP echo stripslashes(Secu($s['fonction'])) ?></span><br />
                                                 <?PHP echo (($s['online'] == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif"></td>') ?>
@@ -331,8 +330,8 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                                                                                                                         $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $rt['poste'] . "'");
                                                                                                                                         $caz = $correct->fetch();
                                                                                                                                         if ($s['gender'] == "M") { ?> <?PHP echo stripslashes(Secu($caz['nom_M'])) ?>, <?PHP }
-                                                                                                                                        if ($s['gender'] == "F") { ?><?PHP echo stripslashes(Secu($caz['nom_F'])) ?>, <?PHP }
-                                                                                                                                                                        } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']) ?></span></b> <?PHP echo $etat6; ?> <?PHP echo $etat_modif; ?> <br />
+                                                                                                                                                                                                                    if ($s['gender'] == "F") { ?><?PHP echo stripslashes(Secu($caz['nom_F'])) ?>, <?PHP }
+                                                                                                                                                                                                                } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']) ?></span></b> <?PHP echo $etat6; ?> <?PHP echo $etat_modif; ?> <br />
                                                 <span style="color:#888"><b>Mission:</b> <?PHP echo stripslashes(Secu($s['motto'])) ?></span><br />
                                                 <span style="color:#888"><b>Fonction:</b> <?PHP echo stripslashes(Secu($s['fonction'])) ?></span><br />
                                                 <?PHP echo (($s['online'] == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif"></td>') ?>
@@ -410,8 +409,8 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                                                                                                                         $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $rt['poste'] . "'");
                                                                                                                                         $caz = $correct->fetch();
                                                                                                                                         if ($s['gender'] == "M") { ?> <?PHP echo stripslashes(Secu($caz['nom_M'])) ?>, <?PHP }
-                                                                                                                                        if ($s['gender'] == "F") { ?><?PHP echo stripslashes(Secu($caz['nom_F'])) ?>, <?PHP }
-                                                                                                                                                                        } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']) ?></span></b> <?PHP echo $etat5; ?> <?PHP echo $etat_modif; ?> <br />
+                                                                                                                                                                                                                    if ($s['gender'] == "F") { ?><?PHP echo stripslashes(Secu($caz['nom_F'])) ?>, <?PHP }
+                                                                                                                                                                                                                } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']) ?></span></b> <?PHP echo $etat5; ?> <?PHP echo $etat_modif; ?> <br />
                                                 <span style="color:#888"><b>Mission:</b> <?PHP echo stripslashes(Secu($s['motto'])) ?></span><br />
                                                 <span style="color:#888"><b>Fonction:</b> <?PHP echo stripslashes(Secu($s['fonction'])) ?></span><br />
                                                 <?PHP echo (($s['online'] == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif"></td>') ?>
