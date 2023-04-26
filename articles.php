@@ -373,7 +373,8 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 									<h2><?PHP echo stripslashes($n['title']); ?></h2>
 									<div class="article-meta">
 										<p class="summary"><?PHP echo stripslashes($n['snippet']); ?></p>
-										<div class="article-body"><?php echo stripslashes($n['body']); ?>
+										<div class="article-body">
+											<p style="width:100%"><?php echo stripslashes($n['body']); ?></p>
 											<div class="article-author"><?PHP echo stripslashes($n['sign']); ?></div>
 											<?PHP
 											$search = $bdd->prepare("SELECT pseudo FROM gabcms_news_recommande WHERE news_id = ? AND pseudo = ?");
