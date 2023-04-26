@@ -26,7 +26,7 @@ if (!isset($_SESSION['username'])) {
         document.habboLoggedIn = true;
         var habboName = "<?PHP echo $user['username']; ?>";
         var habboReqPath = "<?PHP echo $url; ?>";
-        var habboStaticFilePath = "<?PHP echo $imagepath; ?>";
+        var habboStaticFilePath = "<?PHP echo $avatarimage; ?>";
         var habboImagerUrl = "http://www.habbo.com/habbo-imaging/";
         var habboPartner = "";
         var habboDefaultClientPopupUrl = "<?PHP echo $url; ?>/client";

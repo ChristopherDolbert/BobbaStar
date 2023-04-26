@@ -5,17 +5,16 @@
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
-include("./config.php");
-include("./locale/$language/login.php");
+require_once "./config.php";
+require_once "./locale/$language/login.php";
 $pagename = "Inscription";
 $pageid = "index";
 
-echo "la!!!";
 
-$reqUserOnline = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
+$reqUserOnline = $bdd->query("SELECT COUNT(id) FROM users WHERE online = '1'");
 $nbUserOnline = $reqUserOnline->fetchColumn();
 
-$reqUserInscrits = $bdd->query("SELECT count(id) FROM users");
+$reqUserInscrits = $bdd->query("SELECT COUNT(id) FROM users");
 $nbUserInscrits = $reqUserInscrits->fetchColumn();
 
 if (isset($_SESSION['id'])) {
@@ -34,72 +33,74 @@ if (isset($_POST['bean_avatarName'])) {
     $retypedemail = Secu($_POST['bean_retypedEmail']);
     $accept_tos = $_POST['bean_termsOfServiceSelection'];
     //todo: a check svp
-//    $spam_me = $_POST['bean_marketing'];
+
+    //    $spam_me = $_POST['bean_marketing'];
     $figure = $_POST['bean_figure'];
     $gender = $_POST['bean_gender'];
 
-    echo "testlà";
-
-    // Start validating the stuff the user has submitted
-    $filter = preg_replace("/[^a-z\d]/i", "", $name);
-    $email_check = preg_match("/^[a-z0-9_\.-]+@([a-z0-9]+([\-]+[a-z0-9]+)*\.)+[a-z]{2,7}$/i", $email);
+    // Nettoyage et optimisation du code
+    $filter = preg_replace("/[^a-z\\d]/i", "", $name);
+    $email_check = preg_match("/^[a-z0-9_\\.-]+@([a-z0-9]+([\\-]+[a-z0-9]+)*\\.)+[a-z]{2,7}$/i", $email);
 
     $sql = $bdd->prepare("SELECT id FROM users WHERE username = ? LIMIT 1");
     $sql->execute([$name]);
-    $tmp = $sql->fetchColumn(PDO::FETCH_ASSOC);
+    $tmp = $sql->fetch(PDO::FETCH_ASSOC);
+
 
     $reqCheckMail = $bdd->prepare("SELECT mail FROM users WHERE mail = ?");
     $reqCheckMail->execute([$email]);
     $nbMail = $reqCheckMail->rowCount();
 
-    // If this variable stays false, we're safe and can add the user. If not, it means that
-    // we've encountered errors and we can not proceed, so instead show the errors and do not
-    // add the user to the database.
+
+    // Si cette variable reste false, nous pouvons ajouter l'utilisateur. Sinon, cela signifie que
+    // nous avons rencontré des erreurs et nous ne pouvons pas continuer, donc au lieu de cela,
+    // afficher les erreurs et ne pas ajouter l'utilisateur à la base de données.
+    
     $failure = false;
 
-    // Name validation
+    // Validation du nom
     if ($tmp > 0) {
-        $error['name'] = "This username is in use. Please choose another name.";
+        $error['name'] = "Ce nom d'utilisateur est déjà pris. Veuillez choisir un autre nom.";
         $failure = true;
     } elseif ($filter !== $name) {
-        $error['name'] = "Your username is invalid or contains invalid characters.";
+        $error['name'] = "Le nom d'utilisateur est invalide ou contient des caractères invalides.";
         $failure = true;
     } elseif (strlen($name) > 24) {
-        $error['name'] = "The name you have chosen is too long.";
+        $error['name'] = "Le nom que vous avez choisi est trop long.";
         $failure = true;
     } elseif (strlen($name) < 1) {
-        $error['name'] = "Please enter a username.";
+        $error['name'] = "Veuillez entrer un nom d'utilisateur.";
         $failure = true;
     }
 
-    // MOD- Names validation
+
+    // Validation du nom - MOD
     $pos = strrpos($name, "MOD-");
     if ($pos === 0) {
-        $error['name'] = "This name is not allowed.";
+        $error['name'] = "Ce nom n'est pas autorisé.";
+
         $failure = true;
     }
 
-    // Password validation
+    // Validation du mot de passe
     if ($password !== $retypedpassword) {
-        $error['password'] = "The passwords do not match. Please try again.";
+        $error['password'] = "Les mots de passe ne sont pas identiques. Veuillez réessayer.";
         $failure = true;
     } elseif (strlen($password) < 6) {
-        $error['password'] = "Your password is too short.";
+        $error['password'] = "Votre mot de passe est trop court.";
         $failure = true;
-        /*} elseif(strlen($password) > 20){
-		$error['password'] = "Please shorten your password to 20 characters or less!";
-		$failure = true;*/
     }
 
+
     // E-Mail validation
-    if (strlen($email) < 6) {
-        $error['mail'] = "Please supply a valid e-mail address.";
-        $failure = true;
-    } elseif ($email_check !== 1) {
-        $error['mail'] = "Please supply a valid e-mail address.";
+    if (strlen($email) < 6 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error['mail'] = "Veuillez fournir une adresse e-mail valide.";
         $failure = true;
     } elseif ($email !== $retypedemail) {
-        $error['mail'] = "The e-mail addresses don't match.";
+        $error['mail'] = "Les adresses e-mail ne correspondent pas.";
+        $failure = true;
+    } elseif ($nbMail >= 1) {
+        $error['mail'] = "L'adresse e-mail est déjà utilisée.";
         $failure = true;
     } elseif($nbMail >= 1) {
         $error['mail'] = "The e-mail address is already used.";
@@ -107,59 +108,62 @@ if (isset($_POST['bean_avatarName'])) {
     }
 
     // Date of birth validation
-    if ($day < 1 || $day > 31 || $month > 12 || $month < 1 || $year < 1920 || $year > 2008) {
-        $error['dob'] = "Please supply a valid date of birth.";
+    if (!checkdate($month, $day, $year) || $year < 1920 || $year > date('Y') - 18) {
+        $error['dob'] = "Veuillez fournir une date de naissance valide.";
         $failure = true;
     }
 
-    // captcha check
+
+    // Vérification du captcha
     if ($_SESSION['register-captcha-bubble'] == $_POST['bean.captchaResponse'] && !empty($_SESSION['register-captcha-bubble'])) {
-        // Insert you code for processing the form here, e.g emailing the submission, entering it into a database. 
+        // Insérez votre code de traitement du formulaire ici, par exemple l'envoi par e-mail, l'entrée dans une base de données, etc.
         echo "";
         unset($_SESSION['security_code']);
     } else {
-        $error['captcha'] = "The code that you filled in inn't right, are you sure you're a human?!";
+        $error['captcha'] = "Le code que vous avez entré n'est pas correct. Êtes-vous sûr d'être humain ?";
     }
 
-    // Terms of Service validation
+    // Validation des conditions générales d'utilisation
     if ($accept_tos !== "true") {
-        $error['tos'] = "Merci de lire et accepter les thermes du contrat.";
+        $error['tos'] = "Merci de lire et d'accepter les termes du contrat.";
         $failure = true;
     }
 
-    // Try to (we really can't properly) validate figure
+    // Validation de la figure
     if (!empty($figure)) {
-        // Todo: Add some extra validation
+        // À faire : ajouter une validation supplémentaire
     } else {
-        $error['password'] = "An unknown error occured. Please wait for the figure editor to load the next time or refresh if it doesn't.";
+        $error['password'] = "Une erreur inconnue est survenue. Veuillez attendre que l'éditeur de figures charge la prochaine fois, ou rafraîchir la page si cela ne fonctionne pas.";
         $failure = true;
     }
 
-    // Check gender
+    // Vérification du sexe
     if ($gender !== "M" && $gender !== "F") {
         $gender = "M";
         $failure = true;
     }
 
-    echo "ici ??";
+
 
     // Finally, if everything's OK we add the user to the database, log him in, etc
     if (!$failure) {
         $dob = $day . "-" . $month . "-" . $year;
-        $password = password_hash($password, PASSWORD_BCRYPT); // and HoloCMS will never know the password again...
-        echo "test";
-        $insertuser = $bdd->prepare("INSERT INTO users (username, password, mail, account_day_of_birth, rank, look, gender, motto, credits, last_login, account_created, ip_register, message, newsletter) VALUES (:pseudo, :mdp, :mail, :account_day_of_birth, :rank, :look, :sexe, :motto, :credits, :date, :ins, :ip, :message, :newsletter)");
+
+        $password = password_hash($password, PASSWORD_BCRYPT);
+        $insertuser = $bdd->prepare("INSERT INTO users (username, password, mail, account_day_of_birth, rank, look, gender, motto, credits, pixels, last_login, account_created, ip_register, message, newsletter) VALUES (:pseudo, :mdp, :mail, :account_day_of_birth, :rank, :look, :sexe, :motto, :credits, :pixels, :date, :ins, :ip, :message, :newsletter)");
+
         $insertuser->bindValue(':pseudo', $name);
         $insertuser->bindValue(':mdp', $password);
         $insertuser->bindValue(':mail', $email);
-        $insertuser->bindValue(':account_day_of_birth', time($dob));
+        $insertuser->bindValue(':account_day_of_birth', strtotime($dob));
         $insertuser->bindValue(':rank', $rank);
         $insertuser->bindValue(':look', $figure);
         $insertuser->bindValue(':sexe', $gender);
         $insertuser->bindValue(':motto', $mission);
-        $insertuser->bindValue(':credits', $credits);
-        // les pixels sont dans users_currency normalement
-//        $insertuser->bindValue(':pixels', $pixels);
+
+        $insertuser->bindValue(':credits', '10000');
+        $insertuser->bindValue(':pixels', '100');
+
         $insertuser->bindValue(':date', time());
         $insertuser->bindValue(':ins', FullDate('hc'));
         $insertuser->bindValue(':ip', $_SERVER['REMOTE_ADDR']);
@@ -168,17 +172,16 @@ if (isset($_POST['bean_avatarName'])) {
         $insertuser->execute();
 
 
-        $check = $bdd->prepare("SELECT id FROM users WHERE name = ? ORDER BY id ASC LIMIT 1");
+        $check = $bdd->prepare("SELECT id FROM users WHERE username = ? ORDER BY id ASC LIMIT 1");
         $check->execute([$name]);
-        $row = $sql->fetchColumn(PDO::FETCH_ASSOC);
-        $userid = $row['id'];
+        $userid = $check->fetch(PDO::FETCH_ASSOC);
+
 
         $_SESSION['username'] = $name;
         $_SESSION['password'] = $password;
 
         Redirect($url . "/starter_room");
 
-        // And we're done!
     }
 }
 ?>
@@ -222,7 +225,7 @@ if (isset($_POST['bean_avatarName'])) {
         var habboName = null;
         var habboReqPath = "";
         var habboStaticFilePath = "./web-gallery";
-        var habboImagerUrl = "/habbo-imaging/";
+        var habboImagerUrl = "<?PHP echo $avatarimage; ?>";
         var habboPartner = "";
         window.name = "habboMain";
     </script>
@@ -307,7 +310,8 @@ body { behavior: url(https://bobbastar.fr/web-gallery/csshover.htc); }
                 <div id="header" class="clearfix">
                     <h1><a href="index.php"></a></h1>
                     <ul class="stats">
-                        <li class="stats-online"><?PHP echo Connected($pageid); ?></li>
+                        <li class="stats-online"><span class="stats-fig"><?= $nbUserOnline ?></span> Joueurs en ligne!</li>
+                        <li class="stats-visited"><span class="stats-fig"><?= $nbUserInscrits ?></span> Joueurs inscrits</li>
                     </ul>
                 </div>
                 <div id="process-content">
@@ -631,7 +635,7 @@ body { behavior: url(https://bobbastar.fr/web-gallery/csshover.htc); }
                                                                     <?php } ?>
                                                                 </div>
                                                                 <div class="register-label"><label for="register-captcha">Tape le message de s&eacute;curit&eacute; ci-dessus</label></div>
-                                                                <div><input type=\"text\" name=\"bean.captchaResponse\" id=\"register-captcha-bubble\" class=\"register-text-black\" value=\"\" size=\"15\" /\></div>
+                                                                <div><input type="text" name="bean.captchaResponse" id="register-captcha-bubble" class="register-text-black" value="\" size="15"></div>
                                                             </fieldset>
                                                         </noscript>
 
