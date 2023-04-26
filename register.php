@@ -139,7 +139,7 @@ if (isset($_POST['bean_avatarName'])) {
     if (!$failure) {
         $dob = $day . "-" . $month . "-" . $year;
         $password = password_hash($password, PASSWORD_BCRYPT);
-        $insertuser = $bdd->prepare("INSERT INTO users (username, password, mail, account_day_of_birth, rank, look, gender, motto, credits, last_login, account_created, ip_register, message, newsletter) VALUES (:pseudo, :mdp, :mail, :account_day_of_birth, :rank, :look, :sexe, :motto, :credits, :date, :ins, :ip, :message, :newsletter)");
+        $insertuser = $bdd->prepare("INSERT INTO users (username, password, mail, account_day_of_birth, rank, look, gender, motto, credits, pixels, last_login, account_created, ip_register, message, newsletter) VALUES (:pseudo, :mdp, :mail, :account_day_of_birth, :rank, :look, :sexe, :motto, :credits, :pixels, :date, :ins, :ip, :message, :newsletter)");
         $insertuser->bindValue(':pseudo', $name);
         $insertuser->bindValue(':mdp', $password);
         $insertuser->bindValue(':mail', $email);
@@ -148,7 +148,8 @@ if (isset($_POST['bean_avatarName'])) {
         $insertuser->bindValue(':look', $figure);
         $insertuser->bindValue(':sexe', $gender);
         $insertuser->bindValue(':motto', $mission);
-        $insertuser->bindValue(':credits', $credits);
+        $insertuser->bindValue(':credits', '10000');
+        $insertuser->bindValue(':pixels', '100');
         $insertuser->bindValue(':date', time());
         $insertuser->bindValue(':ins', FullDate('hc'));
         $insertuser->bindValue(':ip', $_SERVER['REMOTE_ADDR']);
