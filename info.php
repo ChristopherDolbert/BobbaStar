@@ -16,6 +16,7 @@ if (isset($_GET['pseudo'])) {
 }
 $sql = $bdd->prepare("SELECT * FROM users WHERE username = ? LIMIT 1");
 $sql->execute([$pseudo]);
+
 $row = $sql->rowCount();
 if ($row > 0) {
 	$pseudo = $sql->fetch(PDO::FETCH_ASSOC);
@@ -23,6 +24,10 @@ if ($row > 0) {
 
 if (!isset($_SESSION['username'])) {
 	Redirect($url . "/index");
+}
+
+if (!isset($pseudo['credits'])) {
+	Redirect($url . "/error");
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -111,9 +116,10 @@ if (!isset($_SESSION['username'])) {
 								<form method="post" action="#">
 									<td class='tbl'>
 										<input style='width:97%' type="text" placeholder="Pseudo..." name="recherche_pseudo" value="<?php if (!empty($_POST["recherche_pseudo"])) {
-																																					echo htmlspecialchars($_POST["recherche_pseudo"], ENT_QUOTES);
-																																				} ?>" class="text" style="width: 240px"><br /><br />
-										<input style='width:100%' type="submit" value="Rechercher" />
+																																		echo htmlspecialchars($_POST["recherche_pseudo"], ENT_QUOTES);
+																																	} ?>" class="text" style="width: 240px" required><br /><br />
+
+										<input class="submit" style='width:100%' type="submit" value="Rechercher" />
 								</form><br />
 								<table>
 									<tbody>
@@ -123,19 +129,25 @@ if (!isset($_SESSION['username'])) {
 										<?php
 										if (isset($_POST['recherche_pseudo'])) {
 											$sql2 = $bdd->prepare("SELECT * FROM users WHERE username LIKE ? ORDER BY username ASC LIMIT 0,10");
-                                            $sql2->execute(['%' . $_POST['recherche_pseudo'] . '%']);
-											while ($a = $sql2->fetch()) {
+											$sql2->execute(['%' . $_POST['recherche_pseudo'] . '%']);
+											if ($sql2->rowCount() > 0) {
+												while ($a = $sql2->fetch()) {
 										?>
-												<tr class="bas">
-													<td class="bas">
-														<div style="width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url(<?php echo $avatarimage; ?><?PHP echo Secu($a['look']); ?>&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);"></div><a href="<?PHP echo $url; ?>/info?pseudo=<?PHP echo Secu($a['username']); ?>"><?PHP echo Secu($a['username']); ?></a>
+													<tr class="bas">
+														<td class="bas">
+															<div style="width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url(<?php echo $avatarimage; ?>&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);"></div><a href="<?PHP echo $url; ?>/info?pseudo=<?PHP echo Secu($a['username']); ?>"><?PHP echo Secu($a['username']); ?></a>
 							</div>
 							</td>
 							</tr>
-					<?PHP }
-										} ?>
-					</tbody>
-					</table>
+				<?PHP
+												}
+											} else {
+												echo "<tr class=\"bas\"><td class=\"bas\"><div style=\"width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url($avatarimage&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);\"></div><a>Aucun utilisateur en base.</a></div></td></tr>";
+											}
+										}
+				?>
+				</tbody>
+				</table>
 						</div>
 
 
@@ -193,11 +205,12 @@ if (!isset($_SESSION['username'])) {
 			$modif_info = "est <b>fondatrice</b>";
 		}
 		$search = $bdd->prepare("SELECT * FROM bans WHERE user_id = ? OR ip = ?");
-        $search->execute([$pseudo['id'], $pseudo['ip_current']]);
+		$search->execute([$pseudo['id'], $pseudo['ip_current']]);
 		$ok = $search->fetch();
 		$stamp_now = time();
-		$stamp_expire = $ok['ban_expire'];
-		$expire = date('d/m/Y H:i', $ok['ban_expire']);
+		$stamp_expire = $ok['ban_expire'] ?? 0;
+		$expire = date('d/m/Y H:i', $stamp_expire);
+
 		?>
 		<div id="column1" class="column">
 			<div class="habblet-container ">
@@ -252,7 +265,7 @@ if (!isset($_SESSION['username'])) {
 					<div id="notfound-looking-for" class="box-content">
 						<?php
 						$userbadges = $bdd->prepare("SELECT DISTINCT * FROM users_badges WHERE user_id = ?");
-                        $userbadges->execute([$pseudo['id']]);
+						$userbadges->execute([$pseudo['id']]);
 						if ($userbadges->rowCount() == 0) {
 							echo "<center>Aucun badge</center>";
 						}

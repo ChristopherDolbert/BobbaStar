@@ -373,54 +373,77 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 									<h2><?PHP echo stripslashes($n['title']); ?></h2>
 									<div class="article-meta">
 										<p class="summary"><?PHP echo stripslashes($n['snippet']); ?></p>
-										<div class="article-body"><?php echo stripslashes($n['body']); ?>
+										<div class="article-body">
+											<p style="width:100%"><?php echo stripslashes($n['body']); ?></p>
 											<div class="article-author"><?PHP echo stripslashes($n['sign']); ?></div>
 											<?PHP
 											$search = $bdd->prepare("SELECT pseudo FROM gabcms_news_recommande WHERE news_id = ? AND pseudo = ?");
 											$search->execute([$n['id'], $user['username']]);
 											$ok = $search->fetch();
 
-											if ($ok['pseudo'] != $user['username']) {
-												$query = $bdd->prepare("SELECT COUNT(*) AS id FROM gabcms_news_recommande WHERE news_id = ?");
+											if (isset($user['username']) && $ok['pseudo'] !== $user['username']) {
+												$query = $bdd->prepare("SELECT COUNT(*) AS nb_recommandations FROM gabcms_news_recommande WHERE news_id = ?");
+												$query->execute([$n['id']]);
+												$nb_recommandations = $query->fetchColumn();
+
+												$query = $bdd->prepare("SELECT pseudo FROM gabcms_news_recommande WHERE news_id = ? AND pseudo = ?");
+												$query->execute([$n['id'], $user['username']]);
+												$recommandation_existante = $query->fetch();
+
+												if (!$recommandation_existante) {
+													$modifier_a = "Être le premier!";
+													$modifier_r = "<b>" . $nb_recommandations . ($nb_recommandations === 1 ? " utilisateur" : " utilisateurs") . "</b> ont trouvé";
+												} else {
+													$nb_recommandations--;
+													$modifier_a = "Moi aussi!";
+													$modifier_r = "<b>Vous</b> et <b>" . $nb_recommandations . ($nb_recommandations === 1 ? " autre utilisateur" : " autres utilisateurs") . "</b> avez trouvé";
+												}
+
+												if ($n['modifier'] == '1') {
+													$date_modif = date('d/m/Y à H:i', $n['modif_date']);
+												}
+
+												$date_but = date('d/m/Y à H:i', $n['date']);
+
+												$query = $bdd->prepare("SELECT COUNT(*) AS nb_inscrit FROM gabcms_news_recommande WHERE news_id = ?");
 												$query->execute([$n['id']]);
 												$nb_inscrit = $query->fetch();
-												if ($nb_inscrit['id'] == 0) {
-													$modifier_r = "<b>Aucun utilisateur</b> a trouvé";
+
+												if ($nb_inscrit['nb_inscrit'] == 0) {
+													$modifier_r = "<b>Aucun utilisateur</b> n'a été trouvé";
+												} elseif ($nb_inscrit['nb_inscrit'] == 1) {
+													$modifier_r = "<b>" . $nb_inscrit['nb_inscrit'] . " utilisateur</b> a été trouvé";
+												} else {
+													$modifier_r = "<b>" . $nb_inscrit['nb_inscrit'] . " utilisateurs</b> ont été trouvés";
 												}
-												if ($nb_inscrit['id'] == 1) {
-													$modifier_r = "<b>" . $nb_inscrit['id'] . " utilisateur</b> a trouvé";
-												}
-												if ($nb_inscrit['id'] >= 2) {
-													$modifier_r = "<b>" . $nb_inscrit['id'] . " utilisateurs</b> ont trouvés";
-												}
-												if ($nb_inscrit['id'] == 0) {
-													$modifier_a = "Être le premier!";
-												}
-												if ($nb_inscrit['id'] >= 1) {
+
+												if ($nb_inscrit['nb_inscrit'] == 0) {
+													$modifier_a = "Soyez le premier!";
+												} else {
 													$modifier_a = "Moi aussi!";
 												}
-												if ($ok['pseudo'] != $user['username']) {
+
+												if ($ok['pseudo'] !== $user['username']) {
 													$modifier_br = "<br/><br/><br/>";
 												}
 											}
-											if ($ok['pseudo'] == $user['username']) {
-												$query = $bdd->prepare("SELECT COUNT(*) AS id FROM gabcms_news_recommande WHERE news_id = ?");
+
+											if ($ok['pseudo'] === $user['username']) {
+												$query = $bdd->prepare("SELECT COUNT(*) AS nb_recommandations FROM gabcms_news_recommande WHERE news_id = ?");
 												$query->execute([$n['id']]);
-												$nb_inscrit = $query->fetch();
-												$resultatfinal = $nb_inscrit['id'] - 1;
-												if ($resultatfinal == 0) {
-													$modifier_r = "<b>Vous</b> avez trouvé";
+												$nb_recommandations = $query->fetch(PDO::FETCH_ASSOC);
+
+												if ($nb_recommandations['nb_recommandations'] == 0) {
+													$modifier_r = "<b>Vous êtes le seul</b> à avoir recommandé cette nouvelle";
+												} elseif ($nb_recommandations['nb_recommandations'] == 1) {
+													$modifier_r = "<b>Vous et " . $nb_recommandations['nb_recommandations'] . " autre utilisateur</b> avez recommandé cette nouvelle";
+												} else {
+													$modifier_r = "<b>Vous et " . $nb_recommandations['nb_recommandations'] . " autres utilisateurs</b> avez recommandé cette nouvelle";
 												}
-												if ($resultatfinal == 1) {
-													$modifier_r = "<b>Vous et " . $resultatfinal . " autre utilisateur</b> avez trouvés";
-												}
-												if ($resultatfinal >= 2) {
-													$modifier_r = "<b>Vous et " . $resultatfinal . " autres utilisateurs</b> avez trouvés";
-												}
-												if ($ok['pseudo'] == $user['username']) {
-													$modifier_br = "<br/><br/>";
-												}
+
+												$modifier_br = "<br/><br/>";
 											}
+
 											if (isset($n['date'])) {
 												$date_but = date('d/m/Y à H:i', $n['date']);
 											}

@@ -54,7 +54,7 @@ if (isset($_POST['message'])) {
 </div>";
     }
 }
-$sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'") or die(mysql_error());;
+$sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -344,9 +344,6 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
             </script>
             <!--[if lt IE 7]>
 <![endif]-->
-            <!-- FOOTER -->
-            <?PHP include("./template/footer.php"); ?>
-            <!-- FIN FOOTER -->
             <div style="clear: both;"></div>
         </div>
     </div>

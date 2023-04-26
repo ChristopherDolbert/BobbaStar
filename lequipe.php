@@ -116,26 +116,30 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 
                             while ($s = $sql->fetch()) {
 
-                                $infe = $bdd->query("SELECT * FROM gabcms_postes WHERE user_id = '" . $s['id'] . "'");
+                                $infe = $bdd->prepare("SELECT * FROM gabcms_postes WHERE user_id = ?");
+                                $infe->execute([$s['id']]);
                                 $rt = $infe->fetch();
 
-                                $tera = $bdd->query("SELECT * FROM gabcms_absence_staff WHERE pseudo = '" . $s['username'] . "' AND jusqua >= '" . $nowtime . "'");
+                                $tera = $bdd->prepare("SELECT * FROM gabcms_absence_staff WHERE pseudo = ? AND jusqua >= ?");
+                                $tera->execute([$s['username'], $nowtime]);
                                 $t = $tera->fetch();
 
-                                if ($s['staff_test'] == 0) {
-                                    $etat_modif = '';
-                                }
+                                $etat_modif = '';
                                 if ($s['staff_test'] == 1) {
                                     $etat_modif = '<span style="color:#FF0000">(staff en test)</span>';
                                 }
 
-                                $date_jusqua = date('d/m/Y', $t['jusqua']);
-
-                                if ($t['depuis'] <= $nowtime && $t['jusqua'] >= $nowtime && $t['etat'] == 1) {
-                                    $etat8 = '<span style="color:#2767A7;">est absent(e) jusqu\'au ' . $date_jusqua . '</span>';
-                                } else {
-                                    $etat8 = '';
+                                $date_jusqua = '';
+                                if ($t && $t['jusqua']) {
+                                    $date_jusqua = date('d/m/Y', $t['jusqua']);
                                 }
+
+                                $etat8 = '';
+                                if ($t && $t['depuis'] <= $nowtime && $t['jusqua'] >= $nowtime && $t['etat'] == 1) {
+                                    $etat8 = '<span style="color:#2767A7;">est absent(e) jusqu\'au ' . $date_jusqua . '</span>';
+                                }
+
+
                             ?>
                                 <table class="fondateur">
                                     <tbody>
@@ -146,13 +150,18 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                                 </a>
                                             </td>
                                             <td valign="top">
-                                                <span style="color:#2767A7;"><b style="font-size: 110%;" title="Poste(s) occupé(s): <?PHP $infe = $bdd->query("SELECT * FROM gabcms_postes WHERE user_id = '" . $s['id'] . "'");
-                                                                                                                                    while ($rt = $infe->fetch()) {
-                                                                                                                                        $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $rt['poste'] . "'");
-                                                                                                                                        $caz = $correct->fetch();
-                                                                                                                                        if ($s['gender'] == "M") { ?> <?PHP echo stripslashes(Secu($caz['nom_M'])) ?>, <?PHP }
-                                                                                                                                                                                                                    if ($s['gender'] == "F") { ?><?PHP echo stripslashes(Secu($caz['nom_F'])) ?>, <?PHP }
-                                                                                                                                                                                                                } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']) ?></span></b> <?PHP echo $etat8; ?> <?PHP echo $etat_modif; ?> <br />
+                                                <span style="color:#2767A7;"><b style="font-size: 110%;" title="Poste(s) occupé(s): 
+                                                <?PHP
+
+                                                $infe = $bdd->prepare("SELECT p.*, n.nom_M FROM gabcms_postes p JOIN gabcms_postes_noms n ON p.poste = n.id WHERE p.user_id = ?");
+                                                $infe->execute([$s['id']]);
+                                                while ($rt = $infe->fetch()) {
+                                                    if ($s['gender'] == "M") { ?> <?PHP echo htmlspecialchars(stripslashes(Secu($rt['nom_M'])), ENT_QUOTES) ?>,
+                                                
+                                                <?PHP }
+                                                    if ($s['gender'] == "F") { ?><?PHP echo htmlspecialchars(stripslashes(Secu($rt['nom_F'])), ENT_QUOTES) ?>, 
+                                                    <?PHP }
+                                                                                                                                                                                                                                                                                                } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']) ?></span></b> <?PHP echo $etat8; ?> <?PHP echo $etat_modif; ?> <br />
                                                 <span style="color:#888"><b>Mission:</b> <?PHP
                                                                                             if (empty($s['motto'])) {
                                                                                                 echo "Pas de mission";
@@ -215,28 +224,31 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                 }
                             </style>
                             <?PHP
-                            $sql = $bdd->query("SELECT * FROM users WHERE rank = '7'");
-                            while ($s = $sql->fetch()) {
-
-                                $infe = $bdd->query("SELECT * FROM gabcms_postes WHERE user_id = '" . $s['id'] . "'");
-                                $rt = $infe->fetch();
-
-                                $tera = $bdd->query("SELECT * FROM gabcms_absence_staff WHERE pseudo = '" . $s['username'] . "' AND jusqua >= '" . $nowtime . "'");
-                                $t = $tera->fetch();
-                                if ($s['staff_test'] == 0) {
-                                    $etat_modif = '';
-                                }
-                                if ($s['staff_test'] == 1) {
-                                    $etat_modif = '<span style="color:#FF0000">(staff en test)</span>';
-                                }
-
-                                $date_jusqua = date('d/m/Y', $t['jusqua']);
-
-                                if ($t['depuis'] <= $nowtime && $t['jusqua'] >= $nowtime && $t['etat'] == 1) {
-                                    $etat7 = '<span style="color:#C1B31C;">est absent(e) jusqu\'au ' . $date_jusqua . '</span>';
-                                } else {
-                                    $etat7 = '';
-                                }
+                           $sql = $bdd->prepare("SELECT * FROM users WHERE rank = ?");
+                           $sql->execute([7]);
+                           while ($s = $sql->fetch()) {
+                               $infe = $bdd->prepare("SELECT * FROM gabcms_postes WHERE user_id = ?");
+                               $infe->execute([$s['id']]);
+                               $rt = $infe->fetch();
+                           
+                               $tera = $bdd->prepare("SELECT * FROM gabcms_absence_staff WHERE pseudo = ? AND jusqua >= ?");
+                               $tera->execute([$s['username'], $nowtime]);
+                               $t = $tera->fetch();
+                               if ($s['staff_test'] == 0) {
+                                   $etat_modif = '';
+                               }
+                               if ($s['staff_test'] == 1) {
+                                   $etat_modif = '<span style="color:#FF0000">(staff en test)</span>';
+                               }
+                           
+                               $date_jusqua = date('d/m/Y', $t['jusqua']);
+                           
+                               if ($t['depuis'] <= $nowtime && $t['jusqua'] >= $nowtime && $t['etat'] == 1) {
+                                   $etat7 = '<span style="color:#C1B31C;">est absent(e) jusqu\'au ' . $date_jusqua . '</span>';
+                               } else {
+                                   $etat7 = '';
+                               }
+                           
                             ?>
                                 <table class="manager">
                                     <tbody>
@@ -253,7 +265,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                                                                                                                         $caz = $correct->fetch();
                                                                                                                                         if ($s['gender'] == "M") { ?> <?PHP echo stripslashes(Secu($caz['nom_M'])); ?>, <?PHP }
                                                                                                                                                                                                                     if ($s['gender'] == "F") { ?><?PHP echo stripslashes(Secu($caz['nom_F'])); ?>, <?PHP }
-                                                                                                                                                                                                                } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']); ?> </span></b> <?PHP echo $etat7; ?> <?PHP echo $etat_modif; ?><br />
+                                                                                                                                                                                                                                                                                            } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']); ?> </span></b> <?PHP echo $etat7; ?> <?PHP echo $etat_modif; ?><br />
                                                 <span style="color:#888"><b>Mission:</b> <?PHP echo stripslashes(Secu($s['motto'])) ?></span><br />
                                                 <span style="color:#888"><b>Fonction:</b> <?PHP echo stripslashes(Secu($s['fonction'])) ?></span><br />
                                                 <?PHP echo (($s['online'] == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif"></td>') ?>
@@ -331,7 +343,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                                                                                                                         $caz = $correct->fetch();
                                                                                                                                         if ($s['gender'] == "M") { ?> <?PHP echo stripslashes(Secu($caz['nom_M'])) ?>, <?PHP }
                                                                                                                                                                                                                     if ($s['gender'] == "F") { ?><?PHP echo stripslashes(Secu($caz['nom_F'])) ?>, <?PHP }
-                                                                                                                                                                                                                } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']) ?></span></b> <?PHP echo $etat6; ?> <?PHP echo $etat_modif; ?> <br />
+                                                                                                                                                                                                                                                                                            } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']) ?></span></b> <?PHP echo $etat6; ?> <?PHP echo $etat_modif; ?> <br />
                                                 <span style="color:#888"><b>Mission:</b> <?PHP echo stripslashes(Secu($s['motto'])) ?></span><br />
                                                 <span style="color:#888"><b>Fonction:</b> <?PHP echo stripslashes(Secu($s['fonction'])) ?></span><br />
                                                 <?PHP echo (($s['online'] == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif"></td>') ?>
@@ -410,7 +422,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                                                                                                                         $caz = $correct->fetch();
                                                                                                                                         if ($s['gender'] == "M") { ?> <?PHP echo stripslashes(Secu($caz['nom_M'])) ?>, <?PHP }
                                                                                                                                                                                                                     if ($s['gender'] == "F") { ?><?PHP echo stripslashes(Secu($caz['nom_F'])) ?>, <?PHP }
-                                                                                                                                                                                                                } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']) ?></span></b> <?PHP echo $etat5; ?> <?PHP echo $etat_modif; ?> <br />
+                                                                                                                                                                                                                                                                                            } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']) ?></span></b> <?PHP echo $etat5; ?> <?PHP echo $etat_modif; ?> <br />
                                                 <span style="color:#888"><b>Mission:</b> <?PHP echo stripslashes(Secu($s['motto'])) ?></span><br />
                                                 <span style="color:#888"><b>Fonction:</b> <?PHP echo stripslashes(Secu($s['fonction'])) ?></span><br />
                                                 <?PHP echo (($s['online'] == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif"></td>') ?>
@@ -438,9 +450,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 Pngfix.doPngImageFix();
 </script>
 <![endif]-->
-    <!-- FOOTER -->
-    <?PHP include("./template/footer.php"); ?>
-    <!-- FIN FOOTER -->
+
     <div style="clear: both;"></div>
     <script type="text/javascript">
         HabboView.run();
