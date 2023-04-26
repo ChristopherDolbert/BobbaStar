@@ -10,6 +10,7 @@ require_once "./locale/$language/login.php";
 $pagename = "Inscription";
 $pageid = "index";
 
+
 $reqUserOnline = $bdd->query("SELECT COUNT(id) FROM users WHERE online = '1'");
 $nbUserOnline = $reqUserOnline->fetchColumn();
 
@@ -32,6 +33,7 @@ if (isset($_POST['bean_avatarName'])) {
     $retypedemail = Secu($_POST['bean_retypedEmail']);
     $accept_tos = $_POST['bean_termsOfServiceSelection'];
     //todo: a check svp
+
     //    $spam_me = $_POST['bean_marketing'];
     $figure = $_POST['bean_figure'];
     $gender = $_POST['bean_gender'];
@@ -44,13 +46,16 @@ if (isset($_POST['bean_avatarName'])) {
     $sql->execute([$name]);
     $tmp = $sql->fetch(PDO::FETCH_ASSOC);
 
+
     $reqCheckMail = $bdd->prepare("SELECT mail FROM users WHERE mail = ?");
     $reqCheckMail->execute([$email]);
     $nbMail = $reqCheckMail->rowCount();
 
+
     // Si cette variable reste false, nous pouvons ajouter l'utilisateur. Sinon, cela signifie que
     // nous avons rencontré des erreurs et nous ne pouvons pas continuer, donc au lieu de cela,
     // afficher les erreurs et ne pas ajouter l'utilisateur à la base de données.
+    
     $failure = false;
 
     // Validation du nom
@@ -68,10 +73,12 @@ if (isset($_POST['bean_avatarName'])) {
         $failure = true;
     }
 
+
     // Validation du nom - MOD
     $pos = strrpos($name, "MOD-");
     if ($pos === 0) {
         $error['name'] = "Ce nom n'est pas autorisé.";
+
         $failure = true;
     }
 
@@ -94,6 +101,9 @@ if (isset($_POST['bean_avatarName'])) {
         $failure = true;
     } elseif ($nbMail >= 1) {
         $error['mail'] = "L'adresse e-mail est déjà utilisée.";
+        $failure = true;
+    } elseif($nbMail >= 1) {
+        $error['mail'] = "The e-mail address is already used.";
         $failure = true;
     }
 
@@ -138,8 +148,10 @@ if (isset($_POST['bean_avatarName'])) {
     // Finally, if everything's OK we add the user to the database, log him in, etc
     if (!$failure) {
         $dob = $day . "-" . $month . "-" . $year;
+
         $password = password_hash($password, PASSWORD_BCRYPT);
         $insertuser = $bdd->prepare("INSERT INTO users (username, password, mail, account_day_of_birth, rank, look, gender, motto, credits, pixels, last_login, account_created, ip_register, message, newsletter) VALUES (:pseudo, :mdp, :mail, :account_day_of_birth, :rank, :look, :sexe, :motto, :credits, :pixels, :date, :ins, :ip, :message, :newsletter)");
+
         $insertuser->bindValue(':pseudo', $name);
         $insertuser->bindValue(':mdp', $password);
         $insertuser->bindValue(':mail', $email);
@@ -148,8 +160,10 @@ if (isset($_POST['bean_avatarName'])) {
         $insertuser->bindValue(':look', $figure);
         $insertuser->bindValue(':sexe', $gender);
         $insertuser->bindValue(':motto', $mission);
+
         $insertuser->bindValue(':credits', '10000');
         $insertuser->bindValue(':pixels', '100');
+
         $insertuser->bindValue(':date', time());
         $insertuser->bindValue(':ins', FullDate('hc'));
         $insertuser->bindValue(':ip', $_SERVER['REMOTE_ADDR']);
@@ -157,14 +171,17 @@ if (isset($_POST['bean_avatarName'])) {
         $insertuser->bindValue(':newsletter', '1');
         $insertuser->execute();
 
+
         $check = $bdd->prepare("SELECT id FROM users WHERE username = ? ORDER BY id ASC LIMIT 1");
         $check->execute([$name]);
         $userid = $check->fetch(PDO::FETCH_ASSOC);
+
 
         $_SESSION['username'] = $name;
         $_SESSION['password'] = $password;
 
         Redirect($url . "/starter_room");
+
     }
 }
 ?>
