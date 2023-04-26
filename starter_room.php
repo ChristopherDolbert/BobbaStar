@@ -5,8 +5,8 @@
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
-include("./config.php");
 $pagename = "Starters";
+include("./config.php");
 $pageid = "starters";
 
 $check = $bdd->prepare("SELECT noob FROM users WHERE id = ?");

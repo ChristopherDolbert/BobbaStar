@@ -105,7 +105,7 @@ if (isset($_POST['bean_avatarName'])) {
 
 
     // Vérification du captcha
-    if (!empty($_SESSION['register-captcha-bubble'])) {
+    if ($_SESSION['register-captcha-bubble'] == $_POST['bean.captchaResponse'] && !empty($_SESSION['register-captcha-bubble'])) {
         // Insérez votre code de traitement du formulaire ici, par exemple l'envoi par e-mail, l'entrée dans une base de données, etc.
         echo "";
         unset($_SESSION['security_code']);
@@ -207,7 +207,7 @@ if (isset($_POST['bean_avatarName'])) {
         var habboName = null;
         var habboReqPath = "";
         var habboStaticFilePath = "./web-gallery";
-        var habboImagerUrl = "/habbo-imaging/";
+        var habboImagerUrl = "<?PHP echo $avatarimage; ?>";
         var habboPartner = "";
         window.name = "habboMain";
     </script>

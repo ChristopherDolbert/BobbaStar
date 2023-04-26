@@ -6,6 +6,9 @@
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
 # Nombre de fonctions: 14 #
+if ($pagename != "Starters" && isset($_SESSION['username']) && $_SESSION['noob'] == "Oui") {
+    Redirect($url . "/starter_room");
+}
 
 // Validate the langauge
 $language_path = "./" . $language . "index.php";
