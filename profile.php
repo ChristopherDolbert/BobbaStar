@@ -27,15 +27,25 @@ if (isset($_GET['tab'])) {
 		$block_roominvites = Secu($_POST['block_roominvites']);
 		$join = Secu($_POST['join']);
 
+		// Personnalisation
+		$topbg = Secu($_POST['topbg']);
+		$bg = Secu($_POST['bg']);
+
 		if ($textamigo != "" && $old_chat != "" && $block_roominvites != "" && $join != "") {
 
 			if (is_numeric($textamigo) && is_numeric($block_roominvites) && is_numeric($join)) {
 				if (!empty($_POST['envoimail'])) {
 					$sql = $bdd->prepare("UPDATE users_settings SET block_friendrequests = ?, old_chat = ?, block_roominvites = ?, block_following = ? WHERE user_id = ? LIMIT 1");
                     $sql->execute([$textamigo, $old_chat, $block_roominvites, $join, $id]);
+
+					$sql2 = $bdd->prepare("UPDATE users SET topbg = ?, bg = ? WHERE id = ? LIMIT 1");
+                    $sql2->execute([$topbg, $bg, $id]);
 				} else {
                     $sql = $bdd->prepare("UPDATE users_settings SET block_friendrequests = ?, old_chat = ?, block_roominvites = ?, block_following = ? WHERE user_id = ? LIMIT 1");
                     $sql->execute([$textamigo, $old_chat, $block_roominvites, $join, $id]);
+
+					$sql2 = $bdd->prepare("UPDATE users SET topbg = ?, bg = ? WHERE id = ? LIMIT 1");
+                    $sql2->execute([$topbg, $bg, $id]);
 				}
 				$affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
@@ -161,10 +171,6 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 										<li>
 											<a href="<?PHP echo $url; ?>/profile_badges">Gestion des badges</a>
 										</li>
-
-
-
-
 									</ul>
 								</div>
 							</div>
@@ -208,6 +214,10 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 										<label><input type="radio" name="join" value="0" <?PHP if ($user_settings['block_following'] == "0") { ?> checked="checked" <?PHP } ?> />Mes amis</label>
 									</p>
 
+
+									<h3>Personnalisations</h3>
+									<p> <label>En-tête:<br /><input type="text" name="topbg" value="<?php echo $user['topbg']; ?>" id="topbg" title="URL de l'en-tête" placeholder="URL de l'en-tête" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)" /></label> </p>
+									<p> <label>Fond:<br /><input type="text" name="bg" value="<?php echo $user['bg']; ?>" id="topbg" title="URL du fond" placeholder="URL du fond" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)" /></label> </p>
 									<div class="settings-buttons">
 										<a href="#" class="new-button" style="display: none" id="profileForm-submit"><b>Enregistrer</b><i></i></a>
 										<noscript><input type="submit" value="Enregistrer" name="save" class="submit" /></noscript>

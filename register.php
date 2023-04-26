@@ -8,7 +8,7 @@
 include("./config.php");
 include("./locale/$language/login.php");
 $pagename = "Inscription";
-$pageid = "inscription";
+$pageid = "index";
 
 echo "la!!!";
 
@@ -307,8 +307,12 @@ body { behavior: url(https://bobbastar.fr/web-gallery/csshover.htc); }
                 <div id="header" class="clearfix">
                     <h1><a href="index.php"></a></h1>
                     <ul class="stats">
+<<<<<<< HEAD
                         <li class="stats-online"><span class="stats-fig"><?= $nbUserOnline ?></span> Joueurs en ligne!</li>
                         <li class="stats-visited"><span class="stats-fig"><?= $nbUserInscrits ?></span> Joueurs inscrits</li>
+=======
+                        <li class="stats-online"><?PHP echo Connected($pageid); ?></li>
+>>>>>>> ccb6ee60a2cf07c61f81751b87e47cc40505842b
                     </ul>
                 </div>
                 <div id="process-content">
@@ -619,7 +623,7 @@ body { behavior: url(https://bobbastar.fr/web-gallery/csshover.htc); }
 
                                                         <noscript>
                                                             <fieldset id="register-fieldset-captcha">
-                                                                <div class="register-label"><img src="demo/CaptchaSecurityImages.php?width=170&height=40&characters=10" /></div>
+                                                                <div class="register-label"><img src="./captcha/CaptchaSecurityImages.php?width=170&height=40&characters=10" /></div>
                                                                 <div id="captcha-error-box">
                                                                     <?php if (isset($error['captcha'])) { ?>
                                                                         <div class="register-error">
