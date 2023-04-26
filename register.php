@@ -307,12 +307,7 @@ body { behavior: url(https://bobbastar.fr/web-gallery/csshover.htc); }
                 <div id="header" class="clearfix">
                     <h1><a href="index.php"></a></h1>
                     <ul class="stats">
-<<<<<<< HEAD
-                        <li class="stats-online"><span class="stats-fig"><?= $nbUserOnline ?></span> Joueurs en ligne!</li>
-                        <li class="stats-visited"><span class="stats-fig"><?= $nbUserInscrits ?></span> Joueurs inscrits</li>
-=======
                         <li class="stats-online"><?PHP echo Connected($pageid); ?></li>
->>>>>>> ccb6ee60a2cf07c61f81751b87e47cc40505842b
                     </ul>
                 </div>
                 <div id="process-content">
