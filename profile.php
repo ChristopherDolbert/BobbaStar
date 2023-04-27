@@ -16,7 +16,7 @@ if (!isset($_SESSION['username'])) {
 
 if (isset($_GET['tab'])) {
 	if ($_GET['tab'] < 1 || $_GET['tab'] > 8) {
-		header("Location: account.php?tab=1");
+		header("Location: profile.php?tab=1");
 		$tab = 0;
 		exit;
 	} else {
@@ -30,7 +30,7 @@ if ($tab == "1") {
 
 	if (isset($_POST['figureData'])) {
 		$refer = $_SERVER['HTTP_REFERER'];
-		$pos = strrpos($refer, "account.php");
+		$pos = strrpos($refer, "profile.php");
 		if ($pos === false) {
 			echo "<h1>Security check failure.</h1>";
 			exit;
@@ -303,6 +303,9 @@ $hc_member = IsHCMember($user['id']);
 	<script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>js/tooltip.js" type="text/javascript"></script>
+	<script src="<?PHP echo $imagepath; ?>static/js/settings.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/settings.css" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/friendmanagement.css" type="text/css" />
 
 	<script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
 	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
@@ -363,7 +366,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 											echo "<li class='selected'>LOOK
                 </li>";
 										} else {
-											echo "<li><a href='account.php?tab=1'>LOOK</a>
+											echo "<li><a href='profile.php?tab=1'>LOOK</a>
                 </li>";
 										}
 
@@ -371,7 +374,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 											echo "<li class='selected'>MISSION
                 </li>";
 										} else {
-											echo "<li><a href='account.php?tab=2'>MISSION</a>
+											echo "<li><a href='profile.php?tab=2'>MISSION</a>
                 </li>";
 										}
 
@@ -379,7 +382,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 											echo "<li class='selected'>EMAIL
                 </li>";
 										} else {
-											echo "<li><a href='account.php?tab=3'>EMAIL</a>
+											echo "<li><a href='profile.php?tab=3'>EMAIL</a>
                 </li>";
 										}
 
@@ -387,7 +390,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 											echo "<li class='selected'>MOT DE PASSE
                 </li>";
 										} else {
-											echo "<li><a href='account.php?tab=4'>MOT DE PASSE</a>
+											echo "<li><a href='profile.php?tab=4'>MOT DE PASSE</a>
                 </li>";
 										}
 
@@ -395,7 +398,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 											echo "<li class='selected'>DU CREDIT?
                 </li>";
 										} else {
-											echo "<li><a href='account.php?tab=5'>DU CREDIT?</a>
+											echo "<li><a href='profile.php?tab=5'>DU CREDIT?</a>
                 </li>";
 										}
 
@@ -403,7 +406,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 											echo "<li class='selected'>GESTION AMIS
                 </li>";
 										} else {
-											echo "<li><a href='account.php?tab=6'>GESTION AMIS</a>
+											echo "<li><a href='profile.php?tab=6'>GESTION AMIS</a>
                 </li>";
 										}
 
@@ -411,7 +414,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 											echo "<li class='selected'>CLIENT
 				</li>";
 										} else {
-											echo "<li><a href='account.php?tab=8'>CLIENT</a>
+											echo "<li><a href='profile.php?tab=8'>CLIENT</a>
 				</li>";
 										}
 										?>
@@ -531,7 +534,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 										</div>
 									</div>
 
-									<form method="post" action="account.php?tab=1" id="settings-form" style="display: none">
+									<form method="post" action="profile.php?tab=1" id="settings-form" style="display: none">
 										<input type="hidden" name="tab" value="1" />
 										<input type="hidden" name="__app_key" value="HoloCMS" />
 										<input type="hidden" name="figureData" id="settings-figure" value="<?php echo $mylook1; ?>" />
@@ -584,7 +587,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 
 
 
-					<form action="account.php?tab=2" method="post">
+					<form action="profile.php?tab=2" method="post">
 						<input type="hidden" name="tab" value="2" />
 						<input type="hidden" name="__app_key" value="HoloCMS" />
 
@@ -649,7 +652,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 
 
 
-				<form action="account.php?tab=3" method="post" id="emailform">
+				<form action="profile.php?tab=3" method="post" id="emailform">
 					<input type="hidden" name="tab" value="3" />
 					<input type="hidden" name="__app_key" value="HoloCMS" />
 
@@ -884,7 +887,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 						}
 				?>
 
-				<form action="account.php?tab=4" method="post" id="passwordform">
+				<form action="profile.php?tab=4" method="post" id="passwordform">
 					<input type="hidden" name="tab" value="4" />
 					<input type="hidden" name="__app_key" value="HoloCMS" />
 
@@ -1267,7 +1270,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 
 
 
-				<form action="account.php?tab=8" method="post">
+				<form action="profile.php?tab=8" method="post">
 					<input type="hidden" name="tab" value="8" />
 					<input type="hidden" name="__app_key" value="HoloCMS" />
 
