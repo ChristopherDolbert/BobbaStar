@@ -64,15 +64,17 @@ if ($myrow['credits'] < $price) {
 		echo "<script>alert(\"la variable est nulle\")</script>";
 		$msg = "Vous êtes déjà HC";
 	} elseif ($hc_maxmonths == "0" || $months_left < $hc_maxmonths) {
+		$sql = "UPDATE users SET credits = credits - :price";
 		if ($user['rank'] == 1) {
-			$sql = "UPDATE users SET credits = credits - :price AND rank = :rank WHERE id = :my_id LIMIT 1";
-		} else {
-			$sql = "UPDATE users SET credits = credits - :price WHERE id = :my_id LIMIT 1";
+			$sql .= ", rank = 2";
 		}
+		$sql .= " WHERE id = :my_id LIMIT 1";
+
 		$stmt = $bdd->prepare($sql);
 		$stmt->bindParam(':price', $price, PDO::PARAM_INT);
 		$stmt->bindParam(':my_id', $my_id, PDO::PARAM_INT);
 		$stmt->execute();
+
 
 		// Appeler la fonction giveHC
 		giveHC($my_id, $months);
@@ -97,7 +99,7 @@ if ($myrow['credits'] < $price) {
 		/*@SendMUSData('UPRC' . $my_id);*/
 		$msg = "SUPER! Tu fais maintenant partie du " . $shortname . " Club pendant " . $months . " mois.";
 	} else {
-		$msg = $time."Vous ne pouvez vous inscrire que pour un maximum de " . $hc_maxmonths . " mois. Si cet abonnement est terminé, vous aurez dépassé la limite.";
+		$msg = $time . "Vous ne pouvez vous inscrire que pour un maximum de " . $hc_maxmonths . " mois. Si cet abonnement est terminé, vous aurez dépassé la limite.";
 	}
 }
 
