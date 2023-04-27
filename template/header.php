@@ -212,7 +212,7 @@ if ($c['afficher'] == "Oui") {
                         <li class=""><a href="<?PHP echo $url; ?>/tchat">Tchat</a></li>
                     <?PHP } ?>
                 <?PHP } ?>
-                <?PHP if ($pageid == "safety" || $pageid == "habbo_way") { ?>
+                <?PHP if ($pageid == "safety" || $pageid == "habbo_way" || $pageid == "videinventaire") { ?>
                     <?PHP if ($pageid == "safety") { ?>
                         <li class=" selected">Conseils de s&eacute;curit&eacute;</li>
                     <?PHP } else { ?>
@@ -222,6 +222,11 @@ if ($c['afficher'] == "Oui") {
                         <li class=" selected"><?PHP echo $sitename; ?> attitude</li>
                     <?PHP } else { ?>
                         <li class=""><a href="<?PHP echo $url; ?>/habbo_way"><?PHP echo $sitename; ?> attitude</a></li>
+                    <?PHP } ?>
+                    <?PHP if ($pageid == "videinventaire") { ?>
+                        <li class=" selected">Vider l'inventaire</li>
+                    <?PHP } else { ?>
+                        <li class=""><a href="<?PHP echo $url; ?>/videinventaire">Vider l'inventaire</a></li>
                     <?PHP } ?>
                 <?PHP } ?>
                 <?PHP if ($pageid == "badgeshop" || $pageid == "achats" || $pageid == "codepromo" || $pageid == "jetons" || $pageid == "clubs" || $pageid == "shopbots" || $pageid == "pixels" || $pageid == "credits") { ?>
