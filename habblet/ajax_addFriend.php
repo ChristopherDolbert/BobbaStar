@@ -43,9 +43,8 @@ if (!$error) {
 	$requestid = $sql->fetchColumn();
 	$insert = $bdd->prepare("INSERT INTO messenger_friendrequests (user_from_id, user_to_id, requestid) VALUES (:my_id, :id, :requestid)");
 	$insert->execute([':my_id' => $my_id, ':id' => $id, ':requestid' => $requestid]);
-	$message = $insert->rowCount() ? "Friend request has been sent successfully." : '';
+	$message = $insert->rowCount() ? "La demande d'ami a été envoyée avec succès." : '';
 }
-
 
 ?>
 
