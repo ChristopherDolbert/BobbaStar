@@ -1,16 +1,9 @@
 <?php
-/*===================================================+
-|| # HoloCMS - Website and Content Management System
-|+===================================================+
-|| # Copyright � 2008 Meth0d. All rights reserved.
-|| # http://www.meth0d.org
-|+===================================================+
-|| # HoloCMS is provided "as is" and comes without
-|| # warrenty of any kind. HoloCMS is free software!
-|+===================================================+
-|| # Friends Management by Yifan Lu
-|| # www.obbahhotel.com
-|+===================================================*/
+#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
+#|                                                                        #|
+#|         Copyright © 2014-2023 - MyHabbo Tout droits réservés.          #|
+#|																		  #|
+#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
 include("../config.php");
 $my_id = $user['id'];
