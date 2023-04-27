@@ -64,20 +64,16 @@ if ($myrow['credits'] < $price) {
 		echo "<script>alert(\"la variable est nulle\")</script>";
 		$msg = "Vous êtes déjà HC";
 	} elseif ($hc_maxmonths == "0" || $months_left < $hc_maxmonths) {
+		$sql = "UPDATE users SET credits = credits - :price";
 		if ($user['rank'] == 1) {
-			$sql = "UPDATE users SET credits = credits - :price AND rank = :rank WHERE id = :my_id LIMIT 1";
-			$stmt = $bdd->prepare($sql);
-			$stmt->bindParam(':price', $price, PDO::PARAM_INT);
-			$stmt->bindParam(':rank', 2, PDO::PARAM_INT);
-			$stmt->bindParam(':my_id', $my_id, PDO::PARAM_INT);
-			$stmt->execute();
-		} else {
-			$sql = "UPDATE users SET credits = credits - :price WHERE id = :my_id LIMIT 1";
-			$stmt = $bdd->prepare($sql);
-			$stmt->bindParam(':price', $price, PDO::PARAM_INT);
-			$stmt->bindParam(':my_id', $my_id, PDO::PARAM_INT);
-			$stmt->execute();
+			$sql .= ", rank = 2";
 		}
+		$sql .= " WHERE id = :my_id LIMIT 1";
+
+		$stmt = $bdd->prepare($sql);
+		$stmt->bindParam(':price', $price, PDO::PARAM_INT);
+		$stmt->bindParam(':my_id', $my_id, PDO::PARAM_INT);
+		$stmt->execute();
 
 
 		// Appeler la fonction giveHC
