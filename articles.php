@@ -363,6 +363,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                 Il est probable que l'article que vous recherchez est inéxistant.<br />
                                 Merci d'en sélectionner un autre dans la liste des articles à votre gauche.
 
+
                                 <div class="article-author"><?php echo $owner; ?></div>
                                 <div class="article-images clearfix">
                                 </div>
@@ -380,6 +381,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                 $search->execute([$n['id'], $user['username']]);
                                 $ok = $search->fetch();
                                 $rowCount = $search->rowCount();
+
 
                                 if (isset($user['username']) && $rowCount == 0) {
                                     $query = $bdd->prepare("SELECT COUNT(*) AS nb_recommandations FROM gabcms_news_recommande WHERE news_id = ?");
