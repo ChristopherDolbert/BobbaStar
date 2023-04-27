@@ -15,23 +15,18 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
-if (isset($_GET['generatePixels'])) {
-    if ($user['pixels'] <= 10) {
-        $reqCredits = $bdd->prepare("UPDATE users SET pixels = pixels + 100  WHERE id = ?");
-        $reqCredits->execute([$user['id']]);
-        $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
-        $insertn1->bindValue(':userid', $user['id']);
-        $insertn1->bindValue(':produit', 'Offre SPF (Sans pixel fixe) +100');
-        $insertn1->bindValue(':prix', 0);
-        $insertn1->bindValue(':gain', '+');
-        $insertn1->bindValue(':date', FullDate('full'));
-        $insertn1->execute();
-
-        $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-green\"> Nous venons de t'envoyer <b>100 pixels</b>!</div></div></div>";
-    } else {
-        $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-red\">Tu as assez de crédits.</div></div></div>";
-    }
+if (isset($_GET['generatePixels']) && $user['pixels'] <= 10) {
+    $bdd->beginTransaction();
+    $reqCredits = $bdd->prepare("UPDATE users SET pixels = pixels + 100  WHERE id = ?");
+    $reqCredits->execute([$user['id']]);
+    $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (?, ?, ?, ?, ?)");
+    $insertn1->execute([$user['id'], 'Offre SPF (Sans pixel fixe) +100', 0, '+', FullDate('full')]);
+    $bdd->commit();
+    $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-green\"> Nous venons de t'envoyer <b>100 pixels</b>!</div></div></div>";
+} elseif ($user['pixels'] >= 11) {
+    $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-red\">Tu as assez de pixels.</div></div></div>";
 }
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
