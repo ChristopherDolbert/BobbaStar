@@ -18,17 +18,17 @@ if (!$user['username']) {
 }
 
 echo "<p>
-You are";
+Vous";
 
 if (!IsHCMember($my_id)) {
-	echo " not";
+	echo " n'êtes";
 }
 
-echo " a member of " . $shortname . " Club
+echo " pas un membre du " . $sitename . " Club
 </p>
 <p>";
 if (IsHCMember($my_id)) {
-	echo "You have " . HCDaysLeft($my_id) . " Club Day(s) left";
+	echo "Vous avez " . HCDaysLeft($my_id) . " Jour(s) restants";
 } else {
 	echo "&nbsp;";
 }
