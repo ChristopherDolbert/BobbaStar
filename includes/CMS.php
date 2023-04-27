@@ -23,6 +23,7 @@
 	$compte_twitter = "GabCMS";
 	$compte_facebook = "Gabcms";
 	$language = "fr";
+	$hc_maxmonths = 6;
 
    //Config Starpass
    $id_document = 444508; //Identifiant du document starpass

@@ -54,7 +54,7 @@ if ($tab == "1") {
 				$result = "Modifications enregistrées";
 				$mylook1 = filter_input(INPUT_POST, 'figureData');
 				$mysex1 = filter_input(INPUT_POST, 'newGender');
-				SendMUSData('UPRA' . $user['id']);
+				/*SendMUSData('UPRA' . $user['id']);*/
 			}
 		}
 	} else {
@@ -113,7 +113,7 @@ if ($tab == "1") {
 			$stmt6->execute();
 			$result = "Ton habbo à été modifié!";
 			$motto = $_POST['motto']; // Do not add slashes, this is for display purposes.
-			@SendMUSData('UPRA' . $user['id']);
+			/*@SendMUSData('UPRA' . $user['id']);*/
 		}
 	} else {
 		$motto = Secu($user['motto']);

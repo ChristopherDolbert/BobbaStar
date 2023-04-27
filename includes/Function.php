@@ -392,11 +392,77 @@ function SendMUSData($data)
 	socket_close($sock);
 }
 
+
+function GiveHC($user_id, $months)
+{
+	include('SQL.php');
+	// Utiliser une instance PDO existante
+	$stmt = $bdd->prepare("SELECT * FROM users_club WHERE userid = :userid LIMIT 1");
+	$stmt->bindParam(':userid', $user_id, PDO::PARAM_INT);
+	$stmt->execute();
+	$valid = $stmt->rowCount();
+
+	if ($valid > 0) {
+		// Préparer et exécuter les requêtes
+		$sql1 = "UPDATE users SET rank = '2' WHERE rank = '1' AND id = :id LIMIT 1";
+		$stmt1 = $bdd->prepare($sql1);
+		$stmt1->bindParam(':id', $user_id, PDO::PARAM_INT);
+		$stmt1->execute();
+
+		$sql2 = "UPDATE users_club SET months_left = months_left + :months WHERE userid = :id LIMIT 1";
+		$stmt2 = $bdd->prepare($sql2);
+		$stmt2->bindParam(':months', $months, PDO::PARAM_INT);
+		$stmt2->bindParam(':id', $user_id, PDO::PARAM_INT);
+		$stmt2->execute();
+
+		$sql3 = "SELECT * FROM users_badges WHERE badge_code = 'HC1' AND user_id = :id LIMIT 1";
+		$stmt3 = $bdd->prepare($sql3);
+		$stmt3->bindParam(':id', $user_id, PDO::PARAM_INT);
+		$stmt3->execute();
+		$found = $stmt3->rowCount();
+
+		if ($found !== 1) { // No badge. Poor thing.
+			// Préparer et exécuter les requêtes
+			/*$sql4 = "UPDATE users SET badge_status = '0' WHERE id = :id LIMIT 1";
+				$stmt4 = $pdo->prepare($sql4);
+				$stmt4->bindParam(':id', $user_id, PDO::PARAM_INT);
+				$stmt4->execute();*/
+
+			/*$sql5 = "UPDATE users_badges SET iscurrent = '0' WHERE userid = :id";
+				$stmt5 = $pdo->prepare($sql5);
+				$stmt5->bindParam(':id', $user_id, PDO::PARAM_INT);
+				$stmt5->execute();*/
+
+			$sql6 = "INSERT INTO users_badges (user_id, badge_code) VALUES (:id, 'HC1')";
+			$stmt6 = $bdd->prepare($sql6);
+			$stmt6->bindParam(':id', $user_id, PDO::PARAM_INT);
+			$stmt6->execute();
+		}
+	} else {
+		$m = date('m');
+		$d = date('d');
+		$Y = date('Y');
+		$date = date('d-m-Y', mktime($m, $d, $Y));
+		$sql = "INSERT INTO users_club (userid, date_monthstarted, months_expired, months_left) VALUES (:userid, :date_monthstarted, 0, 0)";
+		$stmt = $bdd->prepare($sql);
+		$stmt->bindParam(':userid', $user_id, PDO::PARAM_INT);
+		$stmt->bindParam(':date_monthstarted', $date, PDO::PARAM_STR);
+		$stmt->execute();
+		GiveHC($user_id, $months);
+	}
+
+	/*if (function_exists(SendMUSData) !== true) {
+		include('includes/mus.php');
+	}
+	@SendMUSData('UPRS' . $user_id);
+		@SendMUSData('UPRC' . $user_id);*/
+}
+
 function HCDaysLeft($my_id)
 {
 	include('SQL.php');
 	// Query for the info we need to calculate
-	$query = $bdd->prepare("SELECT last_hc_payday FROM users_settings WHERE user_id = :my_id LIMIT 1");
+	$query = $bdd->prepare("SELECT months_left,date_monthstarted FROM users_club WHERE userid = :my_id LIMIT 1");
 	$query->bindParam(':my_id', $my_id);
 	$query->execute();
 	$tmp = $query->fetch(PDO::FETCH_ASSOC);
@@ -405,40 +471,39 @@ function HCDaysLeft($my_id)
 	if ($valid > 0) {
 
 		// Récupérer les variables nécessaires à partir du résultat de la requête
-		$months_left = $tmp['last_hc_payday'];
-		$month_started = $tmp['last_hc_payday'];
-	
+		$months_left = $tmp['months_left'];
+		$month_started = $tmp['date_monthstarted'];
+
 		// Nous prenons 31 jours pour chaque mois restant, en supposant que chaque mois a 31 jours
 		$days_left = $months_left * 31;
-	
+
 		// Séparer le jour, le mois et l'année afin de pouvoir les utiliser avec mktime
 		$tmp = explode("-", $month_started);
 		$day = (int)$tmp[0];
 		$month = (int)$tmp[0];
 		$year = (int)$tmp[0];
-	
+
 		// Tout d'abord, créer les dates que nous voulons comparer, effectuer des calculs
 		$then = mktime(0, 0, 0, $month, $day, $year);
 		$now = time();
 		$difference = $now - $then;
-	
+
 		// Si le mois est déjà expiré
 		if ($difference < 0) {
 			$difference = 0;
 		}
-	
+
 		// Effectuer des calculs
 		$days_expired = floor($difference / 60 / 60 / 24);
-	
+
 		// $days_expired représente les jours que nous avons déjà gaspillés ce mois-ci
 		// 31 jours pour chaque mois ajouté ensemble, moins les jours que nous avons gaspillés dans le mois en cours, est le nombre de jours qu'il nous reste, complètement
 		$days_left = $days_left - $days_expired;
-	
+
 		return $days_left;
 	} else {
 		return 0;
 	}
-	
 }
 
 
@@ -448,24 +513,27 @@ function IsHCMember($my_id)
 	if (HCDaysLeft($my_id) > 0) {
 		return true;
 	} else {
-		try {
-			$stmt0 = $bdd->prepare("SELECT * FROM users_settings WHERE user_id = :my_id LIMIT 1");
-			$stmt0->bindParam(':my_id', $my_id);
-			$stmt0->execute();
-			$clubrecord = $stmt0->rowCount();
-			if ($clubrecord > 0) {
-				$stmt1 = $bdd->prepare("UPDATE users SET rank = '1' WHERE id = :my_id AND rank = '2' LIMIT 1");
-				$stmt1->bindParam(':my_id', $my_id);
-				$stmt1->execute();
-				$stmt2 = $bdd->prepare("DELETE FROM users_badges WHERE badge_code = 'HC1' OR badge_code = 'HC2' AND user_id = :my_id LIMIT 1");
-				$stmt2->bindParam(':my_id', $my_id);
-				$stmt2->execute();
-				@SendMUSData('UPRS' . $my_id);
-			}
-			return false;
-		} catch (PDOException $e) {
-			print "Error!: " . $e->getMessage() . "<br/>";
-			return false;
+		// Make sure that HC members are _not_ rank 2 and that they do not have their gay little badge
+		$query = $bdd->prepare("SELECT * FROM users_club WHERE userid = ? LIMIT 1");
+		$query->execute(array($my_id));
+		$clubrecord = $query->rowCount();
+
+		if ($clubrecord > 0) {
+			/*$stmt1 = $bdd->prepare("UPDATE users SET badge_status = '0', hc_before='1' WHERE id = ? LIMIT 1");
+			$stmt1->execute([$my_id]);*/
+
+			$stmt2 = $bdd->prepare("UPDATE users SET rank = '1' WHERE id = ? AND rank = '2' LIMIT 1");
+			$stmt2->execute([$my_id]);
+
+			$stmt3 = $bdd->prepare("DELETE FROM users_badges WHERE badge_code = 'HC1' OR badgeid = 'HC2' AND user_id = ? LIMIT 1");
+			$stmt3->execute([$my_id]);
+
+			$stmt4 = $bdd->prepare("DELETE FROM users_club WHERE userid = ? LIMIT 1");
+			$stmt4->execute([$my_id]);
+
+			/*if(function_exists(SendMUSData) !== true){ include('includes/mus.php'); }
+            @SendMUSData('UPRS' . $my_id);*/
 		}
+		return false;
 	}
 }

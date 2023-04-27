@@ -344,7 +344,7 @@ body { behavior: url(https://bobbastar.fr/web-gallery/csshover.htc); }
 
                                     <script type="text/javascript" language="JavaScript">
                                         var swfobj = new SWFObject("<?php echo $url; ?>/flash/HabboRegistration.swf", "habboreg", "435", "400", "8");
-                                        swfobj.addParam("base", "<?php echo $url; ?>/flash/data");
+                                        swfobj.addParam("base", "<?php echo $url; ?>/flash");
                                         swfobj.addParam("wmode", "opaque");
                                         swfobj.addParam("AllowScriptAccess", "always");
                                         swfobj.addVariable("figuredata_url", "<?php echo $url; ?>/flash/xml/figuredata.xml");

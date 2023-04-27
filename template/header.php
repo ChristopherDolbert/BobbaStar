@@ -229,7 +229,7 @@ if ($c['afficher'] == "Oui") {
                         <li class=""><a href="<?PHP echo $url; ?>/videinventaire">Vider l'inventaire</a></li>
                     <?PHP } ?>
                 <?PHP } ?>
-                <?PHP if ($pageid == "badgeshop" || $pageid == "achats" || $pageid == "codepromo" || $pageid == "jetons" || $pageid == "clubs" || $pageid == "shopbots" || $pageid == "pixels" || $pageid == "credits") { ?>
+                <?PHP if ($pageid == "badgeshop" || $pageid == "achats" || $pageid == "codepromo" || $pageid == "jetons" || $pageid == "clubs" || $pageid == "clubhc" || $pageid == "pixels" || $pageid == "credits") { ?>
                     <?PHP if ($pageid == "jetons") { ?>
                         <li class=" selected">Jetons</li>
                     <?PHP } else { ?>
@@ -260,7 +260,11 @@ if ($c['afficher'] == "Oui") {
                     <?PHP } else { ?>
                         <li class=""><a href="<?PHP echo $url; ?>/shopbadge">Acheter des badges</a></li>
                     <?PHP } ?>
-
+                    <?PHP if ($pageid == "clubhc") { ?>
+                        <li class=" selected">Devenir HC</li>
+                    <?PHP } else { ?>
+                        <li class=""><a href="<?PHP echo $url; ?>/club">Devenir HC</a></li>
+                    <?PHP } ?>
                     <?PHP if ($pageid == "codepromo") { ?>
                         <li class=" selected">Codes promos</li>
                     <?PHP } else { ?>
