@@ -9,7 +9,7 @@
 	$date = date('dmY');
 	$sitename = "MyHabbo";
 	$shortname = "Habbo";
-	$url = "http://bobbastar.test";
+	$url = "http://localhost";
 	$description = "&raquo; Créer ton appart, tchat avec des centaines d'utilisateurs et fais-toi de nouveaux amis.";
 	$imagepath = "".$url."/web-gallery/"; 
 	$keyword = "CMS, GabCMS, Habbo, rétro, jeune, ados, love, kiff, habbo";
@@ -23,6 +23,7 @@
 	$compte_twitter = "GabCMS";
 	$compte_facebook = "Gabcms";
 	$language = "fr";
+	$hc_maxmonths = 6;
 
    //Config Starpass
    $id_document = 444508; //Identifiant du document starpass
