@@ -108,14 +108,10 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 
 										<tbody>
 											<?php
-											$transac = $bdd->query("SELECT * FROM gabcms_transaction WHERE user_id = '" . $user['id'] . "' ORDER BY id DESC");
+											$transac = $bdd->query("SELECT * FROM gabcms_transaction WHERE user_id = '{$user['id']}' ORDER BY id DESC");
 											while ($t = $transac->fetch()) {
-												if ($t['gain'] == '+') {
-													$modif_color = 'green';
-												}
-												if ($t['gain'] == '-') {
-													$modif_color = 'red';
-												}
+												$modif_color = ($t['gain'] == '+') ? 'green' : (($t['gain'] == '-') ? 'red' : '');
+											
 											?>
 												<tr class="bas">
 													<td class="tx-description"><?PHP echo Secu($t['produit']); ?></td>
