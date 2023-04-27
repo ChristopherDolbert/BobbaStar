@@ -7,7 +7,7 @@
 
 # Nombre de fonctions: 14 #
 if ($pagename != "Starters" && isset($_SESSION['username']) && $_SESSION['noob'] == "Oui") {
-    Redirect($url . "/starter_room");
+	Redirect($url . "/starter_room");
 }
 
 // Validate the langauge
@@ -367,7 +367,6 @@ function Connected($pageid)
 
 function SendMUSData($data)
 {
-
 	include('SQL.php');
 	$configsql = $bdd->query("SELECT * FROM gabcms_client WHERE id = '1'");
 	$config = $configsql->fetch(PDO::FETCH_ASSOC);
@@ -391,4 +390,82 @@ function SendMUSData($data)
 	}
 
 	socket_close($sock);
+}
+
+function HCDaysLeft($my_id)
+{
+	include('SQL.php');
+	// Query for the info we need to calculate
+	$query = $bdd->prepare("SELECT last_hc_payday FROM users_settings WHERE user_id = :my_id LIMIT 1");
+	$query->bindParam(':my_id', $my_id);
+	$query->execute();
+	$tmp = $query->fetch(PDO::FETCH_ASSOC);
+	$valid = $query->rowCount();
+
+	if ($valid > 0) {
+
+		// Récupérer les variables nécessaires à partir du résultat de la requête
+		$months_left = $tmp['last_hc_payday'];
+		$month_started = $tmp['last_hc_payday'];
+	
+		// Nous prenons 31 jours pour chaque mois restant, en supposant que chaque mois a 31 jours
+		$days_left = $months_left * 31;
+	
+		// Séparer le jour, le mois et l'année afin de pouvoir les utiliser avec mktime
+		$tmp = explode("-", $month_started);
+		$day = (int)$tmp[0];
+		$month = (int)$tmp[0];
+		$year = (int)$tmp[0];
+	
+		// Tout d'abord, créer les dates que nous voulons comparer, effectuer des calculs
+		$then = mktime(0, 0, 0, $month, $day, $year);
+		$now = time();
+		$difference = $now - $then;
+	
+		// Si le mois est déjà expiré
+		if ($difference < 0) {
+			$difference = 0;
+		}
+	
+		// Effectuer des calculs
+		$days_expired = floor($difference / 60 / 60 / 24);
+	
+		// $days_expired représente les jours que nous avons déjà gaspillés ce mois-ci
+		// 31 jours pour chaque mois ajouté ensemble, moins les jours que nous avons gaspillés dans le mois en cours, est le nombre de jours qu'il nous reste, complètement
+		$days_left = $days_left - $days_expired;
+	
+		return $days_left;
+	} else {
+		return 0;
+	}
+	
+}
+
+
+function IsHCMember($my_id)
+{
+	include('SQL.php');
+	if (HCDaysLeft($my_id) > 0) {
+		return true;
+	} else {
+		try {
+			$stmt0 = $bdd->prepare("SELECT * FROM users_settings WHERE user_id = :my_id LIMIT 1");
+			$stmt0->bindParam(':my_id', $my_id);
+			$stmt0->execute();
+			$clubrecord = $stmt0->rowCount();
+			if ($clubrecord > 0) {
+				$stmt1 = $bdd->prepare("UPDATE users SET rank = '1' WHERE id = :my_id AND rank = '2' LIMIT 1");
+				$stmt1->bindParam(':my_id', $my_id);
+				$stmt1->execute();
+				$stmt2 = $bdd->prepare("DELETE FROM users_badges WHERE badge_code = 'HC1' OR badge_code = 'HC2' AND user_id = :my_id LIMIT 1");
+				$stmt2->bindParam(':my_id', $my_id);
+				$stmt2->execute();
+				@SendMUSData('UPRS' . $my_id);
+			}
+			return false;
+		} catch (PDOException $e) {
+			print "Error!: " . $e->getMessage() . "<br/>";
+			return false;
+		}
+	}
 }

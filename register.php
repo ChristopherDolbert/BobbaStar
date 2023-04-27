@@ -208,7 +208,7 @@ if (isset($_POST['bean_avatarName'])) {
         var habboName = null;
         var habboReqPath = "";
         var habboStaticFilePath = "./web-gallery";
-        var habboImagerUrl = "<?PHP echo $avatarimage; ?>";
+        var habboImagerUrl = "/habbo-imaging/";
         var habboPartner = "";
         window.name = "habboMain";
     </script>
@@ -344,12 +344,12 @@ body { behavior: url(https://bobbastar.fr/web-gallery/csshover.htc); }
 
                                     <script type="text/javascript" language="JavaScript">
                                         var swfobj = new SWFObject("<?php echo $url; ?>/flash/HabboRegistration.swf", "habboreg", "435", "400", "8");
-                                        swfobj.addParam("base", "flash/");
+                                        swfobj.addParam("base", "<?php echo $url; ?>/flash/data");
                                         swfobj.addParam("wmode", "opaque");
                                         swfobj.addParam("AllowScriptAccess", "always");
-                                        swfobj.addVariable("figuredata_url", "xml/figuredata.xml");
-                                        swfobj.addVariable("draworder_url", "xml/draworder.xml");
-                                        swfobj.addVariable("localization_url", "xml/figure_editor.xml");
+                                        swfobj.addVariable("figuredata_url", "<?php echo $url; ?>/flash/xml/figuredata.xml");
+                                        swfobj.addVariable("draworder_url", "<?php echo $url; ?>/flash/xml/draworder.xml");
+                                        swfobj.addVariable("localization_url", "<?php echo $url; ?>/flash/xml/figure_editor.xml");
                                         swfobj.addVariable("figure", "");
                                         swfobj.addVariable("gender", "");
 
