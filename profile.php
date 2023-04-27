@@ -1296,7 +1296,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 					<h3>Bloquer les Textamigo</h3>
 					<p>
 						<input type="radio" name="block_friendrequests" value="1" <?php if ($row['block_friendrequests'] == "1") { ?> checked="checked" <?php } ?> />Oui
-						<input type="radio" name="block_friendrequests" value="0" <?php if ($row['block_friendrequests'] == "0") { ?> checked="checked" <?php } ?> />non
+						<input type="radio" name="block_friendrequests" value="0" <?php if ($row['block_friendrequests'] == "0") { ?> checked="checked" <?php } ?> />Non
 					</p>
 
 					<h3>Ancien chat</h3>

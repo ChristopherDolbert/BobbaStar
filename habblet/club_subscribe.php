@@ -80,7 +80,7 @@ if ($myrow['credits'] < $price) {
 		giveHC($my_id, $months);
 
 		// Insérer une transaction dans la table cms_transactions
-		$date_full = date("d-m-Y");
+		$date_full = FullDate('full');
 		$sql = "INSERT INTO gabcms_transaction (user_id, prix, date, produit) VALUES (:userid, :amount, :date_full, :descr)";
 		$stmt = $bdd->prepare($sql);
 		$stmt->bindParam(':userid', $my_id, PDO::PARAM_INT);
