@@ -233,7 +233,6 @@ if ($tab == "1") {
 						$stmt9->bindParam(':newpass_hash', $newpass_hash);
 						$stmt9->bindParam(':rawname', $rawname);
 						$stmt9->execute();
-
 						$result = "Ton mot de passe a &eacute;t&eacute; modifi&eacute;, reconnectes-toi d&eacute;sormais!";
 					}
 				}
@@ -248,10 +247,14 @@ if ($tab == "1") {
 	}
 } else if ($tab == "8") {
 	if (isset($_POST['save'])) {
-		$sql = "UPDATE users_settings SET block_friendrequests = :block_friendrequests, old_chat = :old_chat, block_roominvites = :block_roominvites, block_following = :block_following WHERE user_id = :id";
-		$stmt20 = $bdd->prepare($sql);
-		$stmt20->execute([$_POST['block_friendrequests'], $_POST['old_chat'], $_POST['block_roominvites'], $_POST['block_following'], $user['id']]);
-		$result = "Updated";
+		$stmt20 = $bdd->prepare("UPDATE users_settings SET block_friendrequests = :block_friendrequests, old_chat = :old_chat, block_roominvites = :block_roominvites, block_following = :block_following WHERE user_id = :id");
+		$stmt20->bindParam(':my_id', $_POST['block_friendrequests']);
+		$stmt20->bindParam(':old_chat', $_POST['old_chat']);
+		$stmt20->bindParam(':block_roominvites', $_POST['block_roominvites']);
+		$stmt20->bindParam(':block_following', $_POST['block_following']);
+		$stmt20->bindParam(':my_id', $user['id']);
+		$result = "Paramètres mis à jour";
+		$error = "0";
 	}
 }
 
@@ -1267,9 +1270,6 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 
 			<h2 class="title">Autres</h2>
 			<div class="box-content">
-
-
-
 				<form action="profile.php?tab=8" method="post">
 					<input type="hidden" name="tab" value="8" />
 					<input type="hidden" name="__app_key" value="HoloCMS" />
@@ -1281,41 +1281,40 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 							} else {
 								echo "<div class='rounded rounded-green'>";
 							}
-							echo $result . "<br />
-	</div><br />";
+							echo $result . "</div>";
 						}
 					?>
 
 					<?php
-						$sql = "SELECT block_friendrequests, old_chat, block_roominvites, block_following FROM users_settings WHERE user_id = :my_id";
-						$stmt = $bdd->prepare($sql);
-						$stmt->execute(['my_id' => $user['id']]);
-						$roww = $stmt->fetch();
+						$stmt = $bdd->prepare("SELECT * FROM users_settings WHERE user_id = :my_id LIMIT 1");
+						$stmt->bindParam(':my_id', $user['id'], PDO::PARAM_INT);
+						$stmt->execute();
+						$row = $stmt->fetch(PDO::FETCH_ASSOC);
 					?>
 
 
-					<h3>Textamigo</h3>
+					<h3>Bloquer les Textamigo</h3>
 					<p>
-						<input type="radio" name="block_friendrequests" value="1" <?PHP if ($roww['block_friendrequests'] == "1") { ?> checked="checked" <?PHP } ?> />Ancien
-						<input type="radio" name="block_friendrequests" value="0" <?PHP if ($roww['block_friendrequests'] == "0") { ?> checked="checked" <?PHP } ?> />Nouveau
+						<input type="radio" name="block_friendrequests" value="1" <?php if ($row['block_friendrequests'] == "1") { ?> checked="checked" <?php } ?> />Oui
+						<input type="radio" name="block_friendrequests" value="0" <?php if ($row['block_friendrequests'] == "0") { ?> checked="checked" <?php } ?> />non
 					</p>
 
 					<h3>Ancien chat</h3>
 					<p>
-						<input type="radio" name="old_chat" value="1" <?PHP if ($roww['old_chat'] == "1") { ?> checked="checked" <?PHP } ?> />Ancien
-						<input type="radio" name="old_chat" value="0" <?PHP if ($roww['old_chat'] == "0") { ?> checked="checked" <?PHP } ?> />Nouveau
+						<input type="radio" name="old_chat" value="1" <?PHP if ($row['old_chat'] == "1") { ?> checked="checked" <?PHP } ?> />Ancien
+						<input type="radio" name="old_chat" value="0" <?PHP if ($row['old_chat'] == "0") { ?> checked="checked" <?PHP } ?> />Nouveau
 					</p>
 
-					<h3>Invitation d'appart</h3>
+					<h3>Bloquer les invitations d'appart</h3>
 					<p>
-						<input type="radio" name="block_roominvites" value="1" <?PHP if ($roww['block_roominvites'] == "1") { ?> checked="checked" <?PHP } ?> />Ancien
-						<input type="radio" name="block_roominvites" value="0" <?PHP if ($roww['block_roominvites'] == "0") { ?> checked="checked" <?PHP } ?> />Nouveau
+						<input type="radio" name="block_roominvites" value="1" <?PHP if ($row['block_roominvites'] == "1") { ?> checked="checked" <?PHP } ?> />Oui
+						<input type="radio" name="block_roominvites" value="0" <?PHP if ($row['block_roominvites'] == "0") { ?> checked="checked" <?PHP } ?> />Non
 					</p>
 
-					<h3>Préférences &quot;rejoindre&quot;</h3>
+					<h3>Bloquer le suivi</h3>
 					<p>
-						<input type="radio" name="block_following" value="1" <?PHP if ($roww['block_roominvites'] == "1") { ?> checked="checked" <?PHP } ?> />Ancien
-						<input type="radio" name="block_following" value="0" <?PHP if ($roww['block_roominvites'] == "0") { ?> checked="checked" <?PHP } ?> />Nouveau
+						<input type="radio" name="block_following" value="1" <?PHP if ($row['block_following'] == "1") { ?> checked="checked" <?PHP } ?> />Oui
+						<input type="radio" name="block_following" value="0" <?PHP if ($row['block_following'] == "0") { ?> checked="checked" <?PHP } ?> />Non
 					</p>
 
 					<div class="settings-buttons">
