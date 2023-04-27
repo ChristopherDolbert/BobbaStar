@@ -110,7 +110,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 		<div class='habblet-container '>
 						<div class='cbb clearfix hcred '>
 
-							<h2 class='title'>" . $shortname . " Club: deviens un VIP!</h2>
+							<h2 class='title'>" . $sitename . " Club: deviens un VIP!</h2>
 						<div id ='habboclub-products'>
     <div id='habboclub-clothes-container'>
         <div class='habboclub-extra-image'></div>
@@ -133,7 +133,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 
 							<h2 class='title'>Avantages</h2>
 						<div id='habboclub-info' class='box-content'>
-    <p>" . $shortname . "  Club est le Club tr&eacute;s s&eacute;lect de Habbo - Seule la creme de la creme y est accept&eacute;e et ses membres sont envi&eacute;s dans tout l'h&ocirc;tel</p>
+    <p>" . $sitename . "  Club est le Club tr&eacute;s s&eacute;lect de Habbo - Seule la creme de la creme y est accept&eacute;e et ses membres sont envi&eacute;s dans tout l'h&ocirc;tel</p>
     <h3 class='heading'>1. V&ecirc;tements & accessoires suppl&eacute;mentaires</h3>
     <p class='content habboclub-clothing'>Fais le k&eacute;k&eacute; gr&acirc;ce &agrave; un choix tr&eacute;s &eacute;tendu de v&ecirc;tements, d'accessoires et de coupes de cheveux exclusifs.</p>
     <h3 class='heading'>2. Mobis gratuits</h3>
@@ -177,7 +177,7 @@ Tu es";
             echo " pas";
         }
 
-        echo " un membre du " . $shortname . " Club
+        echo " un membre du " . $sitename . " Club
 </p>
 <p>";
         if (IsHCMember($my_id)) {
@@ -193,15 +193,15 @@ Tu es";
                     <form>
                         <table>
                             <tr>
-                                <td><a class="new-button fill" onclick="habboclub.buttonClick(1,'<?php echo strtoupper($shortname); ?> CLUB'); return false;" href="#"><b>Acheter 1 mois</b><i></i></a></td>
+                                <td><a class="new-button fill" onclick="habboclub.buttonClick(1,'<?php echo strtoupper($sitename); ?> CLUB'); return false;" href="#"><b>Acheter 1 mois</b><i></i></a></td>
                                 <td>&nbsp;20 Cr&eacute;dits</td>
                             </tr>
                             <tr>
-                                <td><a class="new-button fill" onclick="habboclub.buttonClick(3,'<?php echo strtoupper($shortname); ?> CLUB'); return false;" href="#"><b>Acheter 3 mois</b><i></i></a></td>
+                                <td><a class="new-button fill" onclick="habboclub.buttonClick(3,'<?php echo strtoupper($sitename); ?> CLUB'); return false;" href="#"><b>Acheter 3 mois</b><i></i></a></td>
                                 <td>&nbsp;50 Cr&eacute;dits</td>
                             </tr>
                             <tr>
-                                <td><a class="new-button fill" onclick="habboclub.buttonClick(6,'<?php echo strtoupper($shortname); ?> CLUB'); return false;" href="#"><b>Acheter 6 mois</b><i></i></a></td>
+                                <td><a class="new-button fill" onclick="habboclub.buttonClick(6,'<?php echo strtoupper($sitename); ?> CLUB'); return false;" href="#"><b>Acheter 6 mois</b><i></i></a></td>
                                 <td>&nbsp;80 Cr&eacute;dits</td>
                             </tr>
                         </table>
@@ -213,7 +213,7 @@ Tu es";
                 <div id="hc-buy-buttons" class="hc-buy-buttons rounded rounded-hcred">
                     <form class="subscribe-form" method="post">
                         <table width="100%">
-                            <p class="credits-notice">Pour joindre le <?php echo $shortname; ?> Club, tu dois avoir des cr&eacute;dits. <?php echo $shortname; ?> Club c&ocirc;ute au mininum 20 cr&eacute;dits</p>
+                            <p class="credits-notice">Pour joindre le <?php echo $sitename; ?> Club, tu dois avoir des cr&eacute;dits. <?php echo $sitename; ?> Club c&ocirc;ute au mininum 20 cr&eacute;dits</p>
                             <a class="new-button fill" href="credits.php"><b>Avoir des sous!</b><i></i></a>
                         </table>
                     </form>
@@ -221,7 +221,7 @@ Tu es";
             </div>
     <?php }
     } else {
-        echo "Merci de te connecter pour voir tes statistiques du " . $shortname . " Club";
+        echo "Merci de te connecter pour voir tes statistiques du " . $sitename . " Club";
     }
 
 
@@ -243,7 +243,7 @@ Tu es";
 
 							<h2 class='title'>Discount!</h2>
 <div class='box-content'>
-Hurrah! A major discount on all ".$shortname." Club subscriptions! Buy one on this page now and save up to 15 credits!
+Hurrah! A major discount on all ".$sitename." Club subscriptions! Buy one on this page now and save up to 15 credits!
 </div>
 
 

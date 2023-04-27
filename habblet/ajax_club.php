@@ -1,13 +1,9 @@
 <?php
-/*===================================================+
-|| # HoloCMS - Website and Content Management System
-|+===================================================+
-|| # Copyright � 2008 Meth0d. All rights reserved.
-|| # http://www.meth0d.org
-|+===================================================+
-|| # HoloCMS is provided "as is" and comes without
-|| # warrenty of any kind. HoloCMS is free software!
-|+===================================================*/
+#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
+#|                                                                        #|
+#|         Copyright © 2014-2023 - MyHabbo Tout droits réservés.          #|
+#|																		  #|
+#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
 include('../config.php');
 $my_id = $user['id'];
@@ -18,17 +14,17 @@ if (!$user['username']) {
 }
 
 echo "<p>
-You are";
+Vous";
 
 if (!IsHCMember($my_id)) {
-	echo " not";
+	echo " n'êtes";
 }
 
-echo " a member of " . $shortname . " Club
+echo " pas un membre du " . $sitename . " Club
 </p>
 <p>";
 if (IsHCMember($my_id)) {
-	echo "You have " . HCDaysLeft($my_id) . " Club Day(s) left";
+	echo "Vous avez " . HCDaysLeft($my_id) . " Jour(s) restants";
 } else {
 	echo "&nbsp;";
 }
