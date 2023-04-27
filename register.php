@@ -21,20 +21,20 @@ if (isset($_SESSION['id'])) {
 }
 
 if (isset($_POST['bean_avatarName'])) {
-    // Collect the variables we should've recieved
     $name = Secu($_POST['bean_avatarName']);
     $password = Secu($_POST['password']);
     $retypedpassword = Secu($_POST['retypedPassword']);
-    $day = $_POST['bean_day'];
-    $month = $_POST['bean_month'];
-    $year = $_POST['bean_year'];
     $email = Secu($_POST['bean_email']);
     $retypedemail = Secu($_POST['bean_retypedEmail']);
     $accept_tos = $_POST['bean_termsOfServiceSelection'];
-    //todo: a check svp
-    //    $spam_me = $_POST['bean_marketing'];
     $figure = $_POST['bean_figure'];
     $gender = $_POST['bean_gender'];
+
+    // Date de naissance
+    $day = $_POST['bean_day'] ?? '';
+    $month = $_POST['bean_month'] ?? '';
+    $year = $_POST['bean_year'] ?? '';
+
 
     // Nettoyage et optimisation du code
     $filter = preg_replace("/[^a-z\\d]/i", "", $name);
@@ -54,19 +54,14 @@ if (isset($_POST['bean_avatarName'])) {
     $failure = false;
 
     // Validation du nom
-    if ($tmp > 0) {
-        $error['name'] = "Ce nom d'utilisateur est déjà pris. Veuillez choisir un autre nom.";
-        $failure = true;
-    } elseif ($filter !== $name) {
+    if (!preg_match("/^[a-z\\d]{1,24}$/i", $name)) {
         $error['name'] = "Le nom d'utilisateur est invalide ou contient des caractères invalides.";
         $failure = true;
-    } elseif (strlen($name) > 24) {
-        $error['name'] = "Le nom que vous avez choisi est trop long.";
-        $failure = true;
-    } elseif (strlen($name) < 1) {
-        $error['name'] = "Veuillez entrer un nom d'utilisateur.";
+    } elseif ($tmp) {
+        $error['name'] = "Ce nom d'utilisateur est déjà pris. Veuillez choisir un autre nom.";
         $failure = true;
     }
+    
 
     // Validation du nom - MOD
     $pos = strrpos($name, "MOD-");
@@ -137,35 +132,18 @@ if (isset($_POST['bean_avatarName'])) {
 
     // Finally, if everything's OK we add the user to the database, log him in, etc
     if (!$failure) {
-        $dob = $day . "-" . $month . "-" . $year;
+        $dob = "$day-$month-$year";
         $password = password_hash($password, PASSWORD_BCRYPT);
-        $insertuser = $bdd->prepare("INSERT INTO users (username, password, mail, account_day_of_birth, rank, look, gender, motto, credits, pixels, last_login, account_created, ip_register, message, newsletter) VALUES (:pseudo, :mdp, :mail, :account_day_of_birth, :rank, :look, :sexe, :motto, :credits, :pixels, :date, :ins, :ip, :message, :newsletter)");
-        $insertuser->bindValue(':pseudo', $name);
-        $insertuser->bindValue(':mdp', $password);
-        $insertuser->bindValue(':mail', $email);
-        $insertuser->bindValue(':account_day_of_birth', strtotime($dob));
-        $insertuser->bindValue(':rank', $rank);
-        $insertuser->bindValue(':look', $figure);
-        $insertuser->bindValue(':sexe', $gender);
-        $insertuser->bindValue(':motto', $mission);
-        $insertuser->bindValue(':credits', '10000');
-        $insertuser->bindValue(':pixels', '100');
-        $insertuser->bindValue(':date', time());
-        $insertuser->bindValue(':ins', FullDate('hc'));
-        $insertuser->bindValue(':ip', $_SERVER['REMOTE_ADDR']);
-        $insertuser->bindValue(':message', '100');
-        $insertuser->bindValue(':newsletter', '1');
-        $insertuser->execute();
-
-        $check = $bdd->prepare("SELECT id FROM users WHERE username = ? ORDER BY id ASC LIMIT 1");
-        $check->execute([$name]);
-        $userid = $check->fetch(PDO::FETCH_ASSOC);
-
+        $insertuser = $bdd->prepare("INSERT INTO users (username, password, mail, account_day_of_birth, rank, look, gender, motto, credits, pixels, last_login, account_created, ip_register, message, newsletter) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $insertuser->execute([$name, $password, $email, strtotime($dob), $rank, $figure, $gender, $mission, '10000', '100', time(), FullDate('hc'), $_SERVER['REMOTE_ADDR'], '100', '1']);
+        $userid = $bdd->lastInsertId();
+    
         $_SESSION['username'] = $name;
         $_SESSION['password'] = $password;
-
-        Redirect($url . "/starter_room");
+    
+        Redirect("$url/starter_room");
     }
+    
 }
 ?>
 

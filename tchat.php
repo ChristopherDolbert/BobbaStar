@@ -17,43 +17,36 @@ if (isset($_POST['message'])) {
     $message = Secu($_POST['message']);
     $captcha_verif = Secu($_POST['captcha_verif']);
     $captcha_code = Secu($_POST['captcha_code']);
-    if ($message != "") {
-        if ($captcha_code == $captcha_verif) {
-            $insertn1 = $bdd->prepare("INSERT INTO gabcms_tchat (pseudo,message,ip,date,look,rank) VALUES (:pseudo,:message,:ip,:date,:look,:rank)");
-            $insertn1->bindValue(':pseudo', $user['username']);
-            $insertn1->bindValue(':message', Secu($_POST['message']));
-            $insertn1->bindValue(':ip', $user['ip_current']);
-            $insertn1->bindValue(':date', FullDate('full'));
-            $insertn1->bindValue(':look', $user['look']);
-            $insertn1->bindValue(':rank', $user['rank']);
-            $insertn1->execute();
-            $bdd->query("UPDATE users SET message = message - 1 WHERE id = '" . $user['id'] . "'");
-            $affichage = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-green\"> 
-              Ton message a été posté avec succès!
-            </div> 
-        </div> 
-</div>";
-        } else {
-            $affichage = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-red\"> 
-               Merci de recopier le bon captcha
-            </div> 
-        </div> 
-</div>";
-        }
+    if (empty($message)) {
+        $affichage = get_error_msg("Merci de marquer un message", "red");
+    } elseif ($captcha_code !== $captcha_verif) {
+        $affichage = get_error_msg("Merci de recopier le bon captcha", "red");
     } else {
-        $affichage = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-red\"> 
-               Merci de marquer un message
-            </div> 
-        </div> 
-</div>";
+        $insertn1 = $bdd->prepare("INSERT INTO gabcms_tchat (pseudo,message,ip,date,look,rank) VALUES (:pseudo,:message,:ip,:date,:look,:rank)");
+        $insertn1->execute(array(
+            ':pseudo' => $user['username'],
+            ':message' => $message,
+            ':ip' => $user['ip_current'],
+            ':date' => FullDate('full'),
+            ':look' => $user['look'],
+            ':rank' => $user['rank']
+        ));
+        $bdd->query("UPDATE users SET message = message - 1 WHERE id = '" . $user['id'] . "'");
+        $affichage = get_error_msg("Ton message a été posté avec succès!", "green");
     }
 }
+
+function get_error_msg($message, $color)
+{
+    return "<div id=\"purse-redeem-result\"> 
+        <div class=\"redeem-error\"> 
+            <div class=\"rounded rounded-$color\"> 
+              $message
+            </div> 
+        </div> 
+</div>";
+}
+
 $sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
 ?>
@@ -142,15 +135,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                         <h2 class="title">Quelques infos</h2>
                         <div class="box-content">
                             <?php
-                            if ($user['message'] >= 2) {
-                                $modifier_mes = "messages";
-                            }
-                            if ($user['message'] == 1) {
-                                $modifier_mes = "message, attention, tu ne pourras plus en poster après celui-ci";
-                            }
-                            if ($user['message'] == 0) {
-                                $modifier_mes = "message";
-                            }
+                            $modifier_mes = ($user['message'] >= 2) ? 'messages' : (($user['message'] == 1) ? 'message, attention, tu ne pourras plus en poster après celui-ci' : 'message');
                             ?>
                             Avant de poster un message, assure toi que:<br />
                             &nbsp;&nbsp;&nbsp;- Tu ne pubs pas<br />
@@ -170,42 +155,52 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                         <div class="box-content">
                             <?php
                             if ($user['message'] >= 1) {
-                                $modifier_u = "<td width='100' class='tbl'><b>Message que tu souhaites poster:</b><br/></td><br/>
-<a href=\"#\" onclick=\"insert_texte(';)')\"><img src=\"./web-gallery/smileys/clindoeil.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':$')\"><img src=\"./web-gallery/smileys/embarrase.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':o')\"><img src=\"./web-gallery/smileys/etonne.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':)')\"><img src=\"./web-gallery/smileys/happy.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':x')\"><img src=\"./web-gallery/smileys/icon_silent.png\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':p')\"><img src=\"./web-gallery/smileys/langue.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':\'(')\"><img src=\"./web-gallery/smileys/sad.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':D')\"><img src=\"./web-gallery/smileys/veryhappy.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':jap:')\"><img src=\"./web-gallery/smileys/jap.png\"/></a>
-<a href=\"#\" onclick=\"insert_texte('8)')\"><img src=\"./web-gallery/smileys/cool.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':rire:')\"><img src=\"./web-gallery/smileys/rire.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':evil:')\"><img src=\"./web-gallery/smileys/icon_evil.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':twisted:')\"><img src=\"./web-gallery/smileys/icon_twisted.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':rool:')\"><img src=\"./web-gallery/smileys/roll.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':|')\"><img src=\"./web-gallery/smileys/neutre.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':suspect:')\"><img src=\"./web-gallery/smileys/suspect.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':no:')\"><img src=\"./web-gallery/smileys/no.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':coeur:')\"><img src=\"./web-gallery/smileys/coeur.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':hap:')\"><img src=\"./web-gallery/smileys/hap.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':bave:')\"><img src=\"./web-gallery/smileys/bave.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':areuh:')\"><img src=\"./web-gallery/smileys/areuh.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':bandit:')\"><img src=\"./web-gallery/smileys/bandit.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':help:')\"><img src=\"./web-gallery/smileys/help.gif\"/></a>
-<a href=\"#\" onclick=\"insert_texte(':buzz:')\"><img src=\"./web-gallery/smileys/buzz.gif\"/></a>
-<form name='editor' method='post' action=\"?do=ok\">
-<td width='80%' class='tbl'><input type='text' name='message' id='message' class='text' style='width: 240px' title='Message que tu souhaites poster..' placeholder='Écris quelque chose..'  onmouseover='tooltip.show(this)' onmouseout='tooltip.hide(this)'><br/></td>
-<br/>Recopie <b>" . $captcha . "</b> : <input type='text' name='captcha_code' id='message' class='text' size='7' title='Recopie le captcha exact' onmouseover='tooltip.show(this)' onmouseout='tooltip.hide(this)'><input type='hidden' name='captcha_verif' value='" . $captcha . "'><br/></td>
-<tr>
-<td align='center' colspan='2' class='tbl'>
-<input type='submit' name='submit' value='Exécuter'></form>
-</tr>";
-                            }
-                            if ($user['message'] == 0) {
+                                $smileys = [
+                                    ';)' => 'clindoeil.gif',
+                                    ':$' => 'embarrase.gif',
+                                    ':o' => 'etonne.gif',
+                                    ':)' => 'happy.gif',
+                                    ':x' => 'icon_silent.png',
+                                    ':p' => 'langue.gif',
+                                    ':\'(' => 'sad.gif',
+                                    ':D' => 'veryhappy.gif',
+                                    ':jap:' => 'jap.png',
+                                    '8)' => 'cool.gif',
+                                    ':rire:' => 'rire.gif',
+                                    ':evil:' => 'icon_evil.gif',
+                                    ':twisted:' => 'icon_twisted.gif',
+                                    ':rool:' => 'roll.gif',
+                                    ':|' => 'neutre.gif',
+                                    ':suspect:' => 'suspect.gif',
+                                    ':no:' => 'no.gif',
+                                    ':coeur:' => 'coeur.gif',
+                                    ':hap:' => 'hap.gif',
+                                    ':bave:' => 'bave.gif',
+                                    ':areuh:' => 'areuh.gif',
+                                    ':bandit:' => 'bandit.gif',
+                                    ':help:' => 'help.gif'
+                                ];
+
+                                $modifier_u = "<td width='100' class='tbl'><b>Message que tu souhaites poster:</b><br/>";
+                                foreach ($smileys as $smiley => $image) {
+                                    $modifier_u .= "<a href=\"#\" onclick=\"insert_texte('{$smiley}')\"><img src=\"./web-gallery/smileys/{$image}\"/></a>";
+                                }
+                                $modifier_u .= "<form name='editor' method='post' action=\"?do=ok\">
+        <td width='80%' class='tbl'>
+            <input type='text' name='message' id='message' class='text' style='width: 240px' title='Message que tu souhaites poster..' placeholder='Écris quelque chose..'  onmouseover='tooltip.show(this)' onmouseout='tooltip.hide(this)'><br/>
+        </td>
+        <br/>Recopie <b>{$captcha}</b> : <input type='text' name='captcha_code' id='message' class='text' size='7' title='Recopie le captcha exact' onmouseover='tooltip.show(this)' onmouseout='tooltip.hide(this)'><input type='hidden' name='captcha_verif' value='{$captcha}'><br/>
+        </td>
+        <tr>
+            <td align='center' colspan='2' class='tbl'>
+                <input type='submit' name='submit' value='Exécuter'>
+            </td>
+        </tr>
+    </form>";
+                            } else {
                                 $modifier_u = "Tu ne peux pas poster de message, vu que tu n'as plus assez de \"Messages\". Pour en avoir plus, demande à un staff via le service client, ou achètes les via la boutique!";
                             }
+
                             ?>
                             <?PHP echo $modifier_u; ?>
                         </div>
@@ -249,59 +244,55 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                             </style>
                             <?php
                             $messagesParPage = $cof['nb_tchat'];
-                            $retour_total = $bdd->query('SELECT COUNT(*) AS total FROM gabcms_tchat');
-                            $donnees_total = $retour_total->fetch(PDO::FETCH_ASSOC);
-                            $total = $donnees_total['total'];
+                            $pageActuelle = isset($_GET['page']) ? intval($_GET['page']) : 1;
+
+                            $total = $bdd->query('SELECT COUNT(*) AS total FROM gabcms_tchat')->fetchColumn();
                             $nombreDePages = ceil($total / $messagesParPage);
-                            if (isset($_GET['page'])) {
-                                $pageActuelle = intval($_GET['page']);
 
-                                if ($pageActuelle > $nombreDePages) {
-                                    $pageActuelle = $nombreDePages;
-                                }
-                            } else {
-                                $pageActuelle = 1;
-                            }
+                            $pageActuelle = min(max(1, $pageActuelle), $nombreDePages);
                             $premiereEntree = ($pageActuelle - 1) * $messagesParPage;
-                            $retour_messages = $bdd->query('SELECT * FROM gabcms_tchat ORDER BY id DESC LIMIT ' . $premiereEntree . ', ' . $messagesParPage . '');
-                            while ($donnees_messages = $retour_messages->fetch(PDO::FETCH_ASSOC)) {
 
-                                if ($donnees_messages['rank'] == 1) {
-                                    $modifier_r = "#FF8C00";
+                            $retour_messages = $bdd->prepare('SELECT * FROM gabcms_tchat ORDER BY id DESC LIMIT :premiereEntree, :messagesParPage');
+                            $retour_messages->bindParam(':premiereEntree', $premiereEntree, PDO::PARAM_INT);
+                            $retour_messages->bindParam(':messagesParPage', $messagesParPage, PDO::PARAM_INT);
+                            $retour_messages->execute();
+
+                            while ($donnees_messages = $retour_messages->fetch(PDO::FETCH_ASSOC)) {
+                                switch ($donnees_messages['rank']) {
+                                    case 1:
+                                        $modifier_r = "#FF8C00";
+                                        break;
+                                    case 2:
+                                        $modifier_r = "#B22222";
+                                        break;
+                                    case 3:
+                                        $modifier_r = "#32CD32";
+                                        break;
+                                    case 5:
+                                    case 6:
+                                    case 7:
+                                    case 8:
+                                        $modifier_r = "red";
+                                        break;
+                                    default:
+                                        $modifier_r = "";
+                                        break;
                                 }
-                                if ($donnees_messages['rank'] == 2) {
-                                    $modifier_r = "#B22222";
+
+                                switch ($donnees_messages['alert']) {
+                                    case 1:
+                                        $alert = "red";
+                                        $alert_2 = "<b>";
+                                        $alert_3 = "</b>";
+                                        $alert_4 = "<span style=\"color:#FF0000\">ALERTE DE </span>";
+                                        break;
+                                    default:
+                                        $alert = "#000000";
+                                        $alert_2 = $alert_3 = $alert_4 = "";
+                                        break;
                                 }
-                                if ($donnees_messages['rank'] == 3) {
-                                    $modifier_r = "#32CD32";
-                                }
-                                if ($donnees_messages['rank'] >= 5 && $donnees_messages['rank'] <= 8) {
-                                    $modifier_r = "red";
-                                }
-                                if ($donnees_messages['alert'] == 0) {
-                                    $alert = "#000000";
-                                }
-                                if ($donnees_messages['alert'] == 1) {
-                                    $alert = "red";
-                                }
-                                if ($donnees_messages['alert'] == 1) {
-                                    $alert_3 = "</b>";
-                                }
-                                if ($donnees_messages['alert'] == 1) {
-                                    $alert_2 = "<b>";
-                                }
-                                if ($donnees_messages['alert'] == 0) {
-                                    $alert_3 = "";
-                                }
-                                if ($donnees_messages['alert'] == 0) {
-                                    $alert_2 = "";
-                                }
-                                if ($donnees_messages['alert'] == 1) {
-                                    $alert_4 = "<span style=\"color:#FF0000\">ALERTE DE </span>";
-                                }
-                                if ($donnees_messages['alert'] == 0) {
-                                    $alert_4 = "";
-                                }
+
+
                             ?>
                                 <table>
 
@@ -322,6 +313,34 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                 </table>
                             <?PHP }
 
+                            $messagesParPage = $cof['nb_tchat'];
+                            $retour_total = $bdd->query('SELECT COUNT(*) AS total FROM gabcms_tchat');
+                            $total = $retour_total->fetch(PDO::FETCH_ASSOC)['total'];
+                            $nombreDePages = ceil($total / $messagesParPage);
+                            $pageActuelle = isset($_GET['page']) ? min(intval($_GET['page']), $nombreDePages) : 1;
+                            $premiereEntree = ($pageActuelle - 1) * $messagesParPage;
+                            $retour_messages = $bdd->query("SELECT * FROM gabcms_tchat ORDER BY id DESC LIMIT $premiereEntree, $messagesParPage");
+
+                            while ($donnees_messages = $retour_messages->fetch(PDO::FETCH_ASSOC)) {
+                                $modifier_r = "#000000";
+                                if ($donnees_messages['rank'] == 1) {
+                                    $modifier_r = "#FF8C00";
+                                } else if ($donnees_messages['rank'] == 2) {
+                                    $modifier_r = "#B22222";
+                                } else if ($donnees_messages['rank'] == 3) {
+                                    $modifier_r = "#32CD32";
+                                } else if ($donnees_messages['rank'] >= 5 && $donnees_messages['rank'] <= 8) {
+                                    $modifier_r = "red";
+                                }
+
+                                $alert = $donnees_messages['alert'] == 1 ? "red" : "#000000";
+                                $alert_2 = $donnees_messages['alert'] == 1 ? "<b>" : "";
+                                $alert_3 = $donnees_messages['alert'] == 1 ? "</b>" : "";
+                                $alert_4 = $donnees_messages['alert'] == 1 ? "<span style=\"color:#FF0000\">ALERTE DE </span>" : "";
+
+                                // affichage du message
+                            }
+
                             echo '<p align="center">Page: ';
                             for ($i = 1; $i <= $nombreDePages; $i++) {
                                 if ($i == $pageActuelle) {
@@ -331,6 +350,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                 }
                             }
                             echo '</p>';
+
                             ?>
                         </div>
 
