@@ -77,7 +77,6 @@ if ($myrow['credits'] < $price) {
 		$stmt->bindParam(':price', $price, PDO::PARAM_INT);
 		$stmt->bindParam(':my_id', $my_id, PDO::PARAM_INT);
 		$stmt->execute();
-		$descr = "Adhésion au MyHabbo Club";
 
 		// Appeler la fonction giveHC
 		giveHC($my_id, $months);
@@ -89,7 +88,7 @@ if ($myrow['credits'] < $price) {
 		$stmt->bindParam(':userid', $my_id, PDO::PARAM_INT);
 		$stmt->bindParam(':amount', $price, PDO::PARAM_INT);
 		$stmt->bindParam(':date_full', $date_full, PDO::PARAM_STR);
-		$descr = "Club subscription (" . $months . " month(s))";
+		$descr = "Adhésion au MyHabbo Club (" . $months . " mois)";
 		$stmt->bindParam(':descr', $descr, PDO::PARAM_STR);
 		$stmt->execute();
 
@@ -102,7 +101,7 @@ if ($myrow['credits'] < $price) {
 		/*@SendMUSData('UPRC' . $my_id);*/
 		$msg = "SUPER! Tu fais maintenant partie du " . $shortname . " Club pendant " . $months . " mois.";
 	} else {
-		$msg = $time."You can only subscribe for a maxiamum of " . $hc_maxmonths . " months. If this subscription was completed, you would have exceeded the limit.";
+		$msg = $time."Vous ne pouvez vous inscrire que pour un maximum de " . $hc_maxmonths . " mois. Si cet abonnement est terminé, vous aurez dépassé la limite.";
 	}
 }
 
