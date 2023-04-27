@@ -187,9 +187,6 @@ Tu es";
         }
         echo "</p>
 </div>";
-
-
-        echo "Ta mère" . HCDaysLeft($my_id);
         if ($user['credits'] == "20" || $user['credits'] > 20) { ?>
             <div id='hc-buy-container' class='box-content'>
                 <div id='hc-buy-buttons' class='hc-buy-buttons rounded rounded-hcred'>
