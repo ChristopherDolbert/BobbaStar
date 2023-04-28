@@ -7,7 +7,7 @@
 
 # Nombre de fonctions: 14 #
 if ($pagename != "Starters" && isset($_SESSION['username']) && $_SESSION['noob'] == "Oui") {
-    Redirect($url . "/starter_room");
+	Redirect($url . "/starter_room");
 }
 
 // Validate the langauge
@@ -365,31 +365,35 @@ function Connected($pageid)
 	return $connected;
 }
 
-function SendMUSData($data)
+function SendMUSData(string $key, $data = null)
 {
-	include('SQL.php');
-	$configsql = $bdd->query("SELECT * FROM gabcms_client WHERE id = '1'");
-	$config = $configsql->fetch(PDO::FETCH_ASSOC);
+    include('SQL.php');
 
-	$mus_ip = $config['ip'];
-	$mus_port = $config['mus_port'];
+    $configSQL = $bdd->query("SELECT * FROM gabcms_client WHERE id = '1'");
+    $config = $configSQL->fetch(PDO::FETCH_ASSOC);
 
-	if (!is_numeric($mus_port)) {
-		echo "<b>System Error</b><br />Invalid MUS Port!";
-		exit;
-	}
+    $mus_ip = $config['ip'];
+    $mus_port = $config['mus_port'];
 
-	$sock = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tcp'));
-	socket_connect($sock, $mus_ip, $mus_port);
+    if (!is_numeric($mus_port)) {
+        echo "<b>System Error</b><br />Invalid MUS Port!";
+        exit;
+    }
 
-	if (!is_resource($sock)) {
-		return false;
-	} else {
-		socket_send($sock, $data, strlen($data), MSG_DONTROUTE);
-		return true;
-	}
+    $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+    if ($socket === false) {
+        echo "socket_create() failed: reason: " . socket_strerror(socket_last_error()) . "\n";
+    } else {
+        echo "OK.\n";
+    }
 
-	socket_close($sock);
+    echo "Attempting to connect to '$mus_ip' on port '$mus_port'...";
+    $result = socket_connect($socket, $mus_ip, $mus_port);
+    if ($result === false) {
+        echo "socket_connect() failed.\nReason: ($result) " . socket_strerror(socket_last_error($socket)) . "\n";
+    } else {
+        echo "OK.\n";
+    }
 }
 
 
@@ -479,9 +483,9 @@ function HCDaysLeft($my_id)
 
 		// Séparer le jour, le mois et l'année afin de pouvoir les utiliser avec mktime
 		$tmp = explode("-", $month_started);
-		$day = (int)$tmp[0];
-		$month = (int)$tmp[0];
-		$year = (int)$tmp[0];
+		$day = $tmp[0];
+		$month = $tmp[1];
+		$year = $tmp[2];
 
 		// Tout d'abord, créer les dates que nous voulons comparer, effectuer des calculs
 		$then = mktime(0, 0, 0, $month, $day, $year);
@@ -522,10 +526,13 @@ function IsHCMember($my_id)
 			/*$stmt1 = $bdd->prepare("UPDATE users SET badge_status = '0', hc_before='1' WHERE id = ? LIMIT 1");
 			$stmt1->execute([$my_id]);*/
 
+			$stmt1 = $bdd->prepare("UPDATE users_settings SET last_hc_payday = '0' WHERE user_id = ? LIMIT 1");
+			$stmt1->execute([$my_id]);
+
 			$stmt2 = $bdd->prepare("UPDATE users SET rank = '1' WHERE id = ? AND rank = '2' LIMIT 1");
 			$stmt2->execute([$my_id]);
 
-			$stmt3 = $bdd->prepare("DELETE FROM users_badges WHERE badge_code = 'HC1' OR badgeid = 'HC2' AND user_id = ? LIMIT 1");
+			$stmt3 = $bdd->prepare("DELETE FROM users_badges WHERE badge_code = 'HC1' OR badge_code = 'HC2' AND user_id = ? LIMIT 1");
 			$stmt3->execute([$my_id]);
 
 			$stmt4 = $bdd->prepare("DELETE FROM users_club WHERE userid = ? LIMIT 1");

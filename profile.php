@@ -113,7 +113,7 @@ if ($tab == "1") {
 			$stmt6->execute();
 			$result = "Ton habbo à été modifié!";
 			$motto = $_POST['motto']; // Do not add slashes, this is for display purposes.
-			/*@SendMUSData('UPRA' . $user['id']);*/
+			@SendMUSData('setmotto', $motto);
 		}
 	} else {
 		$motto = Secu($user['motto']);
@@ -1290,15 +1290,15 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 						$stmt->bindParam(':my_id', $user['id'], PDO::PARAM_INT);
 						$stmt->execute();
 
-                        if($stmt->rowCount() <= 0) {
-                            $stmt = $bdd->prepare("INSERT INTO users_settings (user_id) VALUES (:my_id)");
-                            $stmt->bindParam(':my_id', $user['id'], PDO::PARAM_INT);
-                            $stmt->execute();
+						if ($stmt->rowCount() <= 0) {
+							$stmt = $bdd->prepare("INSERT INTO users_settings (user_id) VALUES (:my_id)");
+							$stmt->bindParam(':my_id', $user['id'], PDO::PARAM_INT);
+							$stmt->execute();
 
-                            $stmt = $bdd->prepare("SELECT * FROM users_settings WHERE user_id = :my_id LIMIT 1");
-                            $stmt->bindParam(':my_id', $user['id'], PDO::PARAM_INT);
-                            $stmt->execute();
-                        }
+							$stmt = $bdd->prepare("SELECT * FROM users_settings WHERE user_id = :my_id LIMIT 1");
+							$stmt->bindParam(':my_id', $user['id'], PDO::PARAM_INT);
+							$stmt->execute();
+						}
 
 						$row = $stmt->fetch(PDO::FETCH_ASSOC);
 					?>
