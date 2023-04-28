@@ -88,7 +88,8 @@ if ($myrow['credits'] < $price) {
 		$stmt->bindParam(':date_full', $date_full, PDO::PARAM_STR);
 		$descr = "Adhésion au MyHabbo Club (" . $months . " mois)";
 		$stmt->bindParam(':descr', $descr, PDO::PARAM_STR);
-		$stmt->bindParam(':gain', '-', PDO::PARAM_STR);
+		$gain = "-";
+		$stmt->bindParam(':gain', $gain, PDO::PARAM_STR);
 		$stmt->execute();
 
 		$usstts = "UPDATE users_settings SET last_hc_payday = :last_hc_payday WHERE user_id = :my_id LIMIT 1";
