@@ -78,6 +78,7 @@ if ($myrow['credits'] < $price) {
 
 		// Appeler la fonction giveHC
 		giveHC($my_id, $months);
+		
 
 		// Insérer une transaction dans la table cms_transactions
 		$date_full = FullDate('full');

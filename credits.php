@@ -17,17 +17,21 @@ if (!isset($_SESSION['username'])) {
 
 if (isset($_GET['generateCredits'])) {
     if ($user['credits'] <= 1000) {
-        $reqCredits = $bdd->prepare("UPDATE users SET credits = credits + 5000  WHERE id = ?");
-        $reqCredits->execute([$user['id']]);
-        $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
-        $insertn1->bindValue(':userid', $user['id']);
-        $insertn1->bindValue(':produit', 'Offre SCF (Sans crédit fixe) +5000');
-        $insertn1->bindValue(':prix', 0);
-        $insertn1->bindValue(':gain', '+');
-        $insertn1->bindValue(':date', FullDate('full'));
-        $insertn1->execute();
-
-        $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-green\"> Nous venons de t'envoyer <b>5000 crédits</b>!</div></div></div>";
+        if ($user['online'] != 1) {
+            $reqCredits = $bdd->prepare("UPDATE users SET credits = credits + 5000  WHERE id = ?");
+            $reqCredits->execute([$user['id']]);
+            $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
+            $insertn1->bindValue(':userid', $user['id']);
+            $insertn1->bindValue(':produit', 'Offre SCF (Sans crédit fixe) +5000');
+            $insertn1->bindValue(':prix', 0);
+            $insertn1->bindValue(':gain', '+');
+            $insertn1->bindValue(':date', FullDate('full'));
+            $insertn1->execute();
+            $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-green\"> Nous venons de t'envoyer <b>5000 crédits</b>!</div></div></div>";
+        } else {
+            @SendMUSData('givecredits', ['user_id' => $user['id'], 'credits' => 5000]);
+            $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-green\"> Regarde sur ton client, tu as reçu <b>5000 crédits</b>!</div></div></div>";
+        }
     } else {
         $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-red\">Tu as assez de crédits.</div></div></div>";
     }
@@ -184,7 +188,7 @@ if (isset($_GET['generateCredits'])) {
                         <h2 class='title'>Que sont les crédits ?</h2>
                         <div id='credits-promo' class='box-content credits-info'>
                             <div class='credit-info-text clearfix'>
-                                <p><img class="credits-image" src="./web-gallery/v2/images/credits_permission.png" align="left" width="114" height="136" />Les crédits sont la monnaie de <?php echo $sitename; ?>.</p> 
+                                <p><img class="credits-image" src="./web-gallery/v2/images/credits_permission.png" align="left" width="114" height="136" />Les crédits sont la monnaie de <?php echo $sitename; ?>.</p>
                                 <p>Vous pouvez les utiliser pour acheter toutes sortes de choses, des canards en caoutchouc aux canapés, en passant par l'adhésion au <?php echo $shortname; ?> Club, les juke-boxes et les téléports.</p>
                             </div>
 

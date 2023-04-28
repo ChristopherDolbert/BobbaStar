@@ -50,22 +50,27 @@ if (isset($_GET['do'])) {
     if ($do == "check2") {
         $prix_ticket2 = Secu($_POST['transactions_respects300']);
         if ($user['jetons'] >= $cp['respects_300'] && $user['id'] != "" && $prix_ticket2 == $cp['respects_300']) {
-            $bdd->query("UPDATE users SET jetons = jetons - " . $cp['respects_300'] . " WHERE id = '" . $user['id'] . "'");
-            $bdd->query("UPDATE users_settings SET 	daily_respect_points = 	daily_respect_points + 300 WHERE user_id = '" . $user['id'] . "'");
-            $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
-            $insertn1->bindValue(':userid', $user['id']);
-            $insertn1->bindValue(':produit', 'Achat 300 respects');
-            $insertn1->bindValue(':prix', $cp['respects_300']);
-            $insertn1->bindValue(':gain', '-');
-            $insertn1->bindValue(':date', FullDate('full'));
-            $insertn1->execute();
-            $affichage = "<div id=\"purse-redeem-result\"> 
+            if ($user['online'] != 1) {
+                $bdd->query("UPDATE users SET jetons = jetons - " . $cp['respects_300'] . " WHERE id = '" . $user['id'] . "'");
+                $bdd->query("UPDATE users_settings SET 	daily_respect_points = 	daily_respect_points + 300 WHERE user_id = '" . $user['id'] . "'");
+                $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
+                $insertn1->bindValue(':userid', $user['id']);
+                $insertn1->bindValue(':produit', 'Achat 300 respects');
+                $insertn1->bindValue(':prix', $cp['respects_300']);
+                $insertn1->bindValue(':gain', '-');
+                $insertn1->bindValue(':date', FullDate('full'));
+                $insertn1->execute();
+                $affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
             <div class=\"rounded rounded-green\"> 
               Tu viens d'être rechargé avec 300 respects !
             </div> 
         </div> 
 </div>";
+            } else {
+                @SendMUSData('pixels', ['user_id' => $user['id'], 'pixels' => 100]);
+                $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-green\"> Regarde sur ton client, tu as reçu <b>100 pixels</b>!</div></div></div>";
+            }
         } else {
             $affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 

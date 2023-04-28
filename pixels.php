@@ -16,13 +16,18 @@ if (!isset($_SESSION['username'])) {
 }
 
 if (isset($_GET['generatePixels']) && $user['pixels'] <= 10) {
-    $bdd->beginTransaction();
-    $reqCredits = $bdd->prepare("UPDATE users SET pixels = pixels + 100  WHERE id = ?");
-    $reqCredits->execute([$user['id']]);
-    $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (?, ?, ?, ?, ?)");
-    $insertn1->execute([$user['id'], 'Offre SPF (Sans pixel fixe) +100', 0, '+', FullDate('full')]);
-    $bdd->commit();
-    $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-green\"> Nous venons de t'envoyer <b>100 pixels</b>!</div></div></div>";
+    if ($user['online'] != 1) {
+        $bdd->beginTransaction();
+        $reqCredits = $bdd->prepare("UPDATE users SET pixels = pixels + 100  WHERE id = ?");
+        $reqCredits->execute([$user['id']]);
+        $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (?, ?, ?, ?, ?)");
+        $insertn1->execute([$user['id'], 'Offre SPF (Sans pixel fixe) +100', 0, '+', FullDate('full')]);
+        $bdd->commit();
+        $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-green\"> Nous venons de t'envoyer <b>100 pixels</b>!</div></div></div>";
+    } else {
+        @SendMUSData('givepixels', ['user_id' => $user['id'], 'pixels' => 100]);
+        $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-green\"> Regarde sur ton client, tu as reçu <b>100 pixels</b>!</div></div></div>";
+    }
 } elseif ($user['pixels'] >= 11) {
     $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-red\">Tu as assez de pixels.</div></div></div>";
 }

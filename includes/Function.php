@@ -367,40 +367,40 @@ function Connected($pageid)
 
 function SendMUSData(string $key, $data = null)
 {
-    include('SQL.php');
+	include('SQL.php');
 
-    $configSQL = $bdd->query("SELECT * FROM gabcms_client WHERE id = '1'");
-    $config = $configSQL->fetch(PDO::FETCH_ASSOC);
+	$configSQL = $bdd->query("SELECT * FROM gabcms_client WHERE id = '1'");
+	$config = $configSQL->fetch(PDO::FETCH_ASSOC);
 
-    $mus_ip = $config['ip'];
-    $mus_port = $config['mus_port'];
+	$mus_ip = $config['ip'];
+	$mus_port = $config['mus_port'];
 
-    if (!is_numeric($mus_port)) {
-        echo "<b>System Error</b><br />Invalid MUS Port!";
-        exit;
-    }
+	if (!is_numeric($mus_port)) {
+		echo "<b>System Error</b><br />Invalid MUS Port!";
+		exit;
+	}
 
-    $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-    if ($socket === false) {
-        echo "socket_create() failed: reason: " . socket_strerror(socket_last_error()) . "\n";
-    }
-	
-    $result = socket_connect($socket, $mus_ip, $mus_port);
-    if ($result === false) {
-        echo "socket_connect() failed.\nReason: ($result) " . socket_strerror(socket_last_error($socket)) . "\n";
-    }
+	$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+	if ($socket === false) {
+		echo "socket_create() failed: reason: " . socket_strerror(socket_last_error()) . "\n";
+	}
 
-    $data = json_encode(['key' => $key, 'data' => $data]);
+	$result = socket_connect($socket, $mus_ip, $mus_port);
+	if ($result === false) {
+		echo "socket_connect() failed.\nReason: ($result) " . socket_strerror(socket_last_error($socket)) . "\n";
+	}
 
-    $request = socket_write($socket, $data, strlen($data));
+	$data = json_encode(['key' => $key, 'data' => $data]);
 
-    if ($request === false) {
-        return socket_strerror(socket_last_error($socket));
-    }
+	$request = socket_write($socket, $data, strlen($data));
 
-    $response = socket_read($socket, 2048);
+	if ($request === false) {
+		return socket_strerror(socket_last_error($socket));
+	}
 
-    return json_decode($response);
+	$response = socket_read($socket, 2048);
+
+	return json_decode($response);
 }
 
 
@@ -413,12 +413,22 @@ function GiveHC($user_id, $months)
 	$stmt->execute();
 	$valid = $stmt->rowCount();
 
+	// Utiliser une instance PDO existante
+	$checkonline = $bdd->prepare("SELECT * FROM users WHERE id = :id LIMIT 1");
+	$checkonline->bindParam(':id', $user_id, PDO::PARAM_INT);
+	$checkonline->execute();
+	$yesonline = $checkonline->fetch();
+
 	if ($valid > 0) {
 		// Préparer et exécuter les requêtes
-		$sql1 = "UPDATE users SET rank = '2' WHERE rank = '1' AND id = :id LIMIT 1";
-		$stmt1 = $bdd->prepare($sql1);
-		$stmt1->bindParam(':id', $user_id, PDO::PARAM_INT);
-		$stmt1->execute();
+		if ($yesonline['online'] != 1) {
+			$sql1 = "UPDATE users SET rank = '2' WHERE rank = '1' AND id = :id LIMIT 1";
+			$stmt1 = $bdd->prepare($sql1);
+			$stmt1->bindParam(':id', $user_id, PDO::PARAM_INT);
+			$stmt1->execute();
+		} elseif ($yesonline['rank'] > 2) {
+			@SendMUSData('setrank', ['user_id' => $user['id'], 'rank' => 2]);
+		}
 
 		$sql2 = "UPDATE users_club SET months_left = months_left + :months WHERE userid = :id LIMIT 1";
 		$stmt2 = $bdd->prepare($sql2);
@@ -432,23 +442,15 @@ function GiveHC($user_id, $months)
 		$stmt3->execute();
 		$found = $stmt3->rowCount();
 
-		if ($found !== 1) { // No badge. Poor thing.
-			// Préparer et exécuter les requêtes
-			/*$sql4 = "UPDATE users SET badge_status = '0' WHERE id = :id LIMIT 1";
-				$stmt4 = $pdo->prepare($sql4);
-				$stmt4->bindParam(':id', $user_id, PDO::PARAM_INT);
-				$stmt4->execute();*/
-
-			/*$sql5 = "UPDATE users_badges SET iscurrent = '0' WHERE userid = :id";
-				$stmt5 = $pdo->prepare($sql5);
-				$stmt5->bindParam(':id', $user_id, PDO::PARAM_INT);
-				$stmt5->execute();*/
-
+		if ($yesonline['online'] != 1 && $found !== 1) {
 			$sql6 = "INSERT INTO users_badges (user_id, badge_code) VALUES (:id, 'HC1')";
 			$stmt6 = $bdd->prepare($sql6);
 			$stmt6->bindParam(':id', $user_id, PDO::PARAM_INT);
 			$stmt6->execute();
+		} elseif ($yesonline['online'] == 1 && $found == 0) {
+			@SendMUSData('givebadge', ['user_id' => $user['id'], 'badge' => "HC1"]);
 		}
+
 	} else {
 		$m = date('m');
 		$d = date('d');
