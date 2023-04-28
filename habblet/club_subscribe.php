@@ -56,14 +56,14 @@ if ($myrow['credits'] < $price) {
 	$months_left = $months_left + $months - 1;
 	$time = time();
 
-	$check2 = $bdd->prepare("SELECT * FROM users_settings WHERE user_id = ? LIMIT 1");
+	/*$check2 = $bdd->prepare("SELECT * FROM users_settings WHERE user_id = ? LIMIT 1");
 	$check2->execute(array($my_id));
 	$results2 = $check2->fetch();
 
 	if ($results2['last_hc_payday'] != 0) {
 		echo "<script>alert(\"la variable est nulle\")</script>";
 		$msg = "Vous êtes déjà HC";
-	} elseif ($hc_maxmonths == "0" || $months_left < $hc_maxmonths) {
+	} else*/if ($hc_maxmonths == "0" || $months_left < $hc_maxmonths) {
 		$sql = "UPDATE users SET credits = credits - :price";
 		if ($user['rank'] == 1) {
 			$sql .= ", rank = 2";
@@ -99,7 +99,7 @@ if ($myrow['credits'] < $price) {
 		/*@SendMUSData('UPRC' . $my_id);*/
 		$msg = "SUPER! Tu fais maintenant partie du " . $shortname . " Club pendant " . $months . " mois.";
 	} else {
-		$msg = $time . "Vous ne pouvez vous inscrire que pour un maximum de " . $hc_maxmonths . " mois. Si cet abonnement est terminé, vous aurez dépassé la limite.";
+		$msg = "Vous ne pouvez vous inscrire que pour un maximum de " . $hc_maxmonths . " mois. Si cet abonnement est terminé, vous aurez dépassé la limite.";
 	}
 }
 
