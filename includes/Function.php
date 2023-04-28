@@ -7,7 +7,7 @@
 
 # Nombre de fonctions: 14 #
 if ($pagename != "Starters" && isset($_SESSION['username']) && $_SESSION['noob'] == "Oui") {
-    Redirect($url . "/starter_room");
+	Redirect($url . "/starter_room");
 }
 
 // Validate the langauge
@@ -365,31 +365,35 @@ function Connected($pageid)
 	return $connected;
 }
 
-function SendMUSData($data)
+function SendMUSData(string $key, $data = null)
 {
-	include('SQL.php');
-	$configsql = $bdd->query("SELECT * FROM gabcms_client WHERE id = '1'");
-	$config = $configsql->fetch(PDO::FETCH_ASSOC);
+    include('SQL.php');
 
-	$mus_ip = $config['ip'];
-	$mus_port = $config['mus_port'];
+    $configSQL = $bdd->query("SELECT * FROM gabcms_client WHERE id = '1'");
+    $config = $configSQL->fetch(PDO::FETCH_ASSOC);
 
-	if (!is_numeric($mus_port)) {
-		echo "<b>System Error</b><br />Invalid MUS Port!";
-		exit;
-	}
+    $mus_ip = $config['ip'];
+    $mus_port = $config['mus_port'];
 
-	$sock = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tcp'));
-	socket_connect($sock, $mus_ip, $mus_port);
+    if (!is_numeric($mus_port)) {
+        echo "<b>System Error</b><br />Invalid MUS Port!";
+        exit;
+    }
 
-	if (!is_resource($sock)) {
-		return false;
-	} else {
-		socket_send($sock, $data, strlen($data), MSG_DONTROUTE);
-		return true;
-	}
+    $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+    if ($socket === false) {
+        echo "socket_create() failed: reason: " . socket_strerror(socket_last_error()) . "\n";
+    } else {
+        echo "OK.\n";
+    }
 
-	socket_close($sock);
+    echo "Attempting to connect to '$mus_ip' on port '$mus_port'...";
+    $result = socket_connect($socket, $mus_ip, $mus_port);
+    if ($result === false) {
+        echo "socket_connect() failed.\nReason: ($result) " . socket_strerror(socket_last_error($socket)) . "\n";
+    } else {
+        echo "OK.\n";
+    }
 }
 
 
