@@ -13,7 +13,7 @@ if ($pagename != "Starters" && isset($_SESSION['username']) && $_SESSION['noob']
 // Validate the langauge
 $language_path = "./" . $language . "index.php";
 $language_path_2 = "../" . $language . "index.php";
-$valid_language = (file_exists($language_path) || file_exists($language_path_2)) ? true : false;
+$valid_language = file_exists($language_path) || file_exists($language_path_2);
 $language = ($valid_language) ? $language : "en";
 
 function smileys($texte)
