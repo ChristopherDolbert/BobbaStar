@@ -107,13 +107,18 @@ if ($tab == "1") {
 			$motto = $_POST['motto']; // Do not add slashes, no database communication here.
 		} else {
 			$motto = filter_input(INPUT_POST, 'motto');
-			$stmt6 = $bdd->prepare("UPDATE users SET motto = :motto WHERE username = :rawname LIMIT 1");
-			$stmt6->bindParam(':motto', $motto);
-			$stmt6->bindParam(':rawname', $rawname);
-			$stmt6->execute();
-			$result = "Ton habbo à été modifié!";
-			$motto = $_POST['motto']; // Do not add slashes, this is for display purposes.
-			@SendMUSData('setmotto', $motto);
+			if ($user['online'] != 1) {
+				$stmt6 = $bdd->prepare("UPDATE users SET motto = :motto WHERE username = :rawname LIMIT 1");
+				$stmt6->bindParam(':motto', $motto);
+				$stmt6->bindParam(':rawname', $rawname);
+				$stmt6->execute();
+				$result = "Ton habbo à été modifié!";
+				$error = "0";
+			} else {
+				@SendMUSData('setmotto', ['user_id' => $user['id'], 'motto' => $motto]);
+				$result = "Ton habbo à été modifié!";
+				$error = "0";
+			}
 		}
 	} else {
 		$motto = Secu($user['motto']);
@@ -1343,6 +1348,12 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 <?php } else { ?>
 	<b>Tab appears to be valid, but no tab data found. Please report this issue.</b>
 <?php } ?>
+
+<script type="text/javascript">
+	if (!$(document.body).hasClassName('process-template')) {
+		Rounder.init();
+	}
+</script>
 
 <?php
 

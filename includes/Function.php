@@ -383,17 +383,24 @@ function SendMUSData(string $key, $data = null)
     $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
     if ($socket === false) {
         echo "socket_create() failed: reason: " . socket_strerror(socket_last_error()) . "\n";
-    } else {
-        echo "OK.\n";
     }
-
-    echo "Attempting to connect to '$mus_ip' on port '$mus_port'...";
+	
     $result = socket_connect($socket, $mus_ip, $mus_port);
     if ($result === false) {
         echo "socket_connect() failed.\nReason: ($result) " . socket_strerror(socket_last_error($socket)) . "\n";
-    } else {
-        echo "OK.\n";
     }
+
+    $data = json_encode(['key' => $key, 'data' => $data]);
+
+    $request = socket_write($socket, $data, strlen($data));
+
+    if ($request === false) {
+        return socket_strerror(socket_last_error($socket));
+    }
+
+    $response = socket_read($socket, 2048);
+
+    return json_decode($response);
 }
 
 
