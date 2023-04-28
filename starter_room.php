@@ -22,85 +22,79 @@ if ($row['noob'] != "Oui") {
         if ($choosedRoom >= 0 && $choosedRoom <= 5) {
             switch ($choosedRoom) {
                 case 0:
-                    $reqCreateRoom = $bdd->prepare("INSERT INTO `rooms` (`owner_id`, `owner_name`, `name`,`description`,`model`,`password`,`state`,`users`,`users_max`,`guild_id`,`category`,`score`,`paper_floor`,`paper_wall`,`paper_landscape`,`thickness_wall`,`wall_height`,`thickness_floor`,`moodlight_data`,`tags`,`is_public`,`is_staff_picked`,`allow_other_pets`,`allow_other_pets_eat`,`allow_walkthrough`,`allow_hidewall`,`chat_mode`,`chat_weight`,`chat_speed`,`chat_hearing_distance`,`chat_protection`,`override_model`,`who_can_mute`,`who_can_kick`,`who_can_ban`,`poll_id`,`roller_speed`,`promoted`,`trade_mode`,`move_diagonally`,`jukebox_active`,`hidewired`,`is_forsale`,`trax_active`) VALUES (?, ?, ?,'','model_a','','open',1,10,0,9,0,'0.0','0.0','0.0',0,-1,0,'2,1,1,#000000,255;2,2,2,#000000,255;2,3,1,#000000,255;','','0','0','0','0','1','0',0,1,1,50,2,'0',0,0,0,0,4,'0',0,'1','0','0','0',0);");
+                    $reqCreateRoom = $bdd->prepare("INSERT INTO `rooms` (`owner_id`, `owner_name`, `name`, `state`, `users`, `users_max`, `category`) VALUES (?, ?, ?, 'open', 1, 10, 9);");
                     $reqCreateRoom->execute([$user['id'], $user['username'], "Appart de " . $user['username']]);
-
                     $roomId = $bdd->lastInsertId();
 
-                    $reqInsertItems = $bdd->prepare("INSERT INTO `items` (`user_id`,`room_id`,`item_id`,`wall_pos`,`x`,`y`,`z`,`rot`,`extra_data`,`wired_data`,`limited_data`,`guild_id`) 
-                    VALUES (:userid,:roomid,154,'',6,13,0,0,'0','','0:0',0)
-                    ,(:userid,:roomid,1912,'',7,8,0,0,'0','','0:0',0)
-                    ,(:userid,:roomid,157,'',9,7,0,0,'0','','0:0',0)
-                    ,(:userid,:roomid,157,'',7,4,0,0,'0','','0:0',0)");
-                    $reqInsertItems->execute([
-                        'userid' => $user['id'],
-                        'roomid' => $roomId
-                    ]);
-                    break;
+                    $items = [
+                        [154, '', 6, 13, 0, 0, '0', '0:0', 0],
+                        [1912, '', 7, 8, 0, 0, '0', '0:0', 0],
+                        [157, '', 9, 7, 0, 0, '0', '0:0', 0],
+                        [157, '', 7, 4, 0, 0, '0', '0:0', 0]
+                    ];
+
+                    $reqInsertItems = $bdd->prepare("INSERT INTO `items` (`user_id`, `room_id`, `item_id`, `wall_pos`, `x`, `y`, `z`, `rot`, `extra_data`, `limited_data`, `guild_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+                    foreach ($items as $item) {
+                        $reqInsertItems->execute(array_merge([$user['id'], $roomId], $item));
+                    }
+
                 case 1:
-                    $reqCreateRoom = $bdd->prepare("INSERT INTO `rooms` (`owner_id`, `owner_name`, `name`,`description`,`model`,`password`,`state`,`users`,`users_max`,`guild_id`,`category`,`score`,`paper_floor`,`paper_wall`,`paper_landscape`,`thickness_wall`,`wall_height`,`thickness_floor`,`moodlight_data`,`tags`,`is_public`,`is_staff_picked`,`allow_other_pets`,`allow_other_pets_eat`,`allow_walkthrough`,`allow_hidewall`,`chat_mode`,`chat_weight`,`chat_speed`,`chat_hearing_distance`,`chat_protection`,`override_model`,`who_can_mute`,`who_can_kick`,`who_can_ban`,`poll_id`,`roller_speed`,`promoted`,`trade_mode`,`move_diagonally`,`jukebox_active`,`hidewired`,`is_forsale`,`trax_active`) VALUES (?, ?, ?,'','model_a','','open',1,10,0,9,0,'0.0','0.0','0.0',0,-1,0,'2,1,1,#000000,255;2,2,2,#000000,255;2,3,1,#000000,255;','','0','0','0','0','1','0',0,1,1,50,2,'0',0,0,0,0,4,'0',0,'1','0','0','0',0);");
+                    $reqCreateRoom = $bdd->prepare("
+                    INSERT INTO `rooms`
+                    (`owner_id`, `owner_name`, `name`, `model`, `state`, `users`, `users_max`)
+                    VALUES (?, ?, ?, 'model_a', 'open', 1, 10)");
                     $reqCreateRoom->execute([$user['id'], $user['username'], "Appart de " . $user['username']]);
-
                     $roomId = $bdd->lastInsertId();
 
-                    $reqInsertItems = $bdd->prepare("INSERT INTO `items` (`user_id`,`room_id`,`item_id`,`wall_pos`,`x`,`y`,`z`,`rot`,`extra_data`,`wired_data`,`limited_data`,`guild_id`) 
-                    VALUES (:userid,:roomid,154,'',6,13,0,0,'0','','0:0',0)
-                    ,(:userid,:roomid,1912,'',7,8,0,0,'0','','0:0',0)
-                    ,(:userid,:roomid,157,'',9,7,0,0,'0','','0:0',0)
-                    ,(:userid,:roomid,157,'',7,4,0,0,'0','','0:0',0)");
+                    $reqInsertItems = $bdd->prepare("
+                    INSERT INTO `items`
+                    (`user_id`, `room_id`, `item_id`, `x`, `y`, `z`, `rot`)
+                    VALUES (:userid,:roomid,154,6,13,0,0)
+                          ,(:userid,:roomid,1912,7,8,0,0)
+                          ,(:userid,:roomid,157,9,7,0,0)
+                          ,(:userid,:roomid,157,7,4,0,0)");
                     $reqInsertItems->execute([
                         'userid' => $user['id'],
                         'roomid' => $roomId
                     ]);
                     break;
+
                 case 2:
-                    $reqCreateRoom = $bdd->prepare("INSERT INTO `rooms` (`owner_id`, `owner_name`, `name`,`description`,`model`,`password`,`state`,`users`,`users_max`,`guild_id`,`category`,`score`,`paper_floor`,`paper_wall`,`paper_landscape`,`thickness_wall`,`wall_height`,`thickness_floor`,`moodlight_data`,`tags`,`is_public`,`is_staff_picked`,`allow_other_pets`,`allow_other_pets_eat`,`allow_walkthrough`,`allow_hidewall`,`chat_mode`,`chat_weight`,`chat_speed`,`chat_hearing_distance`,`chat_protection`,`override_model`,`who_can_mute`,`who_can_kick`,`who_can_ban`,`poll_id`,`roller_speed`,`promoted`,`trade_mode`,`move_diagonally`,`jukebox_active`,`hidewired`,`is_forsale`,`trax_active`) VALUES (?, ?, ?,'','model_a','','open',1,10,0,9,0,'0.0','0.0','0.0',0,-1,0,'2,1,1,#000000,255;2,2,2,#000000,255;2,3,1,#000000,255;','','0','0','0','0','1','0',0,1,1,50,2,'0',0,0,0,0,4,'0',0,'1','0','0','0',0);");
+                    // Requête préparée pour l'insertion d'une nouvelle pièce (room)
+                    $reqCreateRoom = $bdd->prepare("INSERT INTO `rooms` (`owner_id`, `owner_name`, `name`, `state`, `users`, `users_max`) VALUES (?, ?, ?, 'open', 1, 10)");
                     $reqCreateRoom->execute([$user['id'], $user['username'], "Appart de " . $user['username']]);
-
                     $roomId = $bdd->lastInsertId();
-
-                    $reqInsertItems = $bdd->prepare("INSERT INTO `items` (`user_id`,`room_id`,`item_id`,`wall_pos`,`x`,`y`,`z`,`rot`,`extra_data`,`wired_data`,`limited_data`,`guild_id`) 
-                    VALUES (:userid,:roomid,154,'',6,13,0,0,'0','','0:0',0)
-                    ,(:userid,:roomid,1912,'',7,8,0,0,'0','','0:0',0)
-                    ,(:userid,:roomid,157,'',9,7,0,0,'0','','0:0',0)
-                    ,(:userid,:roomid,157,'',7,4,0,0,'0','','0:0',0)");
+                    $reqInsertItems = $bdd->prepare("INSERT INTO `items` (`user_id`, `room_id`, `item_id`, `x`, `y`, `z`, `rot`) 
+                    VALUES (:userid, :roomid, 154, 6, 13, 0, 0), (:userid, :roomid, 1912, 7, 8, 0, 0), 
+                    (:userid, :roomid, 157, 9, 7, 0, 0), (:userid, :roomid, 157, 7, 4, 0, 0)");
                     $reqInsertItems->execute([
                         'userid' => $user['id'],
                         'roomid' => $roomId
                     ]);
-                    break;
+
                 case 3:
-                    $reqCreateRoom = $bdd->prepare("INSERT INTO `rooms` (`owner_id`, `owner_name`, `name`,`description`,`model`,`password`,`state`,`users`,`users_max`,`guild_id`,`category`,`score`,`paper_floor`,`paper_wall`,`paper_landscape`,`thickness_wall`,`wall_height`,`thickness_floor`,`moodlight_data`,`tags`,`is_public`,`is_staff_picked`,`allow_other_pets`,`allow_other_pets_eat`,`allow_walkthrough`,`allow_hidewall`,`chat_mode`,`chat_weight`,`chat_speed`,`chat_hearing_distance`,`chat_protection`,`override_model`,`who_can_mute`,`who_can_kick`,`who_can_ban`,`poll_id`,`roller_speed`,`promoted`,`trade_mode`,`move_diagonally`,`jukebox_active`,`hidewired`,`is_forsale`,`trax_active`) VALUES (?, ?, ?,'','model_a','','open',1,10,0,9,0,'0.0','0.0','0.0',0,-1,0,'2,1,1,#000000,255;2,2,2,#000000,255;2,3,1,#000000,255;','','0','0','0','0','1','0',0,1,1,50,2,'0',0,0,0,0,4,'0',0,'1','0','0','0',0);");
+                    $reqCreateRoom = $bdd->prepare("INSERT INTO rooms (owner_id, owner_name, name, model, state, users, users_max) VALUES (?, ?, ?, 'model_a', 'open', 1, 10)");
                     $reqCreateRoom->execute([$user['id'], $user['username'], "Appart de " . $user['username']]);
-
                     $roomId = $bdd->lastInsertId();
 
-                    $reqInsertItems = $bdd->prepare("INSERT INTO `items` (`user_id`,`room_id`,`item_id`,`wall_pos`,`x`,`y`,`z`,`rot`,`extra_data`,`wired_data`,`limited_data`,`guild_id`) 
-                    VALUES (:userid,:roomid,154,'',6,13,0,0,'0','','0:0',0)
-                    ,(:userid,:roomid,1912,'',7,8,0,0,'0','','0:0',0)
-                    ,(:userid,:roomid,157,'',9,7,0,0,'0','','0:0',0)
-                    ,(:userid,:roomid,157,'',7,4,0,0,'0','','0:0',0)");
+                    $reqInsertItems = $bdd->prepare("INSERT INTO items (user_id, room_id, item_id, x, y, z, rot) VALUES 
+                    (:userid,:roomid,154,6,13,0,0), (:userid,:roomid,1912,7,8,0,0), (:userid,:roomid,157,9,7,0,0), (:userid,:roomid,157,7,4,0,0)");
                     $reqInsertItems->execute([
                         'userid' => $user['id'],
                         'roomid' => $roomId
                     ]);
-                    break;
+
                 case 4:
-                    $reqCreateRoom = $bdd->prepare("INSERT INTO `rooms` (`owner_id`, `owner_name`, `name`,`description`,`model`,`password`,`state`,`users`,`users_max`,`guild_id`,`category`,`score`,`paper_floor`,`paper_wall`,`paper_landscape`,`thickness_wall`,`wall_height`,`thickness_floor`,`moodlight_data`,`tags`,`is_public`,`is_staff_picked`,`allow_other_pets`,`allow_other_pets_eat`,`allow_walkthrough`,`allow_hidewall`,`chat_mode`,`chat_weight`,`chat_speed`,`chat_hearing_distance`,`chat_protection`,`override_model`,`who_can_mute`,`who_can_kick`,`who_can_ban`,`poll_id`,`roller_speed`,`promoted`,`trade_mode`,`move_diagonally`,`jukebox_active`,`hidewired`,`is_forsale`,`trax_active`) VALUES (?, ?, ?,'','model_a','','open',1,10,0,9,0,'0.0','0.0','0.0',0,-1,0,'2,1,1,#000000,255;2,2,2,#000000,255;2,3,1,#000000,255;','','0','0','0','0','1','0',0,1,1,50,2,'0',0,0,0,0,4,'0',0,'1','0','0','0',0);");
+                    $reqCreateRoom = $bdd->prepare("INSERT INTO `rooms` (`owner_id`, `owner_name`, `name`) VALUES (?, ?, ?)");
                     $reqCreateRoom->execute([$user['id'], $user['username'], "Appart de " . $user['username']]);
-
                     $roomId = $bdd->lastInsertId();
+                    $reqInsertItems = $bdd->prepare("INSERT INTO `items` (`user_id`,`room_id`,`item_id`,`x`,`y`,`z`,`rot`) 
+                                 VALUES (:userid,:roomid,154,6,13,0,0)
+                                        ,(:userid,:roomid,1912,7,8,0,0)
+                                        ,(:userid,:roomid,157,9,7,0,0)
+                                        ,(:userid,:roomid,157,7,4,0,0)");
+                    $reqInsertItems->execute(['userid' => $user['id'], 'roomid' => $roomId]);
 
-                    $reqInsertItems = $bdd->prepare("INSERT INTO `items` (`user_id`,`room_id`,`item_id`,`wall_pos`,`x`,`y`,`z`,`rot`,`extra_data`,`wired_data`,`limited_data`,`guild_id`) 
-                    VALUES (:userid,:roomid,154,'',6,13,0,0,'0','','0:0',0)
-                    ,(:userid,:roomid,1912,'',7,8,0,0,'0','','0:0',0)
-                    ,(:userid,:roomid,157,'',9,7,0,0,'0','','0:0',0)
-                    ,(:userid,:roomid,157,'',7,4,0,0,'0','','0:0',0)");
-                    $reqInsertItems->execute([
-                        'userid' => $user['id'],
-                        'roomid' => $roomId
-                    ]);
-                    break;
                 case 5:
                     $reqCreateRoom = $bdd->prepare("INSERT INTO `rooms` (`owner_id`, `owner_name`, `name`,`description`,`model`,`password`,`state`,`users`,`users_max`,`guild_id`,`category`,`score`,`paper_floor`,`paper_wall`,`paper_landscape`,`thickness_wall`,`wall_height`,`thickness_floor`,`moodlight_data`,`tags`,`is_public`,`is_staff_picked`,`allow_other_pets`,`allow_other_pets_eat`,`allow_walkthrough`,`allow_hidewall`,`chat_mode`,`chat_weight`,`chat_speed`,`chat_hearing_distance`,`chat_protection`,`override_model`,`who_can_mute`,`who_can_kick`,`who_can_ban`,`poll_id`,`roller_speed`,`promoted`,`trade_mode`,`move_diagonally`,`jukebox_active`,`hidewired`,`is_forsale`,`trax_active`) VALUES (?, ?, ?,'','model_a','','open',1,10,0,9,0,'0.0','0.0','0.0',0,-1,0,'2,1,1,#000000,255;2,2,2,#000000,255;2,3,1,#000000,255;','','0','0','0','0','1','0',0,1,1,50,2,'0',0,0,0,0,4,'0',0,'1','0','0','0',0);");
                     $reqCreateRoom->execute([$user['id'], $user['username'], "Appart de " . $user['username']]);

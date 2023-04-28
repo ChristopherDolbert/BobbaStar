@@ -29,8 +29,8 @@ class CaptchaSecurityImages {
             imageline($image, random_int(0, $width), random_int(0, $height), random_int(0, $width), random_int(0, $height), $noise_color);
         }
         $textbox = imagettfbbox($font_size, 0, $this->font, $code) or die('Error in imagettfbbox function');
-        $x = ($width - $textbox[4])/2;
-        $y = ($height - $textbox[5])/2;
+        $x = intval(($width - $textbox[4])/2);
+        $y = intval(($height - $textbox[5])/2);
         imagettftext($image, $font_size, 0, $x, $y, $text_color, $this->font , $code) or die('Error in imagettftext function');
         header('Content-Type: image/jpeg');
         imagejpeg($image);
@@ -43,4 +43,10 @@ $width = isset($_GET['width']) ? $_GET['width'] : '120';
 $height = isset($_GET['height']) ? $_GET['height'] : '40';
 $characters = isset($_GET['characters']) && $_GET['characters'] > 1 ? $_GET['characters'] : '6';
 
+
 $captcha = new CaptchaSecurityImages($width,$height,$characters);
+
+
+
+
+?>

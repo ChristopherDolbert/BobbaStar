@@ -24,59 +24,62 @@ if (isset($_SESSION['username'])) {
     exit;
 }
 
-if (isset($_GET['do'])) {
-    $do = Secu($_GET['do']);
-    if ($do == "se_connecter") {
-        if (isset($_POST['username']) && isset($_POST['password'])) {
-            $username = Secu($_POST['username']);
-            $password = Secu($_POST['password']);
-            if (empty($username) || empty($password)) {
-                $erreur = "Merci de remplir les champs vides.";
+if (isset($_GET['do']) && $_GET['do'] === "se_connecter" && isset($_POST['username'], $_POST['password'])) {
+    $username = Secu($_POST['username']);
+    $password = Secu($_POST['password']);
+
+    if (empty($username) || empty($password)) {
+        $erreur = "Merci de remplir les champs vides.";
+    } else {
+        $sql = $bdd->prepare("SELECT id, disabled, password, rank FROM users WHERE username = ? LIMIT 1");
+        if (!$sql) {
+            die('Erreur de préparation de la requête : ' . $bdd->errorInfo()[2]);
+        }
+        $sql->execute([$username]);
+        $assoc = $sql->fetch(PDO::FETCH_ASSOC);
+
+        if (!$assoc || !password_verify($password, $assoc['password'])) {
+            $erreur = $locale['error_1'];
+        } elseif ($assoc['disabled'] == 1) {
+            $erreur = "Ton compte a été désactivé par l'administration! En cas d'erreur merci de nous contacter.";
+        } else {
+            $sql = $bdd->prepare("SELECT * FROM bans WHERE user_id = ? OR ip = ?");
+            if (!$sql) {
+                die('Erreur de préparation de la requête : ' . $bdd->errorInfo()[2]);
+            }
+            $sql->execute([$assoc['id'], $_SERVER['REMOTE_ADDR']]);
+            $b = $sql->fetch(PDO::FETCH_ASSOC);
+
+            if ($b && time() < $b['ban_expire']) {
+                $expire = date('d/m/Y H:i:s', $b['ban_expire']);
+                $erreur = "Ton compte a été banni pour la raison suivante :<br/><b>{$b['reason']}</b>. Il expire le: <b>$expire</b>";
             } else {
-                $sql = $bdd->prepare("SELECT id,disabled,password,rank FROM users WHERE username = ? LIMIT 1");
-                $sql->execute([$username]);
-                $row = $sql->rowCount();
-                $assoc = $sql->fetch(PDO::FETCH_ASSOC);
-                $pass = $assoc['password'];
-                $userId = $assoc['id'];
-
-                if ($row < 1 || !password_verify($password, $pass)) {
-                    $erreur = $locale['error_1'];
-                } else {
-
-                    if ($assoc['disabled'] == 1) {
-                        $erreur = "Ton compte a été désactivé par l'administration! En cas d'erreur merci de nous contacter.";
-                    } else {
-                        $sql = $bdd->prepare("SELECT * FROM bans WHERE user_id = ? OR ip = ?");
-                        $sql->execute([$userId, $_SERVER['REMOTE_ADDR']]);
-                        $b = $sql->fetch(PDO::FETCH_ASSOC);
-                        $row_ban = $sql->rowCount();
-
-                        $stamp_now = time();
-                        $stamp_expire = $b['ban_expire'];
-                        $expire = date('d/m/Y H:i:s', $stamp_expire);
-
-                        if ($stamp_now < $stamp_expire) {
-                            $erreur = "Ton compte a été banni pour la raison suivante :<br/> <b>" . $b['reason'] . "</b>. Il expire le: <b>" . $expire . "</b>";
-                        } else {
-                            if ($row_ban > 0) {
-                                $sql = $bdd->prepare("DELETE FROM bans WHERE user_id = ? OR ip = ?");
-                                $sql->execute([$userId, $_SERVER['REMOTE_ADDR']]);
-                            }
-                            $sql = $bdd->prepare("UPDATE users SET last_login = ?, ip_current = ? WHERE username = ?");
-                            $sql->execute([time(), $_SERVER['REMOTE_ADDR'], $username]);
-                            $_SESSION['username'] = $username;
-                            $_SESSION['password'] = $password;
-                            $_SESSION['rank'] = $assoc['rank'];
-                            header("Location: $url/moi");
-                            exit;
-                        }
+                if ($b) {
+                    $sql = $bdd->prepare("DELETE FROM bans WHERE user_id = ? OR ip = ?");
+                    if (!$sql) {
+                        die('Erreur de préparation de la requête : ' . $bdd->errorInfo()[2]);
                     }
+                    $sql->execute([$assoc['id'], $_SERVER['REMOTE_ADDR']]);
                 }
+
+                $sql = $bdd->prepare("UPDATE users SET last_login = ?, ip_current = ? WHERE username = ?");
+                if (!$sql) {
+                    die('Erreur de préparation de la requête : ' . $bdd->errorInfo()[2]);
+                }
+                $sql->execute([time(), $_SERVER['REMOTE_ADDR'], $username]);
+
+                $_SESSION['username'] = $username;
+                $_SESSION['password'] = $password;
+                $_SESSION['rank'] = $assoc['rank'];
+
+                header("Location: $url/moi");
+                exit;
             }
         }
     }
 }
+
+
 
 
 ?>
