@@ -28,12 +28,14 @@ if (isset($_SESSION['username'])) {
 		$user = $stmt->fetch(PDO::FETCH_ASSOC);
 		$stmt = $bdd->prepare("UPDATE users SET ip_current = :ip_address WHERE id = :user_id");
 		$stmt->execute(['ip_address' => $_SERVER["REMOTE_ADDR"], 'user_id' => $user['id']]);
+		IsHCMember($user['id']);
 	} else {
 		session_destroy();
 		Redirect($url);
 		exit();
 	}
 }
+
 
 $maintid = "1";
 $sqlss = $bdd->query("SELECT * FROM gabcms_maintenance WHERE id = '1'");
