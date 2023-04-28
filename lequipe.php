@@ -297,7 +297,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                     echo '</td>';
                     echo '<td valign="top">';
                     echo '<span style="color:' . $box_color . '"><b style="font-size: 110%;" title="Poste occupé: ' . substr($rank_name, 0, -1) . '" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">' . $user_name . ' </span></b><br />';
-                    echo '<span style="color:#888"><b>Mission:</b> ' . $mission . "<br>" . '</span>';
+                    echo '<span style="color:#888"><b>Mission:</b> ' . $user_mission . "<br>" . '</span>';
                     echo '<span style="color:#888"><b>Fonction :</b> ' . $rank_name . '<br>' . '</span>';
                     echo (($online == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif">');
                     echo '</td>';
