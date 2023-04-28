@@ -338,7 +338,7 @@ $hc_member = IsHCMember($user['id']);
 <script type="text/javascript">
 try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
 </script>
- 
+
 <style type="text/css">
 body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 </style>
@@ -1289,6 +1289,17 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 						$stmt = $bdd->prepare("SELECT * FROM users_settings WHERE user_id = :my_id LIMIT 1");
 						$stmt->bindParam(':my_id', $user['id'], PDO::PARAM_INT);
 						$stmt->execute();
+
+                        if($stmt->rowCount() <= 0) {
+                            $stmt = $bdd->prepare("INSERT INTO users_settings (user_id) VALUES (:my_id)");
+                            $stmt->bindParam(':my_id', $user['id'], PDO::PARAM_INT);
+                            $stmt->execute();
+
+                            $stmt = $bdd->prepare("SELECT * FROM users_settings WHERE user_id = :my_id LIMIT 1");
+                            $stmt->bindParam(':my_id', $user['id'], PDO::PARAM_INT);
+                            $stmt->execute();
+                        }
+
 						$row = $stmt->fetch(PDO::FETCH_ASSOC);
 					?>
 

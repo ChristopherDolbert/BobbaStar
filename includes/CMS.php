@@ -9,7 +9,7 @@
 	$date = date('dmY');
 	$sitename = "MyHabbo";
 	$shortname = "Habbo";
-	$url = "http://localhost";
+	$url = "http://bobbastar.test";
 	$description = "&raquo; Créer ton appart, tchat avec des centaines d'utilisateurs et fais-toi de nouveaux amis.";
 	$imagepath = "".$url."/web-gallery/"; 
 	$keyword = "CMS, GabCMS, Habbo, rétro, jeune, ados, love, kiff, habbo";
@@ -38,5 +38,5 @@
 	$rank = "1";
 	$look_boy = "sh-3016-63.ch-215-63.hd-209-8.lg-275-63.hr-831-31";
 	$look_girl = "ch-655-63.lg-3006-63-62.hr-3012-33.cc-3008-64-62.sh-3064-63.hd-605-7";
-	
+
 ?>
