@@ -79,111 +79,151 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 </style>
 <![endif]-->
     <meta name="build" content="<?PHP echo $build; ?> >> <?PHP echo $version; ?>" />
+
+    <style>
+        table.fondateur {
+            background-color: #fff;
+            font-size: 11px;
+            padding: 5px;
+            margin-left: -15px;
+            width: 111%;
+        }
+
+        table.fondateur:nth-child(2n+1) {
+            background-color: #CCDFF2;
+            font-size: 11px;
+            padding: 5px;
+            margin-left: -15px;
+            width: 111%;
+        }
+
+        table.manager {
+            background-color: #fff;
+            font-size: 11px;
+            padding: 5px;
+            margin-left: -15px;
+            width: 107%;
+        }
+
+        table.manager:nth-child(2n+1) {
+            background-color: #F7F2C4;
+            font-size: 11px;
+            padding: 5px;
+            margin-left: -15px;
+            width: 107%;
+        }
+
+        table.admin {
+            background-color: #fff;
+            font-size: 11px;
+            padding: 5px;
+            margin-left: -15px;
+            width: 107%;
+        }
+
+        table.admin:nth-child(2n+1) {
+            background-color: #E4FFD2;
+            font-size: 11px;
+            padding: 5px;
+            margin-left: -15px;
+            width: 107%;
+        }
+
+        table.modo {
+            background-color: #fff;
+            font-size: 11px;
+            padding: 5px;
+            margin-left: -15px;
+            width: 107%;
+        }
+
+        table.modo:nth-child(2n+1) {
+            background-color: #FCDCDC;
+            font-size: 11px;
+            padding: 5px;
+            margin-left: -15px;
+            width: 107%;
+        }
+    </style>
 </head>
 
 <body id="home" class=" ">
     <div id="tooltip"></div>
     <div id="overlay"></div>
+
     <!-- MENU -->
     <?PHP include("./template/header.php"); ?>
     <!-- FIN MENU -->
+
     <div id="container">
         <div id="content" style="position: relative" class="clearfix">
             <div id="column2" class="column">
-                <div class="habblet-container ">
-                    <div class="cbb clearfix blue">
-                        <h2 class="title"><span style="float: left;">Fondateurs</span> <span style="float: right; font-weight: normal; font-size: 75%;">Ils dirigent l'hôtel</span></h2>
-                        <div class="box-content">
-                            <style>
-                                table.fondateur {
-                                    background-color: #fff;
-                                    font-size: 11px;
-                                    padding: 5px;
-                                    margin-left: -15px;
-                                    width: 111%;
-                                }
+                <?php
+                // Requête pour récupérer les informations des utilisateurs triées par grade
+                $req = $bdd->prepare("SELECT u.id, u.username, u.motto, u.rank, u.online, u.look, p.rank_name AS rank_name, p.box_color AS box_color, p.description AS description FROM users u LEFT JOIN permissions p ON u.rank = p.id WHERE u.rank = 11 ORDER BY u.rank DESC");
+                $req->execute();
 
-                                table.fondateur:nth-child(2n+1) {
-                                    background-color: #CCDFF2;
-                                    font-size: 11px;
-                                    padding: 5px;
-                                    margin-left: -15px;
-                                    width: 111%;
-                                }
-                            </style>
-                            <?PHP
-                            $sql = $bdd->query("SELECT * FROM users WHERE rank = '8'");
+                // Initialisation des variables
+                $current_rank = null;
+                $current_container = null;
 
-                            while ($s = $sql->fetch()) {
+                // Parcours des résultats de la requête
+                while ($row = $req->fetch(PDO::FETCH_ASSOC)) {
+                    $user_id = $row['id'];
+                    $user_name = $row['username'];
+                    $user_mission = $row['motto'];
+                    $online = $row['online'];
+                    $user_figure = $row['look'];
+                    $rank_name = $row['rank_name'];
+                    $box_color = $row['box_color'];
+                    $description = $row['description'];
 
-                                $infe = $bdd->prepare("SELECT * FROM gabcms_postes WHERE user_id = ?");
-                                $infe->execute([$s['id']]);
-                                $rt = $infe->fetch();
+                    // Si le grade de l'utilisateur est différent du grade courant
+                    if ($rank_name !== $current_rank) {
+                        // Fermeture du container précédent (s'il existe)
+                        if ($current_container !== null) {
+                            echo '</div></div>';
+                        }
+                        // Création d'un nouveau container pour le nouveau grade
+                        $current_rank = $rank_name;
+                        echo '<div class="habblet-container"><div class="cbb clearfix ' . $box_color . '">';
+                        echo '<h2 class="title"><span style="float: left;">' . $rank_name . '</span> <span style="float: right; font-weight: normal; font-size: 75%;">' . $description . '</span></h2>';
+                        $current_container = true;
+                    }
 
-                                $tera = $bdd->prepare("SELECT * FROM gabcms_absence_staff WHERE pseudo = ? AND jusqua >= ?");
-                                $tera->execute([$s['username'], $nowtime]);
-                                $t = $tera->fetch();
+                    // Affichage de l'utilisateur dans le container courant
+                    echo '<div class="box-content">';
+                    echo '<table class="fondateur"><tbody><tr>';
+                    echo '<td valign="middle" width="10" height="60">';
+                    echo '<a href="' . $url . '/info?pseudo=' . $user_name . '" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">';
+                    echo '<div style="width: 64px; height: 70px; margin-bottom:-10px; margin-top:-15px; margin-left: -15px; float: right; background: url(' . $avatarimage . '' . Secu($user_figure) . '&action=sit&direction=2&head_direction=3&gesture=sml&size=b&img_format=gif);"></div>';
+                    echo '</a>';
+                    echo '</td>';
+                    echo '<td valign="top">';
+                    echo '<span style="color:#2767A7;"><b style="font-size: 110%;" title="Poste(s) occupé(s): ' . $rank_name . '" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">' . $user_name . ' </b></span><br />';
+                    echo '<span style="color:#888"><b>Mission :</b> ' . substr($user_mission, 0, 15) . '<br>' . '</span>';
+                    echo '<span style="color:#888"><b>Fonction :</b> ' . $rank_name . '<br>' . '</span>';
+                    echo (($online == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif">');
+                    echo '</td>';
+                    echo '</tr></tbody></table>';
+                    echo '</div>';
+                }
 
-                                $etat_modif = '';
-                                if ($s['staff_test'] == 1) {
-                                    $etat_modif = '<span style="color:#FF0000">(staff en test)</span>';
-                                }
+                // Fermeture du dernier container (s'il existe)
+                if ($current_container !== null) {
+                    echo '</div></div>';
+                }
 
-                                $date_jusqua = '';
-                                if ($t && $t['jusqua']) {
-                                    $date_jusqua = date('d/m/Y', $t['jusqua']);
-                                }
+                // Fermeture de la requête et de la connexion à la base de données
+                $req->closeCursor();
+                ?>
 
-                                $etat8 = '';
-                                if ($t && $t['depuis'] <= $nowtime && $t['jusqua'] >= $nowtime && $t['etat'] == 1) {
-                                    $etat8 = '<span style="color:#2767A7;">est absent(e) jusqu\'au ' . $date_jusqua . '</span>';
-                                }
-
-
-                            ?>
-                                <table class="fondateur">
-                                    <tbody>
-                                        <tr>
-                                            <td valign="middle" width="10" height="60">
-                                                <a href="<?PHP echo $url ?>/info?pseudo=<?PHP echo $s['username'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">
-                                                    <div style="width: 64px; height: 70px; margin-bottom:-10px; margin-top:-15px; margin-left: -15px; float: right; background: url(<?php echo $avatarimage; ?><?PHP echo Secu($s['look']); ?>&action=sit&direction=2&head_direction=3&gesture=sml&size=b&img_format=gif);"></div>
-                                                </a>
-                                            </td>
-                                            <td valign="top">
-                                                <span style="color:#2767A7;"><b style="font-size: 110%;" title="Poste(s) occupé(s): 
-                                                <?PHP
-
-                                                $infe = $bdd->prepare("SELECT p.*, n.nom_M FROM gabcms_postes p JOIN gabcms_postes_noms n ON p.poste = n.id WHERE p.user_id = ?");
-                                                $infe->execute([$s['id']]);
-                                                while ($rt = $infe->fetch()) {
-                                                    if ($s['gender'] == "M") { ?> <?PHP echo htmlspecialchars(stripslashes(Secu($rt['nom_M'])), ENT_QUOTES) ?>,
-                                                
-                                                <?PHP }
-                                                    if ($s['gender'] == "F") { ?><?PHP echo htmlspecialchars(stripslashes(Secu($rt['nom_F'])), ENT_QUOTES) ?>, 
-                                                    <?PHP }
-                                                                                                                                                                                                                                                                                                } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']) ?></span></b> <?PHP echo $etat8; ?> <?PHP echo $etat_modif; ?> <br />
-                                                <span style="color:#888"><b>Mission:</b> <?PHP
-                                                                                            if (empty($s['motto'])) {
-                                                                                                echo "Pas de mission";
-                                                                                            } else {
-                                                                                                echo Secu($s['motto']);
-                                                                                            }
-                                                                                            ?></span><br />
-                                                <span style="color:#888"><b>Fonction:</b> <?PHP echo stripslashes(Secu($s['fonction'])) ?></span><br />
-                                                <?PHP echo (($s['online'] == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif"></td>') ?>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            <?PHP } ?>
-                        </div>
-                    </div>
-                </div>
                 <script type="text/javascript">
                     if (!$(document.body).hasClassName('process-template')) {
                         Rounder.init();
                     }
                 </script>
+
                 <div class="habblet-container ">
                     <div class="cbb clearfix white ">
                         <div class="box-content">
@@ -198,263 +238,90 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                         </div>
                     </div>
                 </div>
+
             </div>
+
+
             <div id="column1" class="column">
-                <div class="habblet-container ">
-                    <div class="cbb clearfix yellow">
-                        <h2 class="title"><span style="float: left;">Administrateurs</span> <span style="float: right; font-weight: normal; font-size: 75%;">Ils gèrent l'hôtel</span>
+                <?php
+                // Requête pour récupérer les informations des utilisateurs triées par grade
+                $req2 = $bdd->prepare("SELECT u.id, u.username, u.motto, u.rank, u.online, u.look, p.rank_name AS rank_name, p.box_color AS box_color, p.description AS description FROM users u LEFT JOIN permissions p ON u.rank = p.id WHERE u.rank >= 7 AND u.rank <= 9 ORDER BY u.rank DESC");
+                $req2->execute();
 
-                        </h2>
-                        <div class="box-content">
-                            <style>
-                                table.manager {
-                                    background-color: #fff;
-                                    font-size: 11px;
-                                    padding: 5px;
-                                    margin-left: -15px;
-                                    width: 107%;
-                                }
+                // Initialisation des variables
+                $current_rank = null;
+                $current_container = null;
 
-                                table.manager:nth-child(2n+1) {
-                                    background-color: #F7F2C4;
-                                    font-size: 11px;
-                                    padding: 5px;
-                                    margin-left: -15px;
-                                    width: 107%;
-                                }
-                            </style>
-                            <?PHP
-                           $sql = $bdd->prepare("SELECT * FROM users WHERE rank = ?");
-                           $sql->execute([7]);
-                           while ($s = $sql->fetch()) {
-                               $infe = $bdd->prepare("SELECT * FROM gabcms_postes WHERE user_id = ?");
-                               $infe->execute([$s['id']]);
-                               $rt = $infe->fetch();
-                           
-                               $tera = $bdd->prepare("SELECT * FROM gabcms_absence_staff WHERE pseudo = ? AND jusqua >= ?");
-                               $tera->execute([$s['username'], $nowtime]);
-                               $t = $tera->fetch();
-                               if ($s['staff_test'] == 0) {
-                                   $etat_modif = '';
-                               }
-                               if ($s['staff_test'] == 1) {
-                                   $etat_modif = '<span style="color:#FF0000">(staff en test)</span>';
-                               }
-                           
-                               $date_jusqua = date('d/m/Y', $t['jusqua']);
-                           
-                               if ($t['depuis'] <= $nowtime && $t['jusqua'] >= $nowtime && $t['etat'] == 1) {
-                                   $etat7 = '<span style="color:#C1B31C;">est absent(e) jusqu\'au ' . $date_jusqua . '</span>';
-                               } else {
-                                   $etat7 = '';
-                               }
-                           
-                            ?>
-                                <table class="manager">
-                                    <tbody>
-                                        <tr>
-                                            <td valign="middle" width="10" height="60">
-                                                <a href="<?PHP echo $url ?>/info?pseudo=<?PHP echo $s['username'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">
-                                                    <div style="width: 64px; height: 70px; margin-bottom:-10px; margin-top:-15px; margin-left: -15px; float: right; background: url(<?php echo $avatarimage; ?><?PHP echo Secu($s['look']); ?>&action=sit&direction=2&head_direction=3&gesture=sml&size=b&img_format=gif);"></div>
-                                                </a>
-                                            </td>
-                                            <td valign="top">
-                                                <span style="color:#C1B31C;"><b style="font-size: 110%;" title="Poste(s) occupé(s): <?PHP $infe = $bdd->query("SELECT * FROM gabcms_postes WHERE user_id = '" . $s['id'] . "'");
-                                                                                                                                    while ($rt = $infe->fetch()) {
-                                                                                                                                        $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $rt['poste'] . "'");
-                                                                                                                                        $caz = $correct->fetch();
-                                                                                                                                        if ($s['gender'] == "M") { ?> <?PHP echo stripslashes(Secu($caz['nom_M'])); ?>, <?PHP }
-                                                                                                                                                                                                                    if ($s['gender'] == "F") { ?><?PHP echo stripslashes(Secu($caz['nom_F'])); ?>, <?PHP }
-                                                                                                                                                                                                                                                                                            } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']); ?> </span></b> <?PHP echo $etat7; ?> <?PHP echo $etat_modif; ?><br />
-                                                <span style="color:#888"><b>Mission:</b> <?PHP echo stripslashes(Secu($s['motto'])) ?></span><br />
-                                                <span style="color:#888"><b>Fonction:</b> <?PHP echo stripslashes(Secu($s['fonction'])) ?></span><br />
-                                                <?PHP echo (($s['online'] == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif"></td>') ?>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            <?PHP } ?>
-                        </div>
-                    </div>
-                </div>
-                <script type="text/javascript">
-                    if (!$(document.body).hasClassName('process-template')) {
-                        Rounder.init();
+                // Parcours des résultats de la requête
+                while ($row2 = $req2->fetch(PDO::FETCH_ASSOC)) {
+                    $user_id = $row2['id'];
+                    $user_name = $row2['username'];
+                    $user_mission = $row2['motto'];
+                    $online = $row2['online'];
+                    $user_figure = $row2['look'];
+                    $rank_name = $row2['rank_name'];
+                    $box_color = $row2['box_color'];
+                    $description = $row2['description'];
+
+                    // Si le grade de l'utilisateur est différent du grade courant
+                    if ($rank_name !== $current_rank) {
+                        // Fermeture du container précédent (s'il existe)
+                        if ($current_container !== null) {
+                            echo '</div></div>';
+                        }
+                        // Création d'un nouveau container pour le nouveau grade
+                        $current_rank = $rank_name;
+                        echo '<div class="habblet-container"><div class="cbb clearfix ' . $box_color . '">';
+                        echo '<h2 class="title"><span style="float: left;">' . $rank_name . '</span> <span style="float: right; font-weight: normal; font-size: 75%;">' . $description . '</span></h2>';
+                        $current_container = true;
                     }
-                </script>
-                <div class="habblet-container ">
-                    <div class="cbb clearfix green">
-                        <h2 class="title"><span style="float: left;">Animateurs</span> <span style="float: right; font-weight: normal; font-size: 75%;">Ils animent l'hôtel</span>
 
-                        </h2>
-                        <div class="box-content">
-                            <style>
-                                table.admin {
-                                    background-color: #fff;
-                                    font-size: 11px;
-                                    padding: 5px;
-                                    margin-left: -15px;
-                                    width: 107%;
-                                }
+                    // Affichage de l'utilisateur dans le container courant
+                    $class = "";
+                    if ($rank_name == "Fondateurs") {
+                        $class = "fondateur";
+                    } elseif ($rank_name == "Administrateurs") {
+                        $class = "manager";
+                    } elseif ($rank_name == "Modérateurs") {
+                        $class = "modo";
+                    } elseif ($rank_name == "Animateurs") {
+                        $class = "manager";
+                    } else {
+                        $class = "";
+                    }
+                    echo '<div class="box-content">';
+                    echo '<table class="' . $class . '">';
+                    echo '<tbody><tr>';
+                    echo '<td valign="middle" width="10" height="60">';
+                    echo '<a href="' . $url . '/info?pseudo=' . $user_name . '" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">';
+                    echo '<div style="width: 64px; height: 70px; margin-bottom:-10px; margin-top:-15px; margin-left: -15px; float: right; background: url(' . $avatarimage . '' . Secu($user_figure) . '&action=sit&direction=2&head_direction=3&gesture=sml&size=b&img_format=gif);"></div>';
+                    echo '</a>';
+                    echo '</td>';
+                    echo '<td valign="top">';
+                    echo '<span style="color:' . $box_color . '"><b style="font-size: 110%;" title="Poste(s) occupé(s): ' . $rank_name . '" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">' . $user_name . ' </span></b><br />';
+                    echo '<span style="color:#888"><b>Mission:</b> ' . $mission . "<br>" . '</span>';
+                    echo '<span style="color:#888"><b>Fonction :</b> ' . $rank_name . '<br>' . '</span>';
+                    echo (($online == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif">');
+                    echo '</td>';
+                    echo '</tr></tbody>';
+                    echo '</table>';
+                    echo '</div>';
+                }
 
-                                table.admin:nth-child(2n+1) {
-                                    background-color: #E4FFD2;
-                                    font-size: 11px;
-                                    padding: 5px;
-                                    margin-left: -15px;
-                                    width: 107%;
-                                }
-                            </style>
-                            <?PHP
-                            $sql = $bdd->query("SELECT * FROM users WHERE rank = '6'");
-                            while ($s = $sql->fetch()) {
-                                $infe = $bdd->query("SELECT * FROM gabcms_postes WHERE user_id = '" . $s['id'] . "'");
-                                $rt = $infe->fetch();
-                                $tera = $bdd->query("SELECT * FROM gabcms_absence_staff WHERE pseudo = '" . $s['username'] . "' AND jusqua >= '" . $nowtime . "'");
-                                $t = $tera->fetch();
+                // Fermeture du dernier container (s'il existe)
+                if ($current_container !== null) {
+                    echo '</div></div>';
+                }
 
-                                if ($s['staff_test'] == 0) {
-                                    $etat_modif = '';
-                                }
-                                if ($s['staff_test'] == 1) {
-                                    $etat_modif = '<span style="color:#FF0000">(staff en test)</span>';
-                                }
-
-                                $date_jusqua = date('d/m/Y', $t['jusqua']);
-
-                                if ($t['depuis'] <= $nowtime && $t['jusqua'] >= $nowtime && $t['etat'] == 1) {
-                                    $etat6 = '<span style="color:#4AB501;">est absent(e) jusqu\'au ' . $date_jusqua . '</span>';
-                                } else {
-                                    $etat6 = '';
-                                }
-                            ?>
-                                <table class="admin">
-                                    <tbody>
-                                        <tr>
-                                            <td valign="middle" width="10" height="60">
-                                                <a href="<?PHP echo $url ?>/info?pseudo=<?PHP echo $s['username'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">
-                                                    <div style="width: 64px; height: 70px; margin-bottom:-10px; margin-top:-15px; margin-left: -15px; float: right; background: url(<?php echo $avatarimage; ?><?PHP echo Secu($s['look']); ?>&action=sit&direction=2&head_direction=3&gesture=sml&size=b&img_format=gif);"></div>
-                                                </a>
-                                            </td>
-                                            <td valign="top">
-                                                <span style="color:#4AB501;"><b style="font-size: 110%;" title="Poste(s) occupé(s): <?PHP $infe = $bdd->query("SELECT * FROM gabcms_postes WHERE user_id = '" . $s['id'] . "'");
-                                                                                                                                    while ($rt = $infe->fetch()) {
-                                                                                                                                        $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $rt['poste'] . "'");
-                                                                                                                                        $caz = $correct->fetch();
-                                                                                                                                        if ($s['gender'] == "M") { ?> <?PHP echo stripslashes(Secu($caz['nom_M'])) ?>, <?PHP }
-                                                                                                                                                                                                                    if ($s['gender'] == "F") { ?><?PHP echo stripslashes(Secu($caz['nom_F'])) ?>, <?PHP }
-                                                                                                                                                                                                                                                                                            } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']) ?></span></b> <?PHP echo $etat6; ?> <?PHP echo $etat_modif; ?> <br />
-                                                <span style="color:#888"><b>Mission:</b> <?PHP echo stripslashes(Secu($s['motto'])) ?></span><br />
-                                                <span style="color:#888"><b>Fonction:</b> <?PHP echo stripslashes(Secu($s['fonction'])) ?></span><br />
-                                                <?PHP echo (($s['online'] == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif"></td>') ?>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            <?PHP } ?>
-                        </div>
-                    </div>
-                </div>
+                // Fermeture de la requête et de la connexion à la base de données
+                $req2->closeCursor();
+                $bdd = null;
+                ?>
                 <script type="text/javascript">
                     if (!$(document.body).hasClassName('process-template')) {
                         Rounder.init();
                     }
                 </script>
 
-                <div class="habblet-container ">
-                    <div class="cbb clearfix red">
-                        <h2 class="title"><span style="float: left;">Modérateurs</span> <span style="float: right; font-weight: normal; font-size: 75%;">Ils modèrent l'hôtel</span>
 
-                        </h2>
-                        <div class="box-content">
-                            <style>
-                                table.modo {
-                                    background-color: #fff;
-                                    font-size: 11px;
-                                    padding: 5px;
-                                    margin-left: -15px;
-                                    width: 107%;
-                                }
-
-                                table.modo:nth-child(2n+1) {
-                                    background-color: #FCDCDC;
-                                    font-size: 11px;
-                                    padding: 5px;
-                                    margin-left: -15px;
-                                    width: 107%;
-                                }
-                            </style>
-                            <?PHP
-                            $sql = $bdd->query("SELECT * FROM users WHERE rank = '5'");
-                            while ($s = $sql->fetch()) {
-                                $infe = $bdd->query("SELECT * FROM gabcms_postes WHERE user_id = '" . $s['id'] . "'");
-                                $rt = $infe->fetch();
-                                $tera = $bdd->query("SELECT * FROM gabcms_absence_staff WHERE pseudo = '" . $s['username'] . "' AND jusqua >= '" . $nowtime . "'");
-                                $t = $tera->fetch();
-
-                                if ($s['staff_test'] == 0) {
-                                    $etat_modif = '';
-                                }
-                                if ($s['staff_test'] == 1) {
-                                    $etat_modif = '<span style="color:#FF0000">(staff en test)</span>';
-                                }
-
-                                $date_jusqua = date('d/m/Y', $t['jusqua']);
-
-                                if ($t['depuis'] <= $nowtime && $t['jusqua'] >= $nowtime && $t['etat'] == 1) {
-                                    $etat5 = '<span style="color:#D64242;">est absent(e) jusqu\'au ' . $date_jusqua . '</span>';
-                                } else {
-                                    $etat5 = '';
-                                }
-                            ?>
-                                <table class="modo">
-                                    <tbody>
-                                        <tr>
-                                            <td valign="middle" width="10" height="60">
-                                                <a href="<?PHP echo $url ?>/info?pseudo=<?PHP echo $s['username'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">
-                                                    <div style="width: 64px; height: 70px; margin-bottom:-10px; margin-top:-15px; margin-left: -15px; float: right; background: url(<?php echo $avatarimage; ?><?PHP echo Secu($s['look']); ?>&action=sit&direction=2&head_direction=3&gesture=sml&size=b&img_format=gif);"></div>
-                                                </a>
-                                            </td>
-                                            <td valign="top">
-                                                <span style="color:#D64242;"><b style="font-size: 110%;" title="Poste(s) occupé(s): <?PHP $infe = $bdd->query("SELECT * FROM gabcms_postes WHERE user_id = '" . $s['id'] . "'");
-                                                                                                                                    while ($rt = $infe->fetch()) {
-                                                                                                                                        $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $rt['poste'] . "'");
-                                                                                                                                        $caz = $correct->fetch();
-                                                                                                                                        if ($s['gender'] == "M") { ?> <?PHP echo stripslashes(Secu($caz['nom_M'])) ?>, <?PHP }
-                                                                                                                                                                                                                    if ($s['gender'] == "F") { ?><?PHP echo stripslashes(Secu($caz['nom_F'])) ?>, <?PHP }
-                                                                                                                                                                                                                                                                                            } ?>" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP echo Secu($s['username']) ?></span></b> <?PHP echo $etat5; ?> <?PHP echo $etat_modif; ?> <br />
-                                                <span style="color:#888"><b>Mission:</b> <?PHP echo stripslashes(Secu($s['motto'])) ?></span><br />
-                                                <span style="color:#888"><b>Fonction:</b> <?PHP echo stripslashes(Secu($s['fonction'])) ?></span><br />
-                                                <?PHP echo (($s['online'] == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif"></td>') ?>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            <?PHP } ?>
-                        </div>
-                    </div>
-                </div>
-
-
-                <script type="text/javascript">
-                    if (!$(document.body).hasClassName('process-template')) {
-                        Rounder.init();
-                    }
-                </script>
             </div>
-        </div>
-    </div>
-    </div>
-    <!--[if lt IE 7]>
-<script type="text/javascript">
-Pngfix.doPngImageFix();
-</script>
-<![endif]-->
-
-    <div style="clear: both;"></div>
-    <script type="text/javascript">
-        HabboView.run();
-    </script>
-</body>
-
-</html>

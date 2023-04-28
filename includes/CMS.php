@@ -24,6 +24,7 @@
 	$compte_facebook = "Gabcms";
 	$language = "fr";
 	$hc_maxmonths = 6;
+	$gamesources = "https://game.myhabbo.fr/assets/c_images/";
 
    //Config Starpass
    $id_document = 444508; //Identifiant du document starpass

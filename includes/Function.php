@@ -261,6 +261,28 @@ function TicketRefresh($id)
 	return $base;
 }
 
+function IsUserOnline($intUID)
+{
+	include('SQL.php');
+	$sql = "SELECT online FROM users WHERE id = ? LIMIT 1";
+	$stmt = $bdd->prepare($sql);
+	$stmt->execute([$intUID]);
+	$result = $stmt->fetch(PDO::FETCH_COLUMN);
+
+	$timeout = 600; // 10 minutes ?
+
+	if ($result === false) {
+		return false;
+	} else {
+		$result += $timeout;
+		if ($result >= time()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+
 function GenerateRandom($type = "sso", $length = 0)
 {
 	switch ($type) {
@@ -341,6 +363,63 @@ function GetConfig()
 	$sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 	$cof = $sql->fetch(PDO::FETCH_ASSOC);
 	return $cof;
+}
+
+function GetUserBadge($strName)
+{ // supports user IDs also
+	include('SQL.php');
+	if (is_numeric($strName)) {
+		$sql = "SELECT id FROM users WHERE id = ? AND badge_status = '1' LIMIT 1";
+		$stmt = $bdd->prepare($sql);
+		$stmt->execute([$strName]);
+	} else {
+		$sql = "SELECT id FROM users WHERE username = ? AND badge_status = '1' LIMIT 1";
+		$stmt = $bdd->prepare($sql);
+		$stmt->execute([Secu($strName)]);
+	}
+
+	$exists = $stmt->rowCount();
+
+	if ($exists > 0) {
+		$usrrow = $stmt->fetch(PDO::FETCH_ASSOC);
+		$sql = "SELECT * FROM users_badges WHERE user_id = ? LIMIT 1";
+		$stmt = $bdd->prepare($sql);
+		$stmt->execute([$usrrow['id']]);
+		$hasbadge = $stmt->rowCount();
+
+		if ($hasbadge > 0) {
+			$badgerow = $stmt->fetch(PDO::FETCH_ASSOC);
+			return $badgerow['badge_code'];
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+function GetUserGroupBadge($my_id)
+{
+	include('SQL.php');
+	$sql = "SELECT guild_id FROM guilds_members WHERE user_id = ? LIMIT 1";
+	$stmt = $bdd->prepare($sql);
+	$stmt->execute([$my_id]);
+	$has_badge = $stmt->rowCount();
+
+	if ($has_badge > 0) {
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+		$groupid = $row['groupid'];
+
+		$sql = "SELECT badge FROM guilds WHERE id = ? LIMIT 1";
+		$stmt = $bdd->prepare($sql);
+		$stmt->execute([$groupid]);
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+		$badge = $row['badge'];
+
+		return $badge;
+	} else {
+		return false;
+	}
 }
 
 function Connected($pageid)
@@ -450,7 +529,6 @@ function GiveHC($user_id, $months)
 		} elseif ($yesonline['online'] == 1 && $found == 0) {
 			@SendMUSData('givebadge', ['user_id' => $user['id'], 'badge' => "HC1"]);
 		}
-
 	} else {
 		$m = date('m');
 		$d = date('d');
