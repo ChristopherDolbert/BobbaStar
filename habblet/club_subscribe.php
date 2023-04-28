@@ -81,13 +81,14 @@ if ($myrow['credits'] < $price) {
 
 		// Insérer une transaction dans la table cms_transactions
 		$date_full = FullDate('full');
-		$sql = "INSERT INTO gabcms_transaction (user_id, prix, date, produit) VALUES (:userid, :amount, :date_full, :descr)";
+		$sql = "INSERT INTO gabcms_transaction (user_id, prix, date, produit, gain) VALUES (:userid, :amount, :date_full, :descr, :gain)";
 		$stmt = $bdd->prepare($sql);
 		$stmt->bindParam(':userid', $my_id, PDO::PARAM_INT);
 		$stmt->bindParam(':amount', $price, PDO::PARAM_INT);
 		$stmt->bindParam(':date_full', $date_full, PDO::PARAM_STR);
 		$descr = "Adhésion au MyHabbo Club (" . $months . " mois)";
 		$stmt->bindParam(':descr', $descr, PDO::PARAM_STR);
+		$stmt->bindParam(':gain', '-', PDO::PARAM_STR);
 		$stmt->execute();
 
 		$usstts = "UPDATE users_settings SET last_hc_payday = :last_hc_payday WHERE user_id = :my_id LIMIT 1";
