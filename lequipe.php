@@ -187,12 +187,11 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                         // Création d'un nouveau container pour le nouveau grade
                         $current_rank = $rank_name;
                         echo '<div class="habblet-container"><div class="cbb clearfix ' . $box_color . '">';
-                        echo '<h2 class="title"><span style="float: left;">' . $rank_name . '</span> <span style="float: right; font-weight: normal; font-size: 75%;">' . $description . '</span></h2>';
+                        echo '<h2 class="title"><span style="float: left;">' . $rank_name . '</span> <span style="float: right; font-weight: normal; font-size: 75%;">' . $description . '</span></h2><div class="box-content">';
                         $current_container = true;
                     }
 
                     // Affichage de l'utilisateur dans le container courant
-                    echo '<div class="box-content">';
                     echo '<table class="fondateur"><tbody><tr>';
                     echo '<td valign="middle" width="10" height="60">';
                     echo '<a href="' . $url . '/info?pseudo=' . $user_name . '" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">';
@@ -206,12 +205,11 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                     echo (($online == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif">');
                     echo '</td>';
                     echo '</tr></tbody></table>';
-                    echo '</div>';
                 }
 
                 // Fermeture du dernier container (s'il existe)
                 if ($current_container !== null) {
-                    echo '</div></div>';
+                    echo '</div></div></div>';
                 }
 
                 // Fermeture de la requête et de la connexion à la base de données
@@ -251,6 +249,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                 // Initialisation des variables
                 $current_rank = null;
                 $current_container = null;
+                $compteur = 0;
 
                 // Parcours des résultats de la requête
                 while ($row2 = $req2->fetch(PDO::FETCH_ASSOC)) {
@@ -272,7 +271,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                         // Création d'un nouveau container pour le nouveau grade
                         $current_rank = $rank_name;
                         echo '<div class="habblet-container"><div class="cbb clearfix ' . $box_color . '">';
-                        echo '<h2 class="title"><span style="float: left;">' . $rank_name . '</span> <span style="float: right; font-weight: normal; font-size: 75%;">' . $description . '</span></h2>';
+                        echo '<h2 class="title"><span style="float: left;">' . $rank_name . '</span> <span style="float: right; font-weight: normal; font-size: 75%;">' . $description . '</span></h2><div class="box-content">';
                         $current_container = true;
                     }
 
@@ -289,7 +288,6 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                     } else {
                         $class = "";
                     }
-                    echo '<div class="box-content">';
                     echo '<table class="' . $class . '">';
                     echo '<tbody><tr>';
                     echo '<td valign="middle" width="10" height="60">';
@@ -305,12 +303,11 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                     echo '</td>';
                     echo '</tr></tbody>';
                     echo '</table>';
-                    echo '</div>';
                 }
 
                 // Fermeture du dernier container (s'il existe)
                 if ($current_container !== null) {
-                    echo '</div></div>';
+                    echo '</div></div></div>';
                 }
 
                 // Fermeture de la requête et de la connexion à la base de données
