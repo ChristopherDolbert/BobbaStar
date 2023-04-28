@@ -479,9 +479,9 @@ function HCDaysLeft($my_id)
 
 		// Séparer le jour, le mois et l'année afin de pouvoir les utiliser avec mktime
 		$tmp = explode("-", $month_started);
-		$day = (int)$tmp[0];
-		$month = (int)$tmp[0];
-		$year = (int)$tmp[0];
+		$day = $tmp[0];
+		$month = $tmp[1];
+		$year = $tmp[2];
 
 		// Tout d'abord, créer les dates que nous voulons comparer, effectuer des calculs
 		$then = mktime(0, 0, 0, $month, $day, $year);
@@ -522,10 +522,13 @@ function IsHCMember($my_id)
 			/*$stmt1 = $bdd->prepare("UPDATE users SET badge_status = '0', hc_before='1' WHERE id = ? LIMIT 1");
 			$stmt1->execute([$my_id]);*/
 
+			$stmt1 = $bdd->prepare("UPDATE users_settings SET last_hc_payday = '0' WHERE user_id = ? LIMIT 1");
+			$stmt1->execute([$my_id]);
+
 			$stmt2 = $bdd->prepare("UPDATE users SET rank = '1' WHERE id = ? AND rank = '2' LIMIT 1");
 			$stmt2->execute([$my_id]);
 
-			$stmt3 = $bdd->prepare("DELETE FROM users_badges WHERE badge_code = 'HC1' OR badgeid = 'HC2' AND user_id = ? LIMIT 1");
+			$stmt3 = $bdd->prepare("DELETE FROM users_badges WHERE badge_code = 'HC1' OR badge_code = 'HC2' AND user_id = ? LIMIT 1");
 			$stmt3->execute([$my_id]);
 
 			$stmt4 = $bdd->prepare("DELETE FROM users_club WHERE userid = ? LIMIT 1");
