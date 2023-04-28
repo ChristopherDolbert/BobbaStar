@@ -25,7 +25,7 @@ if (isset($_GET['generatePixels']) && $user['pixels'] <= 10) {
         $bdd->commit();
         $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-green\"> Nous venons de t'envoyer <b>100 pixels</b>!</div></div></div>";
     } else {
-        @SendMUSData('givepixels', ['user_id' => $user['id'], 'pixels' => 100]);
+        @SendMUSData('givepoints', ['user_id' => $user['id'], 'amount' => 100, 'type' => "pixels"]);
         $affichage = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-green\"> Regarde sur ton client, tu as reçu <b>100 pixels</b>!</div></div></div>";
     }
 } elseif ($user['pixels'] >= 11) {
