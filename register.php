@@ -105,7 +105,6 @@ if (isset($_POST['bean_avatarName'])) {
         // Insérez votre code de traitement du formulaire ici, par exemple l'envoi par e-mail, l'entrée dans une base de données, etc.
         unset($_SESSION['register-captcha-bubble']);
     } else {
-        echo $captcha . " CAPTCHA POST " . $_SESSION['register-captcha-bubble'] . " CAPTCHA SESSION ";
         $error['captcha'] = "Le code que vous avez entré n'est pas correct. Êtes-vous sûr d'être humain ?";
         $failure = true;
     }
