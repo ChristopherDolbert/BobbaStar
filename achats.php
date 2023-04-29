@@ -20,8 +20,10 @@ if (isset($_GET['do'])) {
     if ($do == "check") {
         $prix_ticket0 = Secu($_POST['transactions_winwin']);
         if ($user['jetons'] >= $cp['winwin'] && $user['id'] != "" && $prix_ticket0 == $cp['winwin']) {
-            $bdd->query("UPDATE users SET jetons = jetons - " . $cp['winwin'] . " WHERE id = '" . $user['id'] . "'");
-            $bdd->query("UPDATE users_settings SET achievement_score = achievement_score + 1000 WHERE user_id = '" . $user['id'] . "'");
+            $update1 = $bdd->prepare("UPDATE users SET jetons = jetons - ? WHERE id = ?");
+            $update1->execute([$cp['winwin'], $user['id']]);
+            $update2 = $bdd->prepare("UPDATE users_settings SET achievement_score = achievement_score + 1000 WHERE user_id = ?");
+            $update2->execute([$user['id']]);
             $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
             $insertn1->bindValue(':userid', $user['id']);
             $insertn1->bindValue(':produit', 'Achat 1000 points winwin');
@@ -51,8 +53,10 @@ if (isset($_GET['do'])) {
         $prix_ticket2 = Secu($_POST['transactions_respects300']);
         if ($user['jetons'] >= $cp['respects_300'] && $user['id'] != "" && $prix_ticket2 == $cp['respects_300']) {
             if ($user['online'] != 1) {
-                $bdd->query("UPDATE users SET jetons = jetons - " . $cp['respects_300'] . " WHERE id = '" . $user['id'] . "'");
-                $bdd->query("UPDATE users_settings SET 	daily_respect_points = 	daily_respect_points + 300 WHERE user_id = '" . $user['id'] . "'");
+                $update1 = $bdd->prepare("UPDATE users SET jetons = jetons - ? WHERE id = ?");
+                $update1->execute([$cp['respects_300'], $user['id']]);
+                $update2 = $bdd->prepare("UPDATE users_settings SET daily_respect_points = daily_respect_points + 300 WHERE user_id = ?");
+                $update2->execute([$user['id']]);
                 $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
                 $insertn1->bindValue(':userid', $user['id']);
                 $insertn1->bindValue(':produit', 'Achat 300 respects');
