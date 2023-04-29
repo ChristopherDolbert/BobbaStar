@@ -113,7 +113,7 @@ $caz = $correct->fetch();
 	<script src="<?PHP echo $imagepath; ?>static/js/visual.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
-	<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/ckeditor.js"></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
 	<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
 	<script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
 

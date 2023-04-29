@@ -94,8 +94,26 @@ if (isset($_GET['do'])) {
 
 <body>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/ckeditor.js"></script>
+    <script src="https://cdn.tiny.cloud/1/q9yuag8m0g3sevdh5bsvvutsjnsyo6uyio0913rpbg66moyp/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [{
+                    value: 'First.Name',
+                    title: 'First Name'
+                },
+                {
+                    value: 'Email',
+                    title: 'Email'
+                },
+            ]
+        });
+    </script>
     <?php if (!isset($_GET['modif']) && !isset($_GET['modift'])) { ?>
         <span id="titre">Actions sur des articles</span><br />
         Choisis l'article que tu désires modifier ou supprimer.

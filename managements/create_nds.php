@@ -44,7 +44,7 @@ if (isset($_POST['objet'], $_POST['texte'], $_POST['applicable'])) {
 Les notes de service permettent une cohésion optimal au sein du rétro. Ces notes de service sont un peu le réglement intérieur du rétro pour les staffs.
 <br /><br />
 <script type="text/javascript" src="editeur_html/jscripts/tiny_mce/tiny_mce.js"></script>
-<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
 <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
 
 <form name='editor' method='post' action="#">
