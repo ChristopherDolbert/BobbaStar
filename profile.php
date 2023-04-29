@@ -127,7 +127,6 @@ if ($tab == "1") {
 	if (isset($_POST['save'])) {
 		$pass1 = $_POST['password'];
 		//Hashes and salts the first password with the user id (in lowercase) --encryption--
-		$pass1_hash = password_hash($pass1, $user['username'], PASSWORD_BCRYPT);
 		$day1 = $_POST['day'];
 		$month1 = $_POST['month'];
 		$year1 = $_POST['year'];
@@ -140,7 +139,7 @@ if ($tab == "1") {
 			$newsletter = "";
 		}
 		//checks password --encryption--
-		if ($pass1_hash == $user['password'] && $formatted_dob == $user['account_day_of_birth']) {
+		if (password_verify($pass1, $user['password']) && $formatted_dob == $user['account_day_of_birth']) {
 			$email_check = preg_match("/^[a-z0-9_\.-]+@([a-z0-9]+([\-]+[a-z0-9]+)*\.)+[a-z]{2,7}$/i", $mail1);
 			if ($email_check == "1") {
 				if ($_POST['directemail'] == "on") {
@@ -170,17 +169,14 @@ if ($tab == "1") {
 } else if ($tab == "4") {
 	if (isset($_POST['save'])) {
 		$pass1 = $_POST['password'];
-		//Hashes and salts the old password with the user id (in lowercase) --encryption--
-		$pass1_hash = password_hash($pass1, $user['username'], PASSWORD_BCRYPT);
 		$day1 = $_POST['day'];
 		$month1 = $_POST['month'];
 		$year1 = $_POST['year'];
 		$formatted_dob = "" . $day1 . "-" . $month1 . "-" . $year1 . "";
 		$newpass = $_POST['pass'];
-		//Hashes and salts the new password with the user id (in lowercase) --encryption--
-		$newpass_hash = password_hash($newpass, $user['username'], PASSWORD_BCRYPT);
+		$newpass_hash = password_hash($newpass, PASSWORD_BCRYPT);
 		$newpass_conf = $_POST['confpass'];
-		if ($pass1_hash == $user['password'] && $formatted_dob == $user['account_day_of_birth']) {
+		if (password_verify($pass1, $user['password']) && $formatted_dob == $user['account_day_of_birth']) {
 			if ($newpass == $newpass_conf) {
 				if (strlen($newpass) < 6) {
 					$result = "Ton mot de passe est trop court!";
@@ -191,7 +187,7 @@ if ($tab == "1") {
 						$error = "1";
 					} else {
 						//Updates password --encryption--
-						$stmt8 = $con->prepare("UPDATE users SET password = :newpass_hash WHERE username = :rawname");
+						$stmt8 = $bdd->prepare("UPDATE users SET password = :newpass_hash WHERE username = :rawname");
 						$stmt8->bindParam(':newpass_hash', $newpass_hash);
 						$stmt8->bindParam(':rawname', $user['username']);
 						if ($stmt8->execute()) {
@@ -214,16 +210,16 @@ if ($tab == "1") {
 	if (isset($_POST['save'])) {
 		$pass1 = $_POST['password'];
 		//Hashes and salts the old password with the user id (in lowercase) --encryption--
-		$pass1_hash = password_hash($pass1, $user['username'], PASSWORD_BCRYPT);
+		$pass1_hash = password_hash($pass1, PASSWORD_BCRYPT);
 		$day1 = $_POST['day'];
 		$month1 = $_POST['month'];
 		$year1 = $_POST['year'];
 		$formatted_dob = "" . $day1 . "-" . $month1 . "-" . $year1 . "";
 		$newpass = $_POST['pass'];
 		//Hashes and salts the new password with the user id (in lowercase) --encryption--
-		$newpass_hash = password_hash($newpass, $user['username'], PASSWORD_BCRYPT);
+		$newpass_hash = password_hash($newpass, PASSWORD_BCRYPT);
 		$newpass_conf = $_POST['confpass'];
-		if ($pass1_hash == $user['password'] && $formatted_dob == $user['account_day_of_birth']) {
+		if (password_verify($pass1_hash, $user['password']) && $formatted_dob == $user['account_day_of_birth']) {
 			if ($newpass == $newpass_conf) {
 				if (strlen($newpass) < 6) {
 					$result = "Password is too short, 6 characters minimum";
@@ -234,7 +230,7 @@ if ($tab == "1") {
 						$error = "1";
 					} else {
 						//Updates password --encryption--
-						$stmt9 = $con->prepare("UPDATE users SET password = :newpass_hash WHERE username = :rawname");
+						$stmt9 = $bdd->prepare("UPDATE users SET password = :newpass_hash WHERE username = :rawname");
 						$stmt9->bindParam(':newpass_hash', $newpass_hash);
 						$stmt9->bindParam(':rawname', $rawname);
 						$stmt9->execute();
