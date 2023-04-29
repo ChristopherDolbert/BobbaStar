@@ -41,55 +41,36 @@ switch ($user['rank']) {
 
 if (isset($_GET['id'])) {
 	$id = Secu($_GET['id']);
-	$infr = $bdd->query("SELECT * FROM gabcms_nds WHERE id = '" . $id . "'");
+	$infr = $bdd->query("SELECT * FROM gabcms_nds WHERE id = '{$id}'");
 	$r = $infr->fetch();
 
-	if (isset($_POST['message'])) {
-		$message = Secu($_POST['message']);
-		if ($message != "") {
-			if ($r['edit'] == 0) {
-				$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-				$insertn1->bindValue(':pseudo', $user['username']);
-				$insertn1->bindValue(':action', 'a lu et approuve la Note de Service <b>"' . addslashes($r['objet']) . '"</b>');
-				$insertn1->bindValue(':date', FullDate('full'));
-				$insertn1->execute();
-				$insertn2 = $bdd->prepare("INSERT INTO gabcms_nds_lu (id_nds,pseudo,texte,date) VALUES (:id, :pseudo, :texte, :date)");
-				$insertn2->bindValue(':id', $r['id']);
-				$insertn2->bindValue(':pseudo', $user['username']);
-				$insertn2->bindValue(':texte', $message);
-				$insertn2->bindValue(':date', FullDate('full'));
-				$insertn2->execute();
-			} else if ($r['edit'] == 1) {
-				$insertn3 = $bdd->prepare("INSERT INTO gabcms_nds_lu (id_nds,pseudo,texte,date) VALUES (:id, :pseudo, :texte, :date)");
-				$insertn3->bindValue(':id', $r['id']);
-				$insertn3->bindValue(':pseudo', $user['username']);
-				$insertn3->bindValue(':texte', $message);
-				$insertn3->bindValue(':date', FullDate('full'));
-				$insertn3->execute();
-				$insertn4 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-				$insertn4->bindValue(':pseudo', $user['username']);
-				$insertn4->bindValue(':action', 'a lu et approuve à nouveau la Note de Service <b>"' . addslashes($r['objet']) . '"</b>');
-				$insertn4->bindValue(':date', FullDate('full'));
-				$insertn4->execute();
-			}
-			$affichage = "<div id=\"purse-redeem-result\">
-        <div class=\"redeem-error\">
-            <div class=\"rounded rounded-green\">
-              Ta lecture a été prise en compte
-            </div>
-        </div>
-</div>";
-		} else {
-			$affichage = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\">
-            <div class=\"rounded rounded-red\">
-               Une erreur est survenue
-            </div>
-        </div>
-</div>";
+	if (isset($_POST['message']) && $message = Secu($_POST['message'])) {
+		if ($r['edit'] == 1) {
+			$insertn4 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+			$insertn4->execute(array(':pseudo' => $user['username'], ':action' => 'a lu et approuve à nouveau la Note de Service <b>"' . addslashes($r['objet']) . '"</b>', ':date' => FullDate('full')));
 		}
+		$insertn2 = $bdd->prepare("INSERT INTO gabcms_nds_lu (id_nds,pseudo,texte,date) VALUES (:id, :pseudo, :texte, :date)");
+		$insertn2->execute(array(':id' => $r['id'], ':pseudo' => $user['username'], ':texte' => $message, ':date' => FullDate('full')));
+		$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+		$insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a lu et approuve la Note de Service <b>"' . addslashes($r['objet']) . '"</b>', ':date' => FullDate('full')));
+		$affichage = "<div id=\"purse-redeem-result\">
+            <div class=\"redeem-error\">
+                <div class=\"rounded rounded-green\">
+                    Ta lecture a été prise en compte
+                </div>
+            </div>
+        </div>";
+	} else {
+		$affichage = "<div id=\"purse-redeem-result\"> 
+            <div class=\"redeem-error\">
+                <div class=\"rounded rounded-red\">
+                    Une erreur est survenue
+                </div>
+            </div>
+        </div>";
 	}
 }
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">

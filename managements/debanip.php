@@ -12,36 +12,35 @@ if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
 	exit();
 }
 
-if (isset($_GET['do'])) {
-	$ip = Secu($_POST['ip']);
-	$ip = explode(";", $ip);
-	$nbr = count($ip);
-	$do = Secu($_GET['do']);
-	if ($do == "ban") {
-		if (isset($ip)) {
-			if (!empty($ip)) {
+if (isset($_GET['do']) && $_GET['do'] == "ban" && isset($_POST['ip'])) {
+	$ip = array_filter(explode(';', Secu($_POST['ip'])));
+	$count = count($ip);
 
-				for ($n = 0; $n < $nbr; $n++) :
-					$check = $bdd->query("SELECT * FROM bans WHERE value = '" . $ip[$n] . "'");
-					$row_c = $check->rowCount();
-					if ($row_c > 0) {
-						$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-						$insertn1->bindValue(':pseudo', $user['username']);
-						$insertn1->bindValue(':action', 'a procédé au débanissement de l\'ip <b>' . $ip[$n] . '</b>');
-						$insertn1->bindValue(':date', FullDate('full'));
-						$insertn1->execute();
-						$bdd->query("DELETE FROM bans WHERE value = '" . $ip[$n] . "'");
-						echo '<h4 class="alert_success">L\'adresse IP <b>' . $ip[$n] . '</b> &agrave; été débannis.</h4>';
-					} else {
-						echo '<h4 class="alert_error">L\'adresse IP  <b>' . $ip[$n] . '</b> n\'est pas bannis.</h4>';
-					}
-				endfor;
+	if ($count > 0) {
+		foreach ($ip as $value) {
+			$check = $bdd->prepare("SELECT * FROM bans WHERE value = :value");
+			$check->bindValue(':value', $value);
+			$check->execute();
+
+			if ($check->rowCount() > 0) {
+				$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+				$insertn1->bindValue(':pseudo', $user['username']);
+				$insertn1->bindValue(':action', 'a procédé au débanissement de l\'ip <b>' . $value . '</b>');
+				$insertn1->bindValue(':date', FullDate('full'));
+				$insertn1->execute();
+
+				$bdd->prepare("DELETE FROM bans WHERE value = :value")->bindValue(':value', $value)->execute();
+
+				echo '<h4 class="alert_success">L\'adresse IP <b>' . $value . '</b> a été débannis.</h4>';
 			} else {
-				echo '<h4 class="alert_error">Les champs ne sont pas tous remplie.</h4>';
+				echo '<h4 class="alert_error">L\'adresse IP <b>' . $value . '</b> n\'est pas bannis.</h4>';
 			}
 		}
+	} else {
+		echo '<h4 class="alert_error">Les champs ne sont pas tous remplis.</h4>';
 	}
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

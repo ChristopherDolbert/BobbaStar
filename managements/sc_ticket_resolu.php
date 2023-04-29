@@ -17,8 +17,14 @@ if (!isset($_SESSION['username']) || $user['rank'] < 5 || $user['rank'] > 11) {
 $rank_modif = "";
 switch ($user['rank']) {
      case 11:
+          $rank_modif = "fondateur";
+          break;
      case 10:
+          $rank_modif = "fondateur";
+          break;
      case 9:
+          $rank_modif = "fondateur";
+          break;
      case 8:
           $rank_modif = "fondateur";
           break;

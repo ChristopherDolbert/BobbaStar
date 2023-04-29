@@ -16,50 +16,51 @@ if (isset($_GET['modif'])) {
     $modif = Secu($_GET['modif']);
 }
 
-if (isset($_GET['do'])) {
-    $do = Secu($_GET['do']);
-    if ($do == "create") {
-        if (isset($_POST['nom_categorie'])) {
-            $nom_categorie = addslashes($_POST['nom_categorie']);
-            if ($nom_categorie != "") {
-                $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-                $insertn1->bindValue(':pseudo', $user['username']);
-                $insertn1->bindValue(':action', 'a créé une catégorie de postes <b>(' . $nom_categorie . ')</b>');
-                $insertn1->bindValue(':date', FullDate('full'));
-                $insertn1->execute();
-                $insertn2 = $bdd->prepare("INSERT INTO gabcms_postes_categorie (nom, par, le) VALUES (:nom, :par, :le)");
-                $insertn2->bindValue(':nom', $nom_categorie);
-                $insertn2->bindValue(':par', $user['username']);
-                $insertn2->bindValue(':le', FullDate('full'));
-                $insertn2->execute();
-                echo '<h4 class="alert_success">La catégorie a été enregistrée</h4>';
-            } else {
-                echo '<h4 class="alert_error">Une erreur est survenue</h4>';
-            }
-        }
+if ($_GET['do'] === 'create' && !empty($_POST['nom_categorie'])) {
+    $nom_categorie = addslashes($_POST['nom_categorie']);
+    $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+    $insertn1->execute([':pseudo' => $user['username'], ':action' => 'a créé une catégorie de postes <b>(' . $nom_categorie . ')</b>', ':date' => FullDate('full')]);
+    $insertn2 = $bdd->prepare("INSERT INTO gabcms_postes_categorie (nom, par, le) VALUES (:nom, :par, :le)");
+    $insertn2->execute([':nom' => $nom_categorie, ':par' => $user['username'], ':le' => FullDate('full')]);
+    echo '<h4 class="alert_success">La catégorie a été enregistrée</h4>';
+} elseif ($_GET['do'] === 'modif' && isset($_POST['haut'], $_POST['bas'])) {
+    $haut = addslashes($_POST['haut']);
+    $bas = addslashes($_POST['bas']);
+    if ($haut != "" && $bas != "") {
+        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+        $insertn1->execute([':pseudo' => $user['username'], ':action' => 'a modifié <b>les textes</b> de la <b>newsletter</b>', ':date' => FullDate('full')]);
+        $bdd->query("UPDATE gabcms_newsletter SET newsletter_haut = '" . $haut . "', newsletter_bas = '" . $bas . "' WHERE id = '1'");
+        echo '<h4 class="alert_success">Les textes des newsletters viennent d\'être modifiés.</h4>';
+    } else {
+        echo '<h4 class="alert_error">Merci de remplir les champs vides</h4>';
     }
+} else {
+    echo '<h4 class="alert_error">Une erreur est survenue</h4>';
 }
+
 if (isset($_GET['sup'])) {
     $sup = Secu($_GET['sup']);
-    $sql_modif = $bdd->query("SELECT * FROM gabcms_postes_categorie WHERE id = '" . $sup . "'");
+    $sql_modif = $bdd->query("SELECT * FROM gabcms_postes_categorie WHERE id = '$sup'");
     $modif_e = $sql_modif->fetch();
-    $deplacer = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id_categorie = '" . $sup . "'");
-    while ($d = $deplacer->fetch()) {
-        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-        $insertn1->bindValue(':pseudo', $user['username']);
-        $insertn1->bindValue(':action', 'a déplacé automatiquement un poste <b>(' . addslashes($d['nom_M']) . ')</b> dans la catégorie <b>Sans catégorie</b>');
-        $insertn1->bindValue(':date', FullDate('full'));
-        $insertn1->execute();
-    }
-    $bdd->query("UPDATE gabcms_postes_noms SET id_categorie = '0' WHERE id_categorie = '" . $sup . "'");
+    $bdd->query("UPDATE gabcms_postes_noms SET id_categorie = '0' WHERE id_categorie = '$sup'");
+    $bdd->query("DELETE FROM gabcms_postes_categorie WHERE id = '$sup'");
     $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-    $insertn1->bindValue(':pseudo', $user['username']);
-    $insertn1->bindValue(':action', 'a supprimé une catégorie de postes <b>(' . addslashes($modif_e['nom']) . ')</b>');
-    $insertn1->bindValue(':date', FullDate('full'));
-    $insertn1->execute();
-    $bdd->query("DELETE FROM gabcms_postes_categorie WHERE id = '" . $sup . "'");
+    $insertn1->execute([
+        ':pseudo' => $user['username'],
+        ':action' => 'a supprimé une catégorie de postes <b>(' . addslashes($modif_e['nom']) . ')</b>',
+        ':date' => FullDate('full')
+    ]);
+    $deplacer = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id_categorie = '$sup'");
+    while ($d = $deplacer->fetch()) {
+        $insertn1->execute([
+            ':pseudo' => $user['username'],
+            ':action' => 'a déplacé automatiquement un poste <b>(' . addslashes($d['nom_M']) . ')</b> dans la catégorie <b>Sans catégorie</b>',
+            ':date' => FullDate('full')
+        ]);
+    }
     echo '<h4 class="alert_success">La catégorie a bien été supprimée</h4>';
 }
+
 if (isset($_GET['modifierrecrut'])) {
     $modifierrecrut = Secu($_GET['modifierrecrut']);
     if (isset($_POST['nom_modif'])) {

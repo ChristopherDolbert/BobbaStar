@@ -12,37 +12,26 @@ if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
 	exit();
 }
 
-if (isset($_GET['do'])) {
-	$do = Secu($_GET['do']);
-	if ($do == "massjetons") {
-		$jetons = Secu($_POST['jetons']);
-		$nombre = Secu($_POST['nombre']);
-		$valid = Secu($_POST['validite']);
-		if (is_numeric($nombre) != "") {
-			$base = Genere_lettre(4);
-			$base = $base . "-";
-			$base = $base . Genere_lettre(4);
-			$base = $base . "-";
-			$base = $base . Genere_lettre(4);
-			$base = $base . "-";
-			$base = $base . Genere_lettre(4);
-			$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-			$insertn1->bindValue(':pseudo', $user['username']);
-			$insertn1->bindValue(':action', 'a créé un code jetons pour <b>' . $nombre . ' personne(s)</b> (d\'une valeur de <b>' . $jetons . ' jetons</b>)');
-			$insertn1->bindValue(':date', FullDate('full'));
-			$insertn1->execute();
-			$insertn2 = $bdd->prepare("INSERT INTO gabcms_jetons (nombremax, code, value, valid) VALUES (:nbr, :code, :jetons, :valid)");
-			$insertn2->bindValue(':nbr', $nombre);
-			$insertn2->bindValue(':code', $base);
-			$insertn2->bindValue(':jetons', $jetons);
-			$insertn2->bindValue(':valid', $valid);
-			$insertn2->execute();
-			echo '<h4 class="alert_success">Le code jetons a été crée : <b>' . $base . '</b> d\'une valeur de <b>' . $jetons . '</b> jetons pour ' . $nombre . ' utilisateur(s)</h4>';
-		} else {
-			echo '<h4 class="alert_error">Merci d\'écrire que des chiffres</h4>';
-		}
+if (isset($_GET['do']) && $_GET['do'] === "massjetons") {
+	$jetons = Secu($_POST['jetons']);
+	$nombre = Secu($_POST['nombre']);
+	$valid = Secu($_POST['validite']);
+
+	if (is_numeric($nombre)) {
+		$base = Genere_lettre(4) . "-" . Genere_lettre(4) . "-" . Genere_lettre(4) . "-" . Genere_lettre(4);
+
+		$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+		$insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a créé un code jetons pour <b>' . $nombre . ' personne(s)</b> (d\'une valeur de <b>' . $jetons . ' jetons</b>)', ':date' => FullDate('full')));
+
+		$insertn2 = $bdd->prepare("INSERT INTO gabcms_jetons (nombremax, code, value, valid) VALUES (:nbr, :code, :jetons, :valid)");
+		$insertn2->execute(array(':nbr' => $nombre, ':code' => $base, ':jetons' => $jetons, ':valid' => $valid));
+
+		echo '<h4 class="alert_success">Le code jetons a été créé : <b>' . $base . '</b> d\'une valeur de <b>' . $jetons . '</b> jetons pour ' . $nombre . ' utilisateur(s)</h4>';
+	} else {
+		echo '<h4 class="alert_error">Merci d\'écrire que des chiffres</h4>';
 	}
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

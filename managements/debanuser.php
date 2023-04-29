@@ -13,41 +13,42 @@ if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
 }
 
 if (isset($_GET['do'])) {
-	$pseudo = Secu($_POST['name']);
-	$name = explode(";", $pseudo);
-	$nbr = count($name);
 	$do = Secu($_GET['do']);
 	if ($do == "ban") {
-		if (isset($pseudo)) {
-			if (!empty($pseudo)) {
-
-				for ($n = 0; $n < $nbr; $n++) :
-					$sql = $bdd->query("SELECT id FROM users WHERE username = '" . $name[$n] . "'");
-					$row = $sql->rowCount();
-					if ($row < 1) {
-						echo '<h4 class="alert_error">Le compte <b>' . $name[$n] . '</b> n\'existe pas.</h4>';
+		if (isset($_POST['name'])) {
+			$names = explode(";", Secu($_POST['name']));
+			$bans = array();
+			foreach ($names as $name) {
+				$sql = $bdd->query("SELECT id FROM users WHERE username = '" . $name . "'");
+				$row = $sql->rowCount();
+				if ($row < 1) {
+					echo '<h4 class="alert_error">Le compte <b>' . $name . '</b> n\'existe pas.</h4>';
+				} else {
+					$check = $bdd->query("SELECT * FROM bans WHERE value = '" . $name . "'");
+					$row_c = $check->rowCount();
+					if ($row_c > 0) {
+						$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+						$insertn1->bindValue(':pseudo', $user['username']);
+						$insertn1->bindValue(':action', 'a procédé au débanissement de <b>' . $name . '</b>');
+						$insertn1->bindValue(':date', FullDate('full'));
+						$insertn1->execute();
+						$bdd->query("DELETE FROM bans WHERE value = '" . $name . "'");
+						$bans[] = $name;
 					} else {
-						$check = $bdd->query("SELECT * FROM bans WHERE value = '" . $name[$n] . "'");
-						$row_c = $check->rowCount();
-						if ($row_c > 0) {
-							$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-							$insertn1->bindValue(':pseudo', $user['username']);
-							$insertn1->bindValue(':action', 'a procédé au débanissement de <b>' . $name[$n] . '</b>');
-							$insertn1->bindValue(':date', FullDate('full'));
-							$insertn1->execute();
-							$bdd->query("DELETE FROM bans WHERE value = '" . $name[$n] . "'");
-							echo '<h4 class="alert_success">Le compte <b>' . $name[$n] . '</b> &agrave; été débannis.</h4>';
-						} else {
-							echo '<h4 class="alert_error">Le compte <b>' . $name[$n] . '</b> n\'est pas bannis.</h4>';
-						}
+						echo '<h4 class="alert_error">Le compte <b>' . $name . '</b> n\'est pas bannis.</h4>';
 					}
-				endfor;
-			} else {
-				echo '<h4 class="alert_error">Les champs ne sont pas tous remplie.</h4>';
+				}
 			}
+			if (!empty($bans)) {
+				$bans_text = implode(', ', $bans);
+				echo '<h4 class="alert_success">Les comptes suivants ont été débannis : <b>' . $bans_text . '</b></h4>';
+			}
+		} else {
+			echo '<h4 class="alert_error">Les champs ne sont pas tous remplis.</h4>';
 		}
 	}
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

@@ -40,48 +40,46 @@ switch ($user['rank']) {
 }
 
 $captcha = rand(0, 9999999);
+
 if (isset($_POST['message'])) {
     $message = Secu($_POST['message']);
     $captcha_verif = Secu($_POST['captcha_verif']);
     $captcha_code = Secu($_POST['captcha_code']);
+
     if ($message != "") {
-        if ($captcha_code == $captcha_verif) {
+        $affichage = "<div id=\"purse-redeem-result\">
+            <div class=\"redeem-error\">
+                <div class=\"rounded rounded-green\"> Ton message a été posté avec succès!</div>
+            </div>
+        </div>";
+
+        if ($captcha_code != $captcha_verif) {
+            $affichage = "<div id=\"purse-redeem-result\">
+                <div class=\"redeem-error\">
+                    <div class=\"rounded rounded-red\"> Merci de recopier le bon captcha </div>
+                </div>
+            </div>";
+        } else {
             $insertn1 = $bdd->prepare("INSERT INTO gabcms_tchat_staff (pseudo, message, ip, date, look, rank) VALUES (:pseudo, :message, :ip, :date, :look, :rank)");
             $insertn1->bindValue(':pseudo', $user['username']);
-            $insertn1->bindValue(':message', Secu($_POST['message']));
+            $insertn1->bindValue(':message', $message);
             $insertn1->bindValue(':ip', $user['ip_current']);
             $insertn1->bindValue(':date', FullDate('full'));
             $insertn1->bindValue(':look', $user['look']);
             $insertn1->bindValue(':rank', $user['rank']);
             $insertn1->execute();
-            $affichage = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-green\"> 
-              Ton message a été posté avec succès!
-            </div> 
-        </div> 
-</div>";
-        } else {
-            $affichage = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-red\"> 
-               Merci de recopier le bon captcha
-            </div> 
-        </div> 
-</div>";
         }
     } else {
-        $affichage = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-red\"> 
-               Merci de marquer un message
-            </div> 
-        </div> 
-</div>";
+        $affichage = "<div id=\"purse-redeem-result\">
+            <div class=\"redeem-error\">
+                <div class=\"rounded rounded-red\"> Merci de marquer un message </div>
+            </div>
+        </div>";
     }
 }
-$sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
-$cof = $sql->fetch(PDO::FETCH_ASSOC);
+
+$cof = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'")->fetch(PDO::FETCH_ASSOC);
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
@@ -249,36 +247,29 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                         <div class="box-content">
                             <?php
                             $messagesParPage = $cof['nb_tchat'];
-                            $retour_total = $bdd->query('SELECT COUNT(*) AS total FROM gabcms_tchat_staff');
-                            $donnees_total = $retour_total->fetch(PDO::FETCH_ASSOC);
-                            $total = $donnees_total['total'];
-                            $nombreDePages = ceil($total / $messagesParPage);
-                            if (isset($_GET['page'])) {
-                                $pageActuelle = intval($_GET['page']);
-                                if ($pageActuelle > $nombreDePages) {
-                                    $pageActuelle = $nombreDePages;
-                                }
-                            } else {
-                                $pageActuelle = 1;
-                            }
+                            $pageActuelle = isset($_GET['page']) ? intval($_GET['page']) : 1;
                             $premiereEntree = ($pageActuelle - 1) * $messagesParPage;
-                            $retour_messages = $bdd->query('SELECT * FROM gabcms_tchat_staff ORDER BY id DESC LIMIT ' . $premiereEntree . ', ' . $messagesParPage . '');
+                            $retour_messages = $bdd->query("SELECT * FROM gabcms_tchat_staff ORDER BY id DESC LIMIT $premiereEntree, $messagesParPage");
+
+                            $total = $bdd->query('SELECT COUNT(*) AS total FROM gabcms_tchat_staff')->fetch(PDO::FETCH_ASSOC)['total'];
+                            $nombreDePages = ceil($total / $messagesParPage);
+                            if ($pageActuelle > $nombreDePages) {
+                                $pageActuelle = $nombreDePages;
+                            }
+
+                            $rankToModifier = [
+                                5 => "red",
+                                6 => "green",
+                                7 => "#C1B31C",
+                                0 => "#F9C00B",
+                                8 => "blue",
+                                9 => "blue",
+                                10 => "blue",
+                                11 => "blue",
+                            ];
+
                             while ($donnees_messages = $retour_messages->fetch(PDO::FETCH_ASSOC)) {
-                                if ($donnees_messages['rank'] == 5) {
-                                    $modifier_r = "red";
-                                }
-                                if ($donnees_messages['rank'] == 6) {
-                                    $modifier_r = "green";
-                                }
-                                if ($donnees_messages['rank'] == 7) {
-                                    $modifier_r = "#C1B31C";
-                                }
-                                if ($donnees_messages['rank'] == 0) {
-                                    $modifier_r = "#F9C00B";
-                                }
-                                if ($donnees_messages['rank'] == 8) {
-                                    $modifier_r = "blue";
-                                }
+                                $modifier_r = $rankToModifier[$donnees_messages['rank']] ?? '';
                             ?>
                                 <table>
                                     <tbody>
@@ -297,16 +288,12 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 
                                 </table>
                             <?PHP }
-
-                            echo '<p align="center">Page : ';
-                            for ($i = 1; $i <= $nombreDePages; $i++) {
-                                if ($i == $pageActuelle) {
-                                    echo ' [ ' . $i . ' ] ';
-                                } else {
-                                    echo ' <a href="stafftchat?page=' . $i . '">' . $i . '</a> ';
-                                }
+                            $html = '<p align="center">Page : ';
+                            foreach (range(1, $nombreDePages) as $i) {
+                                $html .= $i == $pageActuelle ? ' [ ' . $i . ' ] ' : ' <a href="stafftchat?page=' . $i . '">' . $i . '</a> ';
                             }
-                            echo '</p>';
+                            $html .= '</p>';
+                            echo $html;
                             ?>
                         </div>
 

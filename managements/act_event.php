@@ -62,6 +62,7 @@ if (isset($_GET['modifiernews'])) {
         }
     }
 }
+
 if (isset($_GET['do'])) {
     $do = Secu($_GET['do']);
     $sql_do = $bdd->query("SELECT * FROM gabcms_news WHERE id = '" . $do . "'");

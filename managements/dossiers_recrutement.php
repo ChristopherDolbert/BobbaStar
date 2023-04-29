@@ -14,14 +14,13 @@ if (!isset($_SESSION['username']) || $user['rank'] > 11) {
 
 if (isset($_GET['id'])) {
     $id = Secu($_GET['id']);
-    $bdd->query("UPDATE gabcms_recrutement SET etat = '1' WHERE id = '" . $id . "'");
-    $info = $bdd->query("SELECT * FROM gabcms_recrutement_dossier WHERE id_recrut = '" . $id . "'");
+    $bdd->query("UPDATE gabcms_recrutement SET etat = '1' WHERE id = '$id'");
+    $info = $bdd->query("SELECT * FROM gabcms_recrutement_dossier WHERE id_recrut = '$id'");
     $i = $info->fetch();
-    $infr = $bdd->query("SELECT * FROM gabcms_recrutement WHERE id = '" . $id . "'");
+    $infr = $bdd->query("SELECT * FROM gabcms_recrutement WHERE id = '$id'");
     $r = $infr->fetch();
     $date_but = date('d/m/Y', $r['date_butoire']);
-    $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $r['poste'] . "'");
-    $c = $correct->fetch();
+    $c = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '$r[poste]'")->fetch();
 }
 
 if (isset($_GET['do2'])) {
@@ -63,6 +62,7 @@ if (isset($_GET['do2'])) {
     $bdd->query("INSERT INTO gabcms_tchat_staff (pseudo,message,ip,date,look,rank) VALUES ('','La direction de l\'hôtel a accepté la candidature de <b>" . $t2['pseudo'] . "</b> qui occupera le poste de <b>" . addslashes($c['nom_M']) . "</b> au sein de " . $sitename . ". Nous te souhaitons la bienvenue " . $t2['pseudo'] . " ! :D','0.0.0.0','" . FullDate('full') . "','hr-828-45.lg-285-64.ch-215-110.hd-180-2.sh-290-62.he-1607-','0')");
     echo '<h4 class="alert_success">La candidature de ' . $t2['pseudo'] . ' a été acceptée. Le poste a été attribué, manque plus qu\'a le ranker.</h4>';
 }
+
 if (isset($_GET['do'])) {
     $do = Secu($_GET['do']);
     $tdo1 = $bdd->query("SELECT * FROM gabcms_recrutement_dossier WHERE id = '" . $do . "'");
@@ -136,19 +136,14 @@ if (isset($_GET['traite'])) {
     $insertn4->execute();
     echo '<h4 class="alert_success">La vacance de poste au poste de <b>' . addslashes($ce['nom_M']) . '</b> est cloturée.</h4>';
 }
+
 if (isset($_GET['datep'])) {
     $datep = Secu($_GET['datep']);
-    $date_ac = $r['date_butoire'];
-    $date_calcul = 3 * 86400;
-    $newsdate_butoire = $date_ac + $date_calcul;
     if ($datep != "") {
-        $bdd->query("UPDATE gabcms_recrutement SET date_butoire='" . $newsdate_butoire . "', etat = '0' WHERE id = '" . $id . "'");
+        $bdd->query("UPDATE gabcms_recrutement SET date_butoire=UNIX_TIMESTAMP()+259200, etat=0 WHERE id=" . $id);
         $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-        $insertn1->bindValue(':pseudo', $user['username']);
-        $insertn1->bindValue(':action', 'a prolongé la vacance de poste de <b>3 jours</b> (' . addslashes($c['nom_M']) . ')');
-        $insertn1->bindValue(':date', FullDate('full'));
-        $insertn1->execute();
-        $bdd->query("INSERT INTO gabcms_tchat (pseudo,message,ip,date,look,rank) VALUES ('" . $user['username'] . "','Je vous demanderai de bien vouloir postuler à la vacance de poste suivante : <b>" . addslashes($c['nom_M']) . "</b>. Je l\'ai prolongé pour des raisons de satisfactions, pas assez de candidatures.<br/> <b>Je compte sur vous ! :contrat:</b>','0.0.0.0','" . FullDate('full') . "','" . $user['look'] . "','" . $user['rank'] . "')");
+        $insertn1->execute([':pseudo' => $user['username'], ':action' => 'a prolongé la vacance de poste de <b>3 jours</b> (' . addslashes($c['nom_M']) . ')', ':date' => FullDate('full')]);
+        $bdd->query("INSERT INTO gabcms_tchat (pseudo,message,ip,date,look,rank) VALUES ('{$user['username']}','Je vous demanderai de bien vouloir postuler à la vacance de poste suivante : <b>" . addslashes($c['nom_M']) . "</b>. Je l'ai prolongé pour des raisons de satisfactions, pas assez de candidatures.<br/> <b>Je compte sur vous ! :contrat:</b>','0.0.0.0','" . FullDate('full') . "','{$user['look']}','{$user['rank']}')");
         echo '<h4 class="alert_success">La vacance de poste a été prolongée de 3 jours !</h4>';
     }
 }

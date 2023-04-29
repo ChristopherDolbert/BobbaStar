@@ -18,44 +18,26 @@ if (isset($_GET['modif'])) {
 
 if (isset($_GET['modifierrecrut'])) {
     $modifierrecrut = Secu($_GET['modifierrecrut']);
-    $infr = $bdd->query("SELECT * FROM gabcms_recrutement WHERE id = '" . $modifierrecrut . "'");
+    $infr = $bdd->query("SELECT * FROM gabcms_recrutement WHERE id = '$modifierrecrut'");
     $r = $infr->fetch();
-    $stamp_now = mktime(date('H:i:s d-m-Y'));
-    $date_but = date('d/m/Y H:i', $r['date_butoire']);
-    if (isset($_POST['date_butoire']) || isset($_POST['poste'])) {
-        $date_butoire = Secu($_POST['date_butoire']);
-        $date_ac = $r['date_butoire'];
-        $date_calcul = $date_butoire * 86400;
-        $newsdate_butoire = $date_ac + $date_calcul;
+    $date_butoire = Secu($_POST['date_butoire'] ?? '');
+    if (!empty($date_butoire)) {
         $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $r['poste'] . "'");
         $c = $correct->fetch();
-        if ($date_butoire != "") {
-            $bdd->query("UPDATE gabcms_recrutement SET date_butoire='" . $newsdate_butoire . "' WHERE id = '" . $modifierrecrut . "'");
-            $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-            $insertn1->bindValue(':pseudo', $user['username']);
-            $insertn1->bindValue(':action', 'a prolongé la vacance de poste de <b>' . $date_butoire . ' jour(s)</b> (' . addslashes($c['nom_M']) . ')');
-            $insertn1->bindValue(':date', FullDate('full'));
-            $insertn1->execute();
-            $insertn2 = $bdd->prepare("INSERT INTO gabcms_tchat_staff (message, ip, date, look, rank) VALUES (:message, :ip, :date, :look, :rank)");
-            $insertn2->bindValue(':message', 'Une vacance de poste (' . addslashes($c['nom_M']) . ') a été prolongé de <b>' . $date_butoire . ' jour(s)</b>');
-            $insertn2->bindValue(':ip', '0.0.0.0');
-            $insertn2->bindValue(':date', FullDate('full'));
-            $insertn2->bindValue(':look', 'hr-828-45.lg-285-64.ch-215-110.hd-180-2.sh-290-62.he-1607-');
-            $insertn2->bindValue(':rank', '0');
-            $insertn2->execute();
-            $insertn3 = $bdd->prepare("INSERT INTO gabcms_tchat (message, ip, date, look, rank) VALUES (:message, :ip, :date, :look, :rank)");
-            $insertn3->bindValue(':message', 'Une vacance de poste (' . addslashes($c['nom_M']) . ') a été prolongé de <b>' . $date_butoire . ' jour(s)</b>');
-            $insertn3->bindValue(':ip', '0.0.0.0');
-            $insertn3->bindValue(':date', FullDate('full'));
-            $insertn3->bindValue(':look', 'hr-828-45.lg-285-64.ch-215-110.hd-180-2.sh-290-62.he-1607-');
-            $insertn3->bindValue(':rank', '0');
-            $insertn3->execute();
-            echo '<h4 class="alert_success">La vacance de poste <b>' . $c['nom_M'] . '</b> a été prolongée !</h4>';
-        } else {
-            echo '<h4 class="alert_error">Une erreur s\'est produite</h4>';
-        }
+        $newsdate_butoire = $r['date_butoire'] + ($date_butoire * 86400);
+        $bdd->query("UPDATE gabcms_recrutement SET date_butoire='$newsdate_butoire' WHERE id='$modifierrecrut'");
+        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+        $insertn1->execute([':pseudo' => $user['username'], ':action' => 'a prolongé la vacance de poste de <b>' . $date_butoire . ' jour(s)</b> (' . addslashes($c['nom_M']) . ')', ':date' => FullDate('full')]);
+        $insertn2 = $bdd->prepare("INSERT INTO gabcms_tchat_staff (message, ip, date, look, rank) VALUES (:message, :ip, :date, :look, :rank)");
+        $insertn2->execute([':message' => 'Une vacance de poste (' . addslashes($c['nom_M']) . ') a été prolongé de <b>' . $date_butoire . ' jour(s)</b>', ':ip' => '0.0.0.0', ':date' => FullDate('full'), ':look' => 'hr-828-45.lg-285-64.ch-215-110.hd-180-2.sh-290-62.he-1607-', ':rank' => '0']);
+        $insertn3 = $bdd->prepare("INSERT INTO gabcms_tchat (message, ip, date, look, rank) VALUES (:message, :ip, :date, :look, :rank)");
+        $insertn3->execute([':message' => 'Une vacance de poste (' . addslashes($c['nom_M']) . ') a été prolongé de <b>' . $date_butoire . ' jour(s)</b>', ':ip' => '0.0.0.0', ':date' => FullDate('full'), ':look' => 'hr-828-45.lg-285-64.ch-215-110.hd-180-2.sh-290-62.he-1607-', ':rank' => '0']);
+        echo '<h4 class="alert_success">La vacance de poste <b>' . $c['nom_M'] . '</b> a été prolongée !</h4>';
+    } else {
+        echo '<h4 class="alert_error">Une erreur s\'est produite</h4>';
     }
 }
+
 if (isset($_GET['do'])) {
     $do = Secu($_GET['do']);
     $infe = $bdd->query("SELECT * FROM gabcms_recrutement WHERE id = '" . $do . "'");

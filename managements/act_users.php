@@ -16,37 +16,27 @@ if (isset($_GET['modif'])) {
     $modif = Secu($_GET['modif']);
 }
 
-if (isset($_GET['modifierrecrut'])) {
+if (isset($_GET['modifierrecrut']) && isset($_POST['motto'], $_POST['jetons'], $_POST['mail'], $_POST['credits'], $_POST['activity_points'])) {
     $modifierrecrut = Secu($_GET['modifierrecrut']);
-    if (isset($_POST['motto'])) {
-        $motto = Secu($_POST['motto']);
-        $jetons = Secu($_POST['jetons']);
-        $mail = Secu($_POST['mail']);
-        $credits = Secu($_POST['credits']);
-        $activity_points = Secu($_POST['activity_points']);
-        $sqlaz = $bdd->query("SELECT * FROM users WHERE id = '" . $modifierrecrut . "'");
-        $roazw = $sqlaz->rowCount();
-        $assocaz = $sqlaz->fetch(PDO::FETCH_ASSOC);
-        if ($motto != "" && $jetons != "" && $credits != "" && $activity_points != "" && $mail != "") {
-            $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-            $insertn1->bindValue(':pseudo', $user['username']);
-            $insertn1->bindValue(':action', 'a modifié des données sur le compte de <b>' . $assocaz['username'] . '</b>');
-            $insertn1->bindValue(':date', FullDate('full'));
-            $insertn1->execute();
-            $insertn2 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
-            $insertn2->bindValue(':userid', $modifierrecrut);
-            $insertn2->bindValue(':message', 'Nous venons de modifier quelques trucs sur ton compte, pour plus d\'infos, rentre en contact avec moi-même depuis l\'hôtel ou sur le service client en <a href="' . $url . '/service_client/autre">cliquant ici</a> !');
-            $insertn2->bindValue(':auteur', $user['username']);
-            $insertn2->bindValue(':date', FullDate('full'));
-            $insertn2->bindValue(':look', $user['look']);
-            $insertn2->execute();
-            $bdd->query("UPDATE users SET jetons = '" . $jetons . "', mail = '" . $mail . "', motto = '" . $motto . "', credits = '" . $credits . "', activity_points = '" . $activity_points . "' WHERE id = '" . $modifierrecrut . "'");
-            echo '<h4 class="alert_success">Les données de <b>' . $assocaz['username'] . '</b> ont été modifiées.</h4>';
-        } else {
-            echo '<h4 class="alert_error">Merci de ne pas laisser des cases vides.</h4>';
-        }
+    $motto = Secu($_POST['motto']);
+    $jetons = Secu($_POST['jetons']);
+    $mail = Secu($_POST['mail']);
+    $credits = Secu($_POST['credits']);
+    $activity_points = Secu($_POST['activity_points']);
+    $sqlaz = $bdd->query("SELECT username FROM users WHERE id = '$modifierrecrut'");
+    $assocaz = $sqlaz->fetch(PDO::FETCH_ASSOC);
+    if ($motto && $jetons && $mail && $credits && $activity_points) {
+        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+        $insertn1->execute([':pseudo' => $user['username'], ':action' => 'a modifié des données sur le compte de <b>' . $assocaz['username'] . '</b>', ':date' => FullDate('full')]);
+        $insertn2 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
+        $insertn2->execute([':userid' => $modifierrecrut, ':message' => 'Nous venons de modifier quelques trucs sur ton compte, pour plus d\'infos, rentre en contact avec moi-même depuis l\'hôtel ou sur le service client en <a href="' . $url . '/service_client/autre">cliquant ici</a> !', ':auteur' => $user['username'], ':date' => FullDate('full'), ':look' => $user['look']]);
+        $bdd->query("UPDATE users SET jetons = '$jetons', mail = '$mail', motto = '$motto', credits = '$credits', activity_points = '$activity_points' WHERE id = '$modifierrecrut'");
+        echo '<h4 class="alert_success">Les données de <b>' . $assocaz['username'] . '</b> ont été modifiées.</h4>';
+    } else {
+        echo '<h4 class="alert_error">Merci de ne pas laisser des cases vides.</h4>';
     }
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

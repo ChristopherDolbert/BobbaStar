@@ -12,33 +12,24 @@ if (!isset($_SESSION['username']) || $user['rank'] < 10 || $user['rank'] > 11) {
     exit();
 }
 
-if (isset($_POST['achat_jetons']) || isset($_POST['respects_300']) || isset($_POST['respects_700']) || isset($_POST['caresses_400']) || isset($_POST['caresses_900']) || isset($_POST['messages']) || isset($_POST['winwin']) || isset($_POST['bots']) || isset($_POST['vipclub']) || isset($_POST['staffclub'])) {
-    $achat_jetons = Secu($_POST['achat_jetons']);
-    $respects_300 = Secu($_POST['respects_300']);
-    $respects_700 = Secu($_POST['respects_700']);
-    $caresses_400 = Secu($_POST['caresses_400']);
-    $caresses_900 = Secu($_POST['caresses_900']);
-    $messages = Secu($_POST['messages']);
-    $winwin = Secu($_POST['winwin']);
-    $bots = Secu($_POST['bots']);
-    $vipclub = Secu($_POST['vipclub']);
-    $staffclub = Secu($_POST['staffclub']);
-    if ($achat_jetons != "" && $respects_300 != "" && $respects_700 != "" && $caresses_400 != "" && $caresses_900 != "" && $messages != "" && $winwin != "" && $bots != "" && $vipclub != "" && $staffclub != "") {
-        if ($achat_jetons != "0") {
-            $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-            $insertn1->bindValue(':pseudo', $user['username']);
-            $insertn1->bindValue(':action', 'a mis à jour les <b>prix de la boutique</b>');
-            $insertn1->bindValue(':date', FullDate('full'));
-            $insertn1->execute();
-            $bdd->query("UPDATE gabcms_config_prix SET achat_jetons = '" . $achat_jetons . "', respects_300 = '" . $respects_300 . "', respects_700 = '" . $respects_700 . "', caresses_400 = '" . $caresses_400 . "', caresses_900 = '" . $caresses_900 . "', messages = '" . $messages . "', winwin = '" . $winwin . "', bots = '" . $bots . "', vipclub = '" . $vipclub . "', staffclub = '" . $staffclub . "' WHERE id = 1");
-            echo '<h4 class="alert_success">Tes informations sont maintenant disponible sur le site.</h4>';
-        } else {
-            echo '<h4 class="alert_error">Merci de ne pas mettre 0 pour l\'achat de jetons.</h4>';
-        }
-    } else {
+if (isset($_POST['achat_jetons'], $_POST['respects_300'], $_POST['respects_700'], $_POST['caresses_400'], $_POST['caresses_900'], $_POST['messages'], $_POST['winwin'], $_POST['bots'], $_POST['vipclub'], $_POST['staffclub'])) {
+    $inputs = array_map('Secu', $_POST);
+    if (array_filter($inputs, 'is_blank')) {
         echo '<h4 class="alert_error">Merci de marquer une information valide.</h4>';
+    } else if ($inputs['achat_jetons'] == 0) {
+        echo '<h4 class="alert_error">Merci de ne pas mettre 0 pour l\'achat de jetons.</h4>';
+    } else {
+        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+        $insertn1->bindValue(':pseudo', $user['username']);
+        $insertn1->bindValue(':action', 'a mis à jour les <b>prix de la boutique</b>');
+        $insertn1->bindValue(':date', FullDate('full'));
+        $insertn1->execute();
+        $bdd->query("UPDATE gabcms_config_prix SET achat_jetons = '{$inputs['achat_jetons']}', respects_300 = '{$inputs['respects_300']}', respects_700 = '{$inputs['respects_700']}', caresses_400 = '{$inputs['caresses_400']}', caresses_900 = '{$inputs['caresses_900']}', messages = '{$inputs['messages']}', winwin = '{$inputs['winwin']}', bots = '{$inputs['bots']}', vipclub = '{$inputs['vipclub']}', staffclub = '{$inputs['staffclub']}' WHERE id = 1");
+        echo '<h4 class="alert_success">Tes informations sont maintenant disponible sur le site.</h4>';
     }
 }
+
+
 $sql = $bdd->query("SELECT * FROM gabcms_config_prix WHERE id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
 ?>

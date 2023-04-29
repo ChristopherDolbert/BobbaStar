@@ -19,38 +19,25 @@ if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
      Toutes les actions des staffs sont marquées ici.<br /><br />
      <?php
      $messagesParPage = 35;
-     $retour_total = $bdd->query('SELECT COUNT(*) AS total FROM gabcms_stafflog');
-     $donnees_total = $retour_total->fetch(PDO::FETCH_ASSOC);
-     $total = $donnees_total['total'];
+     $total = $bdd->query('SELECT COUNT(*) AS total FROM gabcms_stafflog')->fetchColumn();
      $nombreDePages = ceil($total / $messagesParPage);
-     if (isset($_GET['page'])) {
-          $pageActuelle = intval($_GET['page']);
-
-          if ($pageActuelle > $nombreDePages) {
-               $pageActuelle = $nombreDePages;
-          }
-     } else {
-          $pageActuelle = 1;
-     }
+     $pageActuelle = isset($_GET['page']) ? min(intval($_GET['page']), $nombreDePages) : 1;
      $premiereEntree = ($pageActuelle - 1) * $messagesParPage;
-     $retour_messages = $bdd->query('SELECT * FROM gabcms_stafflog ORDER BY id DESC LIMIT ' . $premiereEntree . ', ' . $messagesParPage . '');
-     while ($donnees_messages = $retour_messages->fetch(PDO::FETCH_ASSOC)) {
+     $retour_messages = $bdd->query("SELECT * FROM gabcms_stafflog ORDER BY id DESC LIMIT $premiereEntree, $messagesParPage");
 
+     while ($donnees_messages = $retour_messages->fetch(PDO::FETCH_ASSOC)) {
      ?>
-          <td><span style="color:#008000;"><?PHP echo Secu($donnees_messages['date']); ?></span> <b><?PHP echo Secu($donnees_messages['pseudo']); ?></b> <?PHP echo stripslashes($donnees_messages['action']); ?></td><br />
-     <?PHP
+          <td><span style="color:#008000;"><?= Secu($donnees_messages['date']); ?></span> <b><?= Secu($donnees_messages['pseudo']); ?></b> <?= stripslashes($donnees_messages['action']); ?></td><br />
+     <?php
      }
 
      echo '<p align="center">Page : ';
      for ($i = 1; $i <= $nombreDePages; $i++) {
-          if ($i == $pageActuelle) {
-               echo ' [ ' . $i . ' ] ';
-          } else {
-               echo ' <a href="logs?page=' . $i . '">' . $i . '</a> ';
-          }
+          echo $i == $pageActuelle ? " [ $i ] " : " <a href=\"logs?page=$i\">$i</a> ";
      }
      echo '</p>';
      ?>
+
 
 </body>
 

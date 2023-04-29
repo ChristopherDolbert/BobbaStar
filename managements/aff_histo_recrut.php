@@ -35,29 +35,15 @@ $i = $info->fetch();
                 <td class="haut">Retenu</td>
                 <td class="haut">Traité par</td>
             </tr>
+            
             <?php
             $sql = $bdd->query("SELECT * FROM gabcms_recrutement_dossier WHERE pseudo = '" . $pseudo . "' ORDER BY id DESC");
             while ($a = $sql->fetch()) {
                 $dossiers = $bdd->query("SELECT * FROM gabcms_recrutement WHERE id = '" . $a['id_recrut'] . "'");
                 $e = $dossiers->fetch();
-                $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $e['poste'] . "'");
-                $c = $correct->fetch();
-                if ($e['poste'] == "") {
-                    $modif = "<i>Session supprimée</i>";
-                } elseif ($c['nom_M'] == "") {
-                    $modif = "<i>Poste supprimé</i>";
-                } else {
-                    $modif = $c['nom_M'];
-                }
-                if ($a['retenu'] == 2) {
-                    $modif_traite = "<span style=\"color:#008000;\">Accepté</span>";
-                }
-                if ($a['retenu'] == 1) {
-                    $modif_traite = "<span style=\"color:#FF0000;\">Refusé</span>";
-                }
-                if ($a['retenu'] == 0) {
-                    $modif_traite = "<span style=\"color:#0000FF;\">En attente</span>";
-                }
+                $correct = $bdd->query("SELECT nom_M FROM gabcms_postes_noms WHERE id = '" . $e['poste'] . "'");
+                $modif = ($e['poste'] == "") ? "<i>Session supprimée</i>" : ($correct->rowCount() == 0 ? "<i>Poste supprimé</i>" : $correct->fetch()['nom_M']);
+                $modif_traite = ($a['retenu'] == 2) ? "<span style=\"color:#008000;\">Accepté</span>" : (($a['retenu'] == 1) ? "<span style=\"color:#FF0000;\">Refusé</span>" : "<span style=\"color:#0000FF;\">En attente</span>");
             ?>
                 <tr class="bas">
                     <td class="bas"><?PHP echo $modif ?></td>
@@ -65,7 +51,7 @@ $i = $info->fetch();
                     <td class="bas"><?PHP echo $a['date'] ?></td>
                     <td class="bas"><?PHP echo $a['age'] ?></td>
                     <td style="padding:5px; text-align: left; vertical-align: middle;font-size:11px;">
-                        <div class="quotetitle"><b>CV DE <?PHP echo $a['pseudo'] ?> :</b> <input type="button" value="Afficher" style="width:50px;font-size:10px;margin:0px;padding:0px;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = '';        this.innerText = ''; this.value = 'Cacher'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = 'Afficher'; }" /></div>
+                        <div class="quotetitle"><b>CV DE <?PHP echo $a['pseudo'] ?> :</b> <input type="button" value="Afficher" style="width:50px;font-size:10px;margin:0px;padding:0px;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = 'Cacher'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = 'Afficher'; }" /></div>
                         <div class="quotecontent">
                             <div style="display: none;"><?PHP echo $a['cv'] ?></div>
                         </div>
@@ -74,6 +60,7 @@ $i = $info->fetch();
                     <td class="bas"><?PHP echo $a['traite_par'] ?></td>
                 </tr>
             <?PHP } ?>
+
         </tbody>
     </table>
 </body>

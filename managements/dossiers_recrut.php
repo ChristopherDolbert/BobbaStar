@@ -14,48 +14,50 @@ if (!isset($_SESSION['username']) || $user['rank'] > 11) {
 
 if (isset($_GET['id'])) {
     $id = Secu($_GET['id']);
-    $info = $bdd->query("SELECT * FROM gabcms_recrutement_dossier WHERE id_recrut = '" . $id . "'");
+    $info = $bdd->query("SELECT * FROM gabcms_recrutement_dossier WHERE id_recrut = '$id'");
     $i = $info->fetch();
-    $infr = $bdd->query("SELECT * FROM gabcms_recrutement WHERE id = '" . $id . "'");
-    $r = $infr->fetch();
+    $r = $bdd->query("SELECT * FROM gabcms_recrutement WHERE id = '$id'")->fetch();
     $date_but = date('d/m/Y', $r['date_butoire']);
-    $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $r['poste'] . "'");
-    $c = $correct->fetch();
+    $c = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '$r[poste]'")->fetch();
 }
+
 
 if (isset($_GET['do'])) {
     $do = Secu($_GET['do']);
-    $tdo1 = $bdd->query("SELECT * FROM gabcms_recrutement_dossier WHERE id = '" . $do . "'");
+    $tdo1 = $bdd->query("SELECT * FROM gabcms_recrutement_dossier WHERE id = '$do'");
     $t1 = $tdo1->fetch();
-    $sqlr = $bdd->query("SELECT id FROM users WHERE username = '" . $t1['pseudo'] . "'");
-    $rowr = $sqlr->rowCount();
+    $sqlr = $bdd->query("SELECT id FROM users WHERE username = '{$t1['pseudo']}'");
     $assocr = $sqlr->fetch(PDO::FETCH_ASSOC);
     if ($do != "") {
-        $bdd->query("UPDATE gabcms_recrutement_dossier SET retenu = '1', traite_par = '" . $user['username'] . "', etat = '2' WHERE id = '" . $do . "'");
+        $bdd->query("UPDATE gabcms_recrutement_dossier SET retenu = '1', traite_par = '{$user['username']}', etat = '2' WHERE id = '$do'");
         $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-        $insertn1->bindValue(':pseudo', $user['username']);
-        $insertn1->bindValue(':action', 'a <b>refusé</b> la candidature de <b>' . $t1['pseudo'] . '</b> au poste de <b>' . addslashes($c['nom_M']) . '</b>');
-        $insertn1->bindValue(':date', FullDate('full'));
-        $insertn1->execute();
+        $insertn1->execute(array(
+            ':pseudo' => $user['username'],
+            ':action' => "a <b>refusé</b> la candidature de <b>{$t1['pseudo']}</b> au poste de <b>" . addslashes($c['nom_M']) . '</b>',
+            ':date' => FullDate('full')
+        ));
         $insertn2 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
-        $insertn2->bindValue(':userid', $assocr['id']);
-        $insertn2->bindValue(':message', 'Je viens de traité ta candidature au poste de <b>' . addslashes($c['nom_M']) . '</b>, va regarder tes alertes pour savoir si tu es pris ou non en <a href="' . $url . '/alerts">cliquant ici</a> !');
-        $insertn2->bindValue(':auteur', $user['username']);
-        $insertn2->bindValue(':date', FullDate('full'));
-        $insertn2->bindValue(':look', $user['look']);
-        $insertn2->execute();
+        $insertn2->execute(array(
+            ':userid' => $assocr['id'],
+            ':message' => "Je viens de traité ta candidature au poste de <b>" . addslashes($c['nom_M']) . "</b>, va regarder tes alertes pour savoir si tu es pris ou non en <a href='$url/alerts'>cliquant ici</a> !",
+            ':auteur' => $user['username'],
+            ':date' => FullDate('full'),
+            ':look' => $user['look']
+        ));
         $insertn2 = $bdd->prepare("INSERT INTO gabcms_alertes (userid, sujet, alerte, par, date, look, action) VALUES (:id, :sujet, :alerte, :par, :date, :look, :act)");
-        $insertn2->bindValue(':id', $assocr['id']);
-        $insertn2->bindValue(':sujet', 'Candidature - ' . addslashes($c['nom_M']) . '');
-        $insertn2->bindValue(':alerte', 'Je t\'informe que ta candidature a été <b>refusée</b> pour le poste de ' . addslashes($c['nom_M']) . ', la direction de l\'hôtel n\'est pas dans l\'obligation de justifié ce refus.');
-        $insertn2->bindValue(':par', $user['username']);
-        $insertn2->bindValue(':date', FullDate('full'));
-        $insertn2->bindValue(':look', $user['look']);
-        $insertn2->bindValue(':act', '0');
-        $insertn2->execute();
+        $insertn2->execute(array(
+            ':id' => $assocr['id'],
+            ':sujet' => "Candidature - " . addslashes($c['nom_M']),
+            ':alerte' => "Je t'informe que ta candidature a été <b>refusée</b> pour le poste de " . addslashes($c['nom_M']) . ", la direction de l'hôtel n'est pas dans l'obligation de justifié ce refus.",
+            ':par' => $user['username'],
+            ':date' => FullDate('full'),
+            ':look' => $user['look'],
+            ':act' => '0'
+        ));
         echo '<h4 class="alert_success">La candidature de <b>' . $t1['pseudo'] . '</b> a été refusée.</h4>';
     }
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

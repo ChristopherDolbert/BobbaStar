@@ -12,31 +12,27 @@ if (!isset($_SESSION['username']) || $user['rank'] < 9 || $user['rank'] > 11) {
 	exit();
 }
 
-if (isset($_GET['do'])) {
-	$do = Secu($_GET['do']);
-	if ($do == "create") {
-		if (isset($_POST['titre']) || isset($_POST['desc']) || isset($_POST['image']) || isset($_POST['article']) || isset($_POST['sign']) || isset($_POST['catart']) || isset($_POST['info'])) {
-			$titre = Secu($_POST['titre']);
-			$desc = Secu($_POST['desc']);
-			$image = Secu($_POST['image']);
-			$article = $_POST['article'];
-			$sign = Secu($_POST['sign']);
-			$ca = Secu($_POST['catart']);
-			$info = Secu($_POST['info']);
-			if ($titre != "" && $article != "" && $ca != "") {
-				$bdd->query("INSERT INTO gabcms_news (topstory_image,title,snippet,info,body,auteur,date,sign,category_id,look,event) VALUES ('" . $image . "', '" . addslashes($titre) . "', '" . addslashes($desc) . "', '" . $info . "', '" . addslashes($article) . "', '" . $user['username'] . "', '" . time() . "', '" . $sign . "', '" . $ca . "', '" . $user['look'] . "', '1')");
-				$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-				$insertn1->bindValue(':pseudo', $user['username']);
-				$insertn1->bindValue(':action', 'a créé un article <b>(' . addslashes($titre) . ')</b>');
-				$insertn1->bindValue(':date', FullDate('full'));
-				$insertn1->execute();
-				echo '<h4 class="alert_success">L\'événement vient d\'&ecirc;tre ajouté.</h4>';
-			} else {
-				echo '<h4 class="alert_error">Merci de remplir les champs vides.</h4>';
-			}
-		}
+if (isset($_GET['do']) && $_GET['do'] == "create" && isset($_POST['titre'], $_POST['article'], $_POST['catart'])) {
+	$titre = Secu($_POST['titre']);
+	$desc = Secu($_POST['desc']);
+	$image = Secu($_POST['image']);
+	$article = $_POST['article'];
+	$sign = Secu($_POST['sign']);
+	$ca = Secu($_POST['catart']);
+	$info = Secu($_POST['info']);
+
+	if (!empty($titre) && !empty($article) && !empty($ca)) {
+		$bdd->query("INSERT INTO gabcms_news (topstory_image,title,snippet,info,body,auteur,date,sign,category_id,look,event) VALUES ('" . $image . "', '" . addslashes($titre) . "', '" . addslashes($desc) . "', '" . $info . "', '" . addslashes($article) . "', '" . $user['username'] . "', '" . time() . "', '" . $sign . "', '" . $ca . "', '" . $user['look'] . "', '1')");
+
+		$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+		$insertn1->execute([':pseudo' => $user['username'], ':action' => 'a créé un article <b>(' . addslashes($titre) . ')</b>', ':date' => FullDate('full')]);
+
+		echo '<h4 class="alert_success">L\'événement vient d\'être ajouté.</h4>';
+	} else {
+		echo '<h4 class="alert_error">Merci de remplir les champs vides.</h4>';
 	}
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

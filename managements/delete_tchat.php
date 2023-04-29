@@ -14,28 +14,24 @@ if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
 
 if (isset($_GET['do'])) {
     $do = Secu($_GET['do']);
-    $infe = $bdd->query("SELECT * FROM gabcms_tchat WHERE id = '" . $do . "'");
+    $infe = $bdd->query("SELECT * FROM gabcms_tchat WHERE id = '$do'");
     $e = $infe->fetch();
     $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-    $insertn1->bindValue(':pseudo', $user['username']);
-    $insertn1->bindValue(':action', 'a modéré un <b>tchat</b> de <b>' . $e['pseudo'] . '</b>');
-    $insertn1->bindValue(':date', FullDate('full'));
-    $insertn1->execute();
-    $bdd->query("UPDATE gabcms_tchat SET message='<span style=\"color:#B5B5B5;\"><i>Ce message a été modéré par un modérateur.</i></span>' WHERE id = '" . $do . "'");
+    $insertn1->execute([':pseudo' => $user['username'], ':action' => 'a modéré un <b>tchat</b> de <b>' . $e['pseudo'] . '</b>', ':date' => FullDate('full')]);
+    $bdd->query("UPDATE gabcms_tchat SET message='<span style=\"color:#B5B5B5;\"><i>Ce message a été modéré par un modérateur.</i></span>' WHERE id = '$do'");
     echo '<h4 class="alert_success">Un tchat a été modéré avec succès !</h4>';
 }
+
 if (isset($_GET['sup'])) {
     $sup = Secu($_GET['sup']);
-    $infr = $bdd->query("SELECT * FROM gabcms_tchat WHERE id = '" . $sup . "'");
+    $infr = $bdd->query("SELECT * FROM gabcms_tchat WHERE id = '$sup'");
     $r = $infr->fetch();
     $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-    $insertn1->bindValue(':pseudo', $user['username']);
-    $insertn1->bindValue(':action', 'a supprimé un <b>tchat</b> de <b>' . $r['pseudo'] . '</b>');
-    $insertn1->bindValue(':date', FullDate('full'));
-    $insertn1->execute();
-    $bdd->query("DELETE FROM gabcms_tchat WHERE id = '" . $sup . "'");
+    $insertn1->execute([':pseudo' => $user['username'], ':action' => 'a supprimé un <b>tchat</b> de <b>' . $r['pseudo'] . '</b>', ':date' => FullDate('full')]);
+    $bdd->query("DELETE FROM gabcms_tchat WHERE id = '$sup'");
     echo '<h4 class="alert_success">Un tchat a été supprimé avec succès !</h4>';
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

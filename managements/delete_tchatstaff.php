@@ -14,28 +14,40 @@ if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
 
 if (isset($_GET['do'])) {
     $do = Secu($_GET['do']);
-    $infe = $bdd->query("SELECT * FROM gabcms_tchat_staff WHERE id = '" . $do . "'");
-    $e = $infe->fetch();
+    $tchat_type = 'staff';
+    $tchat_type_text = 'tchat des staffs';
+
+    $tchat = $bdd->query("SELECT * FROM gabcms_tchat_{$tchat_type} WHERE id = '{$do}'")->fetch();
+    $bdd->query("UPDATE gabcms_tchat_{$tchat_type} SET message='<span style=\"color:#B5B5B5;\"><i>Ce message a été modéré par un modérateur.</i></span>' WHERE id = '{$do}'");
+
     $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-    $insertn1->bindValue(':pseudo', $user['username']);
-    $insertn1->bindValue(':action', 'a modéré un <b>tchat</b> de <b>' . $e['pseudo'] . '</b> sur le tchat des staffs');
-    $insertn1->bindValue(':date', FullDate('full'));
-    $insertn1->execute();
-    $bdd->query("UPDATE gabcms_tchat_staff SET message='<span style=\"color:#B5B5B5;\"><i>Ce message a été modéré par un modérateur.</i></span>' WHERE id = '" . $do . "'");
-    echo '<h4 class="alert_success">Un tchat a été modérer avec succès !</h4>';
+    $insertn1->execute(array(
+        ':pseudo' => $user['username'],
+        ':action' => "a modéré un <b>tchat</b> de <b>{$tchat['pseudo']}</b> sur le {$tchat_type_text}",
+        ':date' => FullDate('full')
+    ));
+
+    echo '<h4 class="alert_success">Un tchat a été modéré avec succès !</h4>';
 }
+
 if (isset($_GET['sup'])) {
     $sup = Secu($_GET['sup']);
-    $infr = $bdd->query("SELECT * FROM gabcms_tchat_staff WHERE id = '" . $sup . "'");
-    $r = $infr->fetch();
+    $tchat_type = 'staff';
+    $tchat_type_text = 'tchat des staffs';
+
+    $tchat = $bdd->query("SELECT * FROM gabcms_tchat_{$tchat_type} WHERE id = '{$sup}'")->fetch();
+    $bdd->query("DELETE FROM gabcms_tchat_{$tchat_type} WHERE id = '{$sup}'");
+
     $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-    $insertn1->bindValue(':pseudo', $user['username']);
-    $insertn1->bindValue(':action', 'a supprimé un <b>tchat</b> de <b>' . $r['pseudo'] . '</b> sur le tchat des staffs');
-    $insertn1->bindValue(':date', FullDate('full'));
-    $insertn1->execute();
-    $bdd->query("DELETE FROM gabcms_tchat_staff WHERE id = '" . $sup . "'");
+    $insertn1->execute(array(
+        ':pseudo' => $user['username'],
+        ':action' => "a supprimé un <b>tchat</b> de <b>{$tchat['pseudo']}</b> sur le {$tchat_type_text}",
+        ':date' => FullDate('full')
+    ));
+
     echo '<h4 class="alert_success">Un tchat a été supprimé avec succès !</h4>';
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

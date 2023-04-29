@@ -12,58 +12,46 @@ if (!isset($_SESSION['username']) || $user['rank'] < 10 || $user['rank'] > 11) {
     exit();
 }
 
-if (isset($_POST['id1']) || isset($_POST['id2']) || isset($_POST['id3']) || isset($_POST['id4']) || isset($_POST['id5']) || isset($_POST['id6']) || isset($_POST['id7']) || isset($_POST['id8'])) {
-    $id1 = Secu($_POST['id1']);
-    $id2 = Secu($_POST['id2']);
-    $id3 = Secu($_POST['id3']);
-    $id4 = Secu($_POST['id4']);
-    $id5 = Secu($_POST['id5']);
-    $id6 = Secu($_POST['id6']);
-    $id7 = Secu($_POST['id7']);
-    $id8 = Secu($_POST['id8']);
-    $id9 = Secu($_POST['id9']);
-    $id10 = Secu($_POST['id10']);
-    if ($id1 != "" && $id2 != "" && $id3 != "" && $id4 != "" && $id5 != "" && $id6 != "" && $id7 != "" && $id8 != "" && $id9 != "" && $id10 != "") {
-        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-        $insertn1->bindValue(':pseudo', $user['username']);
-        $insertn1->bindValue(':action', 'a mis à jour les <b>rappels</b> (Bureau des staffs)');
-        $insertn1->bindValue(':date', FullDate('full'));
-        $insertn1->execute();
-        $bdd->query("UPDATE gabcms_bureau_rappels SET affichage = '" . Secu($id1) . "' WHERE id = 1");
-        $bdd->query("UPDATE gabcms_bureau_rappels SET affichage = '" . Secu($id2) . "' WHERE id = 2");
-        $bdd->query("UPDATE gabcms_bureau_rappels SET affichage = '" . Secu($id3) . "' WHERE id = 3");
-        $bdd->query("UPDATE gabcms_bureau_rappels SET affichage = '" . Secu($id4) . "' WHERE id = 4");
-        $bdd->query("UPDATE gabcms_bureau_rappels SET affichage = '" . Secu($id5) . "' WHERE id = 5");
-        $bdd->query("UPDATE gabcms_bureau_rappels SET affichage = '" . Secu($id6) . "' WHERE id = 6");
-        $bdd->query("UPDATE gabcms_bureau_rappels SET affichage = '" . Secu($id7) . "' WHERE id = 7");
-        $bdd->query("UPDATE gabcms_bureau_rappels SET affichage = '" . Secu($id8) . "' WHERE id = 8");
-        $bdd->query("UPDATE gabcms_bureau_rappels SET affichage = '" . Secu($id9) . "' WHERE id = 9");
-        $bdd->query("UPDATE gabcms_bureau_rappels SET affichage = '" . Secu($id10) . "' WHERE id = 10");
-        echo '<h4 class="alert_success">Tes informations sont maintenant disponible sur le site.</h4>';
-    } else {
-        echo '<h4 class="alert_error">Une erreur est surevenue</h4>';
+$ids = array('id1', 'id2', 'id3', 'id4', 'id5', 'id6', 'id7', 'id8', 'id9', 'id10');
+$values = array();
+
+foreach ($ids as $id) {
+    if (isset($_POST[$id])) {
+        $value = Secu($_POST[$id]);
+        if ($value !== '') {
+            $values[] = $value;
+        }
     }
 }
-$sql1 = $bdd->query("SELECT * FROM gabcms_bureau_rappels WHERE id = 1");
-$cof1 = $sql1->fetch(PDO::FETCH_ASSOC);
-$sql2 = $bdd->query("SELECT * FROM gabcms_bureau_rappels WHERE id = 2");
-$cof2 = $sql2->fetch(PDO::FETCH_ASSOC);
-$sql3 = $bdd->query("SELECT * FROM gabcms_bureau_rappels WHERE id = 3");
-$cof3 = $sql3->fetch(PDO::FETCH_ASSOC);
-$sql4 = $bdd->query("SELECT * FROM gabcms_bureau_rappels WHERE id = 4");
-$cof4 = $sql4->fetch(PDO::FETCH_ASSOC);
-$sql5 = $bdd->query("SELECT * FROM gabcms_bureau_rappels WHERE id = 5");
-$cof5 = $sql5->fetch(PDO::FETCH_ASSOC);
-$sql6 = $bdd->query("SELECT * FROM gabcms_bureau_rappels WHERE id = 6");
-$cof6 = $sql6->fetch(PDO::FETCH_ASSOC);
-$sql7 = $bdd->query("SELECT * FROM gabcms_bureau_rappels WHERE id = 7");
-$cof7 = $sql7->fetch(PDO::FETCH_ASSOC);
-$sql8 = $bdd->query("SELECT * FROM gabcms_bureau_rappels WHERE id = 8");
-$cof8 = $sql8->fetch(PDO::FETCH_ASSOC);
-$sql9 = $bdd->query("SELECT * FROM gabcms_bureau_rappels WHERE id = 9");
-$cof9 = $sql9->fetch(PDO::FETCH_ASSOC);
-$sql10 = $bdd->query("SELECT * FROM gabcms_bureau_rappels WHERE id = 10");
-$cof10 = $sql10->fetch(PDO::FETCH_ASSOC);
+
+if (count($values) === 10) {
+    $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+    $insertn1->bindValue(':pseudo', $user['username']);
+    $insertn1->bindValue(':action', 'a mis à jour les <b>rappels</b> (Bureau des staffs)');
+    $insertn1->bindValue(':date', FullDate('full'));
+    $insertn1->execute();
+
+    foreach ($ids as $key => $id) {
+        $bdd->query("UPDATE gabcms_bureau_rappels SET affichage = '" . Secu($values[$key]) . "' WHERE id = " . ($key + 1));
+    }
+
+    echo '<h4 class="alert_success">Tes informations sont maintenant disponibles sur le site.</h4>';
+} else {
+    echo '<h4 class="alert_error">Une erreur est survenue.</h4>';
+}
+
+$sql = $bdd->query("SELECT * FROM gabcms_bureau_rappels");
+$cofs = $sql->fetchAll(PDO::FETCH_ASSOC);
+$cof1 = $cofs[0];
+$cof2 = $cofs[1];
+$cof3 = $cofs[2];
+$cof4 = $cofs[3];
+$cof5 = $cofs[4];
+$cof6 = $cofs[5];
+$cof7 = $cofs[6];
+$cof8 = $cofs[7];
+$cof9 = $cofs[8];
+$cof10 = $cofs[9];
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

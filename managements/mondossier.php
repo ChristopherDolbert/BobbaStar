@@ -10,8 +10,8 @@ $pagename = "Mon dossier personnel";
 $pageid = "dossier";
 
 if (!isset($_SESSION['username']) || $user['rank'] < 7 || $user['rank'] > 11) {
-    Redirect("" . $url . "/managements/acces_interdit");
-    exit();
+	Redirect("" . $url . "/managements/acces_interdit");
+	exit();
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -119,32 +119,26 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 						<div id="notfound-looking-for" class="box-content">
 							<?php
 							$messagesParPage = 5;
-							$retour_total = $bdd->query('SELECT COUNT(*) AS total FROM gabcms_dossier WHERE userid = ' . $user['id'] . '');
-							$donnees_total = $retour_total->fetch(PDO::FETCH_ASSOC);
-							$total = $donnees_total['total'];
-							$nombreDePages = ceil($total / $messagesParPage);
-							if (isset($_GET['page'])) {
-								$pageActuelle = intval($_GET['page']);
-
-								if ($pageActuelle > $nombreDePages) {
-									$pageActuelle = $nombreDePages;
-								}
-							} else {
-								$pageActuelle = 1;
-							}
+							$pageActuelle = isset($_GET['page']) ? intval($_GET['page']) : 1;
 							$premiereEntree = ($pageActuelle - 1) * $messagesParPage;
-							$retour_messages = $bdd->query("SELECT * FROM gabcms_dossier WHERE userid = '" . $user['id'] . "' ORDER BY id DESC");
+
+							$retour_total = $bdd->query('SELECT COUNT(*) AS total FROM gabcms_dossier WHERE userid = ' . $user['id'] . '');
+							$total = $retour_total->fetchColumn();
+							$nombreDePages = ceil($total / $messagesParPage);
+
+							$retour_messages = $bdd->query("SELECT * FROM gabcms_dossier WHERE userid = '" . $user['id'] . "' ORDER BY id DESC LIMIT $premiereEntree, $messagesParPage");
+
 							if ($retour_messages->rowCount() == 0) {
 								echo "<table width=\"107%\" style=\"font-size: 11px; padding: 4px; margin-left: -14px;\">
-
-            <tbody><tr> 
-                    <td valign=\"middle\" width=\"10\" height=\"60\">
-			</td> 
-                    <td valign=\"top\"><span style=\"color:#778899;\"><i>Aucun commentaire...</i></span><br/><br/>
-			<div id=\"cta_01\"></div><div id=\"cta_02\"><span style=\"font-family: tahoma,arial,helvetica,sans-serif; color: #333333;\"><i>Tu n'as aucun commentaire pour le moment...</i></div><div id=\"cta_03\"></div>
-</td></tr></tbody> 
-
-</table>";
+							
+										<tbody><tr> 
+												<td valign=\"middle\" width=\"10\" height=\"60\">
+										</td> 
+												<td valign=\"top\"><span style=\"color:#778899;\"><i>Aucun commentaire...</i></span><br/><br/>
+										<div id=\"cta_01\"></div><div id=\"cta_02\"><span style=\"font-family: tahoma,arial,helvetica,sans-serif; color: #333333;\"><i>Tu n'as aucun commentaire pour le moment...</i></div><div id=\"cta_03\"></div>
+							</td></tr></tbody> 
+							
+							</table>";
 							}
 							while ($alert = $retour_messages->fetch()) {
 							?>

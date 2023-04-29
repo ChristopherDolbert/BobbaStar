@@ -12,43 +12,29 @@ if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
     exit();
 }
 
-if (isset($_POST['username']) && isset($_POST['alerte'])) {
-    if (empty($_POST['username']) && empty($_POST['alerte'])) {
+if (isset($_POST['username'], $_POST['alerte']) && !empty($_POST['username']) && !empty($_POST['alerte'])) {
+    $username = Secu($_POST['username']);
+    $sujet = Secu($_POST['sujet']);
+    $act = Secu($_POST['act']);
+    $sql = $bdd->prepare("SELECT id FROM users WHERE username = ?");
+    $sql->execute([$username]);
+    $row = $sql->fetch(PDO::FETCH_ASSOC);
+    if ($row['id'] < 1) {
+        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+        $insertn1->execute([':pseudo' => $user['username'], ':action' => 'a envoyé une alerte à <b>' . $username . '</b>', ':date' => FullDate('full')]);
+
+        $insertn2 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
+        $insertn2->execute([':userid' => $row['id'], ':message' => 'Nous venons de t\'envoyer une alerte ! Merci d\'aller la lire au <b>PLUS VITE</b> en <a href="' . $url . '/alerts">cliquant ici</a> !', ':auteur' => $user['username'], ':date' => FullDate('full'), ':look' => $user['look']]);
+
+        $insertn3 = $bdd->prepare("INSERT INTO gabcms_alertes (userid, sujet, alerte, par, date, look, action) VALUES (:id, :sujet, :alerte, :par, :date, :look, :act)");
+        $insertn3->execute([':id' => $row['id'], ':sujet' => $sujet, ':alerte' => addslashes($_POST['alerte']), ':par' => $user['username'], ':date' => FullDate('full'), ':look' => $user['look'], ':act' => $act]);
+
+        echo '<h4 class="alert_success">L\'alerte a été envoyée avec succès !</h4>';
     } else {
-        $username = Secu($_POST['username']);
-        $sujet = Secu($_POST['sujet']);
-        $act = Secu($_POST['act']);
-        $sql = $bdd->query("SELECT id FROM users WHERE username = '" . $username . "'");
-        $row = $sql->rowCount();
-        $assoc = $sql->fetch(PDO::FETCH_ASSOC);
-        if ($row['id'] < 1) {
-            $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-            $insertn1->bindValue(':pseudo', $user['username']);
-            $insertn1->bindValue(':action', 'a envoyé une alerte à <b>' . $username . '</b>');
-            $insertn1->bindValue(':date', FullDate('full'));
-            $insertn1->execute();
-            $insertn2 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
-            $insertn2->bindValue(':userid', $assoc['id']);
-            $insertn2->bindValue(':message', 'Nous venons de t\'envoyer une alerte ! Merci d\'aller la lire au <b>PLUS VITE</b> en <a href="' . $url . '/alerts">cliquant ici</a> !');
-            $insertn2->bindValue(':auteur', $user['username']);
-            $insertn2->bindValue(':date', FullDate('full'));
-            $insertn2->bindValue(':look', $user['look']);
-            $insertn2->execute();
-            $insertn3 = $bdd->prepare("INSERT INTO gabcms_alertes (userid, sujet, alerte, par, date, look, action) VALUES (:id, :sujet, :alerte, :par, :date, :look, :act)");
-            $insertn3->bindValue(':id', $assoc['id']);
-            $insertn3->bindValue(':sujet', $sujet);
-            $insertn3->bindValue(':alerte', addslashes($_POST['alerte']));
-            $insertn3->bindValue(':par', $user['username']);
-            $insertn3->bindValue(':date', FullDate('full'));
-            $insertn3->bindValue(':look', $user['look']);
-            $insertn3->bindValue(':act', $act);
-            $insertn3->execute();
-            echo '<h4 class="alert_success">L\'alerte a été envoyer avec succès !</h4>';
-        } else {
-            echo '<h4 class="alert_error">Merci de remplir les champs vide</h4>';
-        }
+        echo '<h4 class="alert_error">Merci de remplir les champs vides</h4>';
     }
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

@@ -32,30 +32,23 @@ if (isset($_GET['do'])) {
                 <td class="haut">Action</td>
             </tr>
             <?php
-            $sql = $bdd->query("SELECT * FROM gabcms_recrutement WHERE date_butoire <= " . $nowtime . " AND etat != 2 ORDER BY date_butoire ASC");
+            $sql = $bdd->query("SELECT r.*, p.nom_M FROM gabcms_recrutement r LEFT JOIN gabcms_postes_noms p ON r.poste = p.id WHERE r.date_butoire <= $nowtime AND r.etat != 2 ORDER BY r.date_butoire ASC");
+
             while ($a = $sql->fetch()) {
                 $date_but = date('d/m/Y', $a['date_butoire']);
-                $req = "SELECT COUNT(*) AS id FROM gabcms_recrutement_dossier WHERE id_recrut = '" . $a['id'] . "' AND retenu = '0'";
-                $query = $bdd->query($req);
-                $nb_inscrit = $query->fetch();
-                $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $a['poste'] . "'");
-                $c = $correct->fetch();
-                if ($c['nom_M'] == "") {
-                    $modif = "<i>Poste supprimé</i>";
-                } else {
-                    $modif = $c['nom_M'];
-                }
+                $nb_inscrit = $bdd->query("SELECT COUNT(*) AS id FROM gabcms_recrutement_dossier WHERE id_recrut = '{$a['id']}' AND retenu = '0'")->fetch();
+                $modif = $a['nom_M'] ?: "<i>Poste supprimé</i>";
             ?>
                 <tr class="bas">
-                    <td class="bas"><?PHP echo $modif; ?></td>
-                    <td class="bas"><?PHP echo $a['date']; ?></td>
-                    <td class="bas"><?PHP echo $date_but; ?></td>
-                    <td class="bas"><?PHP echo $nb_inscrit['id']; ?></td>
-                    <td class="bas"><?PHP echo $a['comment']; ?></td>
-                    <td class="bas"><a href="<?PHP echo $url; ?>/managements/dossiers_recrutement?id=<?PHP echo $a['id']; ?>">Traiter la session</a></center>
-                    </td>
+                    <td class="bas"><?= $modif ?></td>
+                    <td class="bas"><?= $a['date'] ?></td>
+                    <td class="bas"><?= $date_but ?></td>
+                    <td class="bas"><?= $nb_inscrit['id'] ?></td>
+                    <td class="bas"><?= $a['comment'] ?></td>
+                    <td class="bas"><a href="<?= $url ?>/managements/dossiers_recrutement?id=<?= $a['id'] ?>">Traiter la session</a></td>
                 </tr>
-            <?PHP } ?>
+            <?php } ?>
+
         </tbody>
     </table>
     <br />
@@ -70,29 +63,21 @@ if (isset($_GET['do'])) {
                 <td class="haut">Action</td>
             </tr>
             <?php
-            $sql = $bdd->query("SELECT * FROM gabcms_recrutement WHERE date_butoire <= " . $nowtime . " AND etat = '2' ORDER BY date_butoire DESC LIMIT 0,100");
+            $sql = $bdd->query("SELECT r.*, p.nom_M FROM gabcms_recrutement r LEFT JOIN gabcms_postes_noms p ON r.poste = p.id WHERE r.date_butoire <= $nowtime AND r.etat = '2' ORDER BY r.date_butoire DESC LIMIT 0,100");
             while ($a = $sql->fetch()) {
                 $date_but = date('d/m/Y', $a['date_butoire']);
-                $req = "SELECT COUNT(*) AS id FROM gabcms_recrutement_dossier WHERE id_recrut = '" . $a['id'] . "'";
-                $query = $bdd->query($req);
-                $nb_inscrit = $query->fetch();
-                $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $a['poste'] . "'");
-                $c = $correct->fetch();
-                if ($c['nom_M'] == "") {
-                    $modif = "<i>Poste supprimé</i>";
-                } else {
-                    $modif = $c['nom_M'];
-                }
+                $nb_inscrit = $bdd->query("SELECT COUNT(*) AS id FROM gabcms_recrutement_dossier WHERE id_recrut = '{$a['id']}'")->fetch()['id'];
+                $modif = $a['nom_M'] ?: "<i>Poste supprimé</i>";
             ?>
                 <tr class="bas">
-                    <td class="bas"><?PHP echo $modif; ?></td>
-                    <td class="bas"><?PHP echo $a['date']; ?></td>
-                    <td class="bas"><?PHP echo $date_but; ?></td>
-                    <td class="bas"><?PHP echo $nb_inscrit['id']; ?></td>
-                    <td class="bas"><a href="<?PHP echo $url; ?>/managements/look_recrut?id=<?PHP echo $a['id']; ?>">Regarder</a></center>
-                    </td>
+                    <td class="bas"><?= $modif ?></td>
+                    <td class="bas"><?= $a['date'] ?></td>
+                    <td class="bas"><?= $date_but ?></td>
+                    <td class="bas"><?= $nb_inscrit ?></td>
+                    <td class="bas"><a href="<?= $url ?>/managements/look_recrut?id=<?= $a['id'] ?>">Regarder</a></td>
                 </tr>
-            <?PHP } ?>
+            <?php } ?>
+
         </tbody>
     </table>
 </body>

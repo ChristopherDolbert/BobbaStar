@@ -14,14 +14,16 @@ if (!isset($_SESSION['username']) || $user['rank'] < 10 || $user['rank'] > 11) {
 
 if (isset($_GET['id'])) {
     $id = Secu($_GET['id']);
-    $info = $bdd->query("SELECT * FROM gabcms_recrutement_dossier WHERE id = '" . $id . "'");
+
+    $info = $bdd->query("SELECT * FROM gabcms_recrutement_dossier WHERE id = '$id'");
     $i = $info->fetch();
-    $infr = $bdd->query("SELECT * FROM gabcms_recrutement WHERE id = '" . $id . "'");
-    $r = $infr->fetch();
-    $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $r['poste'] . "'");
-    $c = $correct->fetch();
-    $date_but = date('d/m/Y', $r['date_butoire']);
+
+    $poste = $bdd->query("SELECT nom FROM gabcms_postes_noms WHERE id = (SELECT poste FROM gabcms_recrutement WHERE id = '$id')");
+    $poste_nom = $poste->fetchColumn();
+
+    $date_but = date('d/m/Y', $bdd->query("SELECT date_butoire FROM gabcms_recrutement WHERE id = '$id'")->fetchColumn());
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 
@@ -62,13 +64,9 @@ if (isset($_GET['id'])) {
             </tr>
             <?php
             $sql = $bdd->query("SELECT * FROM gabcms_recrutement_dossier WHERE id_recrut = '" . $id . "' && retenu != '0' ORDER BY id DESC");
+
             while ($a = $sql->fetch()) {
-                if ($a['retenu'] == 2) {
-                    $modif_traite = "<span style=\"color:#008000;\">Accepté</span>";
-                }
-                if ($a['retenu'] == 1) {
-                    $modif_traite = "<span style=\"color:#FF0000;\">Refusé</span>";
-                }
+                $modif_traite = ($a['retenu'] == 2) ? "<span style=\"color:#008000;\">Accepté</span>" : "<span style=\"color:#FF0000;\">Refusé</span>";
             ?>
                 <tr class="bas">
                     <td class="bas"><?PHP echo $a['pseudo'] ?></td>
@@ -86,7 +84,8 @@ if (isset($_GET['id'])) {
                     <td class="bas"><?PHP echo $a['traite_par'] ?></td>
                     <td class="bas"><a href="#" onclick="newPopup('<?PHP echo $url ?>/managements/aff_histo_recrut?pseudo=<?PHP echo $a['pseudo'] ?>', 'Historique des candidatures');return false;">Historique</a></td>
                 </tr>
-            <?PHP } ?>
+            <?php } ?>
+
         </tbody>
     </table>
 </body>

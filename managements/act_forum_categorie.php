@@ -16,34 +16,25 @@ if (isset($_GET['modif'])) {
     $modif = Secu($_GET['modif']);
 }
 
-if (isset($_GET['do']) && $_GET['do'] == "create") {
-    if (isset($_POST['nom_categorie']) && isset($_POST['couleur'])) {
-        $nom_categorie = addslashes($_POST['nom_categorie']);
-        $couleur = addslashes($_POST['couleur']);
-        if ($nom_categorie != "" && $couleur != "") {
-            $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-            $insertn1->execute(array(
-                ':pseudo' => $user['username'],
-                ':action' => 'a créé une catégorie de forum <b>(' . $nom_categorie . ')</b>',
-                ':date' => FullDate('full')
-            ));
-            $insertn2 = $bdd->prepare("INSERT INTO gabcms_forum_categorie (nom, create_par, date, couleur) VALUES (:nom, :user, :date, :color)");
-            $insertn2->execute(array(
-                ':nom' => $nom_categorie,
-                ':user' => $user['username'],
-                ':date' => time(),
-                ':color' => $couleur
-            ));
-            echo '<h4 class="alert_success">La catégorie a été enregistrée</h4>';
-        } else {
-            echo '<h4 class="alert_error">Une erreur est survenue</h4>';
-        }
+if (isset($_GET['do'], $_POST['nom_categorie'], $_POST['couleur']) && $_GET['do'] == "create") {
+    $nom_categorie = addslashes($_POST['nom_categorie']);
+    $couleur = addslashes($_POST['couleur']);
+
+    if (!empty($nom_categorie) && !empty($couleur)) {
+        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+        $insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a créé une catégorie de forum <b>(' . $nom_categorie . ')</b>', ':date' => FullDate('full')));
+
+        $insertn2 = $bdd->prepare("INSERT INTO gabcms_forum_categorie (nom, create_par, date, couleur) VALUES (:nom, :user, :date, :color)");
+        $insertn2->execute(array(':nom' => $nom_categorie, ':user' => $user['username'], ':date' => time(), ':color' => $couleur));
+
+        echo '<h4 class="alert_success">La catégorie a été enregistrée</h4>';
+    } else {
+        echo '<h4 class="alert_error">Une erreur est survenue</h4>';
     }
 }
 
-
-if (isset($_GET['do']) && $_GET['do'] === 'create') {
-    if (isset($_POST['nom_categorie'], $_POST['couleur']) && $_POST['nom_categorie'] !== "" && $_POST['couleur'] !== "") {
+if (isset($_GET['do'])) {
+    if ($_GET['do'] === 'create' && isset($_POST['nom_categorie'], $_POST['couleur']) && !empty($_POST['nom_categorie']) && !empty($_POST['couleur'])) {
         $nom_categorie = addslashes($_POST['nom_categorie']);
         $couleur = addslashes($_POST['couleur']);
         $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
@@ -60,42 +51,53 @@ if (isset($_GET['do']) && $_GET['do'] === 'create') {
             ':color' => $couleur
         ]);
         echo '<h4 class="alert_success">La catégorie a été enregistrée</h4>';
+    } elseif ($_GET['do'] === 'sup' && isset($_GET['sup'])) {
+        $sup = Secu($_GET['sup']);
+        $sql_modif = $bdd->prepare("SELECT nom FROM gabcms_forum_categorie WHERE id = :id");
+        $sql_modif->execute([':id' => $sup]);
+        $nom_categorie = $sql_modif->fetchColumn();
+        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+        $insertn1->execute([
+            ':pseudo' => $user['username'],
+            ':action' => 'a supprimé une catégorie de forum <b>(' . addslashes($nom_categorie) . ')</b>',
+            ':date' => FullDate('full')
+        ]);
+        $bdd->prepare("DELETE FROM gabcms_forum_categorie WHERE id = :id")->execute([':id' => $sup]);
+        echo '<h4 class="alert_success">La catégorie a bien été supprimée</h4>';
     } else {
         echo '<h4 class="alert_error">Une erreur est survenue</h4>';
     }
-} elseif (isset($_GET['sup'])) {
-    $sup = Secu($_GET['sup']);
-    $sql_modif = $bdd->query("SELECT nom FROM gabcms_forum_categorie WHERE id = :id");
-    $sql_modif->execute([':id' => $sup]);
-    $nom_categorie = $sql_modif->fetchColumn();
-    $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-    $insertn1->execute([
-        ':pseudo' => $user['username'],
-        ':action' => 'a supprimé une catégorie de forum <b>(' . addslashes($nom_categorie) . ')</b>',
-        ':date' => FullDate('full')
-    ]);
-    $bdd->query("DELETE FROM gabcms_forum_categorie WHERE id = :id");
-    $bdd->execute([':id' => $sup]);
-    echo '<h4 class="alert_success">La catégorie a bien été supprimée</h4>';
 }
 
-
-if (isset($_GET['modifierrecrut']) && isset($_POST['nom_modif'])) {
+if (isset($_GET['modifierrecrut'], $_POST['nom_modif'], $_POST['couleur_modif'])) {
     $modifierrecrut = Secu($_GET['modifierrecrut']);
     $nom_modif = addslashes($_POST['nom_modif']);
     $couleur_modif = addslashes($_POST['couleur_modif']);
-    $sql_modif = $bdd->query("SELECT nom FROM gabcms_forum_categorie WHERE id = '$modifierrecrut'");
+
+    $sql_modif = $bdd->prepare("SELECT nom FROM gabcms_forum_categorie WHERE id = :id");
+    $sql_modif->execute([':id' => $modifierrecrut]);
     $modif_a = $sql_modif->fetch();
-    if ($nom_modif != "" && $couleur_modif != "") {
+
+    if (!empty($nom_modif) && !empty($couleur_modif)) {
         $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-        $insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a modifié la catégorie de forum <b>' . addslashes($modif_a['nom']) . '</b> en <b>' . $nom_modif . '</b>', ':date' => FullDate('full')));
-        $bdd->query("UPDATE gabcms_forum_categorie SET nom = '$nom_modif', couleur = '$couleur_modif' WHERE id = '$modifierrecrut'");
+        $insertn1->execute([
+            ':pseudo' => $user['username'],
+            ':action' => 'a modifié la catégorie de forum <b>' . addslashes($modif_a['nom']) . '</b> en <b>' . $nom_modif . '</b>',
+            ':date' => FullDate('full')
+        ]);
+
+        $bdd->prepare("UPDATE gabcms_forum_categorie SET nom = :nom, couleur = :couleur WHERE id = :id")
+            ->execute([
+                ':nom' => $nom_modif,
+                ':couleur' => $couleur_modif,
+                ':id' => $modifierrecrut
+            ]);
+
         echo '<h4 class="alert_success">La modification a bien eu lieu</h4>';
     } else {
         echo '<h4 class="alert_error">Une erreur est survenue</h4>';
     }
 }
-
 
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />

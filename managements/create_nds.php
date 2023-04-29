@@ -8,34 +8,26 @@
 include("../config.php");
 
 if (!isset($_SESSION['username']) || $user['rank'] < 10 || $user['rank'] > 11) {
-    Redirect("" . $url . "/managements/access_neg");
-    exit();
+	Redirect("" . $url . "/managements/access_neg");
+	exit();
 }
 
-if (isset($_POST['objet']) || isset($_POST['texte']) || isset($_POST['applicable'])) {
+if (isset($_POST['objet'], $_POST['texte'], $_POST['applicable'])) {
 	$objet = Secu($_POST['objet']);
 	$texte = $_POST['texte'];
 	$applicable = Secu($_POST['applicable']);
 	$sign = Secu($_POST['sign']);
 	$bureau = Secu($_POST['bureau']);
-	$correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $applicable . "'");
-	$c = $correct->fetch();
-	if ($objet != "" && $texte != "" && $sign != "" && $bureau != "") {
+	$correct = $bdd->query("SELECT nom_nds FROM gabcms_postes_noms WHERE id = '" . $applicable . "'");
+	$c = $correct->fetch(PDO::FETCH_ASSOC);
+	if ($objet && $texte && $sign && $bureau) {
 		$staff_info = $bdd->query("SELECT id FROM users WHERE rank >= '4'");
 		while ($ra = $staff_info->fetch()) {
-			$insertn2 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
-			$insertn2->bindValue(':userid', $ra['id']);
-			$insertn2->bindValue(':message', 'Une nouvelle <b>note de service</b> applicable aux <b>' . addslashes($c['nom_nds']) . '</b> a été postée. Pour aller la lire et l\'approuvé, je te demanderai de <a href="' . $url . '/managements/nds">cliquer ici</a>.');
-			$insertn2->bindValue(':auteur', 'Système');
-			$insertn2->bindValue(':date', FullDate('full'));
-			$insertn2->bindValue(':look', 'hr-828-45.lg-285-64.ch-215-110.hd-180-2.sh-290-62.he-1607-');
-			$insertn2->execute();
+			$bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)")
+				->execute(['userid' => $ra['id'], 'message' => 'Une nouvelle <b>note de service</b> applicable aux <b>' . addslashes($c['nom_nds']) . '</b> a été postée. Pour aller la lire et l\'approuvé, je te demanderai de <a href="' . $url . '/managements/nds">cliquer ici</a>.', 'auteur' => 'Système', 'date' => FullDate('full'), 'look' => 'hr-828-45.lg-285-64.ch-215-110.hd-180-2.sh-290-62.he-1607-']);
 		}
-		$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-		$insertn1->bindValue(':pseudo', $user['username']);
-		$insertn1->bindValue(':action', 'a publié une <b>note de service</b> (' . addslashes($objet) . ')');
-		$insertn1->bindValue(':date', FullDate('full'));
-		$insertn1->execute();
+		$bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)")
+			->execute(['pseudo' => $user['username'], 'action' => 'a publié une <b>note de service</b> (' . addslashes($objet) . ')', 'date' => FullDate('full')]);
 		$bdd->query("INSERT INTO gabcms_nds (par,date,applicable,objet,texte,sign,look,ip,bureau) VALUES ('" . $user['username'] . "','" . FullDate('datehc') . "','" . addslashes($c['nom_nds']) . "','" . $objet . "','" . addslashes($texte) . "','" . $sign . "','" . $user['look'] . "','" . $ip . "','" . $bureau . "')");
 		$bdd->query("INSERT INTO gabcms_tchat_staff (pseudo,message,ip,date,look,rank) VALUES ('','" . $user['username'] . " a publié une Note de Service <b>(" . addslashes($objet) . ")</b>. <a href=\"" . $url . "/managements/nds\">Cliquez ici</a> pour aller lire cette Note de Service applicable aux <b>" . addslashes($c['nom_nds']) . "</b>.','0.0.0.0','" . FullDate('full') . "','hr-828-45.lg-285-64.ch-215-110.hd-180-2.sh-290-62.he-1607-','0')");
 		echo '<h4 class="alert_success">La note de service a bien été crée.</h4>';
@@ -43,6 +35,7 @@ if (isset($_POST['objet']) || isset($_POST['texte']) || isset($_POST['applicable
 		echo '<h4 class="alert_error">Merci de remplir les champs vides.</h4>';
 	}
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

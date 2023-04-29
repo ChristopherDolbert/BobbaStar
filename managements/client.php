@@ -8,11 +8,11 @@
 include("../config.php");
 
 if (!isset($_SESSION['username']) || $user['rank'] > 11) {
-    Redirect("" . $url . "/managements/access_neg");
-    exit();
+	Redirect("" . $url . "/managements/access_neg");
+	exit();
 }
 
-if (isset($_POST['ip']) || isset($_POST['port']) || isset($_POST['mus_port']) || isset($_POST['variable']) || isset($_POST['texte']) || isset($_POST['swf']) || isset($_POST['version']) || isset($_POST['loading_texte'])) {
+if (isset($_POST['ip'], $_POST['port'], $_POST['mus_port'], $_POST['variable'], $_POST['texte'], $_POST['swf'], $_POST['version'], $_POST['loading_texte'])) {
 	$ip = Secu($_POST['ip']);
 	$port = Secu($_POST['port']);
 	$mus_port = Secu($_POST['mus_port']);
@@ -21,22 +21,21 @@ if (isset($_POST['ip']) || isset($_POST['port']) || isset($_POST['mus_port']) ||
 	$swf = Secu($_POST['swf']);
 	$version = Secu($_POST['version']);
 	$loading = Secu($_POST['loading_texte']);
-	if ($ip != "" && is_numeric($mus_port) != "" && is_numeric($port) != "" && $variable != "" && $texte != "" && $swf != "" && $version != "" && $loading != "") {
+	if ($ip && is_numeric($mus_port) && is_numeric($port) && $variable && $texte && $swf && $version && $loading) {
 		$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-		$insertn1->bindValue(':pseudo', $user['username']);
-		$insertn1->bindValue(':action', 'a modifié le client');
-		$insertn1->bindValue(':date', FullDate('full'));
-		$insertn1->execute();
-		$bdd->query("UPDATE gabcms_client SET ip = '" . $ip . "', port = '" . $port . "', mus_port = '" . $mus_port . "', variable = '" . $variable . "', texte = '" . $texte . "', swf = '" . $swf . "', version = '" . $version . "', loading_texte = '" . $loading . "' WHERE id = '1'");
-		echo '<h4 class="alert_success">Le client &agrave; été mis &agrave; jour.</h4>';
+		$insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a modifié le client', ':date' => FullDate('full')));
+		$bdd->query("UPDATE gabcms_client SET ip = '$ip', port = '$port', mus_port = '$mus_port', variable = '$variable', texte = '$texte', swf = '$swf', version = '$version', loading_texte = '$loading' WHERE id = '1'");
+		echo '<h4 class="alert_success">Le client a été mis à jour.</h4>';
 	} elseif (!is_numeric($mus_port)) {
 		echo '<h4 class="alert_error">Merci de mettre exclusivement des chiffres dans "Mus Port"</h4>';
 	} elseif (!is_numeric($port)) {
 		echo '<h4 class="alert_error">Merci de mettre exclusivement des chiffres dans "Port"</h4>';
 	} else {
-		echo '<h4 class="alert_error">Merci de remplir les champs vide</h4>';
+		echo '<h4 class="alert_error">Merci de remplir tous les champs.</h4>';
 	}
 }
+
+
 $sql = $bdd->query("SELECT * FROM gabcms_client WHERE id = '1'");
 $c = $sql->fetch(PDO::FETCH_ASSOC);
 ?>

@@ -8,31 +8,30 @@
 include("../config.php");
 
 if (!isset($_SESSION['username']) || $user['rank'] > 11) {
-    Redirect("" . $url . "/managements/access_neg");
-    exit();
+	Redirect("" . $url . "/managements/access_neg");
+	exit();
 }
 
-if (isset($_POST['news']) || isset($_POST['flux']) || isset($_POST['forum']) || isset($_POST['tchat']) || isset($_POST['img_sdf']) || isset($_POST['aff_aidmotiv'])) {
+if (isset($_POST['news'], $_POST['flux'], $_POST['forum'], $_POST['tchat'], $_POST['img_sdf'], $_POST['aff_aidmotiv'])) {
 	$nb_news = Secu($_POST['news']);
 	$nb_flux = Secu($_POST['flux']);
 	$nb_tchat = Secu($_POST['tchat']);
 	$nb_com = Secu($_POST['forum']);
 	$aff_aidmotiv = Secu($_POST['aff_aidmotiv']);
 	$img_sdf = Secu($_POST['img_sdf']);
-	if ($nb_news != "" && $nb_flux != "" && $nb_tchat != "" && $nb_com != "" && $nb_com != "0" && $nb_news != "0" && $nb_flux != "0" && $nb_tchat != "0" && $img_sdf != "" && $aff_aidmotiv != "") {
+	if ($nb_news > 0 && $nb_flux > 0 && $nb_tchat > 0 && $nb_com > 0 && $img_sdf !== '' && $aff_aidmotiv !== '') {
 		$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-		$insertn1->bindValue(':pseudo', $user['username']);
-		$insertn1->bindValue(':action', 'a mis à jour les <b>modifications générales</b>');
-		$insertn1->bindValue(':date', FullDate('full'));
-		$insertn1->execute();
+		$insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a mis à jour les <b>modifications générales</b>', ':date' => FullDate('full')));
 		$bdd->query("UPDATE gabcms_config SET nb_com = '" . $nb_com . "', img_sdf = '" . $img_sdf . "', aff_aidmotiv = '" . $aff_aidmotiv . "', nb_tchat = '" . $nb_tchat . "', nb_news = '" . $nb_news . "', nb_flux = '" . $nb_flux . "' WHERE id = 1");
-		echo '<h4 class="alert_success">Tes informations sont maintenant disponible sur le site.</h4>';
+		echo '<h4 class="alert_success">Tes informations sont maintenant disponibles sur le site.</h4>';
 	} else {
-		echo '<h4 class="alert_error">Merci de marquer une information valide (pas en dessous de 1).</h4>';
+		echo '<h4 class="alert_error">Merci de saisir une information valide (pas inférieure à 1).</h4>';
 	}
 }
+
 $sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

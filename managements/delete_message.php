@@ -8,44 +8,34 @@
 include("../config.php");
 
 if (!isset($_SESSION['username']) || $user['rank'] < 87 || $user['rank'] > 11) {
-    Redirect("" . $url . "/managements/access_neg");
-    exit();
+	Redirect("" . $url . "/managements/access_neg");
+	exit();
 }
 
-if (isset($_POST['message']) || isset($_POST['pseudo'])) {
+if (isset($_POST['message'], $_POST['pseudo'])) {
 	$message = Secu($_POST['message']);
 	$pseudo = Secu($_POST['pseudo']);
-	$sql = $bdd->query("SELECT * FROM users WHERE username = '" . $pseudo . "'");
-	$row = $sql->rowCount();
-	$assoc = $sql->fetch(PDO::FETCH_ASSOC);
-	if (is_numeric($message) != "" && $pseudo != "") {
-		if ($row > 0) {
-			$nombre_message = $assoc['message'] - $message;
-			if ($nombre_message >= '0') {
-				$bdd->query("UPDATE users SET message = message - '" . $message . "' WHERE id = '" . $assoc['id'] . "'");
-				$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-				$insertn1->bindValue(':pseudo', $user['username']);
-				$insertn1->bindValue(':action', 'a enlevé <b>' . $message . '</b> messages à <b>' . $pseudo . '</b>');
-				$insertn1->bindValue(':date', FullDate('full'));
-				$insertn1->execute();
-				$insertn2 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
-				$insertn2->bindValue(':userid', $assoc['id']);
-				$insertn2->bindValue(':message', 'Nous venons de t\'enlever ' . Secu($message) . ' messages.');
-				$insertn2->bindValue(':auteur', $user['username']);
-				$insertn2->bindValue(':date', FullDate('full'));
-				$insertn2->bindValue(':look', $user['look']);
-				$insertn2->execute();
-				echo '<h4 class="alert_success">Le nombre de messages à été modifié</h4>';
-			} else {
-				echo '<h4 class="alert_error">Impossible d\'enlever plus de messages que l\'utilisateur n\'en a. (il en a ' . $assoc['message'] . ')</h4>';
-			}
+	$sql = $bdd->query("SELECT id, message FROM users WHERE username = '" . $pseudo . "'");
+	$row = $sql->fetch(PDO::FETCH_ASSOC);
+	if ($row) {
+		$nombre_message = $row['message'] - $message;
+		if ($nombre_message >= 0) {
+			$bdd->query("UPDATE users SET message = message - '" . $message . "' WHERE id = '" . $row['id'] . "'");
+			$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+			$insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a enlevé <b>' . $message . '</b> messages à <b>' . $pseudo . '</b>', ':date' => FullDate('full')));
+			$insertn2 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
+			$insertn2->execute(array(':userid' => $row['id'], ':message' => 'Nous venons de t\'enlever ' . Secu($message) . ' messages.', ':auteur' => $user['username'], ':date' => FullDate('full'), ':look' => $user['look']));
+			echo '<h4 class="alert_success">Le nombre de messages à été modifié</h4>';
 		} else {
-			echo '<h4 class="alert_error">L\'utilisateur n\'existe pas</h4>';
+			echo '<h4 class="alert_error">Impossible d\'enlever plus de messages que l\'utilisateur n\'en a. (il en a ' . $row['message'] . ')</h4>';
 		}
 	} else {
-		echo '<h4 class="alert_error">Merci de remplir les champs vides</h4>';
+		echo '<h4 class="alert_error">L\'utilisateur n\'existe pas</h4>';
 	}
+} else {
+	echo '<h4 class="alert_error">Merci de remplir les champs vides</h4>';
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

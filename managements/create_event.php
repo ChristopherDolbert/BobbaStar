@@ -9,31 +9,43 @@
 include("../config.php");
 
 if (!isset($_SESSION['username']) || $user['rank'] < 9 || $user['rank'] > 11) {
-    Redirect("" . $url . "/managements/access_neg");
-    exit();
+	Redirect("" . $url . "/managements/access_neg");
+	exit();
 }
 
-if (isset($_GET['do'])) {
-	$do = Secu($_GET['do']);
-	if ($do == "create") {
-		if (isset($_POST['titre']) || isset($_POST['desc']) || isset($_POST['image'])) {
-			$titre = Secu($_POST['titre']);
-			$desc = Secu($_POST['desc']);
-			$image = Secu($_POST['image']);
-			if ($titre != "") {
-				$bdd->query("INSERT INTO gabcms_news (`topstory_image`,`title`,`snippet`,`info`,`body`,`auteur`,`date`,`sign`,`category_id`,`look`,`event`) VALUES ('" . $image . "','" . addslashes($titre) . "','" . addslashes($desc) . "','-','Ceci n\'est pas un article !','" . $user['username'] . "','" . $nowtime . "','-','Événement','" . $user['look'] . "','0')");
-				$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-				$insertn1->bindValue(':pseudo', $user['username']);
-				$insertn1->bindValue(':action', 'a créé un événement sans lien <b>(' . addslashes($titre) . ')</b>');
-				$insertn1->bindValue(':date', FullDate('full'));
-				$insertn1->execute();
-				echo '<h4 class="alert_success">L\'article vient d\'&ecirc;tre ajouté.</h4>';
-			} else {
-				echo '<h4 class="alert_error">Merci de remplir les champs vides.</h4>';
-			}
+if (isset($_GET['do']) && $_GET['do'] === 'create') {
+	if (isset($_POST['titre'], $_POST['desc'], $_POST['image'])) {
+		$titre = Secu($_POST['titre']);
+		$desc = Secu($_POST['desc']);
+		$image = Secu($_POST['image']);
+		if ($titre !== '') {
+			$sql = "INSERT INTO gabcms_news (`topstory_image`,`title`,`snippet`,`info`,`body`,`auteur`,`date`,`sign`,`category_id`,`look`,`event`)";
+			$sql .= " VALUES ('$image', '" . addslashes($titre) . "', '" . addslashes($desc) . "', '-', 'Ceci n\'est pas un article !', '" . $user['username'] . "', '$nowtime', '-', 'Événement', '" . $user['look'] . "', '0')";
+			$bdd->query($sql);
+			$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+			$insertn1->execute(['pseudo' => $user['username'], 'action' => 'a créé un événement sans lien <b>(' . addslashes($titre) . ')</b>', 'date' => FullDate('full')]);
+			echo '<h4 class="alert_success">L\'article vient d\'être ajouté.</h4>';
+		} else {
+			echo '<h4 class="alert_error">Merci de remplir les champs vides.</h4>';
+		}
+	} elseif (isset($_POST['titre'], $_POST['desc'], $_POST['image'], $_POST['url'])) {
+		$titre = Secu($_POST['titre']);
+		$desc = Secu($_POST['desc']);
+		$image = Secu($_POST['image']);
+		$url_article = Secu($_POST['url']);
+		if ($titre !== '') {
+			$sql = "INSERT INTO gabcms_news (`topstory_image`,`title`,`snippet`,`info`,`body`,`auteur`,`date`,`sign`,`category_id`,`look`,`event`,`lien_event`)";
+			$sql .= " VALUES ('$image', '" . addslashes($titre) . "', '" . addslashes($desc) . "', '$url_article', 'Ceci n\'est pas un article !', '" . $user['username'] . "', '$nowtime', '-', 'Événement', '" . $user['look'] . "', '2', 'http://$url_article')";
+			$bdd->query($sql);
+			$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+			$insertn1->execute(['pseudo' => $user['username'], 'action' => 'a créé un événement avec lien <b>(' . addslashes($titre) . ')</b>', 'date' => FullDate('full')]);
+			echo '<h4 class="alert_success">L\'événement vient d\'être ajouté.</h4>';
+		} else {
+			echo '<h4 class="alert_error">Merci de remplir les champs vides.</h4>';
 		}
 	}
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

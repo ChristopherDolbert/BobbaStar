@@ -8,11 +8,11 @@
 include("../config.php");
 
 if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
-    Redirect("" . $url . "/managements/access_neg");
-    exit();
+	Redirect("" . $url . "/managements/access_neg");
+	exit();
 }
 
-if (isset($_POST['raison']) || isset($_POST['dep']) || isset($_POST['ret'])) {
+if (isset($_POST['raison'], $_POST['dateDebutAbsence'], $_POST['dateFinAbsence'])) {
 	$raison = Secu($_POST['raison']);
 	$dateDebutAbsence = Secu($_POST['dateDebutAbsence']);
 	$dateFinAbsence = Secu($_POST['dateFinAbsence']);
@@ -23,24 +23,29 @@ if (isset($_POST['raison']) || isset($_POST['dep']) || isset($_POST['ret'])) {
 	$date_explz = explode("/", $dateFinAbsence);
 	$timestampz = mktime(23, 59, 59, $date_explz[1], $date_explz[0], $date_explz[2]);
 
-	if ($raison != "" && $dateDebutAbsence != "" && $dateFinAbsence != "") {
+	if (!empty($raison) && !empty($dateDebutAbsence) && !empty($dateFinAbsence)) {
 		$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-		$insertn1->bindValue(':pseudo', $user['username']);
-		$insertn1->bindValue(':action', 'sera absent du <b>' . $dateDebutAbsence . '</b> au <b>' . $dateFinAbsence . '</b>');
-		$insertn1->bindValue(':date', FullDate('full'));
-		$insertn1->execute();
+		$insertn1->execute([
+			':pseudo' => $user['username'],
+			':action' => 'sera absent du <b>' . $dateDebutAbsence . '</b> au <b>' . $dateFinAbsence . '</b>',
+			':date' => FullDate('full')
+		]);
+
 		$insertn2 = $bdd->prepare("INSERT INTO gabcms_absence_staff (pseudo,depuis,jusqua,raison,ip) VALUES (:pseudo, :depuis, :jus, :raison, :ip)");
-		$insertn2->bindValue(':pseudo', $user['username']);
-		$insertn2->bindValue(':depuis', $timestamp);
-		$insertn2->bindValue(':jus', $timestampz);
-		$insertn2->bindValue(':raison', $raison);
-		$insertn2->bindValue(':ip', $user['ip_current']);
-		$insertn2->execute();
+		$insertn2->execute([
+			':pseudo' => $user['username'],
+			':depuis' => $timestamp,
+			':jus' => $timestampz,
+			':raison' => $raison,
+			':ip' => $user['ip_current']
+		]);
+
 		echo '<h4 class="alert_success">Ton absence a été signalé aux administrateurs.</h4>';
 	} else {
 		echo '<h4 class="alert_error">Merci de remplir les champs vide</h4>';
 	}
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

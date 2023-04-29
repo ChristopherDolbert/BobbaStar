@@ -20,6 +20,8 @@ if (isset($_GET['do'])) {
     $sqz = $bdd->query("SELECT * FROM gabcms_absence_staff WHERE id = '" . $do . "'");
     $z = $sqz->fetch();
 }
+
+// A OPTIMISER
 if (isset($_GET['modifierrecrut'])) {
     $modifierrecrut = Secu($_GET['modifierrecrut']);
     $sql = $bdd->query("SELECT * FROM gabcms_absence_staff WHERE id = '" . $modifierrecrut . "'");
@@ -64,19 +66,21 @@ if (isset($_GET['modifierrecrut'])) {
         }
     }
 }
-if (isset($_GET['do'])) {
-    if ($do != "" && $user['username'] != $z['pseudo']) {
-        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-        $insertn1->bindValue(':pseudo', $user['username']);
-        $insertn1->bindValue(':action', 'a traité l\'absence de <b>' . $z['pseudo'] . '</b> et a accepté son absence');
-        $insertn1->bindValue(':date', FullDate('full'));
-        $insertn1->execute();
-        $bdd->query("UPDATE gabcms_absence_staff SET etat = '1' WHERE id = '" . $do . "'");
-        echo '<h4 class="alert_success">L\'absence a été validée.</h4>';
-    } else if ($user['username'] == $z['pseudo']) {
-        echo '<h4 class="alert_error">Vous ne pouvez pas valider une absence émise par vous même.</h4>';
-    }
+// A OPTIMISER
+
+if (isset($_GET['do']) && !empty($do) && $user['username'] != $z['pseudo']) {
+    $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+    $insertn1->execute([
+        ':pseudo' => $user['username'],
+        ':action' => 'a traité l\'absence de <b>' . $z['pseudo'] . '</b> et a accepté son absence',
+        ':date' => FullDate('full')
+    ]);
+    $bdd->query("UPDATE gabcms_absence_staff SET etat = '1' WHERE id = '$do'");
+    echo '<h4 class="alert_success">L\'absence a été validée.</h4>';
+} elseif ($user['username'] == $z['pseudo']) {
+    echo '<h4 class="alert_error">Vous ne pouvez pas valider une absence émise par vous-même.</h4>';
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 
@@ -134,18 +138,21 @@ if (isset($_GET['do'])) {
                         <td class="haut">Raison</td>
                     </tr>
                     <?php
-                    $sql = $bdd->query("SELECT * FROM gabcms_absence_staff WHERE depuis <= '" . $nowtime . "' AND jusqua > '" . $nowtime . "' AND etat = '1'");
-                    while ($a = $sql->fetch()) {
-                        $date_depuis = date('d/m/Y', Secu($a['depuis']));
-                        $date_jusqua = date('d/m/Y', Secu($a['jusqua']));
+                    $sql = $bdd->prepare("SELECT pseudo, depuis, jusqua, raison FROM gabcms_absence_staff WHERE depuis <= ? AND jusqua > ? AND etat = '1'");
+                    $sql->execute([$nowtime, $nowtime]);
+
+                    while ($a = $sql->fetch(PDO::FETCH_ASSOC)) {
+                        $date_depuis = date('d/m/Y', $a['depuis']);
+                        $date_jusqua = date('d/m/Y', $a['jusqua']);
                     ?>
                         <tr class="bas">
-                            <td class="bas"><?PHP echo Secu($a['pseudo']); ?></td>
-                            <td class="bas"><?PHP echo $date_depuis; ?></td>
-                            <td class="bas"><?PHP echo $date_jusqua; ?></td>
-                            <td class="bas"><?PHP echo Secu($a['raison']); ?></td>
+                            <td class="bas"><?php echo $a['pseudo']; ?></td>
+                            <td class="bas"><?php echo $date_depuis; ?></td>
+                            <td class="bas"><?php echo $date_jusqua; ?></td>
+                            <td class="bas"><?php echo $a['raison']; ?></td>
                         </tr>
-                    <?PHP } ?>
+                    <?php } ?>
+
                 </tbody>
             </table>
         <?PHP }

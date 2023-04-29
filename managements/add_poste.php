@@ -8,48 +8,44 @@
 include("../config.php");
 
 if (!isset($_SESSION['username']) || $user['rank'] > 11) {
-    Redirect("" . $url . "/managements/access_neg");
-    exit();
+	Redirect("" . $url . "/managements/access_neg");
+	exit();
 }
 
-if (isset($_POST['pseudo']) || isset($_POST['poste'])) {
+if (isset($_POST['pseudo'], $_POST['poste'])) {
 	$pseudo = Secu($_POST['pseudo']);
 	$poste = Secu($_POST['poste']);
-	$sql = $bdd->query("SELECT * FROM users WHERE username = '" . $pseudo . "'");
-	$row = $sql->rowCount();
+	$sql = $bdd->prepare("SELECT * FROM users WHERE username = ?");
+	$sql->execute([$pseudo]);
 	$assoc = $sql->fetch(PDO::FETCH_ASSOC);
-	$search = $bdd->query("SELECT user_id FROM gabcms_postes WHERE poste = '" . $poste . "' AND user_id = '" . $assoc['id'] . "'");
+	$search = $bdd->prepare("SELECT user_id FROM gabcms_postes WHERE poste = ? AND user_id = ?");
+	$search->execute([$poste, $assoc['id']]);
 	$ok = $search->fetch();
-	$correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $poste . "'");
+	$correct = $bdd->prepare("SELECT nom_" . $assoc['gender'] . " FROM gabcms_postes_noms WHERE id = ?");
+	$correct->execute([$poste]);
 	$c = $correct->fetch();
-	if ($pseudo != "" && $ok['user_id'] != $assoc['id'] && $poste != "") {
-		$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-		$insertn1->bindValue(':pseudo', $user['username']);
-		if ($assoc['gender'] == 'M') {
-			$insertn1->bindValue(':action', 'a attribué le poste de <b>' . addslashes($c['nom_M']) . '</b> à <b>' . $pseudo . '</b>');
-		} elseif ($assoc['gender'] == 'F') {
-			$insertn1->bindValue(':action', 'a attribué le poste de <b>' . addslashes($c['nom_F']) . '</b> à <b>' . $pseudo . '</b>');
-		}
-		$insertn1->bindValue(':date', FullDate('full'));
-		$insertn1->execute();
+	if ($pseudo !== "" && !$ok && $poste !== "") {
+		$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo, action, date) VALUES (:pseudo, :action, :date)");
+		$insertn1->execute([
+			':pseudo' => $user['username'],
+			':action' => 'a attribué le poste de <b>' . addslashes($c["nom_{$assoc['gender']}"]) . '</b> à <b>' . $pseudo . '</b>',
+			':date' => FullDate('full')
+		]);
 		$insertn2 = $bdd->prepare("INSERT INTO gabcms_postes (user_id, poste, par, date) VALUES (:id, :poste, :par, :date)");
-		$insertn2->bindValue(':id', $assoc['id']);
-		$insertn2->bindValue(':poste', $poste);
-		$insertn2->bindValue(':par', $user['username']);
-		$insertn2->bindValue(':date', FullDate('full'));
-		$insertn2->execute();
-		if ($assoc['gender'] == 'M') {
-			echo '<h4 class="alert_success">Le poste de <b>' . $c['nom_M'] . '</b> a bien été attribué à <b>' . $pseudo . '</b></h4>';
-		}
-		if ($assoc['gender'] == 'F') {
-			echo '<h4 class="alert_success">Le poste de <b>' . $c['nom_F'] . '</b> a bien été attribué à <b>' . $pseudo . '</b></h4>';
-		}
-	} else if ($ok['user_id'] == $assoc['id']) {
-		echo '<h4 class="alert_error"><b>' . $pseudo . '</b> a déjà le poste de <b>' . $c['nom_M'] . '</b></h4>';
+		$insertn2->execute([
+			':id' => $assoc['id'],
+			':poste' => $poste,
+			':par' => $user['username'],
+			':date' => FullDate('full')
+		]);
+		echo '<h4 class="alert_success">Le poste de <b>' . $c["nom_{$assoc['gender']}"] . '</b> a bien été attribué à <b>' . $pseudo . '</b></h4>';
+	} elseif ($ok) {
+		echo '<h4 class="alert_error"><b>' . $pseudo . '</b> a déjà le poste de <b>' . $c["nom_{$assoc['gender']}"] . '</b></h4>';
 	} else {
 		echo '<h4 class="alert_error">Merci de remplir les champs vides.</h4>';
 	}
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

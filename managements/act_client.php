@@ -74,7 +74,6 @@ if (isset($_GET['do']) && isset($_POST['etat_client']) && $_GET['do'] == 'act_cl
 	}
 }
 
-
 if (isset($_GET['do']) && $_GET['do'] == 'modif_etat_client') {
 	$sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 	$cof = $sql->fetch(PDO::FETCH_ASSOC);

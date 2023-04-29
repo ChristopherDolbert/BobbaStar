@@ -8,8 +8,8 @@
 include("../config.php");
 
 if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
-    Redirect("" . $url . "/managements/acces_interdit");
-    exit();
+	Redirect("" . $url . "/managements/acces_interdit");
+	exit();
 }
 
 $pseudo = Secu($_GET['pseudo']);
@@ -29,41 +29,26 @@ $date_ac = time();
 $date_calcul = $date * 3600;
 $date_ban = $date_ac + $date_calcul;
 
-if ($do == "ban") {
-
-	if (isset($ip) && isset($raison)) {
-		if (!empty($ip) && !empty($raison) && !empty($date)) {
-
-			for ($n = 0; $n < $nbr; $n++) :
-				$sql = $bdd->query("SELECT id FROM users WHERE username = '" . $username[$n] . "'");
-				$row = $sql->rowCount();
-				$infr = $bdd->query("SELECT * FROM gabcms_forum_signalement WHERE id = '" . $signale . "'");
-				$r = $infr->fetch();
-				if ($row > 0) {
-					$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-					$insertn1->bindValue(':pseudo', $user['username']);
-					$insertn1->bindValue(':action', 'a banni <b>' . $username[$n] . '</b> suite au signalement de <b>' . $r['signaler_par'] . '</b> (ID : ' . $r['id'] . ')');
-					$insertn1->bindValue(':date', FullDate('full'));
-					$insertn1->execute();
-					$insertn2 = $bdd->prepare("INSERT INTO bans (bantype, value, reason, expire, added_by, added_date, appeal_state) VALUES (:type, :value, :raison, :date, :user, :date, :etat)");
-					$insertn2->bindValue(':type', 'user');
-					$insertn2->bindValue(':value', $username[$n]);
-					$insertn2->bindValue(':raison', $raison);
-					$insertn2->bindValue(':date', $date_ban);
-					$insertn2->bindValue(':user', $user['username']);
-					$insertn2->bindValue(':date', FullDate('full'));
-					$insertn2->bindValue(':etat', '0');
-					$insertn2->execute();
-					echo '<h4 class="alert_success">Le compte <b>' . $username[$n] . '</b> &agrave; été bannis pour la raison suivante : <b>' . $raison . '</b></h4>';
-				} else {
-					echo '<h4 class="alert_error">Le compte IP <b>' . $username[$n] . '</b> n\'existe pas.</h4>';
-				}
-			endfor;
+if ($do == "ban" && !empty($ip) && !empty($raison) && !empty($date)) {
+	foreach ($username as $name) {
+		$sql = $bdd->query("SELECT id FROM users WHERE username = '" . $name . "'");
+		$row = $sql->rowCount();
+		$infr = $bdd->query("SELECT * FROM gabcms_forum_signalement WHERE id = '" . $signale . "'");
+		$r = $infr->fetch();
+		if ($row > 0) {
+			$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+			$insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a banni <b>' . $name . '</b> suite au signalement de <b>' . $r['signaler_par'] . '</b> (ID : ' . $r['id'] . ')', ':date' => FullDate('full')));
+			$insertn2 = $bdd->prepare("INSERT INTO bans (type, value, ban_reason, ban_expire, user_staff_id, timestamp) VALUES (:type, :value, :raison, :date_ban, :user, :timestamp)");
+			$insertn2->execute(array(':type' => 'user', ':value' => $name, ':raison' => $raison, ':date_ban' => $date_ban, ':user' => $user['username'], ':timestamp' => time()));
+			echo '<h4 class="alert_success">Le compte <b>' . $name . '</b> &agrave; été bannis pour la raison suivante : <b>' . $raison . '</b></h4>';
 		} else {
-			echo '<h4 class="alert_error">Les champs ne sont pas tous remplis</h4>';
+			echo '<h4 class="alert_error">Le compte IP <b>' . $name . '</b> n\'existe pas.</h4>';
 		}
 	}
+} elseif ($do == "ban") {
+	echo '<h4 class="alert_error">Les champs ne sont pas tous remplis</h4>';
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />

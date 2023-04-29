@@ -39,69 +39,61 @@ if (isset($_GET['do'])) {
         }
     }
 }
+
 if (isset($_GET['sup'])) {
     $sup = Secu($_GET['sup']);
-    $sql_moder = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $sup . "'");
-    $moder_e = $sql_moder->fetch();
-    $deplacer = $bdd->query("SELECT * FROM gabcms_postes WHERE poste = '" . $sup . "'");
+    $moder_e = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '$sup'")->fetch();
+    $deplacer = $bdd->query("SELECT user_id FROM gabcms_postes WHERE poste = '$sup'");
     while ($d = $deplacer->fetch()) {
-        $srl = $bdd->query("SELECT * FROM users WHERE id = '" . $d['user_id'] . "'");
-        $assoc = $srl->fetch(PDO::FETCH_ASSOC);
-        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-        $insertn1->bindValue(':pseudo', $user['username']);
-        $insertn1->bindValue(':action', 's\'est vu destitué de son poste <b>(' . addslashes($moder_e['nom_M']) . ')</b> car ce poste est supprimé');
-        $insertn1->bindValue(':date', FullDate('full'));
-        $insertn1->execute();
+        $assoc = $bdd->query("SELECT username FROM users WHERE id = '{$d['user_id']}'")->fetch()['username'];
+        $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)")
+            ->execute([':pseudo' => $user['username'], ':action' => "s'est vu destitué de son poste <b>(" . addslashes($moder_e['nom_M']) . ")</b> car ce poste est supprimé", ':date' => FullDate('full')]);
     }
-    $insertn2 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-    $insertn2->bindValue(':pseudo', $user['username']);
-    $insertn2->bindValue(':action', 'a supprimé le poste <b>' . addslashes($moder_e['nom_M']) . '</b>');
-    $insertn2->bindValue(':date', FullDate('full'));
-    $insertn2->execute();
-    $bdd->query("DELETE FROM gabcms_postes_noms WHERE id = '" . $sup . "'");
-    $bdd->query("DELETE FROM gabcms_postes WHERE poste = '" . $sup . "'");
-    echo '<h4 class="alert_success">Le poste a bien été supprimée</h4>';
+    $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)")
+        ->execute([':pseudo' => $user['username'], ':action' => "a supprimé le poste <b>" . addslashes($moder_e['nom_M']) . "</b>", ':date' => FullDate('full')]);
+    $bdd->query("DELETE FROM gabcms_postes_noms WHERE id = '$sup'");
+    $bdd->query("DELETE FROM gabcms_postes WHERE poste = '$sup'");
+    echo '<h4 class="alert_success">Le poste a bien été supprimé</h4>';
 }
+
 if (isset($_GET['modifierrecrut'])) {
     $modifierrecrut = Secu($_GET['modifierrecrut']);
     $nom_modif_M = addslashes($_POST['nom_modif_M']);
     $nom_modif_F = addslashes($_POST['nom_modif_F']);
     $nom_modif_NDS = addslashes($_POST['nom_modif_nds']);
-    $sql_modif = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $modifierrecrut . "'");
+    $sql_modif = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '$modifierrecrut'");
     $modif_a = $sql_modif->fetch();
-    if ($nom_modif_M != "" && $nom_modif_F != "") {
-        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-        $insertn1->bindValue(':pseudo', $user['username']);
-        $insertn1->bindValue(':action', 'a modifié le poste <b>' . addslashes($modif_a['nom_M']) . '</b> en <b>' . $nom_modif_M . '</b>');
-        $insertn1->bindValue(':date', FullDate('full'));
-        $insertn1->execute();
-        $bdd->query("UPDATE gabcms_postes_noms SET nom_M = '" . $nom_modif_M . "', nom_F = '" . $nom_modif_F . "', nom_nds = '" . $nom_modif_NDS . "' WHERE id = '" . $modifierrecrut . "'");
+    if (!empty($nom_modif_M) && !empty($nom_modif_F)) {
+        $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo, action, date) VALUES (:pseudo, :action, :date)")
+            ->execute([':pseudo' => $user['username'], ':action' => "a modifié le poste <b>" . addslashes($modif_a['nom_M']) . "</b> en <b>$nom_modif_M</b>", ':date' => FullDate('full')]);
+        $bdd->query("UPDATE gabcms_postes_noms SET nom_M = '$nom_modif_M', nom_F = '$nom_modif_F', nom_nds = '$nom_modif_NDS' WHERE id = '$modifierrecrut'");
         echo '<h4 class="alert_success">La modification a bien eu lieu</h4>';
     } else {
         echo '<h4 class="alert_error">Une erreur est survenue</h4>';
     }
 }
+
 if (isset($_GET['deplacement'])) {
     $deplacement = Secu($_GET['deplacement']);
     $new_categorie = $_POST['new_categorie'];
-    $sql_deplace = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $deplacement . "'");
-    $deplace_a = $sql_deplace->fetch();
-    $sql_deplacez = $bdd->query("SELECT * FROM gabcms_postes_categorie WHERE id = '" . $deplace_a['id_categorie'] . "'");
-    $deplace_b = $sql_deplacez->fetch();
-    $sql = $bdd->query("SELECT * FROM gabcms_postes_categorie WHERE id = '" . $new_categorie . "'");
-    $assoc = $sql->fetch(PDO::FETCH_ASSOC);
-    if ($new_categorie != "") {
+    $sql = $bdd->query("SELECT p.*, c.nom AS nom_categorie FROM gabcms_postes_noms AS p 
+                        INNER JOIN gabcms_postes_categorie AS c ON p.id_categorie = c.id
+                        WHERE p.id = '$deplacement'");
+    $poste = $sql->fetch(PDO::FETCH_ASSOC);
+    if ($poste && $new_categorie != "") {
+        $bdd->query("UPDATE gabcms_postes_noms SET id_categorie = '$new_categorie' WHERE id = '$deplacement'");
         $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-        $insertn1->bindValue(':pseudo', $user['username']);
-        $insertn1->bindValue(':action', 'a déplacé le poste <b>' . addslashes($deplace_a['nom_M']) . '</b> de la catégorie <b>' . addslashes($deplace_b['nom']) . '</b> à <b>' . $assoc['nom'] . '</b>');
-        $insertn1->bindValue(':date', FullDate('full'));
-        $insertn1->execute();
-        $bdd->query("UPDATE gabcms_postes_noms SET id_categorie = '" . $new_categorie . "' WHERE id = '" . $deplacement . "'");
+        $insertn1->execute([
+            ':pseudo' => $user['username'],
+            ':action' => "a déplacé le poste <b>{$poste['nom_M']}</b> de la catégorie <b>{$poste['nom_categorie']}</b> à <b>{$new_categorie}</b>",
+            ':date' => FullDate('full')
+        ]);
         echo '<h4 class="alert_success">La modification a bien eu lieu</h4>';
     } else {
         echo '<h4 class="alert_error">Une erreur est survenue</h4>';
     }
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

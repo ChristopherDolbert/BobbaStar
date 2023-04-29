@@ -8,8 +8,8 @@
 include("../config.php");
 
 if (!isset($_SESSION['username']) || $user['rank'] < 10 || $user['rank'] > 11) {
-    Redirect("" . $url . "/managements/access_neg");
-    exit();
+	Redirect("" . $url . "/managements/access_neg");
+	exit();
 }
 
 $sql = $bdd->query("SELECT * FROM gabcms_maintenance WHERE id = '1'");
@@ -19,63 +19,62 @@ if (isset($_GET['modif_etat'])) {
 	$modif_etat = Secu($_GET['modif_etat']);
 }
 
-if (isset($_GET['do'])) {
-	$do = Secu($_GET['do']);
-	if ($do == "modif") {
-		if (isset($_POST['info'])) {
-			$info = Secu($_POST['info']);
-			if ($info != "") {
-				$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-				$insertn1->bindValue(':pseudo', $user['username']);
-				$insertn1->bindValue(':action', 'a modifié le texte de la page de maintenance');
-				$insertn1->bindValue(':date', FullDate('full'));
-				$insertn1->execute();
-				$bdd->query("UPDATE gabcms_maintenance SET info = '" . addslashes($info) . "', auteur = '" . $user['username'] . "', datestr = '" . FullDate('full') . "' WHERE id = '1'");
-				echo '<h4 class="alert_success">Mise à jour bien prise en compte.</h4>';
-			} else {
-				echo '<h4 class="alert_error">Merci de marquer une information.</h4>';
-			}
-		}
+if ($_GET['do'] === 'modif' && isset($_POST['info'])) {
+	$info = Secu($_POST['info']);
+	if ($info !== '') {
+		$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo, action, date) VALUES (:pseudo, :action, :date)");
+		$insertn1->execute([
+			':pseudo' => $user['username'],
+			':action' => 'a modifié le texte de la page de maintenance',
+			':date' => FullDate('full'),
+		]);
+		$bdd->query("UPDATE gabcms_maintenance SET info = '" . addslashes($info) . "', auteur = '" . $user['username'] . "', datestr = '" . FullDate('full') . "' WHERE id = '1'");
+		echo '<h4 class="alert_success">Mise à jour bien prise en compte.</h4>';
+	} else {
+		echo '<h4 class="alert_error">Merci de marquer une information.</h4>';
 	}
 }
-if (isset($_GET['modif_etat'])) {
-	if ($modif_etat == "Non") {
-		if ($modif_etat == "Non" && $m['activ'] == "Oui") {
-			if ($user['rank'] >= '7') {
-				$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-				$insertn1->bindValue(':pseudo', $user['username']);
-				$insertn1->bindValue(':action', 'a <b>désactivé</b> la maintenance');
-				$insertn1->bindValue(':date', FullDate('full'));
-				$insertn1->execute();
-				$bdd->query("UPDATE gabcms_maintenance SET activ = 'Non' WHERE id = '1'");
-				echo '<h4 class="alert_success">Mise à jour bien prise en compte.</h4>';
-			} else {
-				echo '<h4 class="alert_error">Tu n\'as pas le rank requis.</h4>';
-			}
+
+if (isset($_GET['modif_etat']) && $_GET['modif_etat'] === "Non") {
+	if ($m['activ'] === "Oui") {
+		if ($user['rank'] >= '7') {
+			$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+			$insertn1->bindValue(':pseudo', $user['username']);
+			$insertn1->bindValue(':action', 'a <b>désactivé</b> la maintenance');
+			$insertn1->bindValue(':date', FullDate('full'));
+			$insertn1->execute();
+			$bdd->query("UPDATE gabcms_maintenance SET activ = 'Non' WHERE id = '1'");
+			echo '<h4 class="alert_success">Mise à jour bien prise en compte.</h4>';
 		} else {
-			echo '<h4 class="alert_error">La maintenance n\'est pas active pour pouvoir l\'enlever.</h4>';
+			echo '<h4 class="alert_error">Tu n\'as pas le rank requis.</h4>';
 		}
+	} else {
+		echo '<h4 class="alert_error">La maintenance n\'est pas active pour pouvoir l\'enlever.</h4>';
 	}
 }
-if (isset($_GET['modif_etat'])) {
-	if ($modif_etat == "Oui") {
-		if ($modif_etat == "Oui" && $m['activ'] == "Non") {
-			if ($user['rank'] >= '7') {
-				$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-				$insertn1->bindValue(':pseudo', $user['username']);
-				$insertn1->bindValue(':action', 'a <b>activé</b> la maintenance');
-				$insertn1->bindValue(':date', FullDate('full'));
-				$insertn1->execute();
-				$bdd->query("UPDATE gabcms_maintenance SET activ = 'Oui' WHERE id = '1'");
-				echo '<h4 class="alert_success">Mise à jour bien prise en compte.</h4>';
-			} else {
-				echo '<h4 class="alert_error">Tu n\'as pas le rank requis.</h4>';
-			}
-		} else {
-			echo '<h4 class="alert_error">La maintenance n\'est pas désactivé pour pouvoir l\'activer.</h4>';
-		}
+
+if (isset($_GET['modif_etat']) && $user['rank'] >= '7') {
+	$new_state = Secu($_GET['modif_etat']);
+	if ($new_state == "Oui" && $m['activ'] == "Non") {
+		$action = "activé";
+		$bdd->query("UPDATE gabcms_maintenance SET activ = 'Oui' WHERE id = '1'");
+	} else if ($new_state == "Non" && $m['activ'] == "Oui") {
+		$action = "désactivé";
+		$bdd->query("UPDATE gabcms_maintenance SET activ = 'Non' WHERE id = '1'");
+	} else {
+		echo '<h4 class="alert_error">La maintenance ne peut pas être modifiée dans cet état.</h4>';
+		return;
 	}
+	$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+	$insertn1->bindValue(':pseudo', $user['username']);
+	$insertn1->bindValue(':action', 'a <b>' . $action . '</b> la maintenance');
+	$insertn1->bindValue(':date', FullDate('full'));
+	$insertn1->execute();
+	echo '<h4 class="alert_success">Mise à jour bien prise en compte.</h4>';
+} else {
+	echo '<h4 class="alert_error">Tu n\'as pas le rank requis.</h4>';
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

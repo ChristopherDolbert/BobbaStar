@@ -159,54 +159,42 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 					<div class="cbb clearfix green">
 						<h2 class="title">Planning des animations</h2>
 						<div class="box-content">
-							<?PHP
-							if ($jourj == "0") {
-								$modif_jour = "Dimanche";
-							}
-							if ($jourj == "1") {
-								$modif_jour = "Lundi";
-							}
-							if ($jourj == "2") {
-								$modif_jour = "Mardi";
-							}
-							if ($jourj == "3") {
-								$modif_jour = "Mercredi";
-							}
-							if ($jourj == "4") {
-								$modif_jour = "Jeudi";
-							}
-							if ($jourj == "5") {
-								$modif_jour = "Vendredi";
-							}
-							if ($jourj == "6") {
-								$modif_jour = "Samedi";
-							}
-							$sql = $bdd->query("SELECT * FROM gabcms_bureau_anim WHERE jour = '" . $jourj . "'");
-							if ($sql->rowCount() == 0) {
-								echo "<i>Aucune animation de prévue ! Faites-vous plaisir.</i>";
-							}
-							if ($sql->rowCount() >= 1) {
-							?><center>Planning du <b><?PHP echo $modif_jour; ?></b></center><br />
-								<table>
-									<tbody>
-										<tr class="haut">
-											<td class="haut">Nom du jeu</td>
-											<td class="haut">Heure de début</td>
-											<td class="haut">Heure de fin</td>
-											<td class="haut">Animé par</td>
-										</tr>
-									<?PHP }
-								while ($n = $sql->fetch(PDO::FETCH_ASSOC)) {
+							<?php
+							if ($jourj >= 0 && $jourj <= 6) {
+								$days = array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
+								$modif_jour = $days[$jourj];
+
+								$sql = $bdd->query("SELECT * FROM gabcms_bureau_anim WHERE jour = '" . $jourj . "'");
+								if ($sql->rowCount() == 0) {
+									echo "<i>Aucune animation de prévue ! Faites-vous plaisir.</i>";
+								} else {
+							?>
+									<center>Planning du <b><?php echo $modif_jour; ?></b></center><br />
+									<table>
+										<tbody>
+											<tr class="haut">
+												<td class="haut">Nom du jeu</td>
+												<td class="haut">Heure de début</td>
+												<td class="haut">Heure de fin</td>
+												<td class="haut">Animé par</td>
+											</tr>
+											<?php
+											while ($n = $sql->fetch(PDO::FETCH_ASSOC)) {
+											?>
+												<tr class="bas">
+													<td class="bas"><?php echo stripslashes($n['nomjeu']); ?></td>
+													<td class="bas"><?php echo Secu($n['date_debut']); ?></td>
+													<td class="bas"><?php echo Secu($n['date_fin']); ?></td>
+													<td class="bas"><?php echo Secu($n['par']); ?></td>
+												</tr>
+									<?php
+											}
+										}
+									}
 									?>
-										<tr class="bas">
-											<td class="bas"><?PHP echo stripslashes($n['nomjeu']); ?></td>
-											<td class="bas"><?PHP echo Secu($n['date_debut']); ?></td>
-											<td class="bas"><?PHP echo Secu($n['date_fin']); ?></td>
-											<td class="bas"><?PHP echo Secu($n['par']); ?></td>
-										</tr>
-									<?PHP } ?>
-									</tbody>
-								</table>
+
+										</tbody>
+									</table>
 						</div>
 
 					</div>

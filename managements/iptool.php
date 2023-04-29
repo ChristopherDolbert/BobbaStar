@@ -8,8 +8,8 @@
 include("../config.php");
 
 if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
-    Redirect("" . $url . "/managements/access_neg");
-    exit();
+	Redirect("" . $url . "/managements/access_neg");
+	exit();
 }
 
 $ip = '';
@@ -28,12 +28,6 @@ echo '<div id="contentcolumn"><div id="solution_suggestion">
  Vous pouvez utiliser cette outil pour retrouver des multi-comptes d\'une personne.
  </p></span>';
 
-echo '<form method="post" id="suggest_form">
-Pseudo :<br />
-<input type="text" id="suggestions_query" name="user">
-<input type="submit" value="Rechercher" class="button search" id="suggestion_submit">
-</form>';
-
 if (isset($_POST['user'])) {
 	$info = Secu($_POST['user']);
 	$get =  $bdd->query("SELECT ip_current FROM users WHERE username = '" . $info . "' LIMIT 1");
@@ -51,7 +45,8 @@ if (isset($ip) && strlen($ip) > 0) {
 	$get = $bdd->query("SELECT * FROM users WHERE ip_current = '" . $ip . "' LIMIT 50");
 
 	while ($info = $get->fetch(PDO::FETCH_ASSOC)) {
-		echo '<div style="width: 50%;"><b>' . $info['username'] . '</b> <Small>(ID: ' . $info['id'] . ')</small><br /><span style="font-weight: normal;">Derni&egrave;re connexion: </>' . $connexion = date('d/m/Y H:i:s', $info['last_online']) . '</i><br />E-mail: <b>' . $info['mail'] . '</b><br />Cet utilisateur est <b>' . (($info['online'] == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif" />' : '<img src="' . $imagepath . 'v2/images/offline.gif" />') . '</b></span></div></div><br/><br/>
+		$status = ($info['online'] == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif" />' : '<img src="' . $imagepath . 'v2/images/offline.gif" />';
+		echo '<div style="width: 50%;"><b>' . $info['username'] . '</b> <Small>(ID: ' . $info['id'] . ')</small><br /><span style="font-weight: normal;">Derni&egrave;re connexion: </>' . $connexion = date('d/m/Y H:i:s', $info['last_online']) . '</i><br />E-mail: <b>' . $info['mail'] . '</b><br />Cet utilisateur est <b>' . $status . '</b></span></div></div><br/><br/>
 
 <div class="green_box_bottom"><div class="box box_bottom"></div></div></div></div>';
 	}

@@ -12,41 +12,44 @@ if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
 	exit();
 }
 
-if (isset($_GET['do'])) {
-	$username = Secu($_POST['username']);
-	$raison = Secu($_POST['reason']);
-	$date = Secu($_POST['date']);
-	$username = explode(";", $username);
-	$nbr = count($username);
-	$do = Secu($_GET['do']);
-	$date_ac = time();
-	$date_calcul = $date * 3600;
-	$date_ban = $date_ac + $date_calcul;
-	if ($do == "ban") {
-		if (isset($ip) && isset($raison)) {
-			if (!empty($ip) && !empty($raison) && !empty($date)) {
-				for ($n = 0; $n < $nbr; $n++) :
-					$sql = $bdd->query("SELECT id FROM users WHERE username = '" . $username[$n] . "'");
-					$row = $sql->rowCount();
-					if ($row > 0) {
-						$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-						$insertn1->bindValue(':pseudo', $user['username']);
-						$insertn1->bindValue(':action', 'a banni <b>' . $username[$n] . '</b> pour la raison suivante : ' . $raison . '');
-						$insertn1->bindValue(':date', FullDate('full'));
-						$insertn1->execute();
-						$bdd->query("INSERT INTO bans (bantype,value,reason,expire,added_by,added_date,appeal_state) VALUES ('user','" . $username[$n] . "','" . $raison . "','" . $date_ban . "','" . $user['username'] . "','" . FullDate('full') . "','0')");
-
-						echo '<h4 class="alert_success">Le compte <b>' . $username[$n] . '</b> &agrave; été bannis pour la raison suivante: <b>' . $raison . '</b></h4>';
-					} else {
-						echo '<h4 class="alert_error">>Le compte <b>' . $username[$n] . '</b> n\'existe pas.</h4>';
-					}
-				endfor;
+if (isset($_GET['do']) && $_GET['do'] === 'ban') {
+	$type = '';
+	$value = '';
+	$field = '';
+	if (isset($_POST['ip'])) {
+		$type = 'ip';
+		$value = $_POST['ip'];
+		$field = 'ip_current';
+	} elseif (isset($_POST['username'])) {
+		$type = 'account';
+		$value = $_POST['username'];
+		$field = 'username';
+	}
+	$reason = Secu($_POST['reason']);
+	$duration = Secu($_POST['date']);
+	$values = explode(';', $value);
+	$count = count($values);
+	$time = time();
+	$durationInSeconds = $duration * 3600;
+	$expirationTime = $time + $durationInSeconds;
+	if (!empty($values) && !empty($reason) && !empty($duration) && !empty($type)) {
+		foreach ($values as $val) {
+			$sql = $bdd->query("SELECT id FROM users WHERE {$field} = '{$val}'");
+			$row = $sql->rowCount();
+			if ($row > 0) {
+				$insert = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+				$insert->execute(array(':pseudo' => $user['username'], ':action' => 'a banni ' . (($type === 'ip') ? 'l\'adresse IP ' : '') . "<b>{$val}</b> pour la raison suivante : {$reason}", ':date' => FullDate('full')));
+				$bdd->query("INSERT INTO bans (type,value,ban_reason,ban_expire,user_staff_id,timestamp) VALUES ('{$type}','{$val}','{$reason}','{$expirationTime}','{$user['username']}','{$time}')");
+				echo "<h4 class=\"alert_success\">Le " . (($type === 'ip') ? 'adresse IP ' : 'compte ') . "<b>{$val}</b> a été banni pour la raison suivante: <b>{$reason}</b></h4>";
 			} else {
-				echo '<h4 class="alert_error">Les champs ne sont pas tous remplie.</h4>';
+				echo "<h4 class=\"alert_error\">Le " . (($type === 'ip') ? 'adresse IP ' : 'compte ') . "<b>{$val}</b> n'existe pas.</h4>";
 			}
 		}
+	} else {
+		echo '<h4 class="alert_error">Les champs ne sont pas tous remplis.</h4>';
 	}
 }
+
 ?>
 
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />

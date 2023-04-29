@@ -8,45 +8,36 @@
 include("../config.php");
 
 if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
-    Redirect("" . $url . "/managements/access_neg");
-    exit();
+	Redirect("" . $url . "/managements/access_neg");
+	exit();
 }
 
 if (isset($_GET['do'])) {
 	$pseudo = Secu($_POST['name']);
 	$name = explode(";", $pseudo);
 	$nbr = count($name);
-	$do = Secu($_GET['do']);
-	if ($do == "ban") {
-		if (isset($pseudo)) {
-			if (!empty($pseudo)) {
-				for ($n = 0; $n < $nbr; $n++) :
-					$sql = $bdd->query("SELECT id FROM users WHERE username = '" . $name[$n] . "'");
-					$row = $sql->rowCount();
-					if ($row < 1) {
-						echo '<h4 class="alert_error">Le compte <b>' . $name[$n] . '</b> n\'existe pas.</h4>';
-					} else {
-						$check = $bdd->query("SELECT id FROM users WHERE username = '" . $name[$n] . "' AND disabled = '1'");
-						$row_c = $check->rowCount();
-						if ($row_c > 0) {
-							$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-							$insertn1->bindValue(':pseudo', $user['username']);
-							$insertn1->bindValue(':action', 'a re-activé le compte de <b>' . $name[$n] . '</b>');
-							$insertn1->bindValue(':date', FullDate('full'));
-							$insertn1->execute();
-							$bdd->query("UPDATE users SET disabled = '0' WHERE username = '" . $name[$n] . "'");
-							echo '<h4 class="alert_success">Le compte <b>' . $name[$n] . '</b> &agrave; été re-activé.</h4>';
-						} else {
-							echo '<h4 class="alert_error">Le compte <b>' . $name[$n] . '</b> est déj&agrave; activé.</h4>';
-						}
-					}
-				endfor;
+	if ($do == "ban" && isset($pseudo) && !empty($pseudo)) {
+		for ($n = 0; $n < $nbr; $n++) {
+			$sql = $bdd->query("SELECT id, disabled FROM users WHERE username = '" . $name[$n] . "'");
+			$row = $sql->fetch(PDO::FETCH_ASSOC);
+			if (!$row) {
+				echo '<h4 class="alert_error">Le compte <b>' . $name[$n] . '</b> n\'existe pas.</h4>';
 			} else {
-				echo '<h4 class="alert_error">Les champs ne sont pas tous remplie.</h4>';
+				if ($row['disabled'] == 1) {
+					$bdd->query("UPDATE users SET disabled = '0' WHERE username = '" . $name[$n] . "'");
+					$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+					$insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a re-activé le compte de <b>' . $name[$n] . '</b>', ':date' => FullDate('full')));
+					echo '<h4 class="alert_success">Le compte <b>' . $name[$n] . '</b> a été réactivé.</h4>';
+				} else {
+					echo '<h4 class="alert_error">Le compte <b>' . $name[$n] . '</b> est déjà activé.</h4>';
+				}
 			}
 		}
+	} else {
+		echo '<h4 class="alert_error">Les champs ne sont pas tous remplis.</h4>';
 	}
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

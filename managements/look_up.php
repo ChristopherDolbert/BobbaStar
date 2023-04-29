@@ -12,26 +12,27 @@ if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
     exit();
 }
 
-if (isset($_GET['do'])) {
-    $do = Secu($_GET['do']);
-    if ($do == "lookup") {
-        $req = $bdd->query("SELECT * FROM users WHERE username = '" . $_POST['username'] . "'");
-        $row = $req->rowCount();
-        $req_assoc = $req->fetch(PDO::FETCH_ASSOC);
-        if ($row > 0) {
-            $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-            $insertn1->bindValue(':pseudo', $user['username']);
-            $insertn1->bindValue(':action', 'a recherché l\'IP de <b>' . $req_assoc['username'] . '</b>');
-            $insertn1->bindValue(':date', FullDate('full'));
-            $insertn1->execute();
-            $ip = $req_assoc['ip_current'];
-            $username = $req_assoc['username'];
-            echo '<h4 class="alert_success">L\'IP du compte <b>' . $username . '</b> à la dernière connexion est la suivante : <b>' . $ip . '</b></h4>';
-        } else {
-            echo '<h4 class="alert_error">Le compte n\'existe pas</h4>';
-        }
+if (isset($_GET['do']) && $_GET['do'] === 'lookup') {
+    $username = Secu($_POST['username']);
+    $req = $bdd->prepare("SELECT * FROM users WHERE username = :username");
+    $req->execute(['username' => $username]);
+    $req_assoc = $req->fetch(PDO::FETCH_ASSOC);
+
+    if ($req_assoc) {
+        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo, action, date) VALUES (:pseudo, :action, :date)");
+        $insertn1->execute([
+            'pseudo' => $user['username'],
+            'action' => 'a recherché l\'IP de <b>' . $req_assoc['username'] . '</b>',
+            'date' => FullDate('full')
+        ]);
+
+        $ip = $req_assoc['ip_current'];
+        echo '<h4 class="alert_success">L\'IP du compte <b>' . $req_assoc['username'] . '</b> à la dernière connexion est la suivante : <b>' . $ip . '</b></h4>';
+    } else {
+        echo '<h4 class="alert_error">Le compte n\'existe pas</h4>';
     }
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

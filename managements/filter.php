@@ -15,27 +15,21 @@ if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
 if (isset($_GET['do'])) {
 	$pseudo = htmlspecialchars($_POST['name']);
 	$name = explode(";", $pseudo);
-	$nbr = count($name);
 	$filter = htmlspecialchars($_POST['filtre']);
-	$do = Secu($_GET['do']);
-	if ($do == "filtre") {
-		if (isset($pseudo)) {
-			if (!empty($pseudo)) {
-				for ($n = 0; $n < $nbr; $n++) :
-					$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-					$insertn1->bindValue(':pseudo', $user['username']);
-					$insertn1->bindValue(':action', 'a filtré le mot <b>' . addslashes($name[$n]) . '</b> qui est remplacé par <b>' . addslashes($filter) . '</b>');
-					$insertn1->bindValue(':date', FullDate('full'));
-					$insertn1->execute();
-					$bdd->query("INSERT INTO wordfilter (word, replacement, strict) VALUES ('" . $name[$n] . "', '" . $filter . "', '1')");
-					echo '<h4 class="alert_success">>Le mot : <b>' . $name[$n] . '</b> &agrave; été ajouté.</h4>';
-				endfor;
-			} else {
-				echo '<h4 class="alert_error">Les champs ne sont pas tous remplie.</h4>';
+	if ($_GET['do'] == "filtre") {
+		if (!empty($pseudo)) {
+			foreach ($name as $word) {
+				$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+				$insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a filtré le mot <b>' . addslashes($word) . '</b> qui est remplacé par <b>' . addslashes($filter) . '</b>', ':date' => FullDate('full')));
+				$bdd->query("INSERT INTO wordfilter (word, replacement, strict) VALUES ('" . $word . "', '" . $filter . "', '1')");
+				echo '<h4 class="alert_success">Le mot : <b>' . $word . '</b> a été ajouté.</h4>';
 			}
+		} else {
+			echo '<h4 class="alert_error">Les champs ne sont pas tous remplis.</h4>';
 		}
 	}
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

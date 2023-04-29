@@ -12,41 +12,44 @@ if (!isset($_SESSION['username']) || $user['rank'] < 7 || $user['rank'] > 11) {
     exit();
 }
 
-if (isset($_GET['do'])) {
-    $do = Secu($_GET['do']);
-    if ($do == "add_sdf") {
-        $url = Secu($_POST['url']);
-        $nom = Secu($_POST['nom']);
-        if ($nom != "" && $url != "") {
-            $insertn2 = $bdd->prepare("INSERT INTO gabcms_sitedefan (url, nom) VALUES (:url, :nom)");
-            $insertn2->bindValue(':url', 'http://' . $url);
-            $insertn2->bindValue(':nom', $nom);
-            $insertn2->execute();
-            $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-            $insertn1->bindValue(':pseudo', $user['username']);
-            $insertn1->bindValue(':action', 'a ajouté un fansite à la liste officielle <b>(Nom : ' . $nom . ')</b>');
-            $insertn1->bindValue(':date', FullDate('full'));
-            $insertn1->execute();
-            echo '<h4 class="alert_success">Le site de fan a bien été ajouté.</h4>';
-        } else {
-            echo '<h4 class="alert_error">Un des champs n\'a pas été renseigné</h4>';
-        }
+if (isset($_GET['do']) && $_GET['do'] == "add_sdf") {
+    $url = Secu($_POST['url']);
+    $nom = Secu($_POST['nom']);
+    if (!empty($nom) && !empty($url)) {
+        $insertn2 = $bdd->prepare("INSERT INTO gabcms_sitedefan (url, nom) VALUES (:url, :nom)");
+        $insertn2->execute(array(':url' => 'http://' . $url, ':nom' => $nom));
+        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+        $insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a ajouté un fansite à la liste officielle <b>(Nom : ' . $nom . ')</b>', ':date' => FullDate('full')));
+        echo '<h4 class="alert_success">Le site de fan a bien été ajouté.</h4>';
+    } else {
+        echo '<h4 class="alert_error">Un des champs n\'a pas été renseigné</h4>';
     }
 }
-if (isset($_GET['sup'])) {
+
+if (isset($_GET['do']) && $_GET['do'] === 'add_sdf') {
+    $url = Secu($_POST['url']);
+    $nom = Secu($_POST['nom']);
+    if ($nom && $url) {
+        $insertn2 = $bdd->prepare("INSERT INTO gabcms_sitedefan (url, nom) VALUES (:url, :nom)");
+        $insertn2->execute(array(':url' => 'http://' . $url, ':nom' => $nom));
+        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+        $insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a ajouté un fansite à la liste officielle <b>(Nom : ' . $nom . ')</b>', ':date' => FullDate('full')));
+        echo '<h4 class="alert_success">Le site de fan a bien été ajouté.</h4>';
+    } else {
+        echo '<h4 class="alert_error">Un des champs n\'a pas été renseigné</h4>';
+    }
+} elseif (isset($_GET['sup'])) {
     $sup = Secu($_GET['sup']);
-    $infe = $bdd->query("SELECT * FROM gabcms_sitedefan WHERE id = '" . $sup . "'");
-    $e = $infe->fetch();
+    $infe = $bdd->query("SELECT nom FROM gabcms_sitedefan WHERE id = '$sup'")->fetch();
+    $bdd->query("DELETE FROM gabcms_sitedefan WHERE id = '$sup'");
     $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-    $insertn1->bindValue(':pseudo', $user['username']);
-    $insertn1->bindValue(':action', 'a supprimé un fansite de la liste officielle <b>(Nom : ' . $e['nom'] . ')</b>');
-    $insertn1->bindValue(':date', FullDate('full'));
-    $insertn1->execute();
-    $bdd->query("DELETE FROM gabcms_sitedefan WHERE id = '" . $sup . "'");
+    $insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a supprimé un fansite de la liste officielle <b>(Nom : ' . $infe['nom'] . ')</b>', ':date' => FullDate('full')));
     echo '<h4 class="alert_success">Le site de fan a bien été supprimé.</h4>';
 }
-$sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
-$cof = $sql->fetch(PDO::FETCH_ASSOC);
+
+$stmt = $bdd->prepare("SELECT * FROM gabcms_config WHERE id = ?");
+$stmt->execute([1]);
+$cof = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

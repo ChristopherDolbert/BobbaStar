@@ -23,76 +23,93 @@ if (isset($_GET['modifierrecrut'])) {
     $infa = $bdd->query("SELECT * FROM gabcms_test_commentaires WHERE id_test = '" . $modifierrecrut . "'");
     $a = $infa->fetch();
     if (isset($_POST['commentaire']) || isset($_POST['avis'])) {
-        $commentaire = addslashes($_POST['commentaire']);
-        $avis = addslashes($_POST['avis']);
-        $sql = $bdd->query("SELECT * FROM users WHERE id = '" . $r['user_id'] . "'");
-        $row = $sql->rowCount();
+        $commentaire = $_POST['commentaire'];
+        $avis = $_POST['avis'];
+
+        $user_id = $r['user_id'];
+        $sql = $bdd->query("SELECT * FROM users WHERE id = '{$user_id}'");
         $assoc = $sql->fetch(PDO::FETCH_ASSOC);
-        $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $r['poste'] . "'");
+
+        $poste = $r['poste'];
+        $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '{$poste}'");
         $c = $correct->fetch();
-        if ($commentaire != "" && $avis != "" && $user['id'] != $r['user_id'] && $user['id'] != $r['tuteur'] && $a['avisdir_commentaire'] == "") {
-            $bdd->query("UPDATE gabcms_test_commentaires SET avisdir_pseudo = '" . $user['username'] . "', avisdir_commentaire = '" . addslashes($commentaire) . "', avisdir = '" . $avis . "', avisfinal = '" . $avis . "' WHERE id_test = '" . $modifierrecrut . "'");
-            $bdd->query("UPDATE gabcms_test_staff SET etat = '2' WHERE id = '" . $modifierrecrut . "'");
-            $bdd->query("UPDATE users SET staff_test = '0' WHERE id = '" . $r['user_id'] . "'");
-            $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-            $insertn1->bindValue(':pseudo', $user['username']);
-            if ($assoc['gender'] == 'M') {
-                $insertn1->bindValue(':action', '(direction) a donné son avis sur le test de <b>' . $assoc['username'] . '</b> pour le poste de <b>' . addslashes($c['nom_M']) . '</b>');
-            } elseif ($assoc['gender'] == 'F') {
-                $insertn1->bindValue(':action', '(direction) a donné son avis sur le test de <b>' . $assoc['username'] . '</b> pour le poste de <b>' . addslashes($c['nom_F']) . '</b>');
-            }
-            $insertn1->bindValue(':date', FullDate('full'));
-            $insertn1->execute();
+
+        if ($commentaire && $avis && $user['id'] != $r['user_id'] && $user['id'] != $r['tuteur'] && !$a['avisdir_commentaire']) {
+            $bdd->query("UPDATE gabcms_test_commentaires SET avisdir_pseudo = '{$user['username']}', avisdir_commentaire = '" . addslashes($commentaire) . "', avisdir = '$avis', avisfinal = '$avis' WHERE id_test = '$modifierrecrut'");
+            $bdd->query("UPDATE gabcms_test_staff SET etat = '2' WHERE id = '$modifierrecrut'");
+            $bdd->query("UPDATE users SET staff_test = '0' WHERE id = '{$r['user_id']}'");
+
+            $poste_nom = ($assoc['gender'] == 'M') ? addslashes($c['nom_M']) : addslashes($c['nom_F']);
+            $action = "(direction) a donné son avis sur le test de <b>{$assoc['username']}</b> pour le poste de <b>{$poste_nom}</b>";
+            $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo, action, date) VALUES (:pseudo, :action, :date)");
+            $insertn1->execute([':pseudo' => $user['username'], ':action' => $action, ':date' => FullDate('full')]);
         }
+
         if ($avis == 1) {
             $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-            $insertn1->bindValue(':pseudo', $assoc['username']);
-            $insertn1->bindValue(':action', 'a réussi son test.');
-            $insertn1->bindValue(':date', FullDate('full'));
-            $insertn1->execute();
+            $insertn1->execute([
+                ':pseudo' => $assoc['username'],
+                ':action' => 'a réussi son test.',
+                ':date' => FullDate('full')
+            ]);
+
+            $nom_poste = ($assoc['gender'] == 'M') ? addslashes($c['nom_M']) : addslashes($c['nom_F']);
+            $message_alerte = "<b>Bonjour {$assoc['username']}</b><br/><br/>Je viens de traiter ton test, et j'ai le plaisir de t'annoncer que ton test a été <b>concluant</b>, donc réussi. Tu détiens à partir de maintenant ton poste <b>('{$nom_poste}')</b>.<br/><br/><i>Ce message est généré automatiquement après l'avis de la direction</i>";
             $insertn2 = $bdd->prepare("INSERT INTO gabcms_alertes (userid, sujet, alerte, par, date, look, action) VALUES (:id, :sujet, :alerte, :par, :date, :look, :act)");
-            $insertn2->bindValue(':id', $r['user_id']);
-            $insertn2->bindValue(':sujet', 'Résultat de ton test');
-            if ($assoc['gender'] == 'M') {
-                $insertn2->bindValue(':alerte', '<b>Bonjour ' . $assoc['username'] . '</b><br/><br/>Je viens de traiter ton test, et j\'ai le plaisir de t\'annoncer que ton test a été <b>concluant</b>, donc réussi. Tu détiens à partir de maintenant ton poste <b>(' . addslashes($c['nom_M']) . ')</b>.<br/><br/><i>Ce message est généré automatiquement après l\'avis de la direction</i>');
-            } elseif ($assoc['gender'] == 'F') {
-                $insertn2->bindValue(':alerte', '<b>Bonjour ' . $assoc['username'] . '</b><br/><br/>Je viens de traiter ton test, et j\'ai le plaisir de t\'annoncer que ton test a été <b>concluant</b>, donc réussi. Tu détiens à partir de maintenant ton poste <b>(' . addslashes($c['nom_F']) . ')</b>.<br/><br/><i>Ce message est généré automatiquement après l\'avis de la direction</i>');
-            }
-            $insertn2->bindValue(':par', $user['username']);
-            $insertn2->bindValue(':date', FullDate('full'));
-            $insertn2->bindValue(':look', $user['look']);
-            $insertn2->bindValue(':act', '0');
-            $insertn2->execute();
+            $insertn2->execute([
+                ':id' => $r['user_id'],
+                ':sujet' => 'Résultat de ton test',
+                ':alerte' => $message_alerte,
+                ':par' => $user['username'],
+                ':date' => FullDate('full'),
+                ':look' => $user['look'],
+                ':act' => '0'
+            ]);
+
             $insertn3 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
-            $insertn3->bindValue(':userid', $r['user_id']);
-            $insertn3->bindValue(':message', 'Je viens de donner mon avis définitif sur ta période de test ! Merci d\'aller lire au <b>PLUS VITE</b> le résultat en <a href="' . $url . '/alerts">cliquant ici</a> !');
-            $insertn3->bindValue(':auteur', $user['username']);
-            $insertn3->bindValue(':date', FullDate('full'));
-            $insertn3->bindValue(':look', $user['look']);
-            $insertn3->execute();
+            $insertn3->execute([
+                ':userid' => $r['user_id'],
+                ':message' => "Je viens de donner mon avis définitif sur ta période de test ! Merci d'aller lire au <b>PLUS VITE</b> le résultat en <a href='{$url}/alerts'>cliquant ici</a> !",
+                ':auteur' => $user['username'],
+                ':date' => FullDate('full'),
+                ':look' => $user['look']
+            ]);
         }
+
         if ($avis == 2) {
-            $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-            $insertn1->bindValue(':pseudo', $assoc['username']);
-            $insertn1->bindValue(':action', 'a échoué son test.');
-            $insertn1->bindValue(':date', FullDate('full'));
-            $insertn1->execute();
-            $insertn2 = $bdd->prepare("INSERT INTO gabcms_alertes (userid, sujet, alerte, par, date, look, action) VALUES (:id, :sujet, :alerte, :par, :date, :look, :act)");
-            $insertn2->bindValue(':id', $r['user_id']);
-            $insertn2->bindValue(':sujet', 'Résultat de ton test');
-            $insertn2->bindValue(':alerte', '<b>Bonjour ' . $assoc['username'] . '</b><br/><br/>Je viens de traiter ton test, et j\'ai le devoir de t\'annoncer que ton test a été <b>échoué</b>. La direction n\'est pas dans l\'obligation de justifier ce refus. Toutes fois tu peux toujours demander.<br/><br/><i>Ce message est généré automatiquement après l\'avis de la direction</i>');
-            $insertn2->bindValue(':par', $user['username']);
-            $insertn2->bindValue(':date', FullDate('full'));
-            $insertn2->bindValue(':look', $user['look']);
-            $insertn2->bindValue(':act', '0');
-            $insertn2->execute();
-            $insertn3 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
-            $insertn3->bindValue(':userid', $r['user_id']);
-            $insertn3->bindValue(':message', 'Je viens de donner mon avis définitif sur ta période de test ! Merci d\'aller lire au <b>PLUS VITE</b> le résultat en <a href="' . $url . '/alerts">cliquant ici</a> !');
-            $insertn3->bindValue(':auteur', $user['username']);
-            $insertn3->bindValue(':date', FullDate('full'));
-            $insertn3->bindValue(':look', $user['look']);
-            $insertn3->execute();
+            $date = FullDate('full');
+            $username = $assoc['username'];
+            $user_id = $r['user_id'];
+            $look = $user['look'];
+            $url_alerts = $url . '/alerts';
+            $message = '<b>Bonjour ' . $username . '</b><br/><br/>Je viens de traiter ton test, et j\'ai le devoir de t\'annoncer que ton test a été <b>échoué</b>. La direction n\'est pas dans l\'obligation de justifier ce refus. Toutes fois tu peux toujours demander.<br/><br/><i>Ce message est généré automatiquement après l\'avis de la direction</i>';
+
+            $stmt1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+            $stmt1->execute([
+                'pseudo' => $username,
+                'action' => 'a échoué son test.',
+                'date' => $date
+            ]);
+
+            $stmt2 = $bdd->prepare("INSERT INTO gabcms_alertes (userid, sujet, alerte, par, date, look, action) VALUES (:id, :sujet, :alerte, :par, :date, :look, :act)");
+            $stmt2->execute([
+                'id' => $user_id,
+                'sujet' => 'Résultat de ton test',
+                'alerte' => $message,
+                'par' => $user['username'],
+                'date' => $date,
+                'look' => $look,
+                'act' => 0
+            ]);
+
+            $stmt3 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
+            $stmt3->execute([
+                'userid' => $user_id,
+                'message' => 'Je viens de donner mon avis définitif sur ta période de test ! Merci d\'aller lire au <b>PLUS VITE</b> le résultat en <a href="' . $url_alerts . '">cliquant ici</a> !',
+                'auteur' => $user['username'],
+                'date' => $date,
+                'look' => $look
+            ]);
         }
         echo '<h4 class="alert_success">Ton avis sur le test de <b>' . $assoc['username'] . '</b> a été enregistré.</h4>';
     } else {
@@ -120,28 +137,28 @@ if (isset($_GET['modifierrecrut'])) {
                         <td class="haut">Actions</td>
                     </tr>
                     <?php
-                    $sql = $bdd->query("SELECT * FROM gabcms_test_staff WHERE date_fin <= '" . $nowtime . "' AND etat = '1' ORDER BY date_fin DESC");
-                    while ($e = $sql->fetch()) {
-                        $date_but = date('d/m/Y H:i', $e['date_fin']);
-                        $sqlz = $bdd->query("SELECT username FROM users WHERE id = '" . $e['user_id'] . "'");
-                        $rowz = $sqlz->rowCount();
-                        $assocz = $sqlz->fetch(PDO::FETCH_ASSOC);
-                        $sql2 = $bdd->query("SELECT username FROM users WHERE id = '" . $e['tuteur'] . "'");
-                        $row2 = $sql2->rowCount();
-                        $assoc2 = $sql2->fetch(PDO::FETCH_ASSOC);
-                        $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $e['poste'] . "'");
-                        $c = $correct->fetch();
+                    $sql = $bdd->query("SELECT t.*, u1.username AS username, u2.username AS tuteur, p.nom_M AS poste_nom
+                    FROM gabcms_test_staff t
+                    LEFT JOIN users u1 ON t.user_id = u1.id
+                    LEFT JOIN users u2 ON t.tuteur = u2.id
+                    LEFT JOIN gabcms_postes_noms p ON t.poste = p.id
+                    WHERE t.date_fin <= '$nowtime' AND t.etat = '1'
+                    ORDER BY t.date_fin DESC");
+
+                    while ($e = $sql->fetch(PDO::FETCH_ASSOC)) {
+                        $date_fin = date('d/m/Y H:i', $e['date_fin']);
+                        $avis_link = $user['id'] != $e['tuteur'] ? '<a href="?modif=' . $e['id'] . '">Donner son avis</a>' : '';
+                        echo '<tr class="bas">';
+                        echo '<td class="bas">' . $e['username'] . '</td>';
+                        echo '<td class="bas">' . $e['poste_nom'] . '</td>';
+                        echo '<td class="bas">' . $e['date_debut'] . '</td>';
+                        echo '<td class="bas">' . $date_fin . '</td>';
+                        echo '<td class="bas">' . $e['tuteur'] . '</td>';
+                        echo '<td class="bas">' . $e['par'] . '</td>';
+                        echo '<td class="bas">' . $avis_link . '</td>';
+                        echo '</tr>';
+                    }
                     ?>
-                        <tr class="bas">
-                            <td class="bas"><?PHP echo $assocz['username'] ?></td>
-                            <td class="bas"><?PHP echo $c['nom_M'] ?></td>
-                            <td class="bas"><?PHP echo $e['date_debut'] ?></td>
-                            <td class="bas"><?PHP echo $date_but ?></td>
-                            <td class="bas"><?PHP echo $assoc2['username'] ?></td>
-                            <td class="bas"><?PHP echo $e['par'] ?></td>
-                            <td class="bas"><?PHP if ($user['id'] != $e['tuteur']) { ?><a href="?modif=<?PHP echo $e['id']; ?>">Donner son avis</a><?PHP } ?></td>
-                        </tr>
-                    <?PHP } ?>
                 </tbody>
             </table>
             <hr />
@@ -158,62 +175,62 @@ if (isset($_GET['modifierrecrut'])) {
                         <td class="haut">Actions</td>
                     </tr>
                     <?php
-                    $sql = $bdd->query("SELECT * FROM gabcms_test_staff WHERE date_fin <= '" . $nowtime . "' ORDER BY date_fin DESC");
-                    while ($e = $sql->fetch()) {
-                        $date_but = date('d/m/Y H:i', $e['date_fin']);
-                        $sqlz = $bdd->query("SELECT username FROM users WHERE id = '" . $e['user_id'] . "'");
-                        $rowz = $sqlz->rowCount();
-                        $assocz = $sqlz->fetch(PDO::FETCH_ASSOC);
-                        $sql2 = $bdd->query("SELECT username FROM users WHERE id = '" . $e['tuteur'] . "'");
-                        $row2 = $sql2->rowCount();
-                        $assoc2 = $sql2->fetch(PDO::FETCH_ASSOC);
+                    $sql = $bdd->query("SELECT t.*, u1.username AS username, u2.username AS tuteur, p.nom_M AS poste_nom
+                    FROM gabcms_test_staff t
+                    LEFT JOIN users u1 ON t.user_id = u1.id
+                    LEFT JOIN users u2 ON t.tuteur = u2.id
+                    LEFT JOIN gabcms_postes_noms p ON t.poste = p.id
+                    WHERE t.date_fin <= '$nowtime'
+                    ORDER BY t.date_fin DESC");
+                    while ($e = $sql->fetch(PDO::FETCH_ASSOC)) {
+                        $date_fin = date('d/m/Y H:i', $e['date_fin']);
                         if ($e['etat'] == 0) {
                             $etat_modif = "<span style=\"color:#0000FF;\"><b>Attente avis<br/>tuteur</b></span>";
-                        }
-                        if ($e['etat'] == 1) {
+                        } elseif ($e['etat'] == 1) {
                             $etat_modif = "<span style=\"color:#0000FF;\"><b>Attente avis<br/>direction</b></span>";
-                        }
-                        if ($e['etat'] == 2) {
+                        } else {
                             $etat_modif = "<span style=\"color:#008800;\"><b>Traitée</b></span>";
                         }
-                        $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $e['poste'] . "'");
-                        $c = $correct->fetch();
+                        echo '<tr class="bas">';
+                        echo '<td class="bas">' . $e['username'] . '</td>';
+                        echo '<td class="bas">' . $e['poste_nom'] . '</td>';
+                        echo '<td class="bas">' . $e['date_debut'] . '</td>';
+                        echo '<td class="bas">' . $date_fin . '</td>';
+                        echo '<td class="bas">' . $e['tuteur'] . '</td>';
+                        echo '<td class="bas">' . $e['par'] . '</td>';
+                        echo '<td class="bas">' . $etat_modif . '</td>';
+                        echo '<td class="bas"><a href="' . $url . '/managements/look_test?id=' . $e['id'] . '&page=dir">Voir</a></td>';
+                        echo '</tr>';
+                    }
                     ?>
-                        <tr class="bas">
-                            <td class="bas"><?PHP echo $assocz['username'] ?></td>
-                            <td class="bas"><?PHP echo $c['nom_M'] ?></td>
-                            <td class="bas"><?PHP echo $e['date_debut'] ?></td>
-                            <td class="bas"><?PHP echo $date_but ?></td>
-                            <td class="bas"><?PHP echo $assoc2['username'] ?></td>
-                            <td class="bas"><?PHP echo $e['par'] ?></td>
-                            <td class="bas"><?PHP echo $etat_modif ?></td>
-                            <td class="bas"><a href="<?PHP echo $url ?>/managements/look_test?id=<?PHP echo $e['id'] ?>&page=dir">Voir</a></td>
-                        </tr>
-                    <?PHP } ?>
                 </tbody>
             </table>
         </div>
+
     <?PHP }
     if (isset($_GET['modif'])) {
-        $sql_modif = $bdd->query("SELECT * FROM gabcms_test_staff WHERE id = '" . $modif . "'");
-        $modif_a = $sql_modif->fetch();
-        $sql_modifa = $bdd->query("SELECT * FROM users WHERE id = '" . $modif_a['user_id'] . "'");
-        $modif_e = $sql_modifa->fetch();
-        $sql_modifz = $bdd->query("SELECT * FROM gabcms_test_commentaires WHERE id_test = '" . $modif . "'");
-        $modif_z = $sql_modifz->fetch();
+        $sql = $bdd->query("
+    SELECT t.*, u.username, u.account_created, p.nom_M, tuteur.username AS tuteur_username, c.avistuteur
+    FROM gabcms_test_staff t 
+    INNER JOIN users u ON t.user_id = u.id 
+    INNER JOIN gabcms_postes_noms p ON t.poste = p.id 
+    INNER JOIN users tuteur ON t.tuteur = tuteur.id 
+    LEFT JOIN gabcms_test_commentaires c ON t.id = c.id_test 
+    WHERE t.id = '$modif'");
+        $modif_a = $sql->fetch();
+        $modif_e = $modif_a;
+        $modif_z = $sql->fetch(PDO::FETCH_ASSOC);
         $date_but = date('d/m/Y H:i', $modif_a['date_fin']);
-        $sql = $bdd->query("SELECT * FROM users WHERE id = '" . $modif_a['user_id'] . "'");
-        $assoc = $sql->fetch(PDO::FETCH_ASSOC);
-        $sql2 = $bdd->query("SELECT username FROM users WHERE id = '" . $modif_a['tuteur'] . "'");
-        $assoc2 = $sql2->fetch(PDO::FETCH_ASSOC);
+        $assoc = $modif_a;
+        $assoc2 = ['username' => $modif_a['tuteur_username']];
+        $etat2 = '';
         if ($modif_z['avistuteur'] == 1) {
             $etat2 = "<span style=\"color:#008000\"><b>Favorable</b></span>";
-        }
-        if ($modif_z['avistuteur'] == 2) {
+        } elseif ($modif_z['avistuteur'] == 2) {
             $etat2 = "<span style=\"color:#FF0000\"><b>Défavorable</b></span>";
         }
-        $correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $modif_a['poste'] . "'");
-        $c = $correct->fetch();
+        $c = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '{$modif_a['poste']}'")->fetch();
+
     ?>
         <span id="titre">Donnes ton avis</span><br />
         Donnes ton avis sur une période de test d'un de tes tutorés :<br /><br />

@@ -19,57 +19,69 @@ if (isset($_GET['deplace'])) {
     $deplace = Secu($_GET['deplace']);
 }
 
-if (isset($_GET['do']) && $_GET['do'] == "create" && !empty($_POST['nom']) && !empty($_POST['description']) && !empty($_POST['staff']) && !empty($_POST['categorie'])) {
+if (isset($_GET['do'], $_POST['nom'], $_POST['description'], $_POST['staff'], $_POST['categorie']) && $_GET['do'] == "create") {
     $nom = addslashes($_POST['nom']);
     $description = addslashes($_POST['description']);
     $staff = addslashes($_POST['staff']);
     $categorie = addslashes($_POST['categorie']);
-    $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-    $insertn1->bindValue(':pseudo', $user['username']);
-    $insertn1->bindValue(':action', 'a créé une sous catégorie pour le forum <b>(' . $nom . ')</b>');
-    $insertn1->bindValue(':date', FullDate('full'));
-    $insertn1->execute();
+    $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo, action, date) VALUES (:pseudo, :action, :date)");
+    $insertn1->execute([
+        ':pseudo' => $user['username'],
+        ':action' => 'a créé une sous catégorie pour le forum <b>(' . $nom . ')</b>',
+        ':date' => FullDate('full')
+    ]);
     $insertn2 = $bdd->prepare("INSERT INTO gabcms_forum_sous_categorie (categorie_id, nom, description, staff, create_par, date) VALUES (:id, :nom, :desc, :staff, :par, :date)");
-    $insertn2->bindValue(':id', $categorie);
-    $insertn2->bindValue(':nom', $nom);
-    $insertn2->bindValue(':desc', $description);
-    $insertn2->bindValue(':staff', $staff);
-    $insertn2->bindValue(':par', $user['username']);
-    $insertn2->bindValue(':date', time());
-    $insertn2->execute();
-    echo '<h4 class="alert_success">La sous catégorie a bien été enregistré</h4>';
+    $insertn2->execute([
+        ':id' => $categorie,
+        ':nom' => $nom,
+        ':desc' => $description,
+        ':staff' => $staff,
+        ':par' => $user['username'],
+        ':date' => time()
+    ]);
+    echo '<h4 class="alert_success">La sous catégorie a bien été enregistrée</h4>';
 } else {
     echo '<h4 class="alert_error">Une erreur est survenue</h4>';
 }
 
 if (isset($_GET['sup'])) {
     $sup = Secu($_GET['sup']);
-    $moder_e = $bdd->query("SELECT * FROM gabcms_forum_sous_categorie WHERE id = '$sup'")->fetch();
-    $bdd->query("DELETE FROM gabcms_forum_sous_categorie WHERE id = '$sup'");
-    $bdd->query("DELETE FROM gabcms_forum_topic WHERE categorie_forum = '$sup'");
-    $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)")
-        ->execute([
-            ':pseudo' => $user['username'],
-            ':action' => 'a supprimé la sous catégorie <b>' . addslashes($moder_e['nom']) . '</b> du forum',
-            ':date' => FullDate('full')
-        ]);
+    $moder_e = $bdd->query("SELECT nom FROM gabcms_forum_sous_categorie WHERE id = '$sup'")->fetchColumn();
+    $bdd->query("DELETE FROM gabcms_forum_sous_categorie WHERE id = '$sup'; DELETE FROM gabcms_forum_topic WHERE categorie_forum = '$sup'");
+    $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+    $insertn1->execute([
+        ':pseudo' => $user['username'],
+        ':action' => 'a supprimé la sous catégorie <b>' . addslashes($moder_e) . '</b> du forum',
+        ':date' => FullDate('full')
+    ]);
     echo '<h4 class="alert_success">La sous catégorie a bien été supprimée</h4>';
 }
 
-
-if (isset($_GET['modifierrecrut']) && !empty($_POST['nom_modif']) && !empty($_POST['description_modif']) && !empty($_POST['staff_modif'])) {
+if (isset($_GET['modifierrecrut'], $_POST['nom_modif'], $_POST['description_modif'], $_POST['staff_modif'])) {
     $modifierrecrut = Secu($_GET['modifierrecrut']);
     $nom_modif = addslashes($_POST['nom_modif']);
     $description_modif = addslashes($_POST['description_modif']);
     $staff_modif = addslashes($_POST['staff_modif']);
-    $sql_modif = $bdd->query("SELECT * FROM gabcms_forum_sous_categorie WHERE id = '$modifierrecrut'");
+
+    $sql_modif = $bdd->prepare("SELECT * FROM gabcms_forum_sous_categorie WHERE id = :id");
+    $sql_modif->execute([':id' => $modifierrecrut]);
     $modif_a = $sql_modif->fetch();
-    $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-    $insertn1->bindValue(':pseudo', $user['username']);
-    $insertn1->bindValue(':action', 'a modifié la sous catégorie <b>' . addslashes($modif_a['nom']) . '</b> en <b>' . $nom_modif . '</b>');
-    $insertn1->bindValue(':date', FullDate('full'));
-    $insertn1->execute();
-    $bdd->query("UPDATE gabcms_forum_sous_categorie SET nom = '$nom_modif', description = '$description_modif', staff = '$staff_modif' WHERE id = '$modifierrecrut'");
+
+    $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo, action, date) VALUES (:pseudo, :action, :date)");
+    $insertn1->execute([
+        ':pseudo' => $user['username'],
+        ':action' => 'a modifié la sous catégorie <b>' . addslashes($modif_a['nom']) . '</b> en <b>' . $nom_modif . '</b>',
+        ':date' => FullDate('full')
+    ]);
+
+    $update = $bdd->prepare("UPDATE gabcms_forum_sous_categorie SET nom = :nom, description = :description, staff = :staff WHERE id = :id");
+    $update->execute([
+        ':nom' => $nom_modif,
+        ':description' => $description_modif,
+        ':staff' => $staff_modif,
+        ':id' => $modifierrecrut
+    ]);
+
     echo '<h4 class="alert_success">La modification a bien eu lieu</h4>';
 } else {
     echo '<h4 class="alert_error">Une erreur est survenue</h4>';
@@ -77,21 +89,31 @@ if (isset($_GET['modifierrecrut']) && !empty($_POST['nom_modif']) && !empty($_PO
 
 if (isset($_GET['deplacement'])) {
     $deplacement = Secu($_GET['deplacement']);
-    $new_categorie = $_POST['new_categorie'];
-    $sql_deplace = $bdd->query("SELECT * FROM gabcms_forum_sous_categorie WHERE id = '$deplacement'");
+    $new_categorie = $_POST['new_categorie'] ?? '';
+    $sql_deplace = $bdd->prepare("SELECT * FROM gabcms_forum_sous_categorie WHERE id = :deplacement");
+    $sql_deplace->execute([':deplacement' => $deplacement]);
     $deplace_a = $sql_deplace->fetch();
-    $sql_deplacez = $bdd->query("SELECT nom FROM gabcms_forum_categorie WHERE id = '{$deplace_a['categorie_id']}'");
+    $sql_deplacez = $bdd->prepare("SELECT nom FROM gabcms_forum_categorie WHERE id = :categorie_id");
+    $sql_deplacez->execute([':categorie_id' => $deplace_a['categorie_id']]);
     $deplace_b = $sql_deplacez->fetch()['nom'];
-    $assoc = $bdd->query("SELECT nom FROM gabcms_forum_categorie WHERE id = '$new_categorie'")->fetch()['nom'];
-    if ($new_categorie != "") {
-        $bdd->query("UPDATE gabcms_forum_sous_categorie SET categorie_id = '$new_categorie' WHERE id = '$deplacement'");
-        $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo, action, date) VALUES (:pseudo, :action, :date)")
-            ->execute([':pseudo' => $user['username'], ':action' => "a déplacé la sous catégorie <b>" . addslashes($deplace_a['nom']) . "</b> de la catégorie <b>$deplace_b</b> à <b>$assoc</b>", ':date' => FullDate('full')]);
+    $assoc = $bdd->prepare("SELECT nom FROM gabcms_forum_categorie WHERE id = :new_categorie");
+    $assoc->execute([':new_categorie' => $new_categorie]);
+    $assoc = $assoc->fetch()['nom'] ?? '';
+    if (!empty($new_categorie)) {
+        $update = $bdd->prepare("UPDATE gabcms_forum_sous_categorie SET categorie_id = :new_categorie WHERE id = :deplacement");
+        $update->execute([':new_categorie' => $new_categorie, ':deplacement' => $deplacement]);
+        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo, action, date) VALUES (:pseudo, :action, :date)");
+        $insertn1->execute([
+            ':pseudo' => $user['username'],
+            ':action' => "a déplacé la sous catégorie <b>" . addslashes($deplace_a['nom']) . "</b> de la catégorie <b>$deplace_b</b> à <b>$assoc</b>",
+            ':date' => FullDate('full')
+        ]);
         echo '<h4 class="alert_success">La modification a bien eu lieu</h4>';
     } else {
         echo '<h4 class="alert_error">Une erreur est survenue</h4>';
     }
 }
+
 
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />

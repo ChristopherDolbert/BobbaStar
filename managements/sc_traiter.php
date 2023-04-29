@@ -17,8 +17,14 @@ if (!isset($_SESSION['username']) || $user['rank'] < 5 || $user['rank'] > 11) {
 $rank_modif = "";
 switch ($user['rank']) {
     case 11:
+        $rank_modif = "fondateur";
+        break;
     case 10:
+        $rank_modif = "fondateur";
+        break;
     case 9:
+        $rank_modif = "fondateur";
+        break;
     case 8:
         $rank_modif = "fondateur";
         break;
@@ -40,94 +46,85 @@ switch ($user['rank']) {
 }
 
 $id = Secu($_GET['id']);
-$infr = $bdd->query("SELECT * FROM gabcms_contact WHERE id = '" . $id . "'");
-$r = $infr->fetch();
-if ($r['resul'] == 0) {
-    $etat_modif = "<span style=\"color:#FF4500\"><b>Signalé</b></span>";
+$infr = $bdd->prepare("SELECT * FROM gabcms_contact WHERE id = :id");
+$infr->bindValue(':id', $id);
+$infr->execute();
+$r = $infr->fetch(PDO::FETCH_ASSOC);
+
+$etat_modifs = array(
+    0 => "<span style=\"color:#FF4500\"><b>Signalé</b></span>",
+    1 => "<span style=\"color:#4B0082\"><b>En étude</b></span>",
+    2 => "<span style=\"color:#FF0000\"><b>Correction à faire</b></span>",
+    3 => "<span style=\"color:#0000FF\"><b>Attente réponse du joueur</b></span>",
+    4 => "<span style=\"color:#8B4513\"><b>Réponse donnée par le joueur</b></span>",
+    5 => "<span style=\"color:#2E8B57\"><b>En test</b></span>",
+    6 => "<span style=\"color:#008000\"><b>Fermé - Résolu</b></span>",
+    7 => "<span style=\"color:#8bda20\"><b>Fermé - déjà signalé/résolu</b></span>",
+    8 => "<span style=\"color:#DAA520\"><b>Fermé - sans suite</b></span>",
+);
+
+if (isset($etat_modifs[$r['resul']])) {
+    $etat_modif = $etat_modifs[$r['resul']];
+} else {
+    $etat_modif = '';
 }
-if ($r['resul'] == 1) {
-    $etat_modif = "<span style=\"color:#4B0082\"><b>En étude</b></span>";
-}
-if ($r['resul'] == 2) {
-    $etat_modif = "<span style=\"color:#FF0000\"><b>Correction à faire</b></span>";
-}
-if ($r['resul'] == 3) {
-    $etat_modif = "<span style=\"color:#0000FF\"><b>Attente réponse du joueur</b></span>";
-}
-if ($r['resul'] == 4) {
-    $etat_modif = "<span style=\"color:#8B4513\"><b>Réponse donnée par le joueur</b></span>";
-}
-if ($r['resul'] == 5) {
-    $etat_modif = "<span style=\"color:#2E8B57\"><b>En test</b></span>";
-}
-if ($r['resul'] == 6) {
-    $etat_modif = "<span style=\"color:#008000\"><b>Fermé - Résolu</b></span>";
-}
-if ($r['resul'] == 7) {
-    $etat_modif = "<span style=\"color:#8bda20\"><b>Fermé - déjà signalé/résolu</b></span>";
-}
-if ($r['resul'] == 8) {
-    $etat_modif = "<span style=\"color:#DAA520\"><b>Fermé - sans suite</b></span>";
-}
-$sql = $bdd->query("SELECT id FROM users WHERE username = '" . $r['pseudo'] . "'");
-$row = $sql->rowCount();
-$assoc = $sql->fetch(PDO::FETCH_ASSOC);
+
+$stmt = $bdd->prepare("SELECT id FROM users WHERE username = :username");
+$stmt->bindValue(':username', $r['pseudo']);
+$stmt->execute();
+$row = $stmt->rowCount();
+$assoc = $stmt->fetch(PDO::FETCH_ASSOC);
+
 if (isset($_POST['etat'])) {
     $etat = Secu($_POST['etat']);
     if ($id != "" && $etat != "") {
-        if ($etat == 0) {
-            $retat_modif = "<span style=\"color:#FF4500\"><b>Signalé</b></span>";
-        }
-        if ($etat == 1) {
-            $retat_modif = "<span style=\"color:#4B0082\"><b>En étude</b></span>";
-        }
-        if ($etat == 2) {
-            $retat_modif = "<span style=\"color:#FF0000\"><b>Correction à faire</b></span>";
-        }
-        if ($etat == 3) {
-            $retat_modif = "<span style=\"color:#0000FF\"><b>Attente réponse du joueur</b></span>";
-        }
-        if ($etat == 4) {
-            $retat_modif = "<span style=\"color:#8B4513\"><b>Réponse donnée par le joueur</b></span>";
-        }
-        if ($etat == 5) {
-            $retat_modif = "<span style=\"color:#2E8B57\"><b>En test</b></span>";
-        }
-        if ($etat == 6) {
-            $retat_modif = "<span style=\"color:#008000\"><b>Fermé - Résolu</b></span>";
-        }
-        if ($etat == 7) {
-            $retat_modif = "<span style=\"color:#8bda20\"><b>Fermé - déjà signalé/résolu</b></span>";
-        }
-        if ($etat == 8) {
-            $retat_modif = "<span style=\"color:#DAA520\"><b>Fermé - sans suite</b></span>";
-        }
-        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-        $insertn1->bindValue(':pseudo', $user['username']);
-        $insertn1->bindValue(':action', 'a passé un sujet d\'aide de <b>' . $r['pseudo'] . '</b> (ID : ' . $id . ') de l\'état ' . $etat_modif . ' à ' . $retat_modif . '');
-        $insertn1->bindValue(':date', FullDate('full'));
-        $insertn1->execute();
-        $insertn2 = $bdd->prepare("INSERT INTO gabcms_contact_info (contact_id,message,date,ip) VALUES (:id, :message, :date, :ip)");
-        $insertn2->bindValue(':id', $id);
-        $insertn2->bindValue(':message', '<b>' . $user['username'] . '</b> passe le sujet d\'aide de l\'état ' . $etat_modif . ' à ' . $retat_modif . '');
-        $insertn2->bindValue(':date', FullDate('full') . ' :');
-        $insertn2->bindValue(':ip', $user['ip_current']);
-        $insertn2->execute();
-        $insertn3 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
-        $insertn3->bindValue(':userid', $assoc['id']);
-        $insertn3->bindValue(':message', 'Je viens de passer ton sujet d\'aide de l\'état "' . $etat_modif . '" à "' . $retat_modif . '", pour plus d\'infos, <a href="' . $url . '/service_client/tickets">cliques ici</a> ! (Ticket #' . $id . ')');
-        $insertn3->bindValue(':auteur', $user['username']);
-        $insertn3->bindValue(':date', FullDate('full'));
-        $insertn3->bindValue(':look', $user['look']);
-        $insertn3->execute();
-        $bdd->query("UPDATE gabcms_contact SET resul='" . $etat . "', resul_par='" . $user['username'] . "' WHERE id = '" . $id . "'");
+        $etat_to_modif = array(
+            0 => "<span style=\"color:#FF4500\"><b>Signalé</b></span>",
+            1 => "<span style=\"color:#4B0082\"><b>En étude</b></span>",
+            2 => "<span style=\"color:#FF0000\"><b>Correction à faire</b></span>",
+            3 => "<span style=\"color:#0000FF\"><b>Attente réponse du joueur</b></span>",
+            4 => "<span style=\"color:#8B4513\"><b>Réponse donnée par le joueur</b></span>",
+            5 => "<span style=\"color:#2E8B57\"><b>En test</b></span>",
+            6 => "<span style=\"color:#008000\"><b>Fermé - Résolu</b></span>",
+            7 => "<span style=\"color:#8bda20\"><b>Fermé - déjà signalé/résolu</b></span>",
+            8 => "<span style=\"color:#DAA520\"><b>Fermé - sans suite</b></span>"
+        );
+        $retat_modif = $etat_to_modif[$etat];
+
+        $insertn1 = "INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)";
+        $insertn2 = "INSERT INTO gabcms_contact_info (contact_id,message,date,ip) VALUES (:id, :message, :date, :ip)";
+        $insertn3 = "INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)";
+
+        $params1 = [':pseudo' => $user['username'], ':action' => 'a passé un sujet d\'aide de <b>' . $r['pseudo'] . '</b> (ID : ' . $id . ') de l\'état ' . $etat_modif . ' à ' . $retat_modif . '', ':date' => FullDate('full')];
+        $params2 = [':id' => $id, ':message' => '<b>' . $user['username'] . '</b> passe le sujet d\'aide de l\'état ' . $etat_modif . ' à ' . $retat_modif . '', ':date' => FullDate('full') . ' :', ':ip' => $user['ip_current']];
+        $params3 = [':userid' => $assoc['id'], ':message' => 'Je viens de passer ton sujet d\'aide de l\'état "' . $etat_modif . '" à "' . $retat_modif . '", pour plus d\'infos, <a href="' . $url . '/service_client/tickets">cliques ici</a> ! (Ticket #' . $id . ')', ':auteur' => $user['username'], ':date' => FullDate('full'), ':look' => $user['look']];
+
         $affichage = "<div id=\"purse-redeem-result\"> 
+    <div class=\"redeem-error\"> 
+        <div class=\"rounded rounded-green\"> 
+            La demande d'aide a été classé dans la catégorie " . $retat_modif . ".
+        </div> 
+    </div> 
+</div>";
+
+        $bdd->beginTransaction();
+
+        try {
+            $bdd->prepare($insertn1)->execute($params1);
+            $bdd->prepare($insertn2)->execute($params2);
+            $bdd->prepare($insertn3)->execute($params3);
+            $bdd->query("UPDATE gabcms_contact SET resul='" . $etat . "', resul_par='" . $user['username'] . "' WHERE id = '" . $id . "'");
+            $bdd->commit();
+        } catch (Exception $e) {
+            $bdd->rollback();
+            $affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-green\"> 
-              La demande d'aide a été classé dans la catégorie " . $retat_modif . ".
+            <div class=\"rounded rounded-red\"> 
+                Une erreur est survenue.
             </div> 
         </div> 
-</div>";
+    </div>";
+        }
     } else {
         $affichage = "<div id=\"purse-redeem-result\"> 
         <div class=\"redeem-error\"> 
@@ -138,86 +135,79 @@ if (isset($_POST['etat'])) {
 </div>";
     }
 }
+
 if (isset($_POST['message'])) {
     $message = Secu($_POST['message']);
-    if ($message != "" && $id != "") {
-        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-        $insertn1->bindValue(':pseudo', $user['username']);
-        $insertn1->bindValue(':action', 'a émis un commentaire sur une demande d\'aide de <b>' . $r['pseudo'] . '</b> (ID : ' . $id . ')');
-        $insertn1->bindValue(':date', FullDate('full'));
-        $insertn1->execute();
-        $insertn2 = $bdd->prepare("INSERT INTO gabcms_contact_info (contact_id,message,date,ip) VALUES (:id, :message, :date, :ip)");
-        $insertn2->bindValue(':id', $id);
-        $insertn2->bindValue(':message', '<b>Message de ' . $user['username'] . ' (CTA) :</b> ' . $message . '');
-        $insertn2->bindValue(':date', FullDate('full') . ' :');
-        $insertn2->bindValue(':ip', $user['ip_current']);
-        $insertn2->execute();
+    if (!empty($message) && !empty($id)) {
+        $userMsg = '<b>Message de ' . $user['username'] . ' (CTA) :</b> ' . $message;
+        $time = FullDate('full');
+        $staffLogMsg = "a émis un commentaire sur une demande d'aide de <b>{$r['pseudo']}</b> (ID : $id)";
+        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo, action, date) VALUES (:pseudo, :action, :date)");
+        $insertn1->execute([':pseudo' => $user['username'], ':action' => $staffLogMsg, ':date' => $time]);
+        $insertn2 = $bdd->prepare("INSERT INTO gabcms_contact_info (contact_id, message, date, ip) VALUES (:id, :message, :date, :ip)");
+        $insertn2->execute([':id' => $id, ':message' => $userMsg, ':date' => $time . ' :', ':ip' => $user['ip_current']]);
         $insertn3 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
-        $insertn3->bindValue(':userid', $assoc['id']);
-        $insertn3->bindValue(':message', 'Je viens d\'émettre un commentaire sur ton sujet d\'aide, pour plus d\'infos, <a href="' . $url . '/service_client/tickets">cliques ici</a> ! (Ticket #' . $id . ')');
-        $insertn3->bindValue(':auteur', $user['username']);
-        $insertn3->bindValue(':date', FullDate('full'));
-        $insertn3->bindValue(':look', $user['look']);
-        $insertn3->execute();
-        $bdd->query("UPDATE gabcms_contact SET resul_par='" . $user['username'] . "' WHERE id = '" . $id . "'");
-        $affichagee = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-green\"> 
-              Un commentaire a été émis avec succès
-            </div> 
-        </div> 
-</div>";
+        $msg = "Je viens d'émettre un commentaire sur ton sujet d'aide, pour plus d'infos, <a href='$url/service_client/tickets'>cliques ici</a> ! (Ticket #$id)";
+        $insertn3->execute([':userid' => $assoc['id'], ':message' => $msg, ':auteur' => $user['username'], ':date' => $time, ':look' => $user['look']]);
+        $bdd->query("UPDATE gabcms_contact SET resul_par='{$user['username']}' WHERE id = $id");
+        $affichagee = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-green\">Un commentaire a été émis avec succès</div></div></div>";
     } else {
-        $affichagee = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-red\"> 
-               Une erreur est survenue.
-            </div> 
-        </div> 
-</div>";
+        $affichagee = "<div id=\"purse-redeem-result\"><div class=\"redeem-error\"><div class=\"rounded rounded-red\">Une erreur est survenue.</div></div></div>";
     }
 }
+
+
 if (isset($_POST['sujet'])) {
     $sujet = Secu($_POST['sujet']);
     $infr = $bdd->query("SELECT * FROM gabcms_contact WHERE id = '" . $id . "'");
     $r = $infr->fetch();
     if ($sujet != "" && $id != "") {
-        $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-        $insertn1->bindValue(':pseudo', $user['username']);
-        $insertn1->bindValue(':action', 'a modifié le sujet d\'un ticket de <b>' . $r['pseudo'] . '</b> (ID : ' . $id . ')');
-        $insertn1->bindValue(':date', FullDate('full'));
-        $insertn1->execute();
-        $insertn2 = $bdd->prepare("INSERT INTO gabcms_contact_info (contact_id,message,date,ip) VALUES (:id, :message, :date, :ip)");
-        $insertn2->bindValue(':id', $r['id']);
-        $insertn2->bindValue(':message', '<b>' . $user['username'] . ' (CTA)</b> a modifié le sujet du ticket <b>' . addslashes($sujet) . '</b> (auparavant : <b>' . addslashes($r['sujet']) . '</b>)');
-        $insertn2->bindValue(':date', FullDate('full') . ' :');
-        $insertn2->bindValue(':ip', $user['ip_current']);
-        $insertn2->execute();
-        $insertn3 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
-        $insertn3->bindValue(':userid', $assoc['id']);
-        $insertn3->bindValue(':message', 'Je viens de modifié le sujet de ton sujet d\'aide, pour plus d\'infos, <a href="' . $url . '/service_client/tickets">cliques ici</a> ! (Ticket #' . $id . ')');
-        $insertn3->bindValue(':auteur', $user['username']);
-        $insertn3->bindValue(':date', FullDate('full'));
-        $insertn3->bindValue(':look', $user['look']);
-        $insertn3->execute();
+        $user_message = '<b>' . $user['username'] . ' (CTA)</b> a modifié le sujet du ticket <b>' . addslashes($sujet) . '</b> (auparavant : <b>' . addslashes($r['sujet']) . '</b>)';
+
+        $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)")
+            ->execute([
+                ':pseudo' => $user['username'],
+                ':action' => 'a modifié le sujet d\'un ticket de <b>' . $r['pseudo'] . '</b> (ID : ' . $id . ')',
+                ':date' => FullDate('full')
+            ]);
+
+        $bdd->prepare("INSERT INTO gabcms_contact_info (contact_id,message,date,ip) VALUES (:id, :message, :date, :ip)")
+            ->execute([
+                ':id' => $r['id'],
+                ':message' => $user_message,
+                ':date' => FullDate('full') . ' :',
+                ':ip' => $user['ip_current']
+            ]);
+
+        $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)")
+            ->execute([
+                ':userid' => $assoc['id'],
+                ':message' => 'Je viens de modifié le sujet de ton sujet d\'aide, pour plus d\'infos, <a href="' . $url . '/service_client/tickets">cliques ici</a> ! (Ticket #' . $id . ')',
+                ':auteur' => $user['username'],
+                ':date' => FullDate('full'),
+                ':look' => $user['look']
+            ]);
+
         $bdd->query("UPDATE gabcms_contact SET sujet = '" . addslashes($sujet) . "' WHERE id = '" . $id . "'");
+
         $affichageee = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-green\"> 
-              Le sujet a été modifié avec succès !
+            <div class=\"redeem-error\"> 
+                <div class=\"rounded rounded-green\"> 
+                  Le sujet a été modifié avec succès !
+                </div> 
             </div> 
-        </div> 
-</div>";
+        </div>";
     } else {
         $affichageee = "<div id=\"purse-redeem-result\"> 
-        <div class=\"redeem-error\"> 
-            <div class=\"rounded rounded-red\"> 
-               Une erreur est survenue.
+            <div class=\"redeem-error\"> 
+                <div class=\"rounded rounded-red\"> 
+                   Une erreur est survenue.
+                </div> 
             </div> 
-        </div> 
-</div>";
+        </div>";
     }
 }
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
@@ -434,35 +424,18 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                         <h2 class="title">Ticket #<?PHP echo $r['id']; ?></h2>
                         <div class="box-content">
                             <?PHP
-                            $retour_messages = $bdd->query('SELECT * FROM gabcms_contact WHERE id = ' . $id . '');
-                            $t = $retour_messages->fetch();
-                            if ($t['resul'] == 0) {
-                                $modif = "<span style=\"color:#FF4500\"><b>Signalé</b></span>";
-                            }
-                            if ($t['resul'] == 1) {
-                                $modif = "<span style=\"color:#4B0082\"><b>En étude</b></span>";
-                            }
-                            if ($t['resul'] == 2) {
-                                $modif = "<span style=\"color:#FF0000\"><b>Correction à faire</b></span>";
-                            }
-                            if ($t['resul'] == 3) {
-                                $modif = "<span style=\"color:#0000FF\"><b>Attente réponse du joueur</b></span>";
-                            }
-                            if ($t['resul'] == 4) {
-                                $modif = "<span style=\"color:#8B4513\"><b>Réponse donnée par le joueur</b></span>";
-                            }
-                            if ($t['resul'] == 5) {
-                                $modif = "<span style=\"color:#2E8B57\"><b>En test</b></span>";
-                            }
-                            if ($t['resul'] == 6) {
-                                $modif = "<span style=\"color:#008000\"><b>Fermé - Résolu</b></span>";
-                            }
-                            if ($t['resul'] == 7) {
-                                $modif = "<span style=\"color:#8bda20\"><b>Fermé - déjà signalé/résolu</b></span>";
-                            }
-                            if ($t['resul'] == 8) {
-                                $modif = "<span style=\"color:#DAA520\"><b>Fermé - sans suite</b></span>";
-                            }
+                            $statuses = array(
+                                0 => "<span style=\"color:#FF4500\"><b>Signalé</b></span>",
+                                1 => "<span style=\"color:#4B0082\"><b>En étude</b></span>",
+                                2 => "<span style=\"color:#FF0000\"><b>Correction à faire</b></span>",
+                                3 => "<span style=\"color:#0000FF\"><b>Attente réponse du joueur</b></span>",
+                                4 => "<span style=\"color:#8B4513\"><b>Réponse donnée par le joueur</b></span>",
+                                5 => "<span style=\"color:#2E8B57\"><b>En test</b></span>",
+                                6 => "<span style=\"color:#008000\"><b>Fermé - Résolu</b></span>",
+                                7 => "<span style=\"color:#8bda20\"><b>Fermé - déjà signalé/résolu</b></span>",
+                                8 => "<span style=\"color:#DAA520\"><b>Fermé - sans suite</b></span>"
+                            );
+                            $modif = $statuses[$t['resul']] ?? '';
                             ?>
                             <table width="100%">
                                 <tbody>

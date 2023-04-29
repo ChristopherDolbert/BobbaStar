@@ -11,26 +11,20 @@ if (!isset($_SESSION['username']) || $user['rank'] < 10 || $user['rank'] > 11) {
     Redirect("" . $url . "/managements/access_neg");
     exit();
 }
-if (isset($_GET['do'])) {
-    $do = Secu($_GET['do']);
-    if ($do == "modif") {
-        if (isset($_POST['haut']) || isset($_POST['bas'])) {
-            $haut = addslashes($_POST['haut']);
-            $bas = addslashes($_POST['bas']);
-            if ($haut != "" && $bas != "") {
-                $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-                $insertn1->bindValue(':pseudo', $user['username']);
-                $insertn1->bindValue(':action', 'a modifié <b>les textes</b> de la <b>newsletter</b>');
-                $insertn1->bindValue(':date', FullDate('full'));
-                $insertn1->execute();
-                $bdd->query("UPDATE gabcms_newsletter SET newsletter_haut = '" . $haut . "', newsletter_bas = '" . $bas . "' WHERE id = '1'");
-                echo '<h4 class="alert_success">Les textes des newsletters viennent d\'être modifié.</h4>';
-            } else {
-                echo '<h4 class="alert_error">Merci de remplir les champs vide</h4>';
-            }
-        }
+
+if (isset($_GET['do']) && $_GET['do'] == "modif") {
+    $haut = addslashes($_POST['haut'] ?? '');
+    $bas = addslashes($_POST['bas'] ?? '');
+    if ($haut && $bas) {
+        $bdd->query("UPDATE gabcms_newsletter SET newsletter_haut = '$haut', newsletter_bas = '$bas' WHERE id = 1");
+        $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)")
+            ->execute([':pseudo' => $user['username'], ':action' => 'a modifié <b>les textes</b> de la <b>newsletter</b>', ':date' => FullDate('full')]);
+        echo '<h4 class="alert_success">Les textes des newsletters viennent d\'être modifiés.</h4>';
+    } else {
+        echo '<h4 class="alert_error">Merci de remplir les champs vides.</h4>';
     }
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 

@@ -12,54 +12,47 @@ if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
 	exit();
 }
 
-if (isset($_GET['pseudo'])) {
-	$pseudo = Secu($_GET['pseudo']);
-}
-if (isset($_GET['signalement'])) {
-	$signalement = Secu($_GET['signalement']);
-}
-if (isset($_GET['signale'])) {
-	$signale = Secu($_GET['signale']);
-}
-if (isset($_POST['username']) && isset($_POST['alerte'])) {
-	if (empty($_POST['username']) && empty($_POST['alerte'])) {
+$pseudo = isset($_GET['pseudo']) ? Secu($_GET['pseudo']) : '';
+$signalement = isset($_GET['signalement']) ? Secu($_GET['signalement']) : '';
+$signale = isset($_GET['signale']) ? Secu($_GET['signale']) : '';
+
+if (!empty($_POST['username']) && !empty($_POST['alerte'])) {
+	$usernamea = Secu($_POST['username']);
+	$sujet = Secu($_POST['sujet']);
+	$act = Secu($_POST['act']);
+	$sql = $bdd->query("SELECT id FROM users WHERE username = '" . $username . "'");
+	$row = $sql->rowCount();
+	$assoc = $sql->fetch(PDO::FETCH_ASSOC);
+	$infr = $bdd->query("SELECT * FROM gabcms_forum_signalement WHERE id = '" . $signale . "'");
+	$r = $infr->fetch();
+	if ($row['id'] < 1) {
+		$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+		$insertn1->bindValue(':pseudo', $user['username']);
+		$insertn1->bindValue(':action', 'a envoyé une alerte à <b>' . $usernamea . '</b> suite au signalement de <b>' . $r['signaler_par'] . '</b> (ID : ' . $r['id'] . ')');
+		$insertn1->bindValue(':date', FullDate('full'));
+		$insertn1->execute();
+		$insertn2 = $bdd->prepare("INSERT INTO gabcms_alertes (userid,sujet,alerte,par,date,look,action) VALUES (:userid, :sujet, :alerte, :par, :date, :look, :act)");
+		$insertn2->bindValue(':userid', $assoc['id']);
+		$insertn2->bindValue(':sujet', $sujet);
+		$insertn2->bindValue(':alerte', addslashes($_POST['alerte']));
+		$insertn2->bindValue(':par', $user['username']);
+		$insertn2->bindValue(':date', FullDate('full'));
+		$insertn2->bindValue(':look', $user['look']);
+		$insertn2->bindValue(':act', $act);
+		$insertn2->execute();
+		$insertn3 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :user, :date, :look)");
+		$insertn3->bindValue(':userid', $assoc['id']);
+		$insertn3->bindValue(':message', 'Nous venons de t\'envoyer une alerte ! Merci d\'aller la lire au <b>PLUS VITE</b> en <a href=\"' . $url . '/alerts\">cliquant ici</a> !');
+		$insertn3->bindValue(':user', $user['username']);
+		$insertn3->bindValue(':date', FullDate('full'));
+		$insertn3->bindValue(':look', $user['look']);
+		$insertn3->execute();
+		echo '<h4 class="alert_success">L\'alerte a été envoyée avec succès !</h4>';
 	} else {
-		$usernamea = Secu($_POST['username']);
-		$sujet = Secu($_POST['sujet']);
-		$act = Secu($_POST['act']);
-		$sql = $bdd->query("SELECT id FROM users WHERE username = '" . $username . "'");
-		$row = $sql->rowCount();
-		$assoc = $sql->fetch(PDO::FETCH_ASSOC);
-		$infr = $bdd->query("SELECT * FROM gabcms_forum_signalement WHERE id = '" . $signale . "'");
-		$r = $infr->fetch();
-		if ($row['id'] < 1) {
-			$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-			$insertn1->bindValue(':pseudo', $user['username']);
-			$insertn1->bindValue(':action', 'a envoyé une alerte à <b>' . $usernamea . '</b> suite au signalement de <b>' . $r['signaler_par'] . '</b> (ID : ' . $r['id'] . ')');
-			$insertn1->bindValue(':date', FullDate('full'));
-			$insertn1->execute();
-			$insertn2 = $bdd->prepare("INSERT INTO gabcms_alertes (userid,sujet,alerte,par,date,look,action) VALUES (:userid, :sujet, :alerte, :par, :date, :look, :act)");
-			$insertn2->bindValue(':userid', $assoc['id']);
-			$insertn2->bindValue(':sujet', $sujet);
-			$insertn2->bindValue(':alerte', addslashes($_POST['alerte']));
-			$insertn2->bindValue(':par', $user['username']);
-			$insertn2->bindValue(':date', FullDate('full'));
-			$insertn2->bindValue(':look', $user['look']);
-			$insertn2->bindValue(':act', $act);
-			$insertn2->execute();
-			$insertn3 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :user, :date, :look)");
-			$insertn3->bindValue(':userid', $assoc['id']);
-			$insertn3->bindValue(':message', 'Nous venons de t\'envoyer une alerte ! Merci d\'aller la lire au <b>PLUS VITE</b> en <a href=\"' . $url . '/alerts\">cliquant ici</a> !');
-			$insertn3->bindValue(':user', $user['username']);
-			$insertn3->bindValue(':date', FullDate('full'));
-			$insertn3->bindValue(':look', $user['look']);
-			$insertn3->execute();
-			echo '<h4 class="alert_success">L\'alerte a été envoyer avec succès !</h4>';
-		} else {
-			echo '<h4 class="alert_error">Merci de remplir les champs vide</h4>';
-		}
+		echo '<h4 class="alert_error">Merci de remplir tous les champs.</h4>';
 	}
 }
+
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />

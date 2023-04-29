@@ -29,22 +29,20 @@ $id = Secu($_GET['id']);
                 <td class="haut">Date</td>
             </tr>
             <?php
-            $sql = $bdd->query("SELECT * FROM gabcms_jetons_logs WHERE code_id = '" . $id . "' ORDER BY date DESC");
-            while ($a = $sql->fetch()) {
-                $sql1 = $bdd->query("SELECT * FROM users WHERE id = '" . $a['user_id'] . "'");
-                $row1 = $sql1->rowCount();
-                $assoc1 = $sql1->fetch(PDO::FETCH_ASSOC);
-                $sql2 = $bdd->query("SELECT * FROM gabcms_jetons WHERE id = '" . $a['code_id'] . "'");
-                $row2 = $sql2->rowCount();
-                $assoc2 = $sql2->fetch(PDO::FETCH_ASSOC);
+            $sql = $bdd->query("SELECT j.*, u.username FROM gabcms_jetons_logs j 
+                    JOIN users u ON j.user_id = u.id
+                    WHERE j.code_id = '" . $id . "' ORDER BY j.date DESC");
+
+            while ($a = $sql->fetch(PDO::FETCH_ASSOC)) {
                 $date = date('d/m/Y H:i:s', $a['date']);
             ?>
                 <tr class="bas">
-                    <td class="bas"><?PHP echo Secu($assoc1['username']); ?></td>
-                    <td class="bas"><?PHP echo Secu($assoc2['code']); ?></td>
-                    <td class="bas"><?PHP echo Secu($date); ?></td>
+                    <td class="bas"><?php echo Secu($a['username']); ?></td>
+                    <td class="bas"><?php echo Secu($a['code']); ?></td>
+                    <td class="bas"><?php echo Secu($date); ?></td>
                 </tr>
-            <?PHP } ?>
+            <?php } ?>
+
         </tbody>
     </table>
 </body>

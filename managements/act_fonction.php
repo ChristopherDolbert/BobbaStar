@@ -16,45 +16,26 @@ if (isset($_GET['modif'])) {
     $modif = Secu($_GET['modif']);
 }
 
-if (isset($_GET['modifierrecrut']) && isset($_POST['fonction'])) {
+if (isset($_GET['modifierrecrut'], $_POST['fonction'])) {
     $modifierrecrut = Secu($_GET['modifierrecrut']);
-    $fonction = Secu($_POST['fonction']);
-
-    $sql = $bdd->query("SELECT username, fonction FROM users WHERE id = '" . $modifierrecrut . "'");
-    $a = $sql->fetch();
-
-    if ($fonction != "") {
-        $bdd->query("UPDATE users SET fonction = '" . addslashes($fonction) . "' WHERE id = '" . $modifierrecrut . "'");
-
+    $fonction = addslashes($_POST['fonction']);
+    $sql = $bdd->query("SELECT username, fonction FROM users WHERE id = '$modifierrecrut'");
+    if ($sql->rowCount() == 1) {
+        $a = $sql->fetch();
+        $oldFonction = addslashes($a['fonction']);
+        $bdd->query("UPDATE users SET fonction = '$fonction' WHERE id = '$modifierrecrut'");
         $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-        $insertn1->bindValue(':pseudo', $user['username']);
-        $insertn1->bindValue(':action', 'a modifié la fonction de <b>' . $a['username'] . '</b> : <b>' . addslashes($fonction) . '</b> (auparavant : ' . addslashes($a['fonction']) . ')');
-        $insertn1->bindValue(':date', FullDate('full'));
-        $insertn1->execute();
-
+        $insertn1->execute([':pseudo' => $user['username'], ':action' => "a modifié la fonction de <b>{$a['username']}</b> : <b>$fonction</b> (auparavant : $oldFonction)", ':date' => FullDate('full')]);
         $insertn2 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
-        $insertn2->bindValue(':userid', $modifierrecrut);
-        $insertn2->bindValue(':message', 'Nous venons de modifier ta fonction au sein du rétro, pour en savoir plus, <a href="' . $url . '/alerts">cliques ici</a> !');
-        $insertn2->bindValue(':auteur', $user['username']);
-        $insertn2->bindValue(':date', FullDate('full'));
-        $insertn2->bindValue(':look', $user['look']);
-        $insertn2->execute();
-
+        $insertn2->execute([':userid' => $modifierrecrut, ':message' => "Nous venons de modifier ta fonction au sein du rétro, pour en savoir plus, <a href='{$url}/alerts'>cliques ici</a> !", ':auteur' => $user['username'], ':date' => FullDate('full'), ':look' => $user['look']]);
         $insertn3 = $bdd->prepare("INSERT INTO gabcms_alertes (userid, sujet, alerte, par, date, look, action) VALUES (:userid, :sujet, :message, :pseudo, :date, :look, :act)");
-        $insertn3->bindValue(':userid', $modifierrecrut);
-        $insertn3->bindValue(':sujet', 'Modification de ta fonction');
-        $insertn3->bindValue(':message', 'Bonjour <b>' . $a['username'] . '</b>,<br/><br/>Je viens de changer ta fonction au sein du rétro (ce qui est afficher sur la page équipe), voici ta nouvelle fonction : <b>' . addslashes($fonction) . '</b> <i>(auparavant : ' . addslashes($a['fonction']) . ')</i><br/><br/>Cordialement,');
-        $insertn3->bindValue(':pseudo', $user['username']);
-        $insertn3->bindValue(':date', FullDate('full'));
-        $insertn3->bindValue(':look', $user['look']);
-        $insertn3->bindValue(':act', '0');
-        $insertn3->execute();
-
+        $insertn3->execute([':userid' => $modifierrecrut, ':sujet' => 'Modification de ta fonction', ':message' => "Bonjour <b>{$a['username']}</b>,<br><br>Je viens de changer ta fonction au sein du rétro (ce qui est afficher sur la page équipe), voici ta nouvelle fonction : <b>$fonction</b> <i>(auparavant : $oldFonction)</i><br><br>Cordialement,", ':pseudo' => $user['username'], ':date' => FullDate('full'), ':look' => $user['look'], ':act' => '0']);
         echo '<h4 class="alert_success">La fonction de <b>' . $a['username'] . '</b> a été modifiée.</h4>';
     } else {
         echo '<h4 class="alert_error">Une erreur est survenue</h4>';
     }
 }
+
 
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />

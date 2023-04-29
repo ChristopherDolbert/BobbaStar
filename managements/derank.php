@@ -30,21 +30,28 @@ if (isset($_GET['do'])) {
                 $row = $sql->rowCount();
                 $assoc = $sql->fetch(PDO::FETCH_ASSOC);
                 if ($row > 0) {
-                    $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-                    $insertn1->bindValue(':pseudo', $name[$n]);
-                    $insertn1->bindValue(':action', 'a été déstitué de son rank par <b>' . $user['username'] . '</b> pour la raison suivante : <b><i>' . $raison . '</i></b>');
-                    $insertn1->bindValue(':date', FullDate('full'));
-                    $insertn1->execute();
-                    $insertn11 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-                    $insertn11->bindValue(':pseudo', $name[$n]);
-                    $insertn11->bindValue(':action', 'a reçu automatiquement un commentaire sur son dossier');
-                    $insertn11->bindValue(':date', FullDate('full'));
-                    $insertn11->execute();
-                    $insertn12 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-                    $insertn12->bindValue(':pseudo', $name[$n]);
-                    $insertn12->bindValue(':action', 's\'est vu retiré tous ses postes');
-                    $insertn12->bindValue(':date', FullDate('full'));
-                    $insertn12->execute();
+                    for ($n = 0; $n < $nbr; $n++) {
+                        $sql = $bdd->query("SELECT id FROM users WHERE username = '" . $name[$n] . "'");
+                        $row = $sql->rowCount();
+                        $assoc = $sql->fetch(PDO::FETCH_ASSOC);
+                        if ($row > 0) {
+                            $actions = [
+                                ['action' => 'a été déstitué de son rank par <b>' . $user['username'] . '</b> pour la raison suivante : <b><i>' . $raison . '</i></b>'],
+                                ['action' => 'a reçu automatiquement un commentaire sur son dossier'],
+                                ['action' => 's\'est vu retiré tous ses postes']
+                            ];
+                            foreach ($actions as $action) {
+                                $insertn = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+                                $insertn->bindValue(':pseudo', $name[$n]);
+                                $insertn->bindValue(':action', $action['action']);
+                                $insertn->bindValue(':date', FullDate('full'));
+                                $insertn->execute();
+                            }
+                            // rest of the code here
+                        } else {
+                            echo '<h4 class="alert_error">Le compte <b>' . $name[$n] . '</b> n\'existe pas.</h4>';
+                        }
+                    }
                     $bdd->query("UPDATE users SET rank = '1' WHERE username = '" . $name[$n] . "'");
                     $bdd->query("DELETE FROM gabcms_postes WHERE user_id = '" . $assoc['id'] . "'");
                     $bdd->query("DELETE FROM user_badges WHERE user_id = '" . $assoc['id'] . "' AND badge_id = 'ADM'");
@@ -90,16 +97,14 @@ if (isset($_GET['do'])) {
     }
 }
 
-if (isset($_GET['recherche'])) {
-    $recherche = Secu($_GET['recherche']);
-    if ($recherche == "1") {
-        $rank = Secu($_POST['poste_rech']);
-        if ($rank != "") {
-            $rech = $bdd->query("SELECT * FROM users WHERE rank = '" . $rank . "'");
-            $row = $rech->rowCount();
-        }
+if (isset($_GET['recherche']) && $_GET['recherche'] === "1" && isset($_POST['poste_rech'])) {
+    $rank = Secu($_POST['poste_rech']);
+    if (!empty($rank)) {
+        $rech = $bdd->query("SELECT * FROM users WHERE rank = '" . $rank . "'");
+        $row = $rech->rowCount();
     }
 }
+
 
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
@@ -164,34 +169,40 @@ if (isset($_GET['recherche'])) {
         </select>&nbsp;<input type="submit" name="submit" value="Rechercher" class="submit" />
     </form>
     <?PHP
-    if (isset($recherche)) {
-        $recherche = Secu($_GET['recherche']);
-        if ($recherche == "ok") {
-            $rank = Secu($_POST['poste_rech']);
-            if ($rank == '2') {
+    if (isset($_GET['recherche']) && $_GET['recherche'] == "ok") {
+        $rank = Secu($_POST['poste_rech']);
+        switch ($rank) {
+            case '2':
                 $modif = 'VIP CLUB';
-            }
-            if ($rank == '3') {
+                break;
+            case '3':
                 $modif = 'STAFF CLUB';
-            }
-            if ($rank == '5') {
+                break;
+            case '5':
                 $modif = 'Modérateur';
-            }
-            if ($rank == '6') {
+                break;
+            case '6':
                 $modif = 'Administrateur';
-            }
-            if ($rank == '7') {
+                break;
+            case '7':
                 $modif = 'Manager';
-            }
-            if ($rank == '8') {
+                break;
+            case '8':
+            case '9':
+            case '10':
+            case '11':
                 $modif = 'Fondateur';
-            }
-            if ($rank != "") {
-                $sqla = $bdd->query("SELECT * FROM users WHERE rank = '" . $rank . "'");
-                $row = $sqla->rowCount();
-            }
+                break;
+            default:
+                $modif = '';
+                break;
+        }
+        if (!empty($rank)) {
+            $sqla = $bdd->query("SELECT * FROM users WHERE rank = '" . $rank . "'");
+            $row = $sqla->rowCount();
         }
     }
+
     if ($row != '0') {
         if (isset($_POST['poste_rech'])) {
     ?>

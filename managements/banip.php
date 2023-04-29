@@ -8,48 +8,46 @@
 include("../config.php");
 
 if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
-    Redirect("" . $url . "/managements/access_neg");
-    exit();
+	Redirect("" . $url . "/managements/access_neg");
+	exit();
 }
-
 
 if (isset($_GET['do'])) {
 	$ip = Secu($_POST['ip']);
 	$raison = Secu($_POST['reason']);
 	$date = Secu($_POST['date']);
 	$do = Secu($_GET['do']);
-	$ip = explode(";", $ip);
-	$nbr = count($ip);
-	$date_ac = time();
-	$date_calcul = $date * 3600;
-	$date_ban = $date_ac + $date_calcul;
+
 	if ($do == "ban") {
+		$ip = explode(";", $ip);
+		$nbr = count($ip);
+		$date_ac = time();
+		$date_calcul = $date * 3600;
+		$date_ban = $date_ac + $date_calcul;
 
-		if (isset($ip) && isset($raison)) {
-			if (!empty($ip) && !empty($raison) && !empty($date)) {
-
-				for ($n = 0; $n < $nbr; $n++) :
-					$sql = $bdd->query("SELECT id FROM users WHERE ip_current = '" . $ip[$n] . "'");
-					$row = $sql->rowCount();
-					if ($row > 0) {
-						$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
-						$insertn1->bindValue(':pseudo', $user['username']);
-						$insertn1->bindValue(':action', 'a banni l\'adresse IP <b>' . $ip[$n] . '</b> pour la raison suivante : <i>' . $raison . '</i>');
-						$insertn1->bindValue(':date', FullDate('full'));
-						$insertn1->execute();
-						$bdd->query("INSERT INTO bans (bantype,value,reason,expire,added_by,added_date,appeal_state) VALUES ('ip','" . $ip[$n] . "','" . $raison . "','" . $date_ban . "','" . $user['username'] . "','" . FullDate('full') . "','0')");
-
-						echo '<h4 class="alert_success">L\'adresse IP <b>' . $ip[$n] . '</b> &agrave; été bannis pour la raison suivante: <b>' . $raison . '</b></h4>';
-					} else {
-						echo '<h4 class="alert_error">L\'adresse IP <b>' . $ip[$n] . '</b> n\'existe pas.</h4>';
-					}
-				endfor;
-			} else {
-				echo '<h4 class="alert_error">Les champs ne sont pas tous remplie.</h4>';
+		if (isset($ip) && isset($raison) && isset($date) && !empty($ip) && !empty($raison) && !empty($date)) {
+			foreach ($ip as $current_ip) {
+				$sql = $bdd->query("SELECT id FROM users WHERE ip_current = '" . $current_ip . "'");
+				$row = $sql->rowCount();
+				if ($row > 0) {
+					$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
+					$insertn1->execute(array(
+						':pseudo' => $user['username'],
+						':action' => 'a banni l\'adresse IP <b>' . $current_ip . '</b> pour la raison suivante : <i>' . $raison . '</i>',
+						':date' => FullDate('full')
+					));
+					$bdd->query("INSERT INTO bans (type,value,ban_reason,ban_expire,user_staff_id,timestamp) VALUES ('ip','" . $current_ip . "','" . $raison . "','" . $date_ban . "','" . $user['username'] . "','" . time() . "')");
+					echo '<h4 class="alert_success">L\'adresse IP <b>' . $current_ip . '</b> a été bannie pour la raison suivante : <b>' . $raison . '</b></h4>';
+				} else {
+					echo '<h4 class="alert_error">L\'adresse IP <b>' . $current_ip . '</b> n\'existe pas.</h4>';
+				}
 			}
+		} else {
+			echo '<h4 class="alert_error">Les champs ne sont pas tous remplis.</h4>';
 		}
 	}
 }
+
 ?>
 
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />

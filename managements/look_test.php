@@ -101,22 +101,28 @@ if (isset($_GET['id'])) {
 				</tr>
 			</tbody>
 		</table><br /><br />
-		<?PHP
-		$modif_page = '';
-		if (isset($_GET['page'])) {
-			$page = Secu($_GET['page']);
-			if ($page == 'tuteur') {
+		<?php
+	$modif_page = '';
+	if (isset($_GET['page'])) {
+		$page = Secu($_GET['page']);
+		switch ($page) {
+			case 'tuteur':
 				$modif_page = 'avis_test_tuteur';
-			}
-			if ($page == 'dir') {
+				break;
+			case 'dir':
 				$modif_page = 'avis_test_dir';
-			}
-			if ($page == 'add') {
+				break;
+			case 'add':
 				$modif_page = 'add_test';
-			}
+				break;
+			default:
+				break;
 		}
-		?>
-		<a href="<?PHP echo $url ?>/managements/<?PHP echo $modif_page; ?>">Revenir aux choix de tests</a>
-	<?PHP } else { ?>
-		Erreur dans l'encodage
-	<?PHP } ?>
+	}
+	
+	if (!empty($modif_page)) {
+		echo '<a href="' . $url . '/managements/' . $modif_page . '">Revenir aux choix de tests</a>';
+	} else {
+		echo 'Erreur dans l\'encodage';
+	}
+?>

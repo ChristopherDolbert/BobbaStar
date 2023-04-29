@@ -17,8 +17,14 @@ if (!isset($_SESSION['username']) || $user['rank'] < 5 || $user['rank'] > 11) {
 $rank_modif = "";
 switch ($user['rank']) {
 	case 11:
+		$rank_modif = "fondateur";
+		break;
 	case 10:
+		$rank_modif = "fondateur";
+		break;
 	case 9:
+		$rank_modif = "fondateur";
+		break;
 	case 8:
 		$rank_modif = "fondateur";
 		break;
@@ -149,54 +155,48 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 							Email : <b><?PHP echo Secu($r['email']); ?></b><br />
 							IP : <b><?PHP echo Secu($r['ip']); ?></b><br />
 							Résolu par : <b><?PHP echo Secu($r['resul_par']); ?></b><br /><br />
-							<?PHP
+							<?php
 							$retour_messages = $bdd->query('SELECT * FROM gabcms_contact WHERE id = ' . $id . '');
+							$etat_messages = array(
+								0 => '<span style="color:#FF4500"><b>Signalé</b></span>',
+								1 => '<span style="color:#4B0082"><b>En étude</b></span>',
+								2 => '<span style="color:#FF0000"><b>Correction à faire</b></span>',
+								3 => '<span style="color:#0000FF"><b>Attente réponse du joueur</b></span>',
+								4 => '<span style="color:#8B4513"><b>Réponse donnée par le joueur</b></span>',
+								5 => '<span style="color:#2E8B57"><b>En test</b></span>',
+								6 => '<span style="color:#008000"><b>Fermé - Résolu</b></span>',
+								7 => '<span style="color:#8bda20"><b>Fermé - déjà signalé/résolu</b></span>',
+								8 => '<span style="color:#DAA520"><b>Fermé - sans suite</b></span>',
+							);
+
 							while ($t = $retour_messages->fetch()) {
-								if ($t['resul'] == 0) {
-									$etat_modif = "<span style=\"color:#FF4500\"><b>Signalé</b></span>";
-								}
-								if ($t['resul'] == 1) {
-									$etat_modif = "<span style=\"color:#4B0082\"><b>En étude</b></span>";
-								}
-								if ($t['resul'] == 2) {
-									$etat_modif = "<span style=\"color:#FF0000\"><b>Correction à faire</b></span>";
-								}
-								if ($t['resul'] == 3) {
-									$etat_modif = "<span style=\"color:#0000FF\"><b>Attente réponse du joueur</b></span>";
-								}
-								if ($t['resul'] == 4) {
-									$etat_modif = "<span style=\"color:#8B4513\"><b>Réponse donnée par le joueur</b></span>";
-								}
-								if ($t['resul'] == 5) {
-									$etat_modif = "<span style=\"color:#2E8B57\"><b>En test</b></span>";
-								}
-								if ($t['resul'] == 6) {
-									$etat_modif = "<span style=\"color:#008000\"><b>Fermé - Résolu</b></span>";
-								}
-								if ($t['resul'] == 7) {
-									$etat_modif = "<span style=\"color:#8bda20\"><b>Fermé - déjà signalé/résolu</b></span>";
-								}
-								if ($t['resul'] == 8) {
-									$etat_modif = "<span style=\"color:#DAA520\"><b>Fermé - sans suite</b></span>";
-								}
+								$etat_modif = isset($etat_messages[$t['resul']]) ? $etat_messages[$t['resul']] : '';
 							?>
 								<table width="100%">
 									<tbody>
 										<tr>
-											<td valign="top">Sujet : <b><?PHP echo $t['sujet']; ?></b><br />
-												<div id="ticket"><?PHP echo smileyforum(stripslashes($t['texte'])); ?></div><br />
+											<td valign="top">Sujet : <b><?= $t['sujet'] ?></b><br />
+												<div id="ticket"><?= smileyforum(stripslashes($t['texte'])) ?></div><br />
 												Historique :<br />
-												<div id="raison"><?PHP $infe = $bdd->query("SELECT * FROM gabcms_contact_info WHERE contact_id = '" . $id . "'");
-																	if ($infe->rowCount() == 0) {
-																		echo "<i>Aucun historique, en attente d'affectation à un opérateur..</i>";
-																	}
-																	while ($rt = $infe->fetch()) { ?><span style="color:#008000;"><?PHP echo Secu($rt['date']); ?></span> <?PHP echo smileyforum($rt['message']); ?><br /><?PHP } ?></div>
-												<br /><?PHP echo $etat_modif; ?>
+												<div id="raison">
+													<?php
+													$infe = $bdd->query("SELECT * FROM gabcms_contact_info WHERE contact_id = '" . $id . "'");
+													if ($infe->rowCount() == 0) {
+														echo "<i>Aucun historique, en attente d'affectation à un opérateur..</i>";
+													}
+													while ($rt = $infe->fetch()) {
+														echo '<span style="color:#008000;">' . Secu($rt['date']) . '</span>' . smileyforum($rt['message']) . '<br />';
+													}
+													?>
+												</div>
+												<br />
+												<?= $etat_modif ?>
 											</td>
 										</tr>
 									</tbody>
 								</table>
-							<?PHP } ?><br /><br /><br /><a href="<?PHP echo $url; ?>/managements/sc_traiter?id=<?PHP echo $id; ?>">Actions</a> - <a href="<?PHP echo $url; ?>/managements/sc_index">Revenir à l'accueil</a>
+							<?php } ?>
+							<br /><br /><br /><a href="<?PHP echo $url; ?>/managements/sc_traiter?id=<?PHP echo $id; ?>">Actions</a> - <a href="<?PHP echo $url; ?>/managements/sc_index">Revenir à l'accueil</a>
 						</div>
 
 					</div>

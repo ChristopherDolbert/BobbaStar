@@ -8,8 +8,8 @@
 include("../config.php");
 
 if (!isset($_SESSION['username']) || $user['rank'] > 11) {
-    Redirect("" . $url . "/managements/access_neg");
-    exit();
+	Redirect("" . $url . "/managements/access_neg");
+	exit();
 }
 
 $id = Secu($_GET['id']);
@@ -22,35 +22,29 @@ $id = Secu($_GET['id']);
 	<span id="titre">Historique stafflog</span><br />
 	Ici est affiché l'historique des avis d'une demande<br /><br />
 	<?php
-	$sql = $bdd->query("SELECT * FROM gabcms_stafflog_delete WHERE id = '" . $id . "'");
-	$a = $sql->fetch();
+	$a = $bdd->query("SELECT * FROM gabcms_stafflog_delete WHERE id = '{$id}'")->fetch();
 
-	$sql1 = $bdd->query("SELECT username FROM users WHERE id = '" . $a['staff1'] . "'");
-	$row1 = $sql1->rowCount();
-	$assoc1 = $sql1->fetch(PDO::FETCH_ASSOC);
-	$sql2 = $bdd->query("SELECT username FROM users WHERE id = '" . $a['staff2'] . "'");
-	$row2 = $sql2->rowCount();
-	$assoc2 = $sql2->fetch(PDO::FETCH_ASSOC);
+	$assoc1 = $bdd->query("SELECT username FROM users WHERE id = '{$a['staff1']}'")->fetch(PDO::FETCH_ASSOC);
+	$assoc2 = $bdd->query("SELECT username FROM users WHERE id = '{$a['staff2']}'")->fetch(PDO::FETCH_ASSOC);
+
 	$date = date('d/m/Y H:i', $a['date']);
-	if ($a['etat'] == 1) {
-		$etat_modif = "<span style=\"color:#0000FF;\"><b>Attente avis 2ème fondateur</b></span>";
-	}
-	if ($a['etat'] == 2) {
-		$etat_modif = "<span style=\"color:#008800;\"><b>Demande acceptée</b></span>";
-	}
-	if ($a['etat'] == 3) {
-		$etat_modif = "<span style=\"color:#FF0000;\"><b>Demande refusée</b></span>";
-	}
-	if ($a['avis'] == 0) {
-		$avis_modif = "<span style=\"color:#0000FF;\"><b>En attente</span>";
-	}
-	if ($a['avis'] == 1) {
-		$avis_modif = "<span style=\"color:#008800;\"><b>Accepté</span>";
-	}
-	if ($a['avis'] == 2) {
-		$avis_modif = "<span style=\"color:#FF0000;\"><b>Refusé</b></span>";
-	}
+
+	$etat_modif = match ($a['etat']) {
+		1 => "<span style=\"color:#0000FF;\"><b>Attente avis 2ème fondateur</b></span>",
+		2 => "<span style=\"color:#008800;\"><b>Demande acceptée</b></span>",
+		3 => "<span style=\"color:#FF0000;\"><b>Demande refusée</b></span>",
+		default => ""
+	};
+
+	$avis_modif = match ($a['avis']) {
+		0 => "<span style=\"color:#0000FF;\"><b>En attente</span>",
+		1 => "<span style=\"color:#008800;\"><b>Accepté</span>",
+		2 => "<span style=\"color:#FF0000;\"><b>Refusé</b></span>",
+		default => ""
+	};
 	?>
+
+
 	<table border="0" cellpadding="0" style="border-color:rgb(0, 0, 0); border-style: solid;" cellspacing="0" width="100%">
 		<tbody>
 			<tr>
