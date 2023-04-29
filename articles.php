@@ -84,7 +84,6 @@ if (isset($_GET['id'])) {
     <script src="<?PHP echo $imagepath; ?>static/js/libs2.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/visual.js" type="text/javascript"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
-    <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>js/tooltip.js" type="text/javascript"></script>

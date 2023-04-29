@@ -45,7 +45,6 @@ Les notes de service permettent une cohésion optimal au sein du rétro. Ces not
 <br /><br />
 <script type="text/javascript" src="editeur_html/jscripts/tiny_mce/tiny_mce.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
-<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
 
 <form name='editor' method='post' action="#">
 	<td width='100' class='tbl'><b>Cette note est applicable aux...</b><br /></td>
@@ -93,15 +92,17 @@ Les notes de service permettent une cohésion optimal au sein du rétro. Ces not
 																		} ?>" placeholder="Expliques en quelques mots la NDS" class="text" style="width: 240px"><br /></td>
 	<br />
 	<td width='100' class='tbl'><b>Le corps de la note de service : <a href="<?PHP echo $url; ?>/managements/upload" target="_blank">Upload tes images ! (si tu en mets)</a> </b><br /></td>
-	<td width='80%' class='tbl'><textarea name="texte" wrap="discuss rows=12 cols=154" id="editor1"><?php
+	<td width='80%' class='tbl'><textarea name="texte" wrap="discuss rows=12 cols=154" id="editor"><?php
 																									if (isset($_POST["texte"])) {
 																										echo htmlspecialchars($_POST["texte"], ENT_QUOTES);
 																									}
 																									?></textarea>
 		<script>
-			CKEDITOR.replace('editor1', {
-				toolbar: 'NotedeService'
-			});
+			ClassicEditor
+				.create(document.querySelector('#editor'))
+				.catch(error => {
+					console.error(error);
+				});
 		</script>
 		<br />
 	</td>

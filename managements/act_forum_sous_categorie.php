@@ -129,7 +129,7 @@ if (isset($_GET['deplacement'])) {
                                                                                 echo htmlspecialchars($_POST["nom"], ENT_QUOTES);
                                                                             } ?>" class="text" style="width: 360px" /><br /></td>
         <td width='100' class='tbl'><b>Description :</b><br /></td>
-        <td width='80%' class='tbl'><textarea name="description" rows="3" cols="75" id="editor1"><?php
+        <td width='80%' class='tbl'><textarea name="description" rows="3" cols="75" id="editor"><?php
                                                                                                     if (isset($_POST["description"])) {
                                                                                                         echo htmlspecialchars($_POST["description"], ENT_QUOTES);
                                                                                                     }
@@ -193,7 +193,7 @@ if (isset($_GET['deplacement'])) {
                                                                                         echo htmlspecialchars($modif_a["nom"], ENT_QUOTES);
                                                                                     } ?>" class="text" style="width: 360px" /><br /></td>
             <td width='100' class='tbl'><b>Description :</b><br /></td>
-            <td width='80%' class='tbl'><textarea name="description_modif" rows="3" cols="75" id="editor1"><?php
+            <td width='80%' class='tbl'><textarea name="description_modif" rows="3" cols="75" id="editor"><?php
                                                                                                             if (isset($modif_a["description"])) {
                                                                                                                 echo htmlspecialchars($modif_a["description"], ENT_QUOTES);
                                                                                                             }
