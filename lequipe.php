@@ -199,7 +199,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                     echo '</a>';
                     echo '</td>';
                     echo '<td valign="top">';
-                    echo '<span style="color:#2767A7;"><b style="font-size: 110%;" title="Poste(s) occupé(s): ' . $rank_name . '" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">' . $user_name . ' </b></span><br />';
+                    echo '<span style="color:#2767A7;"><b style="font-size: 110%;" title="Poste occupé: ' . substr($rank_name, 0, -1) . '" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">' . $user_name . ' </b></span><br />';
                     echo '<span style="color:#888"><b>Mission :</b> ' . substr($user_mission, 0, 15) . '<br>' . '</span>';
                     echo '<span style="color:#888"><b>Fonction :</b> ' . $rank_name . '<br>' . '</span>';
                     echo (($online == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif">');
@@ -296,8 +296,8 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                     echo '</a>';
                     echo '</td>';
                     echo '<td valign="top">';
-                    echo '<span style="color:' . $box_color . '"><b style="font-size: 110%;" title="Poste(s) occupé(s): ' . $rank_name . '" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">' . $user_name . ' </span></b><br />';
-                    echo '<span style="color:#888"><b>Mission:</b> ' . $mission . "<br>" . '</span>';
+                    echo '<span style="color:' . $box_color . '"><b style="font-size: 110%;" title="Poste occupé: ' . substr($rank_name, 0, -1) . '" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">' . $user_name . ' </span></b><br />';
+                    echo '<span style="color:#888"><b>Mission:</b> ' . $user_mission . "<br>" . '</span>';
                     echo '<span style="color:#888"><b>Fonction :</b> ' . $rank_name . '<br>' . '</span>';
                     echo (($online == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif">');
                     echo '</td>';
