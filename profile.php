@@ -230,7 +230,7 @@ if ($tab == "1") {
 						$error = "1";
 					} else {
 						//Updates password --encryption--
-						$stmt9 = $con->prepare("UPDATE users SET password = :newpass_hash WHERE username = :rawname");
+						$stmt9 = $bdd->prepare("UPDATE users SET password = :newpass_hash WHERE username = :rawname");
 						$stmt9->bindParam(':newpass_hash', $newpass_hash);
 						$stmt9->bindParam(':rawname', $rawname);
 						$stmt9->execute();
