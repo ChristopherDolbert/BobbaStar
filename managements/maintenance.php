@@ -7,19 +7,11 @@
 
 include("../config.php");
 
-if (!isset($_SESSION['username'])) {
-	Redirect("" . $url . "/index");
-	exit();
+if (!isset($_SESSION['username']) || $user['rank'] < 10 || $user['rank'] > 11) {
+    Redirect("" . $url . "/managements/access_neg");
+    exit();
 }
 
-if ($user['rank'] < 7) {
-	Redirect("" . $url . "/managements/acces_neg");
-	exit();
-}
-if ($user['rank'] > 8) {
-	Redirect("" . $url . "/managements/acces_neg");
-	exit();
-}
 $sql = $bdd->query("SELECT * FROM gabcms_maintenance WHERE id = '1'");
 $m = $sql->fetch(PDO::FETCH_ASSOC);
 

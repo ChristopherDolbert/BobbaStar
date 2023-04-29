@@ -10,17 +10,34 @@ $pagename = "Bureau des staffs";
 $pageid = "bureau";
 $jourj = date('w');
 
-if (!isset($_SESSION['username'])) {
-	Redirect("" . $url . "/index");
+if (!isset($_SESSION['username']) || $user['rank'] < 5 || $user['rank'] > 11) {
+	Redirect("" . $url . "/managements/acces_interdit");
+	exit();
 }
 
-if ($user['rank'] < 5) {
-	Redirect("" . $url . "/managements/acces_interdit");
-	exit();
-}
-if ($user['rank'] > 8) {
-	Redirect("" . $url . "/managements/acces_interdit");
-	exit();
+$rank_modif = "";
+switch ($user['rank']) {
+	case 11:
+	case 10:
+	case 9:
+	case 8:
+		$rank_modif = "fondateur";
+		break;
+	case 7:
+		$rank_modif = "manager";
+		break;
+	case 6:
+		$rank_modif = "administratrice";
+		if ($user['gender'] == 'M') {
+			$rank_modif = "administrateur";
+		}
+		break;
+	case 5:
+		$rank_modif = "modératrice";
+		if ($user['gender'] == 'M') {
+			$rank_modif = "modérateur";
+		}
+		break;
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
