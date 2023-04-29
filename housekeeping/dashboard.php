@@ -1,13 +1,9 @@
 <?php
-/*===================================================+
-|| # HoloCMS - Website and Content Management System
-|+===================================================+
-|| # Copyright � 2008 Meth0d. All rights reserved.
-|| # http://www.meth0d.org
-|+===================================================+
-|| # HoloCMS is provided "as is" and comes without
-|| # warrenty of any kind. HoloCMS is free software!
-|+===================================================*/
+#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
+#|                                                                        #|
+#|         Copyright © 2014-2023 - MyHabbo Tout droits réservés.          #|
+#|																		  #|
+#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
 require_once('../config.php');
 if ($hkzone !== true) {
@@ -73,37 +69,27 @@ $onlineUsers = $stmt->fetchColumn();
 																<tr>
 																	<td class='homepage_sub_row'><strong>Members</strong></td>
 																	<td class='homepage_sub_row'>
-																		<?php echo IsUserOnline(1) . " (<a href='index.php?p=onlinelist'>" . $onlineUsers . "</a> online)"; ?>
+																		<?php
+																		$count = $bdd->query("SELECT COUNT(*) FROM users WHERE online = 1")->fetchColumn();
+																		echo " (<a href='index.php?p=onlinelist'>" . $count . "</a> online)";
+																		?>
 																	</td>
 																</tr>
 																<tr>
 																	<td class='homepage_sub_row'><strong>Rooms</strong></td>
 																	<td class='homepage_sub_row'>
-																		<?php
-																		$stmt = $bdd->prepare('SELECT COUNT(*) FROM rooms');
-																		$stmt->execute();
-																		$result = $stmt->fetchColumn();
-																		echo $result;
-																		?>
-																		(of which
-																		<?php
-																		$stmt = $bdd->prepare('SELECT COUNT(*) FROM rooms WHERE is_public = 1');
-																		$stmt->execute();
-																		$result = $stmt->fetchColumn();
-																		echo $result;
-																		?>
-
-																		public rooms)
+																		<?php $count = $bdd->query("SELECT COUNT(*) FROM rooms")->fetchColumn();
+																		echo $count; ?>
+																		(of which <?php $count = $bdd->query("SELECT COUNT(*) FROM rooms WHERE is_public = 1")->fetchColumn();
+																					echo $count; ?> public rooms)
 																	</td>
 																</tr>
 																<tr>
 																	<td class='homepage_sub_row'><strong>Furniture</strong></td>
 																	<td class='homepage_sub_row'>
 																		<?php
-																		$stmt = $bdd->prepare('SELECT COUNT(*) FROM items');
-																		$stmt->execute();
-																		$result = $stmt->fetchColumn();
-																		echo $result;
+																		$count = $bdd->query("SELECT COUNT(*) FROM items")->fetchColumn();
+																		echo $count;
 																		?>
 																	</td>
 																</tr>
@@ -111,10 +97,8 @@ $onlineUsers = $stmt->fetchColumn();
 																	<td class='homepage_sub_row'><strong>Groups</strong></td>
 																	<td class='homepage_sub_row'>
 																		<?php
-																		$stmt = $bdd->prepare('SELECT COUNT(*) FROM guilds');
-																		$stmt->execute();
-																		$result = $stmt->fetchColumn();
-																		echo $result;
+																		$count = $bdd->query("SELECT COUNT(*) FROM guilds")->fetchColumn();
+																		echo $count;
 																		?>
 																	</td>
 																</tr>
@@ -122,10 +106,8 @@ $onlineUsers = $stmt->fetchColumn();
 																	<td class='homepage_sub_row'><strong>Stafflog Entries</strong></td>
 																	<td class='homepage_sub_row'>
 																		<?php
-																		$stmt = $bdd->prepare('SELECT COUNT(*) FROM system_stafflog');
-																		$stmt->execute();
-																		$result = $stmt->fetchColumn();
-																		echo $result;
+																		$count = $bdd->query("SELECT COUNT(*) FROM system_stafflog")->fetchColumn();
+																		echo $count;
 																		?>
 																	</td>
 																</tr>
@@ -134,10 +116,8 @@ $onlineUsers = $stmt->fetchColumn();
 																	<td class='homepage_sub_row'>
 																		<a href='index.php?p=banlist'>
 																			<?php
-																			$stmt = $bdd->prepare('SELECT COUNT(*) FROM bans');
-																			$stmt->execute();
-																			$result = $stmt->fetchColumn();
-																			echo $result;
+																			$count = $bdd->query("SELECT COUNT(*) FROM bans")->fetchColumn();
+																			echo $count;
 																			?>
 																		</a>
 																	</td>
@@ -153,31 +133,43 @@ $onlineUsers = $stmt->fetchColumn();
 																<tr>
 																	<td class='homepage_sub_row'><strong>Game Port</strong></td>
 																	<td class='homepage_sub_row'>
-																		<?php echo FetchServerSetting(['port']); ?>
+																		<?php
+																		$server_setting_value = FetchServerSetting('port');
+																		echo $server_setting_value;
+																		?>
 																	</td>
 																</tr>
 																<tr>
 																	<td class='homepage_sub_row'><strong>&nbsp;&nbsp;&nbsp;&nbsp;- MUS Port</strong></td>
 																	<td class='homepage_sub_row'>
-																		<?php echo FetchServerSetting('mus_port'); ?>
+																		<?php
+																		$server_setting_value = FetchServerSetting('mus_port');
+																		echo $server_setting_value;
+																		?>
+																	</td>
+																</tr>
+																<tr>
+																	<td class='homepage_sub_row'><strong>Maximum Friends Per User</strong></td>
+																	<td class='homepage_sub_row'>
+																		<?php echo FetchEmulatorSetting('hotel.users.max.friends'); ?>
 																	</td>
 																</tr>
 																<tr>
 																	<td class='homepage_sub_row'><strong>Trading Enabled</strong></td>
 																	<td class='homepage_sub_row'>
-																		<?php echo FetchServerSetting('trading_enable', true); ?>
+																		<?php echo FetchEmulatorSetting('hotel.trading.enabled', true); ?>
 																	</td>
 																</tr>
 																<tr>
 																	<td class='homepage_sub_row'><strong>Recycler Enabled</strong></td>
 																	<td class='homepage_sub_row'>
-																		<?php echo FetchServerSetting('recycler_enable', true); ?>
+																		<?php echo FetchEmulatorSetting('hotel.catalog.recycler.enabled', true); ?>
 																	</td>
 																</tr>
 																<tr>
 																	<td class='homepage_sub_row'><strong>Wordfilter Enabled</strong></td>
 																	<td class='homepage_sub_row'>
-																		<?php echo FetchServerSetting('wordfilter_enable', true); ?> (<?php echo FetchServerSetting('wordfilter_censor'); ?>)
+																		<?php echo FetchEmulatorSetting('hotel.wordfilter.enabled', true); ?>
 																	</td>
 																</tr>
 															</table>

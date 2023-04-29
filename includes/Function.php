@@ -17,14 +17,32 @@ $language_path_2 = "../" . $language . "index.php";
 $valid_language = file_exists($language_path) || file_exists($language_path_2);
 $language = ($valid_language) ? $language : "en";
 
-function FetchServerSetting()
+function FetchServerSetting($columnName)
 {
 	include('SQL.php');
-	$sql = "SELECT * FROM gabcms_client WHERE id = :id LIMIT 1";
+	$sql = "SELECT $columnName FROM gabcms_client LIMIT 1";
 	$stmt = $bdd->prepare($sql);
-	$stmt->execute([':id' => 1]);
-	$results = $stmt->fetch();
-	return $results;
+	$stmt->execute();
+	$result = $stmt->fetchColumn();
+	return $result;
+}
+
+
+function FetchEmulatorSetting($strSetting, $switch = false)
+{
+	include('SQL.php');
+	$sql = "SELECT value FROM emulator_settings WHERE `key` = :strSetting LIMIT 1";
+	$stmt = $bdd->prepare($sql);
+	$stmt->execute(['strSetting' => $strSetting]);
+	$tmp = $stmt->fetch();
+
+	if ($switch !== true) {
+		return $tmp['value'];
+	} elseif ($switch == true && $tmp['value'] == "1") {
+		return "Enabled";
+	} elseif ($switch == true && $tmp['value'] !== "1") {
+		return "Disabled";
+	}
 }
 
 function smileys($texte)
@@ -328,7 +346,7 @@ function GenerateRandom($type = "sso", $length = 0)
 function UpdateSSO($id)
 {
 	if (isset($_SESSION['username'])) {
-		
+		include('SQL.php');
 		$myticket = GenerateRandom();
 		$sql = $bdd->prepare("UPDATE users SET auth_ticket = :myticket WHERE id = :id");
 		$sql->bindValue(':myticket', $myticket, PDO::PARAM_STR);
@@ -368,7 +386,7 @@ function Genere_lettre($size)
 
 function ClientNitro()
 {
-	
+	include('SQL.php');
 	$sql = $bdd->query("SELECT nitro_client FROM gabcms_client WHERE id = '1'");
 	$client = $sql->fetch(PDO::FETCH_ASSOC);
 	return $client['nitro_client'];
@@ -376,7 +394,7 @@ function ClientNitro()
 
 function GetConfig()
 {
-	
+	include('SQL.php');
 	$sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 	$cof = $sql->fetch(PDO::FETCH_ASSOC);
 	return $cof;
@@ -384,7 +402,7 @@ function GetConfig()
 
 function GetUserBadge($strName)
 { // supports user IDs also
-	
+	include('SQL.php');
 	if (is_numeric($strName)) {
 		$sql = "SELECT id FROM users WHERE id = ? AND badge_status = '1' LIMIT 1";
 		$stmt = $bdd->prepare($sql);
@@ -417,7 +435,7 @@ function GetUserBadge($strName)
 
 function GetUserGroupBadge($my_id)
 {
-	
+	include('SQL.php');
 	$sql = "SELECT guild_id FROM guilds_members WHERE user_id = ? LIMIT 1";
 	$stmt = $bdd->prepare($sql);
 	$stmt->execute([$my_id]);
@@ -441,7 +459,7 @@ function GetUserGroupBadge($my_id)
 
 function Connected($pageid)
 {
-	
+	include('SQL.php');
 	$connected = "";
 	$tmp = $bdd->query("SELECT count(id) FROM users WHERE online = '1'");
 	$tma = $tmp->fetch(PDO::FETCH_ASSOC);
@@ -463,8 +481,7 @@ function Connected($pageid)
 
 function SendMUSData(string $key, $data = null)
 {
-	
-
+	include('SQL.php');
 	$configSQL = $bdd->query("SELECT * FROM gabcms_client WHERE id = '1'");
 	$config = $configSQL->fetch(PDO::FETCH_ASSOC);
 
@@ -502,7 +519,7 @@ function SendMUSData(string $key, $data = null)
 
 function GiveHC($user_id, $months)
 {
-	
+	include('SQL.php');
 	// Utiliser une instance PDO existante
 	$stmt = $bdd->prepare("SELECT * FROM users_club WHERE userid = :userid LIMIT 1");
 	$stmt->bindParam(':userid', $user_id, PDO::PARAM_INT);
@@ -568,7 +585,6 @@ function GiveHC($user_id, $months)
 
 function HCDaysLeft($my_id)
 {
-	
 	include('SQL.php');
 	$query = $bdd->prepare("SELECT months_left,date_monthstarted FROM users_club WHERE userid = :my_id LIMIT 1");
 	$query->bindParam(':my_id', $my_id);
@@ -617,7 +633,7 @@ function HCDaysLeft($my_id)
 
 function IsHCMember($my_id)
 {
-	
+	include('SQL.php');
 	if (HCDaysLeft($my_id) > 0) {
 		return true;
 	} else {
