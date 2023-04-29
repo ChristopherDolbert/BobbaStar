@@ -293,7 +293,7 @@ if (typeof HabboClient != "undefined") { HabboClient.windowName = "uberClientWnd
 <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css" type="text/css" />
 <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/myhabbo/control.textarea.css" type="text/css" />
 <script src="<?PHP echo $imagepath; ?>static/js/minimail.js" type="text/javascript"></script>
-<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
 <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
 <script language="javascript">
 function newPopup(url, name_page)

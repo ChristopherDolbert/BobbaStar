@@ -17,8 +17,14 @@ if (!isset($_SESSION['username']) || $user['rank'] < 7 || $user['rank'] > 11) {
 $rank_modif = "";
 switch ($user['rank']) {
 	case 11:
+		$rank_modif = "fondateur";
+		break;
 	case 10:
+		$rank_modif = "fondateur";
+		break;
 	case 9:
+		$rank_modif = "fondateur";
+		break;
 	case 8:
 		$rank_modif = "fondateur";
 		break;
@@ -97,7 +103,7 @@ if (isset($_GET['id'])) {
 	<link rel="shortcut icon" href="<?PHP echo $imagepath; ?>favicon.ico" type="image/vnd.microsoft.icon" />
 	<script src="<?PHP echo $imagepath; ?>static/js/libs2.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>static/js/visual.js" type="text/javascript"></script>
-	<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/ckeditor.js"></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
 	<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
 	<script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
@@ -261,16 +267,18 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 																							while ($rt = $recrut->fetch(PDO::FETCH_ASSOC)) {
 																								echo $rt['pseudo']; ?>, <?PHP } ?></div>
 										</div><br />
-										<?PHP $search = $bdd->query("SELECT pseudo FROM gabcms_nds_lu WHERE id_nds = '" . $n['id'] . "' AND pseudo = '" . $user['username'] . "'");
+										<?PHP
+										$ok = null;
+										$search = $bdd->query("SELECT pseudo FROM gabcms_nds_lu WHERE id_nds = '" . $n['id'] . "' AND pseudo = '" . $user['username'] . "'");
 										$ok = $search->fetch();
 
-										if ($ok['pseudo'] != $user['username'] && $n['annuler'] == '0') {
+										if (!isset($ok['pseudo']) || $ok['pseudo'] !== $user['username'] && $n['annuler'] == '0') {
 										?><form method="post" action="<?PHP echo $url; ?>/managements/nds?id=<?PHP echo $n['id']; ?>#">
 												<div id="article_haut"><span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(<?php echo $avatarimage; ?><?PHP echo Secu($n['look']); ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span><span style="color: #000000; font-size: 11px;"><br /><b>Posté par :</b> <?PHP echo Secu($n['par']); ?><br /><b>Date :</b> <?PHP echo Secu($n['date']); ?><br /><input type="text" value="" name="message"> <input type='submit' name='submit' value='Lire et approuver' class='submit'>
 											</form></span>
 									</div>
 								<?PHP }
-										if ($ok['pseudo'] == $user['username'] && $n['annuler'] == '0') { ?>
+										if (!empty($ok) && $ok['pseudo'] == $user['username'] && $n['annuler'] == '0') { ?> ?>
 									<div id="article_haut"><span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(<?php echo $avatarimage; ?><?PHP echo $n['look']; ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span><span style="color: #000000; font-size: 11px;"><br /><b>Posté par :</b> <?PHP echo Secu($n['par']); ?><br /><b>Date :</b> <?PHP echo Secu($n['date']); ?><br /></span></div>
 								<?PHP }
 										if ($n['annuler'] == '1') { ?>

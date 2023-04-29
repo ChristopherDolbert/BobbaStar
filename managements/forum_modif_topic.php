@@ -52,7 +52,7 @@ if ($modifiertopic && isset($_POST['topic'], $_POST['titre'])) {
 
 <body>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-	<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/ckeditor.js"></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
 	<title>Modifier un topic (<?PHP echo $mod['titre'] ?>)</title>
 	<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
 	<?php if (!isset($_GET['modif'])) { ?>

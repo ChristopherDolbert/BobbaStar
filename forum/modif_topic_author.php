@@ -44,7 +44,7 @@ echo '<div id="pasok">Tu n\'as pas l\'autorisation de modifier ce topic.</div>';
 <link href="<?PHP echo $url; ?>/managements/template/style.css" rel="stylesheet" type="text/css">
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" /><body>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
 <title>Modifie un topic (<?PHP echo $mod['titre'] ?>)</title>
 <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
 	<?php if ($modif == "") { ?>
