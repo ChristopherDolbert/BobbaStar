@@ -40,7 +40,8 @@ if (isset($_SESSION['username'])) {
 $maintid = "1";
 $sqlss = $bdd->query("SELECT * FROM gabcms_maintenance WHERE id = '1'");
 $c = $sqlss->fetch(PDO::FETCH_ASSOC);
-$query = $bdd->query("SELECT * FROM bans WHERE ip = '" . $_SERVER['REMOTE_ADDR'] . "' ");
+$query = $bdd->prepare("SELECT * FROM bans WHERE ip = ?");
+$query->execute([$_SERVER['REMOTE_ADDR']]);
 $data = $query->fetch(PDO::FETCH_ASSOC);
 $ban = array();
 if ($data) {

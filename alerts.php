@@ -112,7 +112,8 @@ Salut <b><?PHP echo $user['username'];?></b>! Cette page te permet de percevoir 
 							</h2>
 						<div id="notfound-looking-for" class="box-content">
 						<?php
-        $gabcms_alertes = $bdd->query("SELECT * FROM gabcms_alertes WHERE userid = '".$user['id']. "' ORDER BY id DESC LIMIT 0,10");
+        $gabcms_alertes = $bdd->prepare("SELECT * FROM gabcms_alertes WHERE userid = ? ORDER BY id DESC LIMIT 0,10");
+        $gabcms_alertes->execute([$user['id']]);
         if($gabcms_alertes->rowCount() == 0) {
             echo "<p><img style=\"float: left;padding-right:2px;\" src=\"./web-gallery/v2/images/hotel.png\" alt=\"\" width=\"67\" height=\"118\" /></p>
 Tu n'as pas encore d'alerte. Tu peux recevoir des alertes pour les cas suivants:<br />
