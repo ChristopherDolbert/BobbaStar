@@ -83,7 +83,7 @@ if (isset($_GET['do'])) {
 
 <body></body>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
 <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
 <?php if (!isset($_GET['modif'])) { ?>
     <span id="titre">Actions sur des notes de service</span><br \>

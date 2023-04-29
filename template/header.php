@@ -306,19 +306,6 @@ if ($c['afficher'] == "Oui") {
                                                                                                     echo $nb_inscrit['id'];
                                                                                                     ?></b>)</a></li>
                     <?PHP } ?>
-                    <?PHP if ($pageid == "forum_index") { ?>
-                        <li class=" selected">Signalements (<b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_forum_signalement WHERE etat != '2'";
-                                                                $query = $bdd->query($req);
-                                                                $nb_inscrit = $query->fetch();
-                                                                echo $nb_inscrit['id'];
-                                                                ?></b>)</li>
-                    <?PHP } else { ?>
-                        <li class=""><a href="<?PHP echo $url; ?>/managements/forum_index">Signalements (<b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_forum_signalement WHERE etat != '2'";
-                                                                                                            $query = $bdd->query($req);
-                                                                                                            $nb_inscrit = $query->fetch();
-                                                                                                            echo $nb_inscrit['id'];
-                                                                                                            ?></b>)</a></li>
-                    <?PHP } ?>
                     <?PHP if ($pageid == "admin") { ?>
                         <li style="color:red" class=" selected">Administration</li>
                     <?PHP } else { ?>

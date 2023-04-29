@@ -173,9 +173,6 @@ switch ($user['rank']) {
                 <li>- Notes de service</li>
                 <li><a href="create_nds" target="main">Créer une note de service</a></li>
                 <li><a href="act_nds" target="main">Action sur une note de service</a></li>
-                <li>- Forum</li>
-                <li><a href="act_forum_categorie" target="main">Actions sur une catégorie</a></li>
-                <li><a href="act_forum_sous_categorie" target="main">Actions sur une sous catégorie</a></li>
                 <li>- Staff en test</li>
                 <li><a href="add_test" target="main">Staff en test</a></li>
             </ul>
