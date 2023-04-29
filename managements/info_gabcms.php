@@ -9,15 +9,8 @@ include("../config.php");
 include("./locale/$language/login.php");
 $pagename = "Informations sur le CMS";
 
-if (!isset($_SESSION['username'])) {
-    Redirect("" . $url . "/index");
-}
 
-if ($user['rank'] < 8) {
-    Redirect("" . $url . "/managements/acces_interdit");
-    exit();
-}
-if ($user['rank'] > 8) {
+if (!isset($_SESSION['username']) || $user['rank'] > 11) {
     Redirect("" . $url . "/managements/acces_interdit");
     exit();
 }

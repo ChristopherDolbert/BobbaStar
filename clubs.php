@@ -22,10 +22,12 @@ if (isset($_GET['do'])) {
         $prix_ticket = Secu($_POST['transaction_vip']);
         if ($user['jetons'] >= $cp['vipclub'] && $user['id'] != "" && $prix_ticket == $cp['vipclub']) {
             if ($user['rank'] < '4') {
-                $bdd->query("UPDATE users SET jetons = jetons - " . $cp['vipclub'] . ", rank = '2', vip = '1', credits = credits + 30000, pixels = pixels + 30000 WHERE id = '" . $user['id'] . "'");
+                $update = $bdd->prepare("UPDATE users SET jetons = jetons - ?, rank = '2', vip = '1', credits = credits + 30000, pixels = pixels + 30000 WHERE id = ?");
+                $update->execute([$cp['vipclub'], $user['id']]);
                 $insert_badge = $bdd->query("SELECT * FROM gabcms_config_badges WHERE club = '1'");
                 while ($i = $insert_badge->fetch()) {
-                    $bdd->query("INSERT INTO users_badges(user_id, badge_code) VALUES ('" . $user['id'] . "', '" . $i['badge_id'] . "')");
+                    $insertn = $bdd->prepare("INSERT INTO users_badges(user_id, badge_code) VALUES (?, ?)");
+                    $insertn->execute([$user['id'], $i['badge_id']]);
                 }
                 $insertn1 = $bdd->prepare("INSERT INTO gabcms_transaction (user_id, produit, prix, gain, date) VALUES (:userid, :produit, :prix, :gain, :date)");
                 $insertn1->bindValue(':userid', $user['id']);
@@ -81,10 +83,12 @@ if (isset($_GET['do'])) {
         $prix_ticket_staff = Secu($_POST['transaction_staff']);
         if ($user['jetons'] >= $cp['staffclub'] && $user['id'] != "" && $prix_ticket_staff == $cp['staffclub']) {
             if ($user['rank'] < '4') {
-                $bdd->query("UPDATE users SET jetons = jetons - " . $cp['staffclub'] . ", rank = '3', vip = '1', credits = credits + 50000, pixels = pixels + 50000 WHERE id = '" . $user['id'] . "'");
+                $update = $bdd->prepare("UPDATE users SET jetons = jetons - ?, rank = '3', vip = '1', credits = credits + 50000, pixels = pixels + 50000 WHERE id = ?");
+                $update->execute([$cp['staffclub'], $user['id']]);
                 $insert_badge = $bdd->query("SELECT * FROM gabcms_config_badges WHERE club = '2'");
                 while ($i = $insert_badge->fetch()) {
-                    $bdd->query("INSERT INTO users_badges(user_id, badge_code) VALUES ('" . $user['id'] . "','" . $i['badge_id'] . "')");
+                    $insertb = $bdd->prepare("INSERT INTO users_badges(user_id, badge_code) VALUES (?, ?)");
+                    $insertb->execute([$user['id'], $i['badge_id']]);
                 }
                 $ewui = $bdd->prepare("INSERT INTO messenger_friendships (user_one_id,user_two_id) VALUES (:one, :two)");
                 $ewui->bindValue(':one', '1');

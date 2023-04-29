@@ -4,6 +4,7 @@
 #|         Copyright © 2014-2023 - MyHabbo Tout droits réservés.          #|
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
+include('SQL.php');
 
 # Nombre de fonctions: 14 #
 if ($pagename != "Starters" && isset($_SESSION['username']) && $_SESSION['noob'] == "Oui") {
@@ -15,6 +16,34 @@ $language_path = "./" . $language . "index.php";
 $language_path_2 = "../" . $language . "index.php";
 $valid_language = file_exists($language_path) || file_exists($language_path_2);
 $language = ($valid_language) ? $language : "en";
+
+function FetchServerSetting($columnName)
+{
+	include('SQL.php');
+	$sql = "SELECT $columnName FROM gabcms_client LIMIT 1";
+	$stmt = $bdd->prepare($sql);
+	$stmt->execute();
+	$result = $stmt->fetchColumn();
+	return $result;
+}
+
+
+function FetchEmulatorSetting($strSetting, $switch = false)
+{
+	include('SQL.php');
+	$sql = "SELECT value FROM emulator_settings WHERE `key` = :strSetting LIMIT 1";
+	$stmt = $bdd->prepare($sql);
+	$stmt->execute(['strSetting' => $strSetting]);
+	$tmp = $stmt->fetch();
+
+	if ($switch !== true) {
+		return $tmp['value'];
+	} elseif ($switch == true && $tmp['value'] == "1") {
+		return "Enabled";
+	} elseif ($switch == true && $tmp['value'] !== "1") {
+		return "Disabled";
+	}
+}
 
 function smileys($texte)
 {
@@ -187,6 +216,12 @@ function GabCMSHash($str)
 	$str = Secu($str);
 	$str = password_hash($str, PASSWORD_BCRYPT);
 	return $str;
+}
+
+function HoloHash($string)
+{
+	$string = password_hash($string, PASSWORD_BCRYPT);
+	return $string;
 }
 
 function Secu($str)
@@ -447,7 +482,6 @@ function Connected($pageid)
 function SendMUSData(string $key, $data = null)
 {
 	include('SQL.php');
-
 	$configSQL = $bdd->query("SELECT * FROM gabcms_client WHERE id = '1'");
 	$config = $configSQL->fetch(PDO::FETCH_ASSOC);
 
@@ -552,7 +586,6 @@ function GiveHC($user_id, $months)
 function HCDaysLeft($my_id)
 {
 	include('SQL.php');
-	// Query for the info we need to calculate
 	$query = $bdd->prepare("SELECT months_left,date_monthstarted FROM users_club WHERE userid = :my_id LIMIT 1");
 	$query->bindParam(':my_id', $my_id);
 	$query->execute();
