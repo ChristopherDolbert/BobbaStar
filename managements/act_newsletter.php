@@ -31,7 +31,6 @@ if (isset($_GET['do']) && $_GET['do'] == "modif") {
 <body>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
-    <script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
     <?PHP
     $sql_modif = $bdd->query("SELECT * FROM gabcms_newsletter WHERE id = '1'");
     $modif_a = $sql_modif->fetch();
@@ -42,11 +41,13 @@ if (isset($_GET['do']) && $_GET['do'] == "modif") {
     <br /><br />
     <form name="editor" method="post" action="?do=modif">
         <td width="100" class="tbl"><b>Le haut de ta newsletter :</b><br /></td>
-        <td width="80%" class="tbl"><textarea name="haut" wrap="discuss rows=10 cols=142" id="editor1"><?php echo $modif_a['newsletter_haut']; ?></textarea>
+        <td width="80%" class="tbl"><textarea name="haut" wrap="discuss rows=10 cols=142" id="editor"><?php echo $modif_a['newsletter_haut']; ?></textarea>
             <script>
-                CKEDITOR.replace('editor1', {
-                    toolbar: 'Newsletter'
-                });
+                ClassicEditor
+                    .create(document.querySelector('#editor'))
+                    .catch(error => {
+                        console.error(error);
+                    });
             </script>
             <br />
         </td><br />

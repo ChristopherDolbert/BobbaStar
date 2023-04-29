@@ -114,7 +114,6 @@ $caz = $correct->fetch();
 	<script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
 	<script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
-	<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
 	<script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
 
 	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
@@ -210,16 +209,18 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 										<label><input type="radio" name="age" value="+ 18 ans" <?php if (isset($_POST['age']) && $_POST['age'] == "+ 18 ans") echo 'checked="checked"'; ?> />+ 18 ans</label>
 										<br /><br />
 									<td width='100' class='tbl'><b>Lettre de motivation:</b><br /></td>
-									<textarea name='cv' rows="5" cols="50" id="editor1"><?php
+									<textarea name='cv' rows="5" cols="50" id="editor"><?php
 																						if (isset($_POST["cv"])) {
 																							echo htmlspecialchars($_POST["cv"], ENT_QUOTES);
 																						}
 																						?></textarea>
 									<script>
-										CKEDITOR.replace('editor1', {
-											toolbar: 'Recrutements'
-										});
-									</script><br />
+										ClassicEditor
+											.create(document.querySelector('#editor'))
+											.catch(error => {
+												console.error(error);
+											});
+									</script>
 									<input type='submit' name='submit' value='Exécuter' class='submit'>
 								</form>
 							<?PHP }

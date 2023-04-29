@@ -42,7 +42,7 @@ Crées un article afin que tout l'hôtel puisse le voir. Penses à bien complét
 <br /><br />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
-<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
+
 <form name='editor' method='post' action="?do=create">
 	<td width='100' class='tbl'><b>Catégorie de l'article :</b><br /></td>
 	<label><input type="radio" name="catart" value="articles" <?php if (isset($_POST['catart']) && $_POST['catart'] == "articles") echo 'checked="checked"'; ?> />Article</label>
@@ -66,17 +66,18 @@ Crées un article afin que tout l'hôtel puisse le voir. Penses à bien complét
 																		} ?>" class="text" style="width: 360px"><br /></td>
 	<br />
 	<td width='100' class='tbl'><b>Le corps de l'article : <a href="<?PHP echo $url; ?>/managements/upload" target="_blank">Upload tes images !</a> </b><br /></td>
-	<td width='80%' class='tbl'><textarea name='article' wrap="discuss rows=12 cols=154" id="editor1"><?php
+	<td width='80%' class='tbl'><textarea name='article' wrap="discuss rows=12 cols=154" id="editor"><?php
 																										if (isset($_POST["article"])) {
 																											echo htmlspecialchars($_POST["article"], ENT_QUOTES);
 																										}
 																										?></textarea>
 		<script>
-			CKEDITOR.replace('editor1', {
-				toolbar: 'Journalisme'
-			});
+			ClassicEditor
+				.create(document.querySelector('#editor'))
+				.catch(error => {
+					console.error(error);
+				});
 		</script>
-		<br />
 	</td>
 	<td width='100' class='tbl'><b>Message du bouton :</b><br /></td>
 	<td width='80%' class='tbl'><input type="text" name="info" style="background-image: url('images/text_news.png'); height: 54px; width: 147px; border: none; padding-left: 10px; margin-top: 6px; color: white; font-size:14px;" value="En savoir plus »" class="text" maxlength="34"><br /></td>
