@@ -8,33 +8,33 @@
 include("../config.php");
 
 if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
-    Redirect("" . $url . "/managements/acces_interdit");
-    exit();
+	Redirect("" . $url . "/managements/acces_interdit");
+	exit();
 }
 
 $rank_modif = "";
 switch ($user['rank']) {
-    case 11:
-    case 10:
-    case 9:
-    case 8:
-        $rank_modif = "fondateur";
-        break;
-    case 7:
-        $rank_modif = "manager";
-        break;
-    case 6:
-        $rank_modif = "administratrice";
-        if ($user['gender'] == 'M') {
-            $rank_modif = "administrateur";
-        }
-        break;
-    case 5:
-        $rank_modif = "modératrice";
-        if ($user['gender'] == 'M') {
-            $rank_modif = "modérateur";
-        }
-        break;
+	case 11:
+	case 10:
+	case 9:
+	case 8:
+		$rank_modif = "fondateur";
+		break;
+	case 7:
+		$rank_modif = "manager";
+		break;
+	case 6:
+		$rank_modif = "administratrice";
+		if ($user['gender'] == 'M') {
+			$rank_modif = "administrateur";
+		}
+		break;
+	case 5:
+		$rank_modif = "modératrice";
+		if ($user['gender'] == 'M') {
+			$rank_modif = "modérateur";
+		}
+		break;
 }
 
 if (isset($_POST['texte'])) {
@@ -54,7 +54,6 @@ $c = $bdd->query("SELECT * FROM gabcms_bureau_notes WHERE id = '1'")->fetch(PDO:
 ?>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
-<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
 
 <body>
@@ -62,11 +61,13 @@ $c = $bdd->query("SELECT * FROM gabcms_bureau_notes WHERE id = '1'")->fetch(PDO:
 	Modifies le message du bloc-notes dans le bureau des staffs<br /><br />
 	<form name='editor' method='post' action="?do=modif">
 		<td width='100' class='tbl'><b>Message du bloc-notes : <a href="<?PHP echo $url; ?>/managements/upload" target="_blank">Upload tes images !</a> </b><br /></td>
-		<td width='80%' class='tbl'><textarea name='texte' wrap="discuss rows=12 cols=154" id="editor1"><?php echo $c['texte']; ?></textarea>
+		<td width='80%' class='tbl'><textarea name='texte' wrap="discuss rows=12 cols=154" id="editor"><?php echo $c['texte']; ?></textarea>
 			<script>
-				CKEDITOR.replace('editor1', {
-					toolbar: 'Journalisme'
-				});
+				ClassicEditor
+					.create(document.querySelector('#editor'))
+					.catch(error => {
+						console.error(error);
+					});
 			</script>
 			<br />
 		</td>

@@ -54,7 +54,6 @@ if ($modifiertopic && isset($_POST['topic'], $_POST['titre'])) {
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 	<script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
 	<title>Modifier un topic (<?PHP echo $mod['titre'] ?>)</title>
-	<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
 	<?php if (!isset($_GET['modif'])) { ?>
 		<span id="titre">Selectionnes un topic</span><br \>
 		Merci de sélectionner un topic
@@ -74,11 +73,13 @@ if ($modifiertopic && isset($_POST['topic'], $_POST['titre'])) {
 			<td width="80%" class="tbl"><input type="text" name="titre" value="<?php echo stripslashes($modif_a['titre']); ?>" class="text" style="width: 240px"><br /></td>
 			<br />
 			<td width="100" class="tbl"><b>Le corps du topic : <a href="<?PHP echo $url; ?>/managements/upload.php" target="_blank">Upload tes images !</a> </b><br /></td>
-			<td width="80%" class="tbl"><textarea name="topic" wrap="discuss rows=12 cols=142" id="editor1"><?php echo $modif_a['texte']; ?></textarea>
+			<td width="80%" class="tbl"><textarea name="topic" wrap="discuss rows=12 cols=142" id="editor"><?php echo $modif_a['texte']; ?></textarea>
 				<script>
-					CKEDITOR.replace('editor1', {
-						toolbar: 'Forum'
-					});
+					ClassicEditor
+						.create(document.querySelector('#editor'))
+						.catch(error => {
+							console.error(error);
+						});
 				</script>
 				<br />
 			</td>

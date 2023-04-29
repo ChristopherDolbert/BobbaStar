@@ -167,11 +167,13 @@ if (isset($_GET['modif'])) {
         <td width='80%' class='tbl'><input type="text" name="objet" value="<?php echo nl2br($modif_a['objet']); ?>" class="text" style="width: 240px" readonly="readonly" /><br /></td>
         <br />
         <td width='100' class='tbl'><b>Le corps de l'article : <a href="<?PHP echo $url; ?>/managements/upload" target="_blank">Upload tes images !</a> </b><br /></td>
-        <td width='80%' class='tbl'><textarea name="texte" wrap="discuss rows=12 cols=154" id="editor1"><?php echo $modif_a['texte']; ?></textarea>
+        <td width='80%' class='tbl'><textarea name="texte" wrap="discuss rows=12 cols=154" id="editor"><?php echo $modif_a['texte']; ?></textarea>
             <script>
-                CKEDITOR.replace('editor1', {
-                    toolbar: 'Journalisme'
-                });
+                ClassicEditor
+                    .create(document.querySelector('#editor'))
+                    .catch(error => {
+                        console.error(error);
+                    });
             </script>
             <br />
         </td>

@@ -81,7 +81,6 @@ if (isset($_GET['do'])) {
 <body>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 	<script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
-	<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
 	<?PHP
 	$sql_modif = $bdd->query("SELECT * FROM gabcms_newsletter WHERE id = '1'");
 	$modif_a = $sql_modif->fetch();
@@ -106,15 +105,17 @@ if (isset($_GET['do'])) {
 																			} ?>" class="text" style="width: 240px"><br /></td>
 		<br />
 		<td width='100' class='tbl'><b>Le corps de ta newsletter : <a href="<?PHP echo $url; ?>/managements/upload" target="_blank">Upload tes images !</a> </b><br /></td>
-		<td width='80%' class='tbl'><textarea name="texte_newsletter" wrap="discuss rows=12 cols=154" id="editor1"><?php
+		<td width='80%' class='tbl'><textarea name="texte_newsletter" wrap="discuss rows=12 cols=154" id="editor"><?php
 																													if (isset($_POST["texte_newsletter"])) {
 																														echo htmlspecialchars($_POST["texte_newsletter"], ENT_QUOTES);
 																													}
 																													?></textarea>
 			<script>
-				CKEDITOR.replace('editor1', {
-					toolbar: 'Newsletter'
-				});
+				ClassicEditor
+					.create(document.querySelector('#editor'))
+					.catch(error => {
+						console.error(error);
+					});
 			</script>
 			<br />
 		</td>
