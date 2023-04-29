@@ -74,7 +74,7 @@ Voici la liste des bannis actuel.<br />
 			<td class="haut">Jusqu'au</td>
 		</tr>
 		<?PHP
-		$sql = $bdd->query("SELECT * FROM bans WHERE bantype='user' ORDER BY id DESC");
+		$sql = $bdd->query("SELECT * FROM bans WHERE type='user' ORDER BY id DESC");
 		while ($a = $sql->fetch()) {
 			$expire = date('d/m/Y H:i', $a['ban_expire']);
 		?>
