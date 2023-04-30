@@ -54,6 +54,14 @@ if (isset($_GET['id'])) {
 		if ($r['edit'] == 1) {
 			$insertn4 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
 			$insertn4->execute(array(':pseudo' => $user['username'], ':action' => 'a lu et approuve à nouveau la Note de Service <b>"' . addslashes($r['objet']) . '"</b>', ':date' => FullDate('full')));
+		} else {
+			$affichage = "<div id=\"purse-redeem-result\"> 
+				<div class=\"redeem-error\">
+					<div class=\"rounded rounded-red\">
+						Une erreur est survenue
+					</div>
+				</div>
+			</div>";
 		}
 		$insertn2 = $bdd->prepare("INSERT INTO gabcms_nds_lu (id_nds,pseudo,texte,date) VALUES (:id, :pseudo, :texte, :date)");
 		$insertn2->execute(array(':id' => $r['id'], ':pseudo' => $user['username'], ':texte' => $message, ':date' => FullDate('full')));
@@ -63,14 +71,6 @@ if (isset($_GET['id'])) {
             <div class=\"redeem-error\">
                 <div class=\"rounded rounded-green\">
                     Ta lecture a été prise en compte
-                </div>
-            </div>
-        </div>";
-	} else {
-		$affichage = "<div id=\"purse-redeem-result\"> 
-            <div class=\"redeem-error\">
-                <div class=\"rounded rounded-red\">
-                    Une erreur est survenue
                 </div>
             </div>
         </div>";
