@@ -106,6 +106,7 @@ if ($c['afficher'] == "Oui") {
                 <li class=""><a href="<?PHP echo $url; ?>/jetons">Boutique</a> <span></span>
                 <?PHP } ?>
                 <!-- FIN DU BOUTON BOUTIQUE -->
+                
                 <!-- BOUTON MANAGEMENTS -->
                 <?PHP if ($user['rank'] >= 5) { ?>
                     <?PHP if ($pageid == "tchatstaff" || $pageid == "sta" || $pageid == "nds" || $pageid == "bureau" || $pageid == "acces" || $pageid == "sc_index" || $pageid == "forum_index") { ?>

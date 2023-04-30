@@ -604,19 +604,19 @@ function GiveHC($user_id, $months)
 		$stmt2->bindParam(':id', $user_id, PDO::PARAM_INT);
 		$stmt2->execute();
 
-		$sql3 = "SELECT * FROM users_badges WHERE badge_code = 'HC1' AND user_id = :id LIMIT 1";
+		$sql3 = "SELECT * FROM users_badges WHERE badge_code = 'HC' AND user_id = :id LIMIT 1";
 		$stmt3 = $bdd->prepare($sql3);
 		$stmt3->bindParam(':id', $user_id, PDO::PARAM_INT);
 		$stmt3->execute();
 		$found = $stmt3->rowCount();
 
 		if ($yesonline['online'] != 1 && $found !== 1) {
-			$sql6 = "INSERT INTO users_badges (user_id, badge_code) VALUES (:id, 'HC1')";
+			$sql6 = "INSERT INTO users_badges (user_id, badge_code) VALUES (:id, 'HC')";
 			$stmt6 = $bdd->prepare($sql6);
 			$stmt6->bindParam(':id', $user_id, PDO::PARAM_INT);
 			$stmt6->execute();
 		} elseif ($yesonline['online'] == 1 && $found == 0) {
-			@SendMUSData('givebadge', ['user_id' => $user['id'], 'badge' => "HC1"]);
+			@SendMUSData('givebadge', ['user_id' => $user['id'], 'badge' => "HC"]);
 		}
 	} else {
 		$m = date('m');

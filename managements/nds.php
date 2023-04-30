@@ -54,6 +54,14 @@ if (isset($_GET['id'])) {
 		if ($r['edit'] == 1) {
 			$insertn4 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
 			$insertn4->execute(array(':pseudo' => $user['username'], ':action' => 'a lu et approuve à nouveau la Note de Service <b>"' . addslashes($r['objet']) . '"</b>', ':date' => FullDate('full')));
+		} else {
+			$affichage = "<div id=\"purse-redeem-result\"> 
+				<div class=\"redeem-error\">
+					<div class=\"rounded rounded-red\">
+						Une erreur est survenue
+					</div>
+				</div>
+			</div>";
 		}
 		$insertn2 = $bdd->prepare("INSERT INTO gabcms_nds_lu (id_nds,pseudo,texte,date) VALUES (:id, :pseudo, :texte, :date)");
 		$insertn2->execute(array(':id' => $r['id'], ':pseudo' => $user['username'], ':texte' => $message, ':date' => FullDate('full')));
@@ -63,14 +71,6 @@ if (isset($_GET['id'])) {
             <div class=\"redeem-error\">
                 <div class=\"rounded rounded-green\">
                     Ta lecture a été prise en compte
-                </div>
-            </div>
-        </div>";
-	} else {
-		$affichage = "<div id=\"purse-redeem-result\"> 
-            <div class=\"redeem-error\">
-                <div class=\"rounded rounded-red\">
-                    Une erreur est survenue
                 </div>
             </div>
         </div>";
@@ -85,26 +85,9 @@ if (isset($_GET['id'])) {
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<title><?PHP echo $sitename; ?> &raquo; <?PHP echo $pagename; ?></title>
 
-	<script type="text/javascript">
-		var andSoItBegins = (new Date()).getTime();
-		var ad_keywords = "";
-		document.habboLoggedIn = true;
-		var habboName = "<?PHP echo $user['username']; ?>";
-		var habboReqPath = "<?PHP echo $url; ?>";
-		var habboStaticFilePath = "<?PHP echo $imagepath; ?>";
-		var habboImagerUrl = "http://www.habbo.com/habbo-imaging/";
-		var habboPartner = "";
-		var habboDefaultClientPopupUrl = "<?PHP echo $url; ?>/client";
-		window.name = "habboMain";
-		if (typeof HabboClient != "undefined") {
-			HabboClient.windowName = "uberClientWnd";
-		}
-	</script>
 	<link rel="shortcut icon" href="<?PHP echo $imagepath; ?>favicon.ico" type="image/vnd.microsoft.icon" />
 	<script src="<?PHP echo $imagepath; ?>static/js/libs2.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>static/js/visual.js" type="text/javascript"></script>
-	<script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
-	<script type="text/javascript" src="<?PHP echo $imagepath; ?>editor/config.js"></script>
 	<script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
 	<script src="<?PHP echo $imagepath; ?>js/tooltip.js" type="text/javascript"></script>
@@ -114,10 +97,7 @@ if (isset($_GET['id'])) {
 	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
-	<script src="<?PHP echo $imagepath; ?>static/js/habboclub.js" type="text/javascript"></script>
-	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/myhabbo/control.textarea.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
-	<script src="<?PHP echo $imagepath; ?>static/js/minimail.js" type="text/javascript"></script>
 	<meta name="description" content="<?PHP echo $description; ?>" />
 	<meta name="keywords" content="<?PHP echo $keyword; ?>" />
 	<!--[if IE 8]>
@@ -251,39 +231,53 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 									<div class="article-meta">
 										<p class="summary"></p>
 										<div class="article-body">
-											<div>
-												<div style="text-align: center;"><?PHP echo $sitename; ?> - <?PHP echo $url; ?></div><br />
-												<div style="text-align: right;"><?PHP echo Secu($n['bureau']); ?>, le <?PHP echo Secu($n['date']); ?><?PHP if ($n['edit'] == '1') { ?>, édité le <?PHP echo Secu($n['date_edit']); ?><?PHP } ?></div><br /><br />
-												<div><span style="font-size:14px;"><u>Objet :</u> <?PHP echo $n['objet'] ?></span></div><br /><br />
-											</div><?php echo stripslashes($n['texte']); ?>
-											<div><br /><br />
-												<div>&gt; Cette note est applicable aux <strong><?PHP echo $n['applicable'] ?></strong></div><br /><br /><b>
-													<div style="margin-left: 260px; text-align: center;"><?php echo $n['par'] ?></div>
-													<div style="margin-left: 260px; text-align: center;"><?PHP echo stripslashes($n['sign']) ?></div>
-												</b>
-											</div>
-											<div class="article-author">Lue et approuvée : <?php
-																							$recrut = $bdd->query("SELECT DISTINCT pseudo FROM gabcms_nds_lu WHERE id_nds = '" . $n['id'] . "'");
-																							while ($rt = $recrut->fetch(PDO::FETCH_ASSOC)) {
-																								echo $rt['pseudo']; ?>, <?PHP } ?></div>
-										</div><br />
-										<?PHP
-										$ok = null;
-										$search = $bdd->query("SELECT pseudo FROM gabcms_nds_lu WHERE id_nds = '" . $n['id'] . "' AND pseudo = '" . $user['username'] . "'");
-										$ok = $search->fetch();
+											<p><span><u>Objet :</u> <?PHP echo htmlspecialchars($n['objet']) ?></span></p>
+										</div><br /><br />
 
-										if (!isset($ok['pseudo']) || $ok['pseudo'] !== $user['username'] && $n['annuler'] == '0') {
-										?><form method="post" action="<?PHP echo $url; ?>/managements/nds?id=<?PHP echo $n['id']; ?>#">
-												<div id="article_haut"><span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(<?php echo $avatarimage; ?><?PHP echo Secu($n['look']); ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span><span style="color: #000000; font-size: 11px;"><br /><b>Posté par :</b> <?PHP echo Secu($n['par']); ?><br /><b>Date :</b> <?PHP echo Secu($n['date']); ?><br /><input type="text" value="" name="message"> <input type='submit' name='submit' value='Lire et approuver' class='submit'>
-											</form></span>
-									</div>
-								<?PHP }
-										if (!empty($ok) && $ok['pseudo'] == $user['username'] && $n['annuler'] == '0') { ?> ?>
-									<div id="article_haut"><span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(<?php echo $avatarimage; ?><?PHP echo $n['look']; ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span><span style="color: #000000; font-size: 11px;"><br /><b>Posté par :</b> <?PHP echo Secu($n['par']); ?><br /><b>Date :</b> <?PHP echo Secu($n['date']); ?><br /></span></div>
-								<?PHP }
-										if ($n['annuler'] == '1') { ?>
-									<div id="article_haut"><span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(<?php echo $avatarimage; ?><?PHP echo $n['look']; ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span><span style="color: #000000; font-size: 11px;"><br /><b>Posté par :</b> <?PHP echo Secu($n['par']); ?><br /><b>Date :</b> <?PHP echo Secu($n['date']); ?><br /><br />Note de service annulée le <?PHP echo Secu($n['date_annuler']); ?> par <b><?PHP echo Secu($n['user_annuler']); ?></b></span></div>
-								<?PHP } ?>
+										<?php echo stripslashes($n['texte']); ?>
+										<div style="display: flex; justify-content: space-between;">
+											<div style="color: red;">Cette note est applicable aux <strong><?php echo $n['applicable']; ?></strong></div>
+											<div class="article-author" style="color:green;text-align: right;">Lue et approuvée :
+												<?php
+												$recrut = $bdd->query("SELECT DISTINCT pseudo FROM gabcms_nds_lu WHERE id_nds = '" . $n['id'] . "'");
+												while ($rt = $recrut->fetch(PDO::FETCH_ASSOC)) {
+													echo $rt['pseudo'] . " ";
+												}
+												?>
+											</div>
+										</div>
+
+									</div><br /><br />
+									<?php
+									$search = $bdd->query("SELECT pseudo FROM gabcms_nds_lu WHERE id_nds = '" . $n['id'] . "' AND pseudo = '" . $user['username'] . "'");
+									$ok = $search->fetch();
+
+									if (empty($ok) && $n['annuler'] == '0') {
+									?>
+										<form method="post" action="<?php echo $url; ?>/managements/nds?id=<?php echo $n['id']; ?>#">
+											<div id="article_haut">
+												<span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(<?php echo $avatarimage . Secu($n['look']); ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span>
+												<span style="color: #000000; font-size: 11px;"><br /><b>Posté par :</b> <?php echo Secu($n['par']); ?><br /><b>Date :</b> <?php echo Secu($n['date']); ?><br /><input type="text" value="" name="message"> <input type='submit' name='submit' value='Lire et approuver' class='submit'>
+												</span>
+											</div>
+										<?php
+									} elseif (!empty($ok) && $n['annuler'] == '0') {
+										?>
+											<div id="article_haut">
+												<span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(<?php echo $avatarimage . $n['look']; ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span>
+												<span style="color: #000000; font-size: 11px;"><br /><b>Posté par :</b> <?php echo Secu($n['par']); ?><br /><b>Date :</b> <?php echo Secu($n['date']); ?><br /></span>
+											</div>
+										<?php
+									} elseif ($n['annuler'] == '1') {
+										?>
+											<div id="article_haut">
+												<span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(<?php echo $avatarimage . $n['look']; ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span>
+												<span style="color: #000000; font-size: 11px;"><br /><b>Posté par :</b> <?php echo Secu($n['par']); ?><br /><b>Date :</b> <?php echo Secu($n['date']); ?><br /><br />Note de service annulée le <?php echo Secu($n['date_annuler']); ?> par <b><?php echo Secu($n['user_annuler']); ?></b></span>
+											</div>
+										<?php
+									}
+										?>
+
 								</div>
 					</div>
 				</div>
