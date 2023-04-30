@@ -252,9 +252,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 										<p class="summary"></p>
 										<div class="article-body">
 											<div>
-												<div style="text-align: center;"><?PHP echo $sitename; ?> - <?PHP echo $url; ?></div><br />
-												<div style="text-align: right;"><?PHP echo Secu($n['bureau']); ?>, le <?PHP echo Secu($n['date']); ?><?PHP if ($n['edit'] == '1') { ?>, édité le <?PHP echo Secu($n['date_edit']); ?><?PHP } ?></div><br /><br />
-												<div><span style="font-size:14px;"><u>Objet :</u> <?PHP echo $n['objet'] ?></span></div><br /><br />
+												<div><span><u>Objet :</u> <?PHP echo htmlspecialchars($n['objet']) ?></span></div><br /><br />
 											</div><?php echo stripslashes($n['texte']); ?>
 											<div><br /><br />
 												<div>&gt; Cette note est applicable aux <strong><?PHP echo $n['applicable'] ?></strong></div><br /><br /><b>
@@ -278,7 +276,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 											</form></span>
 									</div>
 								<?PHP }
-										if (!empty($ok) && $ok['pseudo'] == $user['username'] && $n['annuler'] == '0') { ?> ?>
+										if (!empty($ok) && $ok['pseudo'] == $user['username'] && $n['annuler'] == '0') { ?>
 									<div id="article_haut"><span style="width: 64px; height: 83px; margin-top:-5px; margin-left:-5px; float: left; background: url(<?php echo $avatarimage; ?><?PHP echo $n['look']; ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></span><span style="color: #000000; font-size: 11px;"><br /><b>Posté par :</b> <?PHP echo Secu($n['par']); ?><br /><b>Date :</b> <?PHP echo Secu($n['date']); ?><br /></span></div>
 								<?PHP }
 										if ($n['annuler'] == '1') { ?>
