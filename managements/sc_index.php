@@ -130,15 +130,15 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                             ?>
                                 <table>
                                     <thead>
-                                        <tr>
-                                            <th>Ticket #</th>
-                                            <th>Pseudo</th>
-                                            <th>Catégorie</th>
-                                            <th>Date</th>
-                                            <th>Sujet</th>
-                                            <th>Etat</th>
-                                            <th>Dernière réponse</th>
-                                            <th>Action</th>
+                                        <tr class="haut">
+                                            <td class="haut">Ticket #</td>
+                                            <td class="haut">Pseudo</td>
+                                            <td class="haut">Catégorie</td>
+                                            <td class="haut">Date</td>
+                                            <td class="haut">Sujet</td>
+                                            <td class="haut">Etat</td>
+                                            <td class="haut">Dernière réponse</td>
+                                            <td class="haut">Action</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -157,15 +157,15 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                             );
                                             $etat_modif = isset($etats[$resul]) ? $etats[$resul] : '';
                                         ?>
-                                            <tr>
-                                                <td><?php echo Secu($a['id']); ?></td>
-                                                <td><?php echo Secu($a['pseudo']); ?></td>
-                                                <td><?php echo Secu($a['categorie']); ?></td>
-                                                <td><?php echo Secu($a['date']); ?></td>
-                                                <td><?php echo stripslashes($a['sujet']); ?></td>
-                                                <td><?php echo $etat_modif; ?></td>
-                                                <td><?php echo Secu($a['resul_par']); ?></td>
-                                                <td><a href="<?php echo $url; ?>/managements/sc_traiter?id=<?php echo Secu($a['id']); ?>" target="_blank"><img src="<?php echo $url; ?>/service_client/img/notes.png" /></a></td>
+                                            <tr class="bas">
+                                                <td class="bas"><?php echo Secu($a['id']); ?></td>
+                                                <td class="bas"><?php echo Secu($a['pseudo']); ?></td>
+                                                <td class="bas"><?php echo Secu($a['categorie']); ?></td>
+                                                <td class="bas"><?php echo Secu($a['date']); ?></td>
+                                                <td class="bas"><?php echo stripslashes($a['sujet']); ?></td>
+                                                <td class="bas"><?php echo $etat_modif; ?></td>
+                                                <td class="bas"><?php echo Secu($a['resul_par']); ?></td>
+                                                <td class="bas"><a href="<?php echo $url; ?>/managements/sc_traiter?id=<?php echo Secu($a['id']); ?>" target="_blank"><img src="<?php echo $url; ?>/service_client/img/notes.png" /></a></td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>

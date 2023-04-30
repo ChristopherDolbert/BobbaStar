@@ -30,7 +30,7 @@ if (isset($_GET['modifierrecrut']) && isset($_POST['motto'], $_POST['jetons'], $
         $insertn1->execute([':pseudo' => $user['username'], ':action' => 'a modifié des données sur le compte de <b>' . $assocaz['username'] . '</b>', ':date' => FullDate('full')]);
         $insertn2 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
         $insertn2->execute([':userid' => $modifierrecrut, ':message' => 'Nous venons de modifier quelques trucs sur ton compte, pour plus d\'infos, rentre en contact avec moi-même depuis l\'hôtel ou sur le service client en <a href="' . $url . '/service_client/autre">cliquant ici</a> !', ':auteur' => $user['username'], ':date' => FullDate('full'), ':look' => $user['look']]);
-        $bdd->query("UPDATE users SET jetons = '$jetons', mail = '$mail', motto = '$motto', credits = '$credits', activity_points = '$activity_points' WHERE id = '$modifierrecrut'");
+        $bdd->query("UPDATE users SET jetons = '$jetons', mail = '$mail', motto = '$motto', credits = '$credits', pixels = '$activity_points' WHERE id = '$modifierrecrut'");
         echo '<h4 class="alert_success">Les données de <b>' . $assocaz['username'] . '</b> ont été modifiées.</h4>';
     } else {
         echo '<h4 class="alert_error">Merci de ne pas laisser des cases vides.</h4>';
@@ -190,7 +190,7 @@ if (isset($_GET['modifierrecrut']) && isset($_POST['motto'], $_POST['jetons'], $
             <td width="100" class="tbl"><b>Date d'inscription :</b><br /></td>
             <td width="80%" class="tbl"><input type="text" name="date_inscrit" value="<?PHP echo $modif_a['account_created']; ?>" class="text" style="width: 240px" disabled="disabled"><br /></td>
             <td width="100" class="tbl"><b>IP à l'inscription :</b><br /></td>
-            <td width="80%" class="tbl"><input type="text" name="ip_reg" value="<?PHP echo $modif_a['ip_reg']; ?>" class="text" style="width: 240px" disabled="disabled"><br /></td>
+            <td width="80%" class="tbl"><input type="text" name="ip_reg" value="<?PHP echo $modif_a['ip_register']; ?>" class="text" style="width: 240px" disabled="disabled"><br /></td>
             <td width="100" class="tbl"><b>IP de la dernière connexion :</b><br /></td>
             <td width="80%" class="tbl"><input type="text" name="ip_current" value="<?PHP echo $modif_a['ip_current']; ?>" class="text" style="width: 240px" disabled="disabled"><br /></td>
             <td width="100" class="tbl"><b>Mail :</b><br /></td>
@@ -202,7 +202,7 @@ if (isset($_GET['modifierrecrut']) && isset($_POST['motto'], $_POST['jetons'], $
             <td width="100" class="tbl"><b>Nombre de crédits :</b></td>
             <td width="80%" class="tbl"><input type="text" name="credits" value="<?PHP echo $modif_a['credits']; ?>" class="text" style="width: 120px"><br /></td>
             <td width="100" class="tbl"><b>Nombre de pixels :</b></td>
-            <td width="80%" class="tbl"><input type="text" name="activity_points" value="<?PHP echo $modif_a['activity_points']; ?>" class="text" style="width: 120px"><br /></td>
+            <td width="80%" class="tbl"><input type="text" name="activity_points" value="<?PHP echo $modif_a['pixels']; ?>" class="text" style="width: 120px"><br /></td>
             <br />
             <input type="submit" value="Modifier" />
         </form>

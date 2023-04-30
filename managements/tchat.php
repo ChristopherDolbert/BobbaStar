@@ -12,7 +12,7 @@ if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
     exit();
 }
 
-if ($_GET['do'] === 'tchat') {
+if (isset($_GET['do']) && $_GET['do'] === 'tchat') {
     $insertn2 = $bdd->prepare("INSERT INTO gabcms_tchat (pseudo, message, ip, date, look, rank, alert) VALUES (:user, :msg, :ip, :date, :look, :rank, :alert)");
     $insertn2->execute([
         ':user' => $user['username'],

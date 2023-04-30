@@ -17,8 +17,14 @@ if (!isset($_SESSION['username']) || $user['rank'] < 5 || $user['rank'] > 11) {
 $rank_modif = "";
 switch ($user['rank']) {
     case 11:
+        $rank_modif = "fondateur";
+        break;
     case 10:
+        $rank_modif = "fondateur";
+        break;
     case 9:
+        $rank_modif = "fondateur";
+        break;
     case 8:
         $rank_modif = "fondateur";
         break;
@@ -51,7 +57,7 @@ if (isset($_GET['action'])) {
             $actionLog = 'a annulé sa propre absence';
             $affichageMsg = 'Tu viens d\'annuler ton absence avec succès !';
 
-            if ($r['pseudo'] !== $user['username'] && $user['rank'] >= '8') {
+            if ($r['pseudo'] !== $user['username'] && $user['rank'] >= '11') {
                 $pseudo = $r['pseudo'];
                 $actionLog = 'a annulé l\'absence de <b>' . $r['pseudo'] . '</b>';
                 $affichageMsg = 'Tu viens d\'annuler l\'absence de <b>' . $r['pseudo'] . '</b> avec succès !';
@@ -238,7 +244,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                             <td class="bas"><?PHP echo Secu($a['raison']); ?></td>
                                             <td class="bas"><?PHP echo $etat2; ?></td>
                                             <td class="bas"><?PHP
-                                                            if ($user['rank'] == '8' || $user['username'] == $a['pseudo']) {
+                                                            if ($user['rank'] == '11' || $user['username'] == $a['pseudo']) {
                                                                 if ($a['depuis'] <= Secu($nowtime) && Secu($a['jusqua']) > Secu($nowtime) && Secu($a['etat'] == 1)) {
                                                             ?><a href="?action=<?PHP echo Secu($a['id']); ?>" onclick="return confirm('Es-tu certains d\'annuler cette absence ?')" title="Annuler cette absence" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><img src="<?PHP echo $url; ?>/managements/img/images/invalide.gif" /></a><?PHP }
                                                                                                                                                                                                                                                                                                                                                     } ?></td>

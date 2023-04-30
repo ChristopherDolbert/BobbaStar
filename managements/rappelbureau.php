@@ -14,12 +14,14 @@ if (!isset($_SESSION['username']) || $user['rank'] < 10 || $user['rank'] > 11) {
 
 $ids = array('id1', 'id2', 'id3', 'id4', 'id5', 'id6', 'id7', 'id8', 'id9', 'id10');
 $values = array();
+$action_effectuee = false;
 
 foreach ($ids as $id) {
     if (isset($_POST[$id])) {
         $value = Secu($_POST[$id]);
         if ($value !== '') {
             $values[] = $value;
+            $action_effectuee = true; // une action a été effectuée
         }
     }
 }
@@ -35,11 +37,12 @@ if (count($values) === 10) {
         $bdd->query("UPDATE gabcms_bureau_rappels SET affichage = '" . Secu($values[$key]) . "' WHERE id = " . ($key + 1));
     }
 
-    echo '<h4 class="alert_success">Tes informations sont maintenant disponibles sur le site.</h4>';
-} else {
-    echo '<h4 class="alert_error">Une erreur est survenue.</h4>';
+    if ($action_effectuee) { // vérifie si une action a été effectuée
+        echo '<h4 class="alert_success">Tes informations sont maintenant disponibles sur le site.</h4>';
+    } else {
+        echo '<h4 class="alert_error">Une erreur est survenue.</h4>';
+    }
 }
-
 $sql = $bdd->query("SELECT * FROM gabcms_bureau_rappels");
 $cofs = $sql->fetchAll(PDO::FETCH_ASSOC);
 $cof1 = $cofs[0];
