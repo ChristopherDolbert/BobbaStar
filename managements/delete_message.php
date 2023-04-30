@@ -7,7 +7,7 @@
 
 include("../config.php");
 
-if (!isset($_SESSION['username']) || $user['rank'] < 87 || $user['rank'] > 11) {
+if (!isset($_SESSION['username']) || $user['rank'] < 8 || $user['rank'] > 11) {
 	Redirect("" . $url . "/managements/access_neg");
 	exit();
 }
@@ -25,15 +25,20 @@ if (isset($_POST['message'], $_POST['pseudo'])) {
 			$insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a enlevé <b>' . $message . '</b> messages à <b>' . $pseudo . '</b>', ':date' => FullDate('full')));
 			$insertn2 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
 			$insertn2->execute(array(':userid' => $row['id'], ':message' => 'Nous venons de t\'enlever ' . Secu($message) . ' messages.', ':auteur' => $user['username'], ':date' => FullDate('full'), ':look' => $user['look']));
-			echo '<h4 class="alert_success">Le nombre de messages à été modifié</h4>';
+			$type_alerte = 'success'; // une action a été effectuée avec succès
+			$message_alerte = 'Le nombre de messages a été modifié'; // message à afficher
 		} else {
-			echo '<h4 class="alert_error">Impossible d\'enlever plus de messages que l\'utilisateur n\'en a. (il en a ' . $row['message'] . ')</h4>';
+			$type_alerte = 'error'; // une erreur est survenue
+			$message_alerte = 'Impossible d\'enlever plus de messages que l\'utilisateur n\'en a. (il en a ' . $row['message'] . ')';
 		}
 	} else {
-		echo '<h4 class="alert_error">L\'utilisateur n\'existe pas</h4>';
+		$type_alerte = 'error'; // une erreur est survenue
+		$message_alerte = 'L\'utilisateur n\'existe pas';
 	}
-} else {
-	echo '<h4 class="alert_error">Merci de remplir les champs vides</h4>';
+	
+	if ($type_alerte != '' && $message_alerte != '') { // vérifie si une alerte doit être affichée
+		echo '<h4 class="alert_' . $type_alerte . '">' . $message_alerte . '</h4>';
+	}
 }
 
 ?>

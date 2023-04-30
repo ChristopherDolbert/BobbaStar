@@ -22,7 +22,7 @@ if (isset($_GET['do'])) {
         $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
         $insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a demandé la suppression d\'une alerte de <b>' . $assoc['username'] . '</b> (ID : ' . $do . ')', ':date' => FullDate('full')));
         $insertn2 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
-        $insertn2->execute(array(':userid' => $t1['userid'], ':message' => 'Je viens de demander la suppression d\'une de tes alertes. Une réponse de cette demande te sera transmise une fois traitée par un administrateur. (n° de l\'alerte : ' . $do . ')', ':auteur' => $user['username'], ':date' => FullDate('full'), ':look' => $user['look']));
+        $insertn2->execute(array(':userid' => $user['id'], ':message' => 'Je viens de demander la suppression d\'une de tes alertes. Une réponse de cette demande te sera transmise une fois traitée par un administrateur. (n° de l\'alerte : ' . $do . ')', ':auteur' => $user['username'], ':date' => FullDate('full'), ':look' => $user['look']));
         $bdd->query("INSERT INTO gabcms_demande (number_alert,pseudo,date) VALUES ('$do','{$user['username']}','" . FullDate('full') . "')");
         echo '<h4 class="alert_success">Ta demande de suppression a été prise en compte !</h4>';
     }
@@ -49,7 +49,7 @@ if (isset($_GET['do'])) {
                     LEFT JOIN gabcms_demande d ON a.id = d.number_alert 
                     ORDER BY a.id DESC LIMIT 0,100");
             while ($a = $sql->fetch()) {
-                $zer = $bdd->query("SELECT username FROM users WHERE id = '" . $a['userid'] . "'");
+                $zer = $bdd->query("SELECT username FROM users WHERE id = '" . $user['id'] . "'");
                 $assoc = $zer->fetch(PDO::FETCH_ASSOC);
                 $modif = "";
                 if (empty($a['number_alert'])) {
