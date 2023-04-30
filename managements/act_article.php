@@ -95,24 +95,6 @@ if (isset($_GET['do'])) {
 <body>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
-    <script>
-        tinymce.init({
-            selector: 'textarea',
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-            tinycomments_mode: 'embedded',
-            tinycomments_author: 'Author name',
-            mergetags_list: [{
-                    value: 'First.Name',
-                    title: 'First Name'
-                },
-                {
-                    value: 'Email',
-                    title: 'Email'
-                },
-            ]
-        });
-    </script>
     <?php if (!isset($_GET['modif']) && !isset($_GET['modift'])) { ?>
         <span id="titre">Actions sur des articles</span><br />
         Choisis l'article que tu désires modifier ou supprimer.
@@ -147,6 +129,7 @@ if (isset($_GET['do'])) {
     }
     ?>
     <?php if (isset($_GET['modif'])) {
+        $modif = $_GET['modif'];
         $sql_modif = $bdd->query("SELECT * FROM gabcms_news WHERE id = '" . $modif . "'");
         $modif_a = $sql_modif->fetch();
     ?>
@@ -169,7 +152,13 @@ if (isset($_GET['do'])) {
             <td width="80%" class="tbl"><textarea name="article" wrap="discuss rows=12 cols=142" id="editor"><?php echo $modif_a['body']; ?></textarea>
                 <script>
                     ClassicEditor
-                        .create(document.querySelector('#editor'))
+                        .create(document.querySelector('#editor'), {
+                            cloudServices: {
+                                tokenUrl: 'https://97298.cke-cs.com/token/dev/R8UP6dCVv6MZdt6cbZJ6uuUpSk9O9DFI7ANN?limit=10',
+                                uploadUrl: 'http://localhost/managements/upload.php',
+                            }
+                        })
+
                         .catch(error => {
                             console.error(error);
                         });
