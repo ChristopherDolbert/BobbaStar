@@ -17,6 +17,46 @@ $language_path_2 = "../" . $language . "index.php";
 $valid_language = file_exists($language_path) || file_exists($language_path_2);
 $language = ($valid_language) ? $language : "en";
 
+function FilterText($str, $advanced = false)
+{
+	include('SQL.php');
+	if ($advanced == true) {
+		return $bdd->quote($str);
+	}
+	$str = $bdd->quote(htmlspecialchars($str));
+	return $str;
+}
+
+function HoloText($str, $advanced = false, $bbcode = false)
+{
+	if ($advanced === true) {
+		return stripslashes($str);
+	}
+
+	$str = stripslashes(nl2br(htmlspecialchars($str)));
+
+	if ($bbcode === true) {
+		$str = bbcode_format($str);
+	}
+
+	return $str;
+}
+
+function filtre($var)
+{
+	$var = str_replace("\x01", "", $var);
+	return $var;
+}
+
+function getContent($strKey)
+{
+	include('SQL.php');
+	$tmp = $bdd->prepare("SELECT contentvalue FROM cms_content WHERE contentkey = :key LIMIT 1");
+	$tmp->execute(array('key' => FilterText($strKey)));
+	$tmp = $tmp->fetch(PDO::FETCH_ASSOC);
+	return $tmp['contentvalue'];
+}
+
 function FetchServerSetting($columnName)
 {
 	include('SQL.php');
@@ -355,6 +395,21 @@ function UpdateSSO($id)
 		return $myticket;
 	}
 }
+
+function generateCode() {
+    $alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    $code = "";
+    for ($i = 0; $i < 4; $i++) {
+        for ($j = 0; $j < 4; $j++) {
+            $code .= $alphabet[rand(0, 25)];
+        }
+        if ($i != 3) {
+            $code .= "-";
+        }
+    }
+    return $code;
+}
+
 
 function Genere_code($size)
 {
