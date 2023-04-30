@@ -328,47 +328,7 @@ header("X-JSON: {\"totalMessages\":" . $messages . "}");
                     <div class="cbb clearfix brown">
                         <h2 class="title">Météo dans votre ville</h2>
                         <div class="box-content">
-                            <?php
-                            if (isset($_POST['location'])) {
-                                $location = $_POST['location'];
-                                if (!empty($location)) {
-                                    $json = file_get_contents("https://api.openweathermap.org/data/2.5/weather?q=$location&units=metric&appid=bbd6317faa550a56ecd096a66c8f78b2");
-                                    $data = json_decode($json, true);
-                                    if (isset($data['cod']) && $data['cod'] == 200) {
-                                        $location = $data['name'] . ', ' . $data['sys']['country'];
-                                        $weather = $data['weather'][0]['main'] . ' (' . $data['main']['temp'] . '°C)';
-                                        echo "<p>$location</p>";
-                                        echo "<p>$weather</p>";
-                                    } else {
-                                        echo "<p>Impossible de trouver la ville '$location'.</p>";
-                                    }
-                                } else {
-                                    echo '<form method="post" action="" id="location-form"><input type="hidden" name="lat" id="lat"><input type="hidden" name="lon" id="lon"><input type="text" name="location" placeholder="Entrez une ville"><input type="submit" value="Rechercher"></form>';
-                                }
-                            } else {
-                                // Demander l'accès à la localisation de l'utilisateur
-                                echo '<script>if ("geolocation" in navigator) { navigator.geolocation.getCurrentPosition(function(position) { document.getElementById("lat").value = position.coords.latitude; document.getElementById("lon").value = position.coords.longitude; document.getElementById("location-form").submit(); }); }</script>';
-                                // Récupérer la position géographique de l'utilisateur
-                                if (isset($_POST['lat']) && isset($_POST['lon'])) {
-                                    $lat = $_POST['lat'];
-                                    $lon = $_POST['lon'];
-                                    $json = file_get_contents("https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&units=metric&appid=bbd6317faa550a56ecd096a66c8f78b2");
-                                    $data = json_decode($json, true);
-                                    if (isset($data['cod']) && $data['cod'] == 200) {
-                                        $location = $data['name'] . ', ' . $data['sys']['country'];
-                                        $weather = $data['weather'][0]['main'] . ' (' . $data['main']['temp'] . '°C)';
-                                        echo "<p>$location</p>";
-                                        echo "<p>$weather</p>";
-                                    } else {
-                                        echo "<p>Impossible de récupérer les prévisions météorologiques pour cette ville.</p>";
-                                    }
-                                } else {
-                                    echo "<p>Impossible de détecter la ville actuelle.</p>";
-                                }
-                                // Formulaire pour rechercher une ville
-                                echo '<form method="post" action="" id="location-form"><input type="hidden" name="lat" id="lat"><input type="hidden" name="lon" id="lon"><input type="text" name="location" placeholder="Entrez une ville"><input type="submit" value="Rechercher"></form>';
-                            }
-                            ?>
+                            <p>Bientôt</p>
                         </div>
                     </div>
                 </div>

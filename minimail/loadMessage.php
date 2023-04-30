@@ -70,10 +70,8 @@ if (isset($_GET['messageId'])) {
 
 
 if (isset($_POST['label']) or $bypass == "true") {
-	$label = $_POST['label'] ?? "";
-	$start = $_POST['start'] ?? "";
-	$conversationid = $_POST['conversationId'] ?? "";
-	$unread = $_POST['unreadOnly'] ?? "";
+	[$label, $start, $conversationid, $unread] = [$_POST['label'] ?? "", $_POST['start'] ?? "", $_POST['conversationId'] ?? "", $_POST['unreadOnly'] ?? ""];
+
 
 	if ($bypass == "true") {
 		$label = $page ?? "";
@@ -218,7 +216,7 @@ if (isset($_POST['label']) or $bypass == "true") {
 				$stmt = $bdd->prepare("SELECT * FROM users WHERE id = ? LIMIT 1");
 				$stmt->execute([$row['senderid']]);
 				$senderrow = $stmt->fetch(PDO::FETCH_ASSOC);
-				$figure = "http://www.habbo.co.uk/habbo-imaging/avatarimage?figure=" . $senderrow['figure'] . "&size=s&direction=9&head_direction=2&gesture=sml";
+				$figure = $avatarimage . "?figure=" . $senderrow['figure'] . "&size=s&direction=9&head_direction=2&gesture=sml";
 
 				printf("<div class=\"message-item %s \" id=\"msg-%s\">
 							<div class=\"message-preview\" status=\"%s\">
@@ -329,7 +327,7 @@ if (isset($_POST['label']) or $bypass == "true") {
 				$stmt->execute([$row['senderid']]);
 				$senderrow = $stmt->fetch(PDO::FETCH_ASSOC);
 
-				$figure = "http://www.habbo.co.uk/habbo-imaging/avatarimage?figure=" . $senderrow['figure'] . "&size=s&direction=9&head_direction=2&gesture=sml";
+				$figure = $avatarimage . "" . $senderrow['figure'] . "&size=s&direction=9&head_direction=2&gesture=sml";
 
 				printf("	<div class=\"message-item %s \" id=\"msg-%s\">
 				<div class=\"message-preview\" status=\"%s\">
@@ -450,7 +448,7 @@ if (isset($_POST['label']) or $bypass == "true") {
 				$stmt2->bindParam(':sender_id', $row['senderid'], PDO::PARAM_INT);
 				$stmt2->execute();
 				$senderrow = $stmt2->fetch(PDO::FETCH_ASSOC);
-				$figure = "http://www.habbo.co.uk/habbo-imaging/avatarimage?figure=" . $senderrow['figure'] . "&size=s&direction=9&head_direction=2&gesture=sml";
+				$figure = $avatarimage . "" . $senderrow['figure'] . "&size=s&direction=9&head_direction=2&gesture=sml";
 
 				printf("	<div class=\"message-item %s \" id=\"msg-%s\">
 					 <div class=\"message-preview\" status=\"%s\">
@@ -562,7 +560,7 @@ if (isset($_POST['label']) or $bypass == "true") {
 				$stmt2->bindParam(':senderid', $row['senderid']);
 				$stmt2->execute();
 				$senderrow = $stmt2->fetch(PDO::FETCH_ASSOC);
-				$figure = "http://www.habbo.co.uk/habbo-imaging/avatarimage?figure=" . $senderrow['figure'] . "&size=s&direction=9&head_direction=2&gesture=sml";
+				$figure = $avatrimage . "" . $senderrow['figure'] . "&size=s&direction=9&head_direction=2&gesture=sml";
 
 				printf("	<div class=\"message-item %s \" id=\"msg-%s\">
 				<div class=\"message-preview\" status=\"%s\">
@@ -593,7 +591,7 @@ if (isset($_POST['label']) or $bypass == "true") {
 			} ?>
 	</div>
 <?php }
-		if ($bypass == "true" && $message != "") { ?><div style="opacity: 1;" class="notification"><?php echo $message; ?></div>
-	</div><?php }
+?><div style="opacity: 1;" class="notification"><?php echo $message; ?></div>
+</div><?php
 	}
-			?>
+		?>
