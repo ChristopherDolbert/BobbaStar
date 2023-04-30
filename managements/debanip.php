@@ -66,20 +66,28 @@ Voici la liste des bannis actuel.
 			<td class="haut">Banni par</td>
 			<td class="haut">Jusqu'au</td>
 		</tr>
-		<?PHP
-		$sql = $bdd->query("SELECT * FROM bans WHERE bantype='ip' ORDER BY id DESC");
+		<?php
+		$sql = $bdd->query("SELECT * FROM bans WHERE type='ip' ORDER BY id DESC");
 		while ($a = $sql->fetch()) {
-			$stamp_now = mktime(date('H:i:s d-m-Y'));
 			$stamp_expire = $a['ban_expire'];
 			$expire = date('d/m/Y H:i', $a['ban_expire']);
+
+			// Recherche de l'utilisateur qui a banni
+			$user_staff_id = $a['user_staff_id'];
+			$sql2 = $bdd->prepare("SELECT * FROM users WHERE id = :user_id");
+			$sql2->bindParam(':user_id', $user_staff_id);
+			$sql2->execute();
+			$users = $sql2->fetch();
+
 		?>
 			<tr class="bas">
-				<td class="bas"><?PHP echo $a['value']; ?></td>
-				<td class="bas"><?PHP echo $a['reason']; ?></td>
-				<td class="bas"><?PHP echo $a['added_by']; ?></td>
-				<td class="bas"><?PHP echo $expire; ?></td>
+				<td class="bas"><?php echo $a['value']; ?></td>
+				<td class="bas"><?php echo $a['ban_reason']; ?></td>
+				<td class="bas"><?php echo $users['username']; ?></td>
+				<td class="bas"><?php echo $expire; ?></td>
 			</tr>
-		<?PHP } ?>
+		<?php } ?>
+
 	</tbody>
 </table>
 </body>

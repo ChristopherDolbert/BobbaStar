@@ -18,7 +18,7 @@ if (isset($_GET['do']) && $_GET['do'] === "massjetons") {
 	$valid = Secu($_POST['validite']);
 
 	if (is_numeric($nombre)) {
-		$base = Genere_lettre(4) . "-" . Genere_lettre(4) . "-" . Genere_lettre(4) . "-" . Genere_lettre(4);
+		$base = generateCode();
 
 		$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
 		$insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a créé un code jetons pour <b>' . $nombre . ' personne(s)</b> (d\'une valeur de <b>' . $jetons . ' jetons</b>)', ':date' => FullDate('full')));

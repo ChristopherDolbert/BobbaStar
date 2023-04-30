@@ -157,7 +157,7 @@ switch ($user['rank']) {
                 <li><a href="act_averto" target="main">Actions sur les avertissement</a></li>
                 <li><a href="add_dossier" target="main">Ajouter un avis sur un dossier</a></li>
                 <li>- Configuration</li>
-                <li><a href="maintenanceold.php" target="main">Configurer la maintenance</a></li>
+                <li><a href="maintenance" target="main">Configurer la maintenance</a></li>
                 <li><a href="act_messageheader" target="main">Configurer le message dans le header</a></li>
                 <li><a href="act_prix_clubs" target="main">Configurer les prix d'achats</a></li>
                 <li>- Newsletter</li>
