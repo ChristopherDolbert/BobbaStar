@@ -824,7 +824,7 @@ body { behavior: url(web-gallery/csshover.htc); }
                             $i = 0;
                             while ($row = mysqli_fetch_assoc($result)) {
                                 $i++;
-                                $groupsql = "SELECT * FROM groups_details WHERE id = '" . $row['rec_id'] . "' LIMIT 1";
+                                $groupsql = "SELECT * FROM guilds WHERE id = '" . $row['rec_id'] . "' LIMIT 1";
                                 $group_result = $bdd->query($groupsql) or die(mysqli_error($bdd));
                                 $grouprow = mysqli_fetch_assoc($group_result);
                                 if (IsEven($i)) {

@@ -548,7 +548,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 											swfobj.addVariable("figuredata_url", "xml/figuredata.xml");
 											swfobj.addVariable("draworder_url", "xml/draworder.xml");
 											swfobj.addVariable("localization_url", "xml/figure_editor.xml");
-											swfobj.addVariable("figure", "<?php echo $mylook1; ?>");
+											swfobj.addVariable("figure", "");
 											swfobj.addVariable("gender", "<?php echo $mysex1; ?>");
 
 											swfobj.addVariable("showClubSelections", "1");

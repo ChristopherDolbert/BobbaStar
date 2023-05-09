@@ -194,7 +194,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                     // Affichage de l'utilisateur dans le container courant
                     echo '<table class="fondateur"><tbody><tr>';
                     echo '<td valign="middle" width="10" height="60">';
-                    echo '<a href="' . $url . '/info?pseudo=' . $user_name . '" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">';
+                    echo '<a href="' . $url . '/info?tag=' . $user_name . '" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">';
                     echo '<div style="width: 64px; height: 70px; margin-bottom:-10px; margin-top:-15px; margin-left: -15px; float: right; background: url(' . $avatarimage . '' . Secu($user_figure) . '&action=sit&direction=2&head_direction=3&gesture=sml&size=b&img_format=gif);"></div>';
                     echo '</a>';
                     echo '</td>';
@@ -291,7 +291,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                     echo '<table class="' . $class . '">';
                     echo '<tbody><tr>';
                     echo '<td valign="middle" width="10" height="60">';
-                    echo '<a href="' . $url . '/info?pseudo=' . $user_name . '" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">';
+                    echo '<a href="' . $url . '/info?tag=' . $user_name . '" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">';
                     echo '<div style="width: 64px; height: 70px; margin-bottom:-10px; margin-top:-15px; margin-left: -15px; float: right; background: url(' . $avatarimage . '' . Secu($user_figure) . '&action=sit&direction=2&head_direction=3&gesture=sml&size=b&img_format=gif);"></div>';
                     echo '</a>';
                     echo '</td>';

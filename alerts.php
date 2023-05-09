@@ -129,7 +129,7 @@ Tu n'as pas encore d'alerte. Tu peux recevoir des alertes pour les cas suivants:
 
             <tbody><tr> 
                     <td valign="middle" width="10" height="60">
-			<?PHP if($alert['par'] != 'Système') { ?><a href="<?PHP echo $url ?>/info.php?pseudo=<?PHP echo $alert['par'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP } ?><div alt="<?PHP echo Secu($alert['par']);?>" style="width: 64px; height: 70px; margin-top:-10px; margin-left:-10px; float: right; background: url(<?php echo $avatarimage; ?><?PHP echo $alert['look'];?>&action=&direction=2&head_direction=2&gesture=<?PHP echo $alert['action'];?>&size=1&img_format=gif);"></div></a>
+			<?PHP if($alert['par'] != 'Système') { ?><a href="<?PHP echo $url ?>/info.php?tag=<?PHP echo $alert['par'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP } ?><div alt="<?PHP echo Secu($alert['par']);?>" style="width: 64px; height: 70px; margin-top:-10px; margin-left:-10px; float: right; background: url(<?php echo $avatarimage; ?><?PHP echo $alert['look'];?>&action=&direction=2&head_direction=2&gesture=<?PHP echo $alert['action'];?>&size=1&img_format=gif);"></div></a>
 			</td> 
                     <td valign="top"><span style="color:#778899;">Alerte envoyée le <u><?php echo Secu(stripslashes($alert['date']));?></u> par <b><?php echo Secu($alert['par']);?></b>.</span><br/>
 					<span style="font-family: tahoma,arial,helvetica,sans-serif; color: #333333;">Sujet </span>: <b><?PHP echo stripslashes($alert['sujet']);?></b><br/><br/>
