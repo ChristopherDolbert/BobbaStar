@@ -11,22 +11,16 @@ include("../config.php");
 // Make sure the user meets the requirements to buy a group. If not, this part
 // should cut off the script.
 
-if (getContent('allow-group-purchase') !== "1") {
-
-	echo "<p id=\"purchase-result-error\">Purchasing the group failed. Please try again later.</p>\n<div id=\"purchase-group-errors\">\n<p>\nPurchashing groups has been disabled by the Hotel Managment. Please try again later.<br />\n</p>\n</div>\n<p>\n<a href=\"#\" class=\"new-button\" onclick=\"GroupPurchase.close(); return false;\"><b>Done</b><i></i></a>\n</p>\n<div class=\"clear\"></div>";
-	exit;
-} elseif ($myrow['credits'] < 20) {
+if ($user['credits'] < 20) {
 
 	echo "<p id=\"purchase-result-error\">Purchasing the group failed. Please try again later.</p>\n<div id=\"purchase-group-errors\">\n<p>\nYou don't have enough Credits. <a href=\"credits.php\">Get more here!</a><br />\n</p>\n</div>\n<p>\n<a href=\"#\" class=\"new-button\" onclick=\"GroupPurchase.close(); return false;\"><b>Done</b><i></i></a>\n</p>\n<div class=\"clear\"></div>";
 	exit;
 } else {
 
-	$stmt = $con->prepare("SELECT COUNT(*) FROM guilds WHERE user_id = ? LIMIT 10");
-	$stmt->bind_param("i", $my_id);
-	$stmt->execute();
-	$stmt->bind_result($groups_owned);
-	$stmt->fetch();
-	$stmt->close();
+	$stmt = $bdd->prepare("SELECT COUNT(*) FROM guilds WHERE user_id = :user_id LIMIT 10");
+	$stmt->execute(['user_id' => $user['id']]);
+	$groups_owned = $stmt->fetchColumn();
+	$stmt->closeCursor();
 
 
 	if ($groups_owned > 10) {
@@ -70,25 +64,34 @@ if (empty($do) || $do !== "purchase_confirmation") {
 
 
 			if ($already_exists > 0) {
-
 				echo "<p>\nCe clan existe d&eacute;ja\n</p>\n\n<p>\n<a href=\"#\" class=\"new-button\" onclick=\"GroupPurchase.close(); GroupPurchase.open(); return false;\"><b>Retour</b><i></i></a>\n</p>";
 			} else {
-
 				$orname = $group_name;
 				$group_name = filter_var($orname, FILTER_SANITIZE_STRING);
 				$group_desc = filter_var($group_desc, FILTER_SANITIZE_STRING);
 
-				mysqli_query($con, "INSERT INTO guilds (name, description, user_id, date_created, badge, state) VALUES ('$group_name', '$group_desc', '$my_id', '$date_full', 'b0503Xs09114s05013s05015', '0')");
+				$stmt = $bdd->prepare("INSERT INTO guilds (name, description, user_id, date_created, badge, state) VALUES (?, ?, ?, ?, ?, ?)");
+				$stmt->bind_param("ssssss", $group_name, $group_desc, $user['id'], $date_full, 'b0503Xs09114s05013s05015', '0');
+				$stmt->execute();
+				$group_id = $stmt->insert_id;
+				$stmt->close();
 
-				$check = mysqli_query($con, "SELECT id FROM guilds WHERE user_id = '$my_id' ORDER BY id DESC LIMIT 1");
-				$row = mysqli_fetch_assoc($check);
-				$group_id = $row['id'];
+				$stmt = $bdd->prepare("INSERT INTO guilds_members (user_id, group_id, member_rank, is_current) VALUES (?, ?, ?, ?)");
+				$stmt->bind_param("iiii", $user['id'], $group_id, 2, 0);
+				$stmt->execute();
+				$stmt->close();
 
-				mysqli_query($con, "INSERT INTO guilds_members (user_id, group_id, member_rank, is_current) VALUES ('$my_id', '$group_id', '2', '0')");
-				mysqli_query($con, "UPDATE users SET credits = credits - 20 WHERE id = '$my_id' LIMIT 1");
-				mysqli_query($con, "INSERT INTO cms_transactions (userid, descr, date, amount) VALUES ('$my_id', 'Group purchase', '$date_full', '-20')");
+				$stmt = $bdd->prepare("UPDATE users SET credits = credits - 20 WHERE id = ?");
+				$stmt->bind_param("i", $user['id']);
+				$stmt->execute();
+				$stmt->close();
 
-				@SendMUSData('UPRC' . $my_id);
+				$stmt = $bdd->prepare("INSERT INTO cms_transactions (userid, descr, date, amount) VALUES (?, ?, ?, ?)");
+				$stmt->bind_param("isss", $user['id'], 'Group purchase', $date_full, -20);
+				$stmt->execute();
+				$stmt->close();
+
+				@SendMUSData('UPRC' . $user['id']);
 
 				echo "<p>\n<b>Clan achet&eacute;!</b><br /><br /><img src='./habbo-imaging/badge-fill/b0503Xs09114s05013s05015.gif' border='0' align='left'>Bravo! Tu es bien le cr&eacute;ateur de <b>" . HoloText($orname) . "</b>.<br /><br />Cliques <a href='group_profile.php?id=" . $group_id . "'>ici</a> pour aller sur la home de ton clan! Ou pars en cliquant sur le bouton Quitter.\n</p>\n\n<p>\n<a href=\"#\" class=\"new-button\" onclick=\"GroupPurchase.close(); return false;\"><b>Quitter</b><i></i></a>\n</p>";
 			}
