@@ -126,7 +126,7 @@ if ($c['afficher'] == "Oui") {
                 </div>
                 <form name="tag_search_form" action="info" class="search-box clearfix">
                     <a id="search-button" class="new-button search-icon" href="#" onclick="$('search-button').up('form').submit(); return false;"><b><span></span></b><i></i></a>
-                    <input type="text" name="tag" id="search_query" value="Pseudo..." class="search-box-query search-box-onfocus" style="float: right" />
+                    <input type="text" name="tag" id="search_query" placeholder="Pseudo..." class="search-box-query search-box-onfocus" style="float: right" />
                 </form>
             </div>
         </div>
