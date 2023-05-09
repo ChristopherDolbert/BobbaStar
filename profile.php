@@ -188,10 +188,10 @@ if ($tab == "1") {
 						$stmt8->bindParam(':rawname', $user['username']);
 						if ($stmt8->execute()) {
 							$result = "Ton mot de passe a été modifié, reconnectes-toi désormais !";
-                            $error = "0";
+							$error = "0";
 						} else {
 							$result = "Erreur lors de la modification de ton mot de passe, veuillez réessayer ultérieurement.";
-                            $error = "1";
+							$error = "1";
 						}
 					}
 				}
@@ -405,6 +405,14 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                 </li>";
 										} else {
 											echo "<li><a href='profile.php?tab=6'>GESTION AMIS</a>
+                </li>";
+										}
+
+										if ($tab == "7") {
+											echo "<li class='selected'>COMPTE
+                </li>";
+										} else {
+											echo "<li><a href='profile.php?tab=7'>COMPTE</a>
                 </li>";
 										}
 
@@ -1094,6 +1102,156 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 		L10N.put("friendmanagement.tooltip.deletecategory", "Es-tu sur de supprimer cette cat&eacute;gorie?\n<div class=\"friendmanagement-small-icons friendmanagement-save friendmanagement-tip-delete\"\>\n    <a class=\"delete-category-button\" id=\"delete-category-%category_id%\"\>Delete</a\>\n</div\>\n<div class=\"friendmanagement-small-icons friendmanagement-remove friendmanagement-tip-cancel\"\>\n    <a id=\"cancel-cat-delete-%category_id%\"\>Cancel</a\>\n</div\>");
 	</script>
 
+	</div>
+	</div>
+<?php } else if ($tab == "7") { ?>
+	<div class="habblet-container " style="float:left; width: 560px;">
+		<div class="cbb clearfix settings">
+
+			<h2 class="title">Compte</h2>
+			<div class="box-content">
+
+				<h3>Télécharger mes données</h3>
+				<p><?php echo $sitename; ?> vous propose de télécharger les données stockées à votre sujet</p>
+
+				<form method='post' action='download.php'>
+					<input class="submit" type='submit' value='Exporter mes données' name='Export'>
+					<?php
+						try {
+							$query = "SELECT * FROM users WHERE id = :id";
+							$stmt = $bdd->prepare($query);
+							$stmt->bindParam(':id', $user['id'], PDO::PARAM_INT);
+							$stmt->execute();
+
+							$user_arr = array();
+							while ($row = $stmt->fetch()) {
+								$id = "ID du compte : " . (isset($row['id']) ? $row['id'] : 'N/A');
+								$uname = "Nom d'utilisateur : " . (isset($row['username']) ? $row['username'] : 'N/A');
+								$name = "Nom réel du compte : " . (isset($row['real_name']) ? $row['real_name'] : 'N/A');
+								$mail = "E-mail du compte : " . (isset($row['mail']) ? $row['mail'] : 'N/A');
+								$account_created = "Compte créé le : " . date('d/m/Y à H:i:s', $row['account_created']);
+								$account_day_of_birth = "Utilisateur né le :" . date('d/m/Y à H:i:s', $row['account_day_of_birth']);
+								$last_login = "Dernière connexion : " . date('d/m/Y à H:i:s', $row['last_login']);
+								$motto = "Mission : " . (isset($row['motto']) ? $row['motto'] : 'N/A');
+								$sexe = "Sexe : " . (isset($row['gender']) ? $row['gender'] : 'N/A');
+								$ip_register = "IP Inscription : " . (isset($row['ip_register']) ? $row['ip_register'] : 'N/A');
+								$ip_current = "IP Actuelle : " . (isset($row['ip_current']) ? $row['ip_current'] : 'N/A');
+								$machine_id = "ID Machine : " . (isset($row['machine_id']) ? $row['machine_id'] : 'N/A');
+
+								$user_arr[] = array($id, $uname, $name, $mail, $account_created, $account_day_of_birth, $last_login, $motto, $sexe, $ip_register, $ip_current, $machine_id);
+							}
+						} catch (PDOException $e) {
+							echo "Error: " . $e->getMessage();
+							die();
+						}
+					?>
+					<?php
+						$serialize_user_arr = serialize($user_arr);
+					?>
+					<textarea name='export_data' style='display: none;'><?php echo $serialize_user_arr; ?></textarea>
+				</form>
+				<br />
+				<h3>Supprimer mes données</h3>
+				<p>Supprimer toute trace de votre passage sur <?php echo $sitename; ?>, <strong style="color:red">cette action est irreversible.</strong></p>
+				<form method="post">
+					<?php if ($user['rank'] <= 1) { ?>
+						<input class="submit" type='submit' value='Supprimer mes données' name='Suppression' disabled>
+					<?php } elseif ($user['rank'] > 2) { ?>
+						<div id="purse-redeem-result">
+							<div class="redeem-error">
+								<div class="rounded-container">
+									<div style="background-color: rgb(255, 255, 255);">
+										<div style="margin: 0px 4px; height: 1px; overflow: hidden; background-color: rgb(255, 255, 255);">
+											<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(238, 107, 122);">
+												<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(231, 40, 62);">
+													<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(227, 8, 33);">
+														<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 0, 26);"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div style="margin: 0px 2px; height: 1px; overflow: hidden; background-color: rgb(255, 255, 255);">
+											<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(238, 105, 121);">
+												<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 1, 27);">
+													<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 0, 26);"></div>
+												</div>
+											</div>
+										</div>
+										<div style="margin: 0px 1px; height: 1px; overflow: hidden; background-color: rgb(255, 255, 255);">
+											<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(233, 64, 83);">
+												<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 0, 26);"></div>
+											</div>
+										</div>
+										<div style="margin: 0px 1px; height: 1px; overflow: hidden; background-color: rgb(238, 105, 121);">
+											<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 0, 26);"></div>
+										</div>
+										<div style="margin: 0px; height: 1px; overflow: hidden; background-color: rgb(255, 255, 255);">
+											<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 1, 27);">
+												<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 0, 26);"></div>
+											</div>
+										</div>
+										<div style="margin: 0px; height: 1px; overflow: hidden; background-color: rgb(238, 107, 122);">
+											<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 0, 26);"></div>
+										</div>
+										<div style="margin: 0px; height: 1px; overflow: hidden; background-color: rgb(231, 40, 62);">
+											<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 0, 26);"></div>
+										</div>
+										<div style="margin: 0px; height: 1px; overflow: hidden; background-color: rgb(227, 8, 33);">
+											<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 0, 26);"></div>
+										</div>
+									</div>
+									<div class="rounded-red rounded-done">
+										<strong>Rank trop élevé</strong>, merci d'informer vos supérieurs <a href="./managements/stafftchat">ici</a>.
+									</div>
+									<div style="background-color: rgb(255, 255, 255);">
+										<div style="margin: 0px; height: 1px; overflow: hidden; background-color: rgb(227, 8, 33);">
+											<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 0, 26);"></div>
+										</div>
+										<div style="margin: 0px; height: 1px; overflow: hidden; background-color: rgb(231, 40, 62);">
+											<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 0, 26);"></div>
+										</div>
+										<div style="margin: 0px; height: 1px; overflow: hidden; background-color: rgb(238, 107, 122);">
+											<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 0, 26);"></div>
+										</div>
+										<div style="margin: 0px; height: 1px; overflow: hidden; background-color: rgb(255, 255, 255);">
+											<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 1, 27);">
+												<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 0, 26);"></div>
+											</div>
+										</div>
+										<div style="margin: 0px 1px; height: 1px; overflow: hidden; background-color: rgb(238, 105, 121);">
+											<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 0, 26);"></div>
+										</div>
+										<div style="margin: 0px 1px; height: 1px; overflow: hidden; background-color: rgb(255, 255, 255);">
+											<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(233, 64, 83);">
+												<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 0, 26);"></div>
+											</div>
+										</div>
+										<div style="margin: 0px 2px; height: 1px; overflow: hidden; background-color: rgb(255, 255, 255);">
+											<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(238, 105, 121);">
+												<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 1, 27);">
+													<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 0, 26);"></div>
+												</div>
+											</div>
+										</div>
+										<div style="margin: 0px 4px; height: 1px; overflow: hidden; background-color: rgb(255, 255, 255);">
+											<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(238, 107, 122);">
+												<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(231, 40, 62);">
+													<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(227, 8, 33);">
+														<div style="height: 1px; overflow: hidden; margin: 0px 1px; background-color: rgb(226, 0, 26);"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					<?php } ?>
+				</form>
+			</div>
+		</div>
+	</div>
+	</div>
 	</div>
 	</div>
 <?php } else if ($tab == "8") { ?>
