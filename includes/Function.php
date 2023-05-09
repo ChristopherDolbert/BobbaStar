@@ -54,7 +54,12 @@ function getContent($strKey)
 	$tmp = $bdd->prepare("SELECT contentvalue FROM cms_content WHERE contentkey = :key LIMIT 1");
 	$tmp->execute(array('key' => FilterText($strKey)));
 	$tmp = $tmp->fetch(PDO::FETCH_ASSOC);
-	return $tmp['contentvalue'];
+
+	if (is_array($tmp)) {
+		return $tmp['contentvalue'];
+	} else {
+		return false;
+	}
 }
 
 function FetchServerSetting($columnName)
@@ -396,18 +401,19 @@ function UpdateSSO($id)
 	}
 }
 
-function generateCode() {
-    $alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    $code = "";
-    for ($i = 0; $i < 4; $i++) {
-        for ($j = 0; $j < 4; $j++) {
-            $code .= $alphabet[rand(0, 25)];
-        }
-        if ($i != 3) {
-            $code .= "-";
-        }
-    }
-    return $code;
+function generateCode()
+{
+	$alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	$code = "";
+	for ($i = 0; $i < 4; $i++) {
+		for ($j = 0; $j < 4; $j++) {
+			$code .= $alphabet[rand(0, 25)];
+		}
+		if ($i != 3) {
+			$code .= "-";
+		}
+	}
+	return $code;
 }
 
 

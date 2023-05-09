@@ -9,10 +9,13 @@ $nowtime = time();
 @session_start();
 @include("./includes/SQL.php");
 @include("../includes/SQL.php");
+@include("../../includes/SQL.php");
 @include("./includes/CMS.php");
 @include("../includes/CMS.php");
+@include("../../includes/CMS.php");
 @include("./includes/Function.php");
 @include("../includes/Function.php");
+@include("../../includes/Function.php");
 
 if (function_exists('date_default_timezone_set')) {
 	@date_default_timezone_set('Europe/Paris');
