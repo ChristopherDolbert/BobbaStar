@@ -21,9 +21,7 @@ if (empty($body_id)) {
 $sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
 
-if ($c['activ'] == "Oui") {
-?><div style="background-color:#FF0000; width: 100%; color:#FFFFFF; padding:5px; margin-left:-10px;"><b>MAINTENANCE EN COURS</b></div>
-<?PHP } ?>
+?>
 <?PHP
 $message = $bdd->query("SELECT * FROM gabcms_header WHERE id = '1'");
 $c = $message->fetch(PDO::FETCH_ASSOC);
