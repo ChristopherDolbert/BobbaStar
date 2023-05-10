@@ -143,9 +143,12 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                 Redirect("./code_faux.php");
                                 exit;
                             } else {
-                                $bdd->query("UPDATE users SET jetons = jetons + " . $cp['achat_jetons'] . " WHERE id = '" . $user['id'] . "'");
-                                $bdd->query("UPDATE users SET achat_jetons = achat_jetons + " . $cp['achat_jetons'] . " WHERE id = '" . $user['id'] . "'");
-                                $bdd->query("INSERT INTO gabcms_transaction (user_id,produit,prix,gain,date) VALUES ('" . $user['id'] . "','Achat " . $cp['achat_jetons'] . " jetons','" . $cp['achat_jetons'] . "','+','" . FullDate('full') . "')");
+                                $stmt = $bdd->prepare("UPDATE users SET jetons = jetons + ? WHERE id = ?");
+                                $stmt->execute([$cp['achat_jetons'], $user['id']]);
+                                $stmt = $bdd->prepare("UPDATE users SET achat_jetons = achat_jetons + ? WHERE id = ?");
+                                $stmt->execute([$cp['achat_jetons'], $user['id']]);
+                                $stmt = $bdd->prepare("INSERT INTO gabcms_transaction (user_id,produit,prix,gain,date) VALUES (?, ?, ?, '+', ?)");
+                                $stmt->execute([$user['id'], "Achat " . $cp['achat_jetons'] . " jetons", $cp['achat_jetons'], FullDate('full')]);
                             }
                             ?>
                          <b><span style="color:green">Paiement accepté</span></b><br /><br />Ton compte vient d'être crédité de <b><?PHP echo Secu($cp['achat_jetons']); ?> jetons</b> !
