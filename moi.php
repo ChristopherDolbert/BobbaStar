@@ -199,7 +199,7 @@ header("X-JSON: {\"totalMessages\":" . $messages . "}");
                                 }
                             </style>
                             <?php
-                            $sql = $bdd->prepare("SELECT * FROM gabcms_management WHERE user_id = :userid ORDER BY id DESC LIMIT 0," . $cof['nb_flux'] . "");
+                            $sql = $bdd->prepare("SELECT m.*, u.username, u.look FROM gabcms_management AS m JOIN users AS u ON m.user_id = u.id WHERE m.user_id = :userid ORDER BY m.id DESC LIMIT 0, " . $cof['nb_flux']);
                             $sql->bindValue(':userid', $user['id']);
                             $sql->execute();
                             $i = 1;
@@ -209,10 +209,10 @@ header("X-JSON: {\"totalMessages\":" . $messages . "}");
                                     <tbody>
                                         <tr>
                                             <td valign="middle" width="10" height="60">
-                                                <?PHP if ($a['auteur'] != 'Système') { ?><a href="<?PHP echo $url ?>/info?tag=<?PHP echo $a['auteur'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP } ?><div style="width: 64px; height: 65px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: right; background: url(<?php echo $avatarimage; ?><?PHP echo $a['look'] ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div></a>
+                                                <?PHP if ($a['auteur'] != 'Système') { ?><a href="<?PHP echo $url ?>/info?tag=<?PHP echo $a['username'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP } ?><div style="width: 64px; height: 65px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: right; background: url(<?php echo $avatarimage . $a['look'] ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div></a>
                                             </td>
                                             <td valign="top">
-                                                <span style="color:#333333;"><b style="font-size: 110%;"><?PHP echo $a['auteur'] ?></span></b><span style="float: right; color:#000000;"><?PHP echo $a['date'] ?></span><br />
+                                                <span style="color:#333333;"><b style="font-size: 110%;"><?PHP echo $a['username'] ?></span></b><span style="float: right; color:#000000;"><?PHP echo $a['date'] ?></span><br />
                                                 <span style="color:#000000"><?PHP echo $a['message'] ?></span><br />
                                             </td>
                                         </tr>
