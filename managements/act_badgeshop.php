@@ -78,7 +78,8 @@ if (isset($_GET['modifierrecrut'])) {
     $prix = Secu($_POST['prix'] ?? '');
     if ($badge_id != "" && $nom_badge != "" && $stock != "0" && $stock != "" && $prix != "") {
         if (is_numeric($stock) && is_numeric($prix)) {
-            $bdd->query("UPDATE gabcms_shopbadge SET badge_id='" . $badge_id . "', nom_badge='" . $nom_badge . "', stock='" . $stock . "', prix='" . $prix . "' WHERE id = '" . $modifierrecrut . "'");
+            $stmt = $bdd->prepare("UPDATE gabcms_shopbadge SET badge_id=?, nom_badge=?, stock=?, prix=? WHERE id = ?");
+            $stmt->execute([$badge_id, $nom_badge, $stock, $prix, $modifierrecrut]);
             $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
             $insertn1->execute([':pseudo' => $user['username'], ':action' => 'a modifié le badge <b>(' . $badge_id . ')</b> en vente limité <b>(' . $stock . ' en stock)</b> sur la boutique du site', ':date' => FullDate('full')]);
             echo '<h4 class="alert_success">Le badge a bien été modifié.</h4>';
@@ -92,9 +93,11 @@ if (isset($_GET['modifierrecrut'])) {
 
 if (isset($_GET['sup'])) {
     $sup = Secu($_GET['sup']);
-    $sql = $bdd->query("SELECT badge_id FROM gabcms_shopbadge WHERE id = '$sup'");
+    $sql = $bdd->prepare("SELECT badge_id FROM gabcms_shopbadge WHERE id =?");
+    $sql->execute([$sup]);
     $badge_id = $sql->fetch(PDO::FETCH_COLUMN);
-    $bdd->query("DELETE FROM gabcms_shopbadge WHERE id = '$sup'");
+    $sql2 = $bdd->prepare("DELETE FROM gabcms_shopbadge WHERE id = ?");
+    $sql2->execute([$sup]);
     echo '<h4 class="alert_success">Le badge ' . $badge_id . ' n\'est plus visible sur l\'interface de la boutique.</h4>';
     $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
     $insertn1->execute(array(':pseudo' => $user['username'], ':action' => 'a supprimé un badge qui était en vente <b>(' . $badge_id . ')</b>', ':date' => FullDate('full')));
@@ -173,7 +176,8 @@ if (isset($_GET['sup'])) {
         </div>
     <?PHP }
     if (isset($_GET['modif'])) {
-        $sql_modif = $bdd->query("SELECT * FROM gabcms_shopbadge WHERE id = '" . $modif . "'");
+        $sql_modif = $bdd->prepare("SELECT * FROM gabcms_shopbadge WHERE id = ?");
+        $sql_modif->execute([$modif]);
         $modif_a = $sql_modif->fetch();
     ?>
         <span id="titre">Modifies une vente</span><br />
