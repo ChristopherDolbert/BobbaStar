@@ -159,7 +159,8 @@ $mytarg = array_reverse(explode('/', $_POST['url']));
 <?php
     $pageid = 'add_avatar';
     $email = $user['mail'];
-$users = $bdd->query("SELECT * FROM users WHERE mail = '$email' LIMIT 1");
+$users = $bdd->prepare("SELECT * FROM users WHERE mail = ? LIMIT 1");
+$users->execute([$email]);
  $avatar = $_GET['avatar'];
 if($avatar == "created") {
 $avatar_selected = '<div id="name-suggestions">
@@ -259,7 +260,8 @@ $vars = "https://fbcdn-profile-a.akamaihd.net/static-ak/rsrc.php/v2/yo/r/UlIqmHJ
                   <ul>
 
                       <?php
-			$userq = $bdd->query("SELECT * FROM users WHERE mail = '$email' ORDER BY last_offline DESC LIMIT 15");
+			$userq = $bdd->prepare("SELECT * FROM users WHERE mail = ? ORDER BY last_offline DESC LIMIT 15");
+            $userq->execute([$email]);
 			while($user = $userq->fetch())
 			{
 
