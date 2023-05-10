@@ -78,7 +78,8 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
 				<div id="promo-bullets"></div>
 				<?PHP
 				$sql = $bdd->prepare("SELECT * FROM gabcms_news ORDER BY -id LIMIT 0,?");
-                $sql->execute([$cof['nb_news']]);
+                $sql->bindParam(1, $cof['nb_news'], PDO::PARAM_INT);
+                $sql->execute();
 				$c = 0;
 				while ($news = $sql->fetch()) {
 					$c++;
