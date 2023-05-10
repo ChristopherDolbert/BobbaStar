@@ -40,7 +40,8 @@ if (isset($_GET['modifierrecrut'])) {
     if (isset($_POST['avis2'])) {
         $avis2 = addslashes($_POST['avis2']);
         $avisdef = Secu($_POST['avisdef']);
-        $sql = $bdd->query("SELECT s.*, u.username FROM gabcms_stafflog_delete s JOIN users u ON s.staff1 = u.id WHERE s.etat = 1 AND s.id = '" . $modifierrecrut . "'");
+        $sql = $bdd->prepare("SELECT s.*, u.username FROM gabcms_stafflog_delete s JOIN users u ON s.staff1 = u.id WHERE s.etat = 1 AND s.id = ?");
+        $sql->execute([$modifierrecrut]);
         $a = $sql->fetch();
         if ($avis2 != "" && in_array($avisdef, array('1', '2')) && $user['id'] != $a['staff1']) {
             if ($avisdef == '1') {
@@ -135,8 +136,6 @@ if (isset($_GET['modifierrecrut'])) {
                         <?php
                         $sql = $bdd->query("SELECT * FROM gabcms_stafflog_delete WHERE etat >= 2 ORDER BY id DESC");
                         while ($a = $sql->fetch()) {
-                            $staff1_username = $bdd->query("SELECT username FROM users WHERE id = '" . $a['staff1'] . "'")->fetchColumn();
-                            $staff2_username = $bdd->query("SELECT username FROM users WHERE id = '" . $a['staff2'] . "'")->fetchColumn();
                             $date = date('d/m/Y H:i', $a['date']);
                             $etat_modif = ($a['etat'] == 1) ? "<span style=\"color:#0000FF;\"><b>Attente avis<br/>2ème fondateur</b></span>" : "<span style=\"color:#008800;\"><b>Demande traitée</b></span>";
                             $avis_modif = ($a['avis'] == 0) ? "<span style=\"color:#0000FF;\"><b>En attente</span>" : (($a['avis'] == 1) ? "<span style=\"color:#008800;\"><b>Accepté</span>" : "<span style=\"color:#FF0000;\"><b>Refusé</b></span>");
