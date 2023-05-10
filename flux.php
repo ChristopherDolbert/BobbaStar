@@ -133,7 +133,10 @@ else
 }
 $premiereEntree = ($pageActuelle-1)*$messagesParPage;
 $retour_messages = $bdd->prepare('SELECT * FROM gabcms_management WHERE user_id = ? ORDER BY id DESC LIMIT ?, ?');
-$retour_messages->execute([$user['id'], $premiereEntree, $messagesParPage]);
+$retour_messages->bindParam(1, $user['id'], PDO::PARAM_INT);
+$retour_messages->bindParam(2, $premiereEntree, PDO::PARAM_INT);
+$retour_messages->bindParam(3, $messagesParPage, PDO::PARAM_INT);
+$retour_messages->execute();
 while($t = $retour_messages->fetch()) {
 ?>
 <table>
