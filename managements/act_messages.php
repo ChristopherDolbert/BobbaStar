@@ -15,11 +15,13 @@ if (!isset($_SESSION['username']) || $user['rank'] < 5 || $user['rank'] > 11) {
 if (isset($_POST['raisons']) || isset($_POST['pseudo'])) {
 	$raison = Secu($_POST['raison']);
 	$pseudo = Secu($_POST['pseudo']);
-	$sql = $bdd->query("SELECT id FROM users WHERE username = '" . $pseudo . "'");
+	$sql = $bdd->prepare("SELECT id FROM users WHERE username = ?");
+    $sql->execute([$pseudo]);
 	$row = $sql->rowCount();
 	$assoc = $sql->fetch(PDO::FETCH_ASSOC);
 	if ($raison != "" && $pseudo != "" && $row > 0) {
-		$bdd->query("UPDATE users SET message = '0' WHERE id = '" . $assoc['id'] . "'");
+		$updt = $bdd->prepare("UPDATE users SET message = '0' WHERE id = ?");
+        $updt->execute([$assoc['id']]);
 		$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
 		$insertn1->bindValue(':pseudo', $user['username']);
 		$insertn1->bindValue(':action', 'a enlevé tous les messages à <b>' . $pseudo . '</b>');

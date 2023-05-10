@@ -47,7 +47,8 @@ if (isset($_GET['modifiernews'])) {
         $titre = Secu($_POST['titre']);
         $desc = Secu($_POST['desc']);
         $image = Secu($_POST['image']);
-        $sql_mo = $bdd->query("SELECT * FROM gabcms_news WHERE id = '" . $modifiernews . "'");
+        $sql_mo = $bdd->prepare("SELECT * FROM gabcms_news WHERE id = ?");
+        $sql_mo->execute([$modifiernews]);
         $mod_t = $sql_mo->fetch();
         if ($titre != "" && $desc != "" && $image != "") {
             $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
@@ -55,7 +56,8 @@ if (isset($_GET['modifiernews'])) {
             $insertn1->bindValue(':action', 'a modifié un événement sans lien <b>(' . $mod_t['title'] . ')</b>');
             $insertn1->bindValue(':date', FullDate('full'));
             $insertn1->execute();
-            $bdd->query("UPDATE gabcms_news SET topstory_image = '" . ($image) . "', title = '" . ($titre) . "', snippet = '" . ($desc) . "', modifier = '1', modif_date = '" . $nowtime . "', modif_auteur = '" . $user['username'] . "', look = '" . $user['look'] . "' WHERE id = '" . $modifiernews . "'");
+            $stmt = $bdd->prepare("UPDATE gabcms_news SET topstory_image = ?, title = ?, snippet = ?, modifier = '1', modif_date = ?, modif_auteur = ?, look = ? WHERE id = ?");
+            $stmt->execute([$image, $titre, $desc, $nowtime, $user['username'], $user['look'], $modifiernews]);
             echo '<h4 class="alert_success">L\'événement vient d\'&ecirc;tre modifié.</h4>';
         } else {
             echo '<h4 class="alert_error">Merci de remplir les champs vide</h4>';
@@ -65,15 +67,18 @@ if (isset($_GET['modifiernews'])) {
 
 if (isset($_GET['do'])) {
     $do = Secu($_GET['do']);
-    $sql_do = $bdd->query("SELECT * FROM gabcms_news WHERE id = '" . $do . "'");
+    $sql_do = $bdd->prepare("SELECT * FROM gabcms_news WHERE id = ?");
+    $sql_do->execute([$do]);
     $mod_do = $sql_do->fetch();
     $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
     $insertn1->bindValue(':pseudo', $user['username']);
     $insertn1->bindValue(':action', 'a supprimé un événement sans lien <b>(' . addslashes($mod_do['title']) . ')</b>');
     $insertn1->bindValue(':date', FullDate('full'));
     $insertn1->execute();
-    $bdd->query("DELETE FROM gabcms_news_recommande WHERE news_id = '" . $do . "'");
-    $bdd->query("DELETE FROM gabcms_news WHERE id = '" . $do . "'");
+    $stmt2 = $bdd->prepare"DELETE FROM gabcms_news_recommande WHERE news_id = ?");
+    $stmt2->execute([$do]);
+    $stmt3 = $bdd->prepare("DELETE FROM gabcms_news WHERE id = ?");
+    $stmt3->execute([$do]);
     echo '<h4 class="alert_success">L\'événement vient d\'&ecirc;tre supprimé.</h4>';
 }
 ?>
@@ -120,7 +125,8 @@ if (isset($_GET['do'])) {
     }
     ?>
     <?php if (isset($_GET['modif'])) {
-        $sql_modif = $bdd->query("SELECT * FROM gabcms_news WHERE id = '" . $modif . "'");
+        $sql_modif = $bdd->prepare("SELECT * FROM gabcms_news WHERE id = ?");
+        $sql_modif->execute([$modif]);
         $modif_a = $sql_modif->fetch();
     ?>
         <span id="titre">Modification de l'article.</span><br \>
