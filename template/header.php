@@ -47,7 +47,7 @@ if ($c['afficher'] == "Oui") {
 
     <div id="header-container">
         <div id="header" class="clearfix">
-            <h1><a href="index.php"></a></h1>
+            <h1><a href="<?php echo $url; ?>"></a></h1>
             <div id="subnavi">
                 <div id="subnavi-user">
                     <?php if ($user['id']) { ?>
