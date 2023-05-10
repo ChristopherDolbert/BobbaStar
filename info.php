@@ -9,8 +9,8 @@ include("./config.php");
 $pagename = "Tes informations";
 $pageid = "info";
 
-if (isset($_GET['pseudo'])) {
-	$pseudo = Secu($_GET['pseudo']);
+if (isset($_GET['tag'])) {
+	$pseudo = Secu($_GET['tag']);
 } else {
 	$pseudo = $_SESSION['username'];
 }
@@ -135,7 +135,7 @@ if (!isset($pseudo['credits'])) {
 										?>
 													<tr class="bas">
 														<td class="bas">
-															<div style="width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url(<?php echo $avatarimage; ?>&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);"></div><a href="<?PHP echo $url; ?>/info?pseudo=<?PHP echo Secu($a['username']); ?>"><?PHP echo Secu($a['username']); ?></a>
+															<div style="width: 30px; margin-top: -15px; margin-bottom: -15px; height: 30px; background: url(<?php echo $avatarimage; ?>&action=crr=667&direction=2&head_direction=3&gesture=sml&size=s&img_format=gif);"></div><a href="<?PHP echo $url; ?>/info?tag=<?PHP echo Secu($a['username']); ?>"><?PHP echo Secu($a['username']); ?></a>
 							</div>
 							</td>
 							</tr>

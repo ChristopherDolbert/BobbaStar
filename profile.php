@@ -262,7 +262,7 @@ $hc_member = IsHCMember($user['id']);
 ?>
 
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 
     <head>
@@ -545,7 +545,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                 <div class="rounded rounded-hcred clearfix">
                                     <a href="club.php" id="settings-hc-logo"></a>
                                     Les v&ecirc;tements avec le symbole <img
-                                            src="./web-gallery/v2/images/habboclub/hc_mini.png"/> sont utilisables pour
+                                        src="./web-gallery/v2/images/habboclub/hc_mini.png"/> sont utilisables pour
                                     les membres du Club! <a href="club.php">Adh&egrave;res vite!</a>
                                 </div>
                             </div>
@@ -645,7 +645,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 
                         <p>Tu es un membre du <?php echo $shortname; ?> Club. Ton adh&eacute;sion se termine dans
                             <b><?php echo HCDaysLeft($user['id']); ?> jours</b>. Si tu veux le renouveler, cliques <a
-                                    href='club.php'>ici</a>.</p>
+                                href='club.php'>ici</a>.</p>
                     <?php } ?>
                     <div class="settings-buttons">
                         <input type="submit" value="Enregistrer" name="save" class="submit"/>

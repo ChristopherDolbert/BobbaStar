@@ -9,17 +9,40 @@ include("../config.php");
 $pagename = "Dépôt - Service client";
 $pageid = "sc_index";
 
-if (!isset($_SESSION['username'])) {
-    Redirect("" . $url . "/index");
+if (!isset($_SESSION['username']) || $user['rank'] < 5 || $user['rank'] > 11) {
+    Redirect("" . $url . "/managements/acces_interdit");
+    exit();
 }
 
-if ($user['rank'] < 5) {
-    Redirect("" . $url . "/managements/acces_interdit");
-    exit();
-}
-if ($user['rank'] > 8) {
-    Redirect("" . $url . "/managements/acces_interdit");
-    exit();
+$rank_modif = "";
+switch ($user['rank']) {
+    case 11:
+        $rank_modif = "fondateur";
+        break;
+    case 10:
+        $rank_modif = "fondateur";
+        break;
+    case 9:
+        $rank_modif = "fondateur";
+        break;
+    case 8:
+        $rank_modif = "fondateur";
+        break;
+    case 7:
+        $rank_modif = "manager";
+        break;
+    case 6:
+        $rank_modif = "administratrice";
+        if ($user['gender'] == 'M') {
+            $rank_modif = "administrateur";
+        }
+        break;
+    case 5:
+        $rank_modif = "modératrice";
+        if ($user['gender'] == 'M') {
+            $rank_modif = "modérateur";
+        }
+        break;
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -99,15 +122,14 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                         <h2 class="title">Tickets non résolus</h2>
                         <div class="box-content">
                             <?php
-                            $i = 0;
-                            $sql = $bdd->query("SELECT * FROM gabcms_contact WHERE resul != '6' AND resul != '7' AND resul != '8' ORDER BY id DESC");
+                            $sql = $bdd->query("SELECT * FROM gabcms_contact WHERE resul NOT IN ('6', '7', '8') ORDER BY id DESC");
                             $row = $sql->rowCount();
                             if ($row < 1) {
                                 echo "Il n'y a aucun sujet d'aide.";
-                            } elseif ($row > 0) {
+                            } else {
                             ?>
                                 <table>
-                                    <tbody>
+                                    <thead>
                                         <tr class="haut">
                                             <td class="haut">Ticket #</td>
                                             <td class="haut">Pseudo</td>
@@ -118,49 +140,40 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                                             <td class="haut">Dernière réponse</td>
                                             <td class="haut">Action</td>
                                         </tr>
-                                        <?PHP while ($a = $sql->fetch()) {
-                                            if ($a['resul'] == 0) {
-                                                $etat_modif = "<span style=\"color:#FF4500\"><b>Signalé</b></span>";
-                                            }
-                                            if ($a['resul'] == 1) {
-                                                $etat_modif = "<span style=\"color:#4B0082\"><b>En étude</b></span>";
-                                            }
-                                            if ($a['resul'] == 2) {
-                                                $etat_modif = "<span style=\"color:#FF0000\"><b>Correction à faire</b></span>";
-                                            }
-                                            if ($a['resul'] == 3) {
-                                                $etat_modif = "<span style=\"color:#0000FF\"><b>Attente réponse du joueur</b></span>";
-                                            }
-                                            if ($a['resul'] == 4) {
-                                                $etat_modif = "<span style=\"color:#8B4513\"><b>Réponse donnée par le joueur</b></span>";
-                                            }
-                                            if ($a['resul'] == 5) {
-                                                $etat_modif = "<span style=\"color:#2E8B57\"><b>En test</b></span>";
-                                            }
-                                            if ($a['resul'] == 6) {
-                                                $etat_modif = "<span style=\"color:#008000\"><b>Fermé - Résolu</b></span>";
-                                            }
-                                            if ($a['resul'] == 7) {
-                                                $etat_modif = "<span style=\"color:#8bda20\"><b>Fermé - déjà signalé/résolu</b></span>";
-                                            }
-                                            if ($a['resul'] == 8) {
-                                                $etat_modif = "<span style=\"color:#DAA520\"><b>Fermé - sans suite</b></span>";
-                                            }
+                                    </thead>
+                                    <tbody>
+                                        <?php while ($a = $sql->fetch()) {
+                                            $resul = intval($a['resul']);
+                                            $etats = array(
+                                                "<span style=\"color:#FF4500\"><b>Signalé</b></span>",
+                                                "<span style=\"color:#4B0082\"><b>En étude</b></span>",
+                                                "<span style=\"color:#FF0000\"><b>Correction à faire</b></span>",
+                                                "<span style=\"color:#0000FF\"><b>Attente réponse du joueur</b></span>",
+                                                "<span style=\"color:#8B4513\"><b>Réponse donnée par le joueur</b></span>",
+                                                "<span style=\"color:#2E8B57\"><b>En test</b></span>",
+                                                "<span style=\"color:#008000\"><b>Fermé - Résolu</b></span>",
+                                                "<span style=\"color:#8bda20\"><b>Fermé - déjà signalé/résolu</b></span>",
+                                                "<span style=\"color:#DAA520\"><b>Fermé - sans suite</b></span>"
+                                            );
+                                            $etat_modif = isset($etats[$resul]) ? $etats[$resul] : '';
                                         ?>
                                             <tr class="bas">
-                                                <td class="bas"><?PHP echo Secu($a['id']); ?></td>
-                                                <td class="bas"><?PHP echo Secu($a['pseudo']); ?></td>
-                                                <td class="bas"><?PHP echo Secu($a['categorie']); ?></td>
-                                                <td class="bas"><?PHP echo Secu($a['date']); ?></td>
-                                                <td class="bas"><?PHP echo stripslashes($a['sujet']); ?></td>
-                                                <td class="bas"><?PHP echo $etat_modif; ?></td>
-                                                <td class="bas"><?PHP echo Secu($a['resul_par']); ?></td>
-                                                <td class="bas"><a href="<?PHP echo $url; ?>/managements/sc_traiter?id=<?PHP echo Secu($a['id']); ?>" target="_blank"><img src="<?PHP echo $url; ?>/service_client/img/notes.png" /></a></td>
+                                                <td class="bas"><?php echo Secu($a['id']); ?></td>
+                                                <td class="bas"><?php echo Secu($a['pseudo']); ?></td>
+                                                <td class="bas"><?php echo Secu($a['categorie']); ?></td>
+                                                <td class="bas"><?php echo Secu($a['date']); ?></td>
+                                                <td class="bas"><?php echo stripslashes($a['sujet']); ?></td>
+                                                <td class="bas"><?php echo $etat_modif; ?></td>
+                                                <td class="bas"><?php echo Secu($a['resul_par']); ?></td>
+                                                <td class="bas"><a href="<?php echo $url; ?>/managements/sc_traiter?id=<?php echo Secu($a['id']); ?>" target="_blank"><img src="<?php echo $url; ?>/service_client/img/notes.png" /></a></td>
                                             </tr>
-                                    <?PHP }
-                                    } ?>
+                                        <?php } ?>
                                     </tbody>
                                 </table>
+                            <?php } ?>
+
+                            </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

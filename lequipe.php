@@ -194,12 +194,12 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                     // Affichage de l'utilisateur dans le container courant
                     echo '<table class="fondateur"><tbody><tr>';
                     echo '<td valign="middle" width="10" height="60">';
-                    echo '<a href="' . $url . '/info?pseudo=' . $user_name . '" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">';
+                    echo '<a href="' . $url . '/info?tag=' . $user_name . '" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">';
                     echo '<div style="width: 64px; height: 70px; margin-bottom:-10px; margin-top:-15px; margin-left: -15px; float: right; background: url(' . $avatarimage . '' . Secu($user_figure) . '&action=sit&direction=2&head_direction=3&gesture=sml&size=b&img_format=gif);"></div>';
                     echo '</a>';
                     echo '</td>';
                     echo '<td valign="top">';
-                    echo '<span style="color:#2767A7;"><b style="font-size: 110%;" title="Poste(s) occupé(s): ' . $rank_name . '" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">' . $user_name . ' </b></span><br />';
+                    echo '<span style="color:#2767A7;"><b style="font-size: 110%;" title="Poste occupé: ' . substr($rank_name, 0, -1) . '" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">' . $user_name . ' </b></span><br />';
                     echo '<span style="color:#888"><b>Mission :</b> ' . substr($user_mission, 0, 15) . '<br>' . '</span>';
                     echo '<span style="color:#888"><b>Fonction :</b> ' . $rank_name . '<br>' . '</span>';
                     echo (($online == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif">');
@@ -291,13 +291,13 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                     echo '<table class="' . $class . '">';
                     echo '<tbody><tr>';
                     echo '<td valign="middle" width="10" height="60">';
-                    echo '<a href="' . $url . '/info?pseudo=' . $user_name . '" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">';
+                    echo '<a href="' . $url . '/info?tag=' . $user_name . '" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">';
                     echo '<div style="width: 64px; height: 70px; margin-bottom:-10px; margin-top:-15px; margin-left: -15px; float: right; background: url(' . $avatarimage . '' . Secu($user_figure) . '&action=sit&direction=2&head_direction=3&gesture=sml&size=b&img_format=gif);"></div>';
                     echo '</a>';
                     echo '</td>';
                     echo '<td valign="top">';
-                    echo '<span style="color:' . $box_color . '"><b style="font-size: 110%;" title="Poste(s) occupé(s): ' . $rank_name . '" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">' . $user_name . ' </span></b><br />';
-                    echo '<span style="color:#888"><b>Mission:</b> ' . $mission . "<br>" . '</span>';
+                    echo '<span style="color:' . $box_color . '"><b style="font-size: 110%;" title="Poste occupé: ' . substr($rank_name, 0, -1) . '" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">' . $user_name . ' </span></b><br />';
+                    echo '<span style="color:#888"><b>Mission:</b> ' . $user_mission . "<br>" . '</span>';
                     echo '<span style="color:#888"><b>Fonction :</b> ' . $rank_name . '<br>' . '</span>';
                     echo (($online == "1") ? '<img src="' . $imagepath . 'v2/images/online.gif"></td>' : '<img src="' . $imagepath . 'v2/images/offline.gif">');
                     echo '</td>';

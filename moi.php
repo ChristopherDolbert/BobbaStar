@@ -16,6 +16,12 @@ if (!isset($_SESSION['username'])) {
 
 $sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
+
+$stmt = $bdd->prepare("SELECT COUNT(*) FROM cms_minimail WHERE to_id = ?");
+$stmt->execute([$user['id']]);
+$messages = $stmt->fetchColumn();
+header("X-JSON: {\"totalMessages\":" . $messages . "}");
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
@@ -203,7 +209,7 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
                                     <tbody>
                                         <tr>
                                             <td valign="middle" width="10" height="60">
-                                                <?PHP if ($a['auteur'] != 'Système') { ?><a href="<?PHP echo $url ?>/info?pseudo=<?PHP echo $a['auteur'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP } ?><div style="width: 64px; height: 65px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: right; background: url(<?php echo $avatarimage; ?><?PHP echo $a['look'] ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div></a>
+                                                <?PHP if ($a['auteur'] != 'Système') { ?><a href="<?PHP echo $url ?>/info?tag=<?PHP echo $a['auteur'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP } ?><div style="width: 64px; height: 65px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: right; background: url(<?php echo $avatarimage; ?><?PHP echo $a['look'] ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div></a>
                                             </td>
                                             <td valign="top">
                                                 <span style="color:#333333;"><b style="font-size: 110%;"><?PHP echo $a['auteur'] ?></span></b><span style="float: right; color:#000000;"><?PHP echo $a['date'] ?></span><br />
@@ -217,6 +223,101 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
                         </div>
                     </div>
                 </div>
+
+                <!-- 
+                <div class="habblet-container minimail" id="mail">
+                    <div class="cbb clearfix blue ">
+
+                        <h2 class="title">Mes Messages
+                        </h2>
+                        <div id="minimail">
+                            <div class="minimail-contents">
+                                <?php
+                                /*$bypass = true;
+                                $page = "inbox";
+                                include('./minimail/loadMessage.php');*/
+                                ?>
+                            </div>
+                            <div id="message-compose-wait"></div>
+                            <form style="display: none" id="message-compose">
+                                <div>To</div>
+                                <div id="message-recipients-container" class="input-text" style="width: 426px; margin-bottom: 1em">
+                                    <input type="text" value="" id="message-recipients" />
+                                    <div class="autocomplete" id="message-recipients-auto">
+                                        <div class="default" style="display: none;">Tape le nom de ton ami:</div>
+                                        <ul class="feed" style="display: none;"></ul>
+
+                                    </div>
+                                </div>
+                                <div>Subject<br />
+                                    <input type="text" style="margin: 5px 0" id="message-subject" class="message-text" maxlength="100" tabindex="2" />
+                                </div>
+                                <div>Message<br />
+                                    <textarea style="margin: 5px 0" rows="5" cols="10" id="message-body" class="message-text" tabindex="3"></textarea>
+
+                                </div>
+                                <div class="new-buttons clearfix">
+                                    <a href="#" class="new-button preview"><b>Pr&eacute;voir</b><i></i></a>
+                                    <a href="#" class="new-button send"><b>Envoyer</b><i></i></a>
+                                </div>
+                            </form>
+                        </div>
+                      <?php
+                        /* $stmt = $bdd->prepare("SELECT * FROM messenger_friendships WHERE user_one_id = :my_id OR user_two_id = :my_id");
+                        $stmt->bindParam(':my_id', $my_id);
+                        $stmt->execute();
+                        $count = $stmt->rowCount();
+
+                        $stmt = $bdd->prepare("SELECT * FROM cms_minimail WHERE to_id = :my_id OR senderid = :my_id");
+                        $stmt->bindParam(':my_id', $my_id);
+                        $stmt->execute();
+                        $mescount = $stmt->rowCount();*/
+
+                        ?>
+                        <script type="text/javascript">
+                            L10N.put("minimail.compose", "Compose").put("minimail.cancel", "Quitter")
+                                .put("bbcode.colors.red", "Red").put("bbcode.colors.orange", "Orange")
+                                .put("bbcode.colors.yellow", "Yellow").put("bbcode.colors.green", "Green")
+                                .put("bbcode.colors.cyan", "Cyan").put("bbcode.colors.blue", "Blue")
+                                .put("bbcode.colors.gray", "Gray").put("bbcode.colors.black", "Black")
+                                .put("minimail.empty_body.confirm", "Are you sure you want to send the message with an empty body?")
+                                .put("bbcode.colors.label", "Color").put("linktool.find.label", " ")
+                                .put("linktool.scope.habbos", "<?php /*echo $shortname;*/ ?>s").put("linktool.scope.rooms", "Rooms")
+                                .put("linktool.scope.groups", "Groups").put("minimail.report.title", "Report message to moderators");
+
+                            L10N.put("date.pretty.just_now", "just now");
+                            L10N.put("date.pretty.one_minute_ago", "1 minute ago");
+                            L10N.put("date.pretty.minutes_ago", "{0} minutes ago");
+                            L10N.put("date.pretty.one_hour_ago", "1 hour ago");
+                            L10N.put("date.pretty.hours_ago", "{0} hours ago");
+                            L10N.put("date.pretty.yesterday", "yesterday");
+                            L10N.put("date.pretty.days_ago", "{0} days ago");
+                            L10N.put("date.pretty.one_week_ago", "1 week ago");
+                            L10N.put("date.pretty.weeks_ago", "{0} weeks ago");
+                            new MiniMail({
+                                pageSize: 10,
+                                total: <?php /* echo $mescount;*/ ?>,
+                                friendCount: <?php /*echo $count; */ ?>,
+                                maxRecipients: 50,
+                                messageMaxLength: 20,
+                                bodyMaxLength: 4096,
+                                secondLevel: <?php /*if ($count = 0) {
+                                                    echo "true";
+                                                } else {
+                                                    echo "false";
+                                                }*/ ?>
+                            });
+                        </script>
+                    </div>
+                </div>
+                        -->
+
+                <script type="text/javascript">
+                    if (!$(document.body).hasClassName('process-template')) {
+                        Rounder.init();
+                    }
+                </script>
+
             </div>
             <script type="text/javascript">
                 if (!$(document.body).hasClassName('process-template')) {
@@ -225,11 +326,10 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
             </script>
             <div id="column2" class="column">
                 <div class="habblet-container ">
-                    <div class="cbb clearfix red">
-                        <h2 class="title">Radio</h2>
-
+                    <div class="cbb clearfix brown">
+                        <h2 class="title">Météo dans votre ville</h2>
                         <div class="box-content">
-                            <p style="text-align:center">Bientôt...</p>
+                            <p>Bientôt</p>
                         </div>
                     </div>
                 </div>
@@ -240,6 +340,7 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
                 }
             </script>
         </div>
+
         <script type="text/javascript">
             HabboView.run();
         </script>

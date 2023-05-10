@@ -32,62 +32,12 @@ $updateSSO->execute([$ssoTicket, $user['id']]);
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 
   <title><?PHP echo $sitename; ?> &raquo; <?PHP echo $pagename; ?></title>
-  <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
-
-  <script type="text/javascript">
-    var andSoItBegins = (new Date()).getTime();
-    var ad_keywords = "";
-    document.habboLoggedIn = true;
-    var habboName = "<?PHP echo $user['username']; ?>";
-    var habboReqPath = "<?PHP echo $url; ?>";
-    var habboStaticFilePath = "<?PHP echo $imagepath; ?>";
-    var habboImagerUrl = "http://www.habbo.com/habbo-imaging/";
-    var habboPartner = "";
-    var habboDefaultClientPopupUrl = "<?PHP echo $url; ?>/client";
-    window.name = "habboMain";
-    if (typeof HabboClient != "undefined") {
-      HabboClient.windowName = "uberClientWnd";
-    }
-  </script>
-
-
-
-  <link rel="shortcut icon" href="<?PHP echo $imagepath; ?>favicon.ico" type="image/vnd.microsoft.icon" />
-  <script src="<?PHP echo $imagepath; ?>static/js/libs2.js" type="text/javascript"></script>
-  <script src="<?PHP echo $imagepath; ?>static/js/visual.js" type="text/javascript"></script>
-  <script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
-  <script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
-
   <script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
   <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
   <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/habboclient.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
   <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/habboflashclient.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
-
   <meta name="description" content="<?PHP echo $description; ?>" />
   <meta name="keywords" content="<?PHP echo $keyword; ?>" />
-
-  <!--[if IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie8.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
-<![endif]-->
-  <!--[if lt IE 8]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
-<![endif]-->
-  <!--[if lt IE 7]>
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/ie6.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
-<script src="<?PHP echo $imagepath; ?>static/js/pngfix.js" type="text/javascript"></script>
-<script type="text/javascript">
-try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
-</script>
- 
-<style type="text/css">
-body { behavior: url(http://www.habbo.co.uk/js/csshover.htc); }
-</style>
-<![endif]-->
-  <link rel="stylesheet" href="<?PHP echo $imagepath; ?>static/styles/news.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
-  <script src="<?PHP echo $imagepath; ?>static/js/news.js" type="text/javascript"></script>
   <meta name="build" content="<?PHP echo $build; ?> >> <?PHP echo $version; ?>" />
 
 </head>
@@ -108,7 +58,6 @@ body { behavior: url(http://www.habbo.co.uk/js/csshover.htc); }
     <div id="content" class="client-content"></div>
     </div>
     <div style="display: none">
-
       <script language="JavaScript" type="text/javascript">
         setTimeout(function() {
           HabboCounter.init(600);

@@ -4,6 +4,7 @@
 #|         Copyright © 2014-2023 - MyHabbo Tout droits réservés.          #|
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
+include('SQL.php');
 
 # Nombre de fonctions: 14 #
 if ($pagename != "Starters" && isset($_SESSION['username']) && $_SESSION['noob'] == "Oui") {
@@ -15,6 +16,79 @@ $language_path = "./" . $language . "index.php";
 $language_path_2 = "../" . $language . "index.php";
 $valid_language = file_exists($language_path) || file_exists($language_path_2);
 $language = ($valid_language) ? $language : "en";
+
+function FilterText($str, $advanced = false)
+{
+	include('SQL.php');
+	if ($advanced == true) {
+		return $bdd->quote($str);
+	}
+	$str = $bdd->quote(htmlspecialchars($str));
+	return $str;
+}
+
+function HoloText($str, $advanced = false, $bbcode = false)
+{
+	if ($advanced === true) {
+		return stripslashes($str);
+	}
+
+	$str = stripslashes(nl2br(htmlspecialchars($str)));
+
+	if ($bbcode === true) {
+		$str = bbcode_format($str);
+	}
+
+	return $str;
+}
+
+function filtre($var)
+{
+	$var = str_replace("\x01", "", $var);
+	return $var;
+}
+
+function getContent($strKey)
+{
+	include('SQL.php');
+	$tmp = $bdd->prepare("SELECT contentvalue FROM cms_content WHERE contentkey = :key LIMIT 1");
+	$tmp->execute(array('key' => FilterText($strKey)));
+	$tmp = $tmp->fetch(PDO::FETCH_ASSOC);
+
+	if (is_array($tmp)) {
+		return $tmp['contentvalue'];
+	} else {
+		return false;
+	}
+}
+
+function FetchServerSetting($columnName)
+{
+	include('SQL.php');
+	$sql = "SELECT $columnName FROM gabcms_client LIMIT 1";
+	$stmt = $bdd->prepare($sql);
+	$stmt->execute();
+	$result = $stmt->fetchColumn();
+	return $result;
+}
+
+
+function FetchEmulatorSetting($strSetting, $switch = false)
+{
+	include('SQL.php');
+	$sql = "SELECT value FROM emulator_settings WHERE `key` = :strSetting LIMIT 1";
+	$stmt = $bdd->prepare($sql);
+	$stmt->execute(['strSetting' => $strSetting]);
+	$tmp = $stmt->fetch();
+
+	if ($switch !== true) {
+		return $tmp['value'];
+	} elseif ($switch == true && $tmp['value'] == "1") {
+		return "Enabled";
+	} elseif ($switch == true && $tmp['value'] !== "1") {
+		return "Disabled";
+	}
+}
 
 function smileys($texte)
 {
@@ -189,6 +263,12 @@ function GabCMSHash($str)
 	return $str;
 }
 
+function HoloHash($string)
+{
+	$string = password_hash($string, PASSWORD_BCRYPT);
+	return $string;
+}
+
 function Secu($str)
 {
 	$str = trim(htmlspecialchars(stripslashes(nl2br($str))));
@@ -321,6 +401,22 @@ function UpdateSSO($id)
 	}
 }
 
+function generateCode()
+{
+	$alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	$code = "";
+	for ($i = 0; $i < 4; $i++) {
+		for ($j = 0; $j < 4; $j++) {
+			$code .= $alphabet[rand(0, 25)];
+		}
+		if ($i != 3) {
+			$code .= "-";
+		}
+	}
+	return $code;
+}
+
+
 function Genere_code($size)
 {
 	$code = "";
@@ -447,7 +543,6 @@ function Connected($pageid)
 function SendMUSData(string $key, $data = null)
 {
 	include('SQL.php');
-
 	$configSQL = $bdd->query("SELECT * FROM gabcms_client WHERE id = '1'");
 	$config = $configSQL->fetch(PDO::FETCH_ASSOC);
 
@@ -515,19 +610,19 @@ function GiveHC($user_id, $months)
 		$stmt2->bindParam(':id', $user_id, PDO::PARAM_INT);
 		$stmt2->execute();
 
-		$sql3 = "SELECT * FROM users_badges WHERE badge_code = 'HC1' AND user_id = :id LIMIT 1";
+		$sql3 = "SELECT * FROM users_badges WHERE badge_code = 'HC' AND user_id = :id LIMIT 1";
 		$stmt3 = $bdd->prepare($sql3);
 		$stmt3->bindParam(':id', $user_id, PDO::PARAM_INT);
 		$stmt3->execute();
 		$found = $stmt3->rowCount();
 
 		if ($yesonline['online'] != 1 && $found !== 1) {
-			$sql6 = "INSERT INTO users_badges (user_id, badge_code) VALUES (:id, 'HC1')";
+			$sql6 = "INSERT INTO users_badges (user_id, badge_code) VALUES (:id, 'HC')";
 			$stmt6 = $bdd->prepare($sql6);
 			$stmt6->bindParam(':id', $user_id, PDO::PARAM_INT);
 			$stmt6->execute();
 		} elseif ($yesonline['online'] == 1 && $found == 0) {
-			@SendMUSData('givebadge', ['user_id' => $user['id'], 'badge' => "HC1"]);
+			@SendMUSData('givebadge', ['user_id' => $user['id'], 'badge' => "HC"]);
 		}
 	} else {
 		$m = date('m');
@@ -552,7 +647,6 @@ function GiveHC($user_id, $months)
 function HCDaysLeft($my_id)
 {
 	include('SQL.php');
-	// Query for the info we need to calculate
 	$query = $bdd->prepare("SELECT months_left,date_monthstarted FROM users_club WHERE userid = :my_id LIMIT 1");
 	$query->bindParam(':my_id', $my_id);
 	$query->execute();

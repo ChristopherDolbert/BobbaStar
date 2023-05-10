@@ -8,43 +8,36 @@
 include("../config.php");
 $pagename = "Administration";
 
-if (!isset($_SESSION['username'])) {
-    Redirect("" . $url . "/index");
-    exit();
-}
-if ($user['rank'] < 5) {
-    Redirect("" . $url . "/managements/acces_interdit");
-    exit();
-}
-if ($user['rank'] > 8) {
+if (!isset($_SESSION['username']) || $user['rank'] < 5 || $user['rank'] > 11) {
     Redirect("" . $url . "/managements/acces_interdit");
     exit();
 }
 
-if ($user['rank'] == 8 && $user['gender'] == 'M') {
-    $rank_modif = "fondateur";
+$rank_modif = "";
+switch ($user['rank']) {
+    case 11:
+    case 10:
+    case 9:
+    case 8:
+        $rank_modif = "fondateur";
+        break;
+    case 7:
+        $rank_modif = "manager";
+        break;
+    case 6:
+        $rank_modif = "administratrice";
+        if ($user['gender'] == 'M') {
+            $rank_modif = "administrateur";
+        }
+        break;
+    case 5:
+        $rank_modif = "modératrice";
+        if ($user['gender'] == 'M') {
+            $rank_modif = "modérateur";
+        }
+        break;
 }
-if ($user['rank'] == 7 && $user['gender'] == 'M') {
-    $rank_modif = "manager";
-}
-if ($user['rank'] == 6 && $user['gender'] == 'M') {
-    $rank_modif = "administrateur";
-}
-if ($user['rank'] == 5 && $user['gender'] == 'M') {
-    $rank_modif = "modérateur";
-}
-if ($user['rank'] == 8 && $user['gender'] == 'F') {
-    $rank_modif = "fondatrice";
-}
-if ($user['rank'] == 7 && $user['gender'] == 'F') {
-    $rank_modif = "manager";
-}
-if ($user['rank'] == 6 && $user['gender'] == 'F') {
-    $rank_modif = "administratrice";
-}
-if ($user['rank'] == 5 && $user['gender'] == 'F') {
-    $rank_modif = "modératrice";
-}
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -54,9 +47,9 @@ if ($user['rank'] == 5 && $user['gender'] == 'F') {
     <title><?PHP echo $sitename; ?> &raquo; <?PHP echo $pagename; ?></title>
 
     <link rel="shortcut icon" href="<?PHP echo $imagepath; ?>favicon.ico" type="image/vnd.microsoft.icon" />
-    <link rel="stylesheet" href="css/layout.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/layout.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
     <!--[if lt IE 9]>
-        <link rel="stylesheet" href="css/ie.css<?php echo '?'.mt_rand(); ?>" type="text/css" media="screen" />
+        <link rel="stylesheet" href="css/ie.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
     <script src="js/jquery-1.5.2.min.js" type="text/javascript"></script>
@@ -135,10 +128,10 @@ if ($user['rank'] == 5 && $user['gender'] == 'F') {
                 <?PHP $nb_rank = $bdd->query("SELECT COUNT(*) AS nb FROM users WHERE rank = 8");
                 $rankhuit = $nb_rank->fetch();
                 if ($rankhuit['nb'] >= '2') { ?><li><a href="act_logs" target="main">Vider les logs (<b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_stafflog_delete WHERE etat < 2";
-                                                                                                                            $query = $bdd->query($req);
-                                                                                                                            $nb_inscrit = $query->fetch();
-                                                                                                                            echo $nb_inscrit['id'];
-                                                                                                                            ?></b> en attente)</a></li><?PHP } ?>
+                                                                                                        $query = $bdd->query($req);
+                                                                                                        $nb_inscrit = $query->fetch();
+                                                                                                        echo $nb_inscrit['id'];
+                                                                                                        ?></b> en attente)</a></li><?PHP } ?>
                 <li>- Grades</li>
                 <li><a href="rank" target="main">Rank des utilisateurs</a></li>
                 <li><a href="derank" target="main">Dérank des utilisateurs</a></li>
@@ -164,7 +157,7 @@ if ($user['rank'] == 5 && $user['gender'] == 'F') {
                 <li><a href="act_averto" target="main">Actions sur les avertissement</a></li>
                 <li><a href="add_dossier" target="main">Ajouter un avis sur un dossier</a></li>
                 <li>- Configuration</li>
-                <li><a href="maintenanceold.php" target="main">Configurer la maintenance</a></li>
+                <li><a href="maintenance" target="main">Configurer la maintenance</a></li>
                 <li><a href="act_messageheader" target="main">Configurer le message dans le header</a></li>
                 <li><a href="act_prix_clubs" target="main">Configurer les prix d'achats</a></li>
                 <li>- Newsletter</li>
@@ -180,9 +173,6 @@ if ($user['rank'] == 5 && $user['gender'] == 'F') {
                 <li>- Notes de service</li>
                 <li><a href="create_nds" target="main">Créer une note de service</a></li>
                 <li><a href="act_nds" target="main">Action sur une note de service</a></li>
-                <li>- Forum</li>
-                <li><a href="act_forum_categorie" target="main">Actions sur une catégorie</a></li>
-                <li><a href="act_forum_sous_categorie" target="main">Actions sur une sous catégorie</a></li>
                 <li>- Staff en test</li>
                 <li><a href="add_test" target="main">Staff en test</a></li>
             </ul>

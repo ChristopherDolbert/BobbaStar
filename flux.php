@@ -138,7 +138,7 @@ $retour_messages=$bdd->query('SELECT * FROM gabcms_management WHERE user_id = '.
     <tbody>
         <tr> 
             <td valign="middle" width="10" height="60"> 
-            <?PHP if($t['auteur'] != 'Système') { ?><a href="<?PHP echo $url ?>/info.php?pseudo=<?PHP echo $t['auteur'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP } ?><div style="width: 64px; height: 65px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: right; background: url(<?php echo $avatarimage; ?><?PHP echo $t['look'] ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div></a>
+            <?PHP if($t['auteur'] != 'Système') { ?><a href="<?PHP echo $url ?>/info.php?tag=<?PHP echo $t['auteur'] ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)"><?PHP } ?><div style="width: 64px; height: 65px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: right; background: url(<?php echo $avatarimage; ?><?PHP echo $t['look'] ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div></a>
             </td> 
             <td valign="top">
                 <span style="color:#333333;"><b style="font-size: 110%;"><?PHP echo $t['auteur'] ?></span></b><span style="float: right; color:#000000;"><?PHP echo $t['date'] ?></span><br/>
