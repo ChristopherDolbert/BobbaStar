@@ -30,7 +30,7 @@ if(isset($_POST['ip'])){
 		$msg = "Settings saved successfully.";
 		mysqli_query($con,("UPDATE cms_content SET contentvalue = '".$_POST['widescreen']."' WHERE contentkey='client-widescreen'");
 
-		mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Updated CMS Settings (Loader Configuration)','loader.php','".$my_id."','','".$date_full."')") or die(mysql_error());
+		mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Updated CMS Settings (Loader Configuration)','loader.php','".$user['id']."','','".$date_full."')") or die(mysql_error());
 
 	} else {
 

@@ -62,6 +62,10 @@ header("X-JSON: {\"totalMessages\":" . $messages . "}");
     <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
     <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/personal.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/minimail.css" type="text/css" />
+    <link rel="stylesheet" href="<?PHP echo $imagepath; ?>styles/myhabbo/control.textarea.css" type="text/css" />
+    <script src="<?PHP echo $imagepath; ?>static/js/minimail.js" type="text/javascript"></script>
+
     <meta name="description" content="<?PHP echo $description; ?>" />
     <meta name="keywords" content="<?PHP echo $keyword; ?>" />
     <meta name="build" content="<?PHP echo $build; ?> >> <?PHP echo $version; ?>" />
@@ -224,7 +228,7 @@ header("X-JSON: {\"totalMessages\":" . $messages . "}");
                     </div>
                 </div>
 
-                <!-- 
+
                 <div class="habblet-container minimail" id="mail">
                     <div class="cbb clearfix blue ">
 
@@ -233,9 +237,8 @@ header("X-JSON: {\"totalMessages\":" . $messages . "}");
                         <div id="minimail">
                             <div class="minimail-contents">
                                 <?php
-                                /*$bypass = true;
-                                $page = "inbox";
-                                include('./minimail/loadMessage.php');*/
+ 
+                                @include('./minimail/loadMessage.php');
                                 ?>
                             </div>
                             <div id="message-compose-wait"></div>
@@ -262,16 +265,16 @@ header("X-JSON: {\"totalMessages\":" . $messages . "}");
                                 </div>
                             </form>
                         </div>
-                      <?php
-                        /* $stmt = $bdd->prepare("SELECT * FROM messenger_friendships WHERE user_one_id = :my_id OR user_two_id = :my_id");
-                        $stmt->bindParam(':my_id', $my_id);
+                        <?php
+                        $stmt = $bdd->prepare("SELECT * FROM messenger_friendships WHERE user_one_id = :my_id OR user_two_id = :my_id");
+                        $stmt->bindParam(':my_id', $user['id']);
                         $stmt->execute();
                         $count = $stmt->rowCount();
 
                         $stmt = $bdd->prepare("SELECT * FROM cms_minimail WHERE to_id = :my_id OR senderid = :my_id");
-                        $stmt->bindParam(':my_id', $my_id);
+                        $stmt->bindParam(':my_id', $user['id']);
                         $stmt->execute();
-                        $mescount = $stmt->rowCount();*/
+                        $mescount = $stmt->rowCount();
 
                         ?>
                         <script type="text/javascript">
@@ -282,7 +285,7 @@ header("X-JSON: {\"totalMessages\":" . $messages . "}");
                                 .put("bbcode.colors.gray", "Gray").put("bbcode.colors.black", "Black")
                                 .put("minimail.empty_body.confirm", "Are you sure you want to send the message with an empty body?")
                                 .put("bbcode.colors.label", "Color").put("linktool.find.label", " ")
-                                .put("linktool.scope.habbos", "<?php /*echo $shortname;*/ ?>s").put("linktool.scope.rooms", "Rooms")
+                                .put("linktool.scope.habbos", "<?php echo $shortname; ?>s").put("linktool.scope.rooms", "Rooms")
                                 .put("linktool.scope.groups", "Groups").put("minimail.report.title", "Report message to moderators");
 
                             L10N.put("date.pretty.just_now", "just now");
@@ -296,21 +299,20 @@ header("X-JSON: {\"totalMessages\":" . $messages . "}");
                             L10N.put("date.pretty.weeks_ago", "{0} weeks ago");
                             new MiniMail({
                                 pageSize: 10,
-                                total: <?php /* echo $mescount;*/ ?>,
-                                friendCount: <?php /*echo $count; */ ?>,
+                                total: <?php echo $mescount; ?>,
+                                friendCount: <?php echo $count; ?>,
                                 maxRecipients: 50,
                                 messageMaxLength: 20,
                                 bodyMaxLength: 4096,
-                                secondLevel: <?php /*if ($count = 0) {
+                                secondLevel: <?php if ($count = 0) {
                                                     echo "true";
                                                 } else {
                                                     echo "false";
-                                                }*/ ?>
+                                                } ?>
                             });
                         </script>
                     </div>
                 </div>
-                        -->
 
                 <script type="text/javascript">
                     if (!$(document.body).hasClassName('process-template')) {

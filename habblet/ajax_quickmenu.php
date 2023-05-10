@@ -21,7 +21,7 @@ if (!isset($mode) || !isset($key)) {
 }
 
 if (isset($user['id'])) {
-    $my_id = $user['id'];
+    
 } else {
     exit;
 }
@@ -30,14 +30,14 @@ switch ($mode) {
     case 1:
         $str = "friends";
         $stmt = $bdd->prepare("SELECT friendid FROM messenger_friendships WHERE userid = ? OR friendid = ? ORDER BY friendid LIMIT 500");
-        $stmt->bind_param('ii', $my_id, $my_id);
+        $stmt->bind_param('ii', $user['id'], $user['id']);
         $stmt->execute();
         $get_em = $stmt->get_result();
         break;
     case 2:
         $str = "groups";
         $stmt = $bdd->prepare("SELECT * FROM guilds_members WHERE user_id = ? AND is_pending = '0' ORDER BY member_rank LIMIT 10");
-        $stmt->bind_param('i', $my_id);
+        $stmt->bind_param('i', $user['id']);
         $stmt->execute();
         $get_em = $stmt->get_result();
         break;
@@ -78,7 +78,7 @@ if ($results > 0) {
 
         $num = 0;
 
-        while ($row = $bdd->query("SELECT * FROM groups_memberships WHERE userid = '" . $my_id . "' AND is_pending = '0' ORDER BY member_rank LIMIT 10'")->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $bdd->query("SELECT * FROM groups_memberships WHERE userid = '" . $user['id'] . "' AND is_pending = '0' ORDER BY member_rank LIMIT 10'")->fetch(PDO::FETCH_ASSOC)) {
 
             $num++;
 
@@ -99,10 +99,10 @@ if ($results > 0) {
             if ($row['is_current'] == 1) {
                 echo "<div class=\"favourite-group\" title=\"Favourite\"></div>\n";
             }
-            if ($row['member_rank'] > 1 && $groupdata['ownerid'] !== $my_id) {
+            if ($row['member_rank'] > 1 && $groupdata['ownerid'] !== $user['id']) {
                 echo "<div class=\"admin-group\" title=\"Admin\"></div>\n";
             }
-            if ($groupdata['ownerid'] == $my_id && $row['member_rank'] > 1) {
+            if ($groupdata['ownerid'] == $user['id'] && $row['member_rank'] > 1) {
                 echo "<div class=\"owned-group\" title=\"Owner\"></div>\n";
             }
 

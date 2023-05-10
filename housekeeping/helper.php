@@ -25,7 +25,7 @@ if($_GET['do'] == "pick" && isset($_GET['key']) && is_numeric($_GET['key'])){
 	if($found > 0){
 		mysqli_query($con,("UPDATE cms_help SET picked_up = '1' WHERE id = '".$_GET['key']."' AND picked_up = '0' LIMIT 1") or die(mysql_error());
 		$msg = "Help query picked up successfully.";
-		mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Picked up help query (ID: ".$_GET['key'].")','helper.php','".$my_id."','','".$date_full."')") or die(mysql_error());
+		mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Picked up help query (ID: ".$_GET['key'].")','helper.php','".$user['id']."','','".$date_full."')") or die(mysql_error());
 	} else {
 		$msg = "Invalid ID specified or already picked up.";
 	}
@@ -45,7 +45,7 @@ if($_GET['do'] == "pick" && isset($_GET['key']) && is_numeric($_GET['key'])){
 	if($found > 0){
 		mysqli_query($con,("DELETE FROM cms_help WHERE id = '".$_GET['key']."' AND picked_up = '1' LIMIT 1") or die(mysql_error());
 		$msg = "Help query deleted successfully.";
-		mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Deleted help query (ID: ".$_GET['key'].")','helper.php','".$my_id."','','".$date_full."')") or die(mysql_error());
+		mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Deleted help query (ID: ".$_GET['key'].")','helper.php','".$user['id']."','','".$date_full."')") or die(mysql_error());
 	} else {
 		$msg = "Invalid ID specified or not picked up yet.<br />Please note that all queries <i>must</i> be picked up before they can be deleted.";
 	}

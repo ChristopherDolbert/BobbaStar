@@ -970,7 +970,6 @@ ul.web-item-list li:hover {
 	-moz-opacity: .5;
 	opacity: .50;
 	filter: alpha(opacity=50);
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
 }
 
 #webstore-items ul li:hover, #webstore-items ul li.selected,

@@ -49,7 +49,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
 
 		$stmt = $bdd->prepare("SELECT * FROM guilds_members WHERE user_id = :my_id AND guild_id = :groupid AND is_pending = '0' LIMIT 1");
-		$stmt->bindValue(':my_id', $my_id, PDO::PARAM_INT);
+		$stmt->bindValue(':my_id', $user['id'], PDO::PARAM_INT);
 		$stmt->bindValue(':groupid', $groupid, PDO::PARAM_INT);
 		$stmt->execute();
 		$is_member = $stmt->rowCount();
@@ -212,7 +212,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 							if ($logged_in && $my_membership['is_current'] == "1" && $is_member) {
 								$viewtools = $viewtools . "<a href=\"#\" id=\"deselect-favorite-button\">Remove favourite</a>";
 							}
-							if ($logged_in && $is_member && $my_id !== $ownerid) {
+							if ($logged_in && $is_member && $user['id'] !== $ownerid) {
 								$viewtools = $viewtools . "<a href=\"leavegroup.php?groupId=" . $groupid . "\" id=\"leave-group-button\">Leave group</a>\n";
 							}
 
@@ -227,7 +227,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 										<?php
 										if ($groupdata['pane'] > 0) {
 											$stmt = $bdd->prepare("SELECT * FROM guilds_members WHERE user_id = :my_id AND is_pending <> '1' AND guild_id = :groupid");
-											$stmt->bindValue(':my_id', $my_id, PDO::PARAM_INT);
+											$stmt->bindValue(':my_id', $user['id'], PDO::PARAM_INT);
 											$stmt->bindValue(':groupid', $_GET['id'], PDO::PARAM_INT);
 											$stmt->execute();
 											$member = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -249,7 +249,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 																																																							}
 																																																						} elseif ($row['topics'] == 1) {
 																																																							$stmt = $bdd->prepare("SELECT * FROM guilds_members WHERE user_id = :my_id AND guild_id = :groupid AND is_pending <> '1' LIMIT 1");
-																																																							$stmt->bindValue(':my_id', $my_id, PDO::PARAM_INT);
+																																																							$stmt->bindValue(':my_id', $user['id'], PDO::PARAM_INT);
 																																																							$stmt->bindValue(':groupid', $_GET['id'], PDO::PARAM_INT);
 																																																							$stmt->execute();
 																																																							$check = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -262,7 +262,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 																																																							}
 																																																						} elseif ($row['topics'] == 2) {
 																																																							$stmt = $bdd->prepare("SELECT * FROM guilds_members WHERE user_id = :my_id AND group_id = :groupid AND member_rank = '2' AND is_pending <> '1' LIMIT 1");
-																																																							$stmt->bindValue(':my_id', $my_id, PDO::PARAM_INT);
+																																																							$stmt->bindValue(':my_id', $user['id'], PDO::PARAM_INT);
 																																																							$stmt->bindValue(':groupid', $_GET['id'], PDO::PARAM_INT);
 																																																							$stmt->execute();
 																																																							$check = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -463,7 +463,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 																																																							}
 																																																						} elseif ($row['topics'] == 1) {
 																																																							$stmt = $bdd->prepare("SELECT * FROM guilds_members WHERE user_id = :my_id AND guild_id = :group_id LIMIT 1");
-																																																							$stmt->bindValue(':my_id', $my_id, PDO::PARAM_INT);
+																																																							$stmt->bindValue(':my_id', $user['id'], PDO::PARAM_INT);
 																																																							$stmt->bindValue(':group_id', $_GET['id'], PDO::PARAM_INT);
 																																																							$stmt->execute();
 																																																							$check = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -476,7 +476,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 																																																							}
 																																																						} elseif ($row['topics'] == 2) {
 																																																							$stmt = $bdd->prepare("SELECT * FROM guilds_members WHERE user_id = :my_id AND guild_id = :group_id AND member_rank = '2' LIMIT 1");
-																																																							$stmt->bindValue(':my_id', $my_id, PDO::PARAM_INT);
+																																																							$stmt->bindValue(':my_id', $user['id'], PDO::PARAM_INT);
 																																																							$stmt->bindValue(':group_id', $_GET['id'], PDO::PARAM_INT);
 																																																							$stmt->execute();
 																																																							$check = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -527,7 +527,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 																																																								}
 																																																							} elseif ($row['topics'] == 1) {
 																																																								$stmt = $bdd->prepare("SELECT * FROM guilds_members WHERE user_id = :my_id AND guild_id = :group_id LIMIT 1");
-																																																								$stmt->bindValue(':my_id', $my_id, PDO::PARAM_INT);
+																																																								$stmt->bindValue(':my_id', $user['id'], PDO::PARAM_INT);
 																																																								$stmt->bindValue(':group_id', $_GET['id'], PDO::PARAM_INT);
 																																																								$stmt->execute();
 																																																								$check = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -540,7 +540,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 																																																								}
 																																																							} elseif ($row['topics'] == 2) {
 																																																								$stmt = $bdd->prepare("SELECT * FROM guilds_members WHERE user_id = :my_id AND guild_id = :group_id AND member_rank = 2 LIMIT 1");
-																																																								$stmt->bindValue(':my_id', $my_id, PDO::PARAM_INT);
+																																																								$stmt->bindValue(':my_id', $user['id'], PDO::PARAM_INT);
 																																																								$stmt->bindValue(':group_id', $_GET['id'], PDO::PARAM_INT);
 																																																								$stmt->execute();
 																																																								$check = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -738,10 +738,10 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 																																																									echo "You must be logged in to reply or post new threads.";
 																																																								}
 																																																							} elseif ($row['topics'] == 1) {
-																																																								$my_id = $user['id'];
+																																																								
 																																																								$id = $_GET['id'];
 																																																								$stmt = $bdd->prepare("SELECT * FROM guilds_members WHERE user_id=? AND guild_id=? AND is_pending <> '1' LIMIT 1");
-																																																								$stmt->bind_param('ii', $my_id, $id);
+																																																								$stmt->bind_param('ii', $user['id'], $id);
 																																																								$stmt->execute();
 																																																								$check = $stmt->get_result();
 
@@ -752,10 +752,10 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 																																																									}
 																																																								}
 																																																							} elseif ($row['topics'] == 2) {
-																																																								$my_id = $user['id'];
+																																																								
 																																																								$id = $_GET['id'];
 																																																								$stmt = $bdd->prepare("SELECT * FROM guilds_members WHERE user_id=? AND guild_id=? AND member_rank='2' AND is_pending <> '1' LIMIT 1");
-																																																								$stmt->bind_param('ii', $my_id, $id);
+																																																								$stmt->bind_param('ii', $user['id'], $id);
 																																																								$stmt->execute();
 																																																								$check = $stmt->get_result();
 

@@ -42,7 +42,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 		$members = $stmt->fetchColumn();
 
 		$stmt = $bdd->prepare("SELECT * FROM guilds_members WHERE user_id=? AND guild_id=? AND is_pending='0' LIMIT 1");
-		$stmt->execute(array($my_id, $groupid));
+		$stmt->execute(array($user['id'], $groupid));
 		$is_member = $stmt->rowCount();
 
 		if ($is_member > 0 && $logged_in) {
@@ -65,16 +65,16 @@ if (isset($_GET['do']) && $_GET['do'] == "edit" && $logged_in) {
 		$edit_mode = true;
 
 		$stmt = $bdd->prepare("SELECT * FROM cms_homes_group_linker WHERE userid=? LIMIT 1");
-		$stmt->execute([$my_id]);
+		$stmt->execute([$user['id']]);
 		$linkers = $stmt->rowCount();
 
 		if ($linkers > 0) {
 			$stmt = $bdd->prepare("UPDATE cms_homes_group_linker SET active='1', groupid=? WHERE userid=? LIMIT 1");
-			$stmt->execute([$groupid, $my_id]);
+			$stmt->execute([$groupid, $user['id']]);
 		} else {
 			$stmt = $bdd->prepare("INSERT INTO cms_homes_group_linker (userid,groupid,active) VALUES (?,?,?)");
 			$active = 1;
-			$stmt->execute([$my_id, $groupid, $active]);
+			$stmt->execute([$user['id'], $groupid, $active]);
 		}
 	} else {
 		header("location:group_profile.php?do=bounce&id=" . $groupid . "");
@@ -103,7 +103,7 @@ if ($groupdata['type'] !== "1" && $is_member !== true) {
 	// If the group type is NOT exclusive/moderated, we have to delete any pending requests
 	// this user has, simply because there's no longer need to put the user in the waiting list.
 	$stmt = $bdd->prepare("DELETE FROM guilds_members WHERE is_pending='1' AND user_id=? AND guild_id=? LIMIT 1");
-	$stmt->bind_param('ii', $my_id, $groupid);
+	$stmt->bind_param('ii', $user['id'], $groupid);
 	$stmt->execute();
 }
 
@@ -125,7 +125,7 @@ if ($logged_in && $my_membership['is_current'] !== "1" && $is_member) {
 if ($logged_in && $my_membership['is_current'] == "1" && $is_member) {
 	$viewtools = $viewtools . "<a href=\"#\" id=\"deselect-favorite-button\">Enlever des favoris</a>";
 }
-if ($logged_in && $is_member && $my_id !== $ownerid) {
+if ($logged_in && $is_member && $user['id'] !== $ownerid) {
 	$viewtools = $viewtools . "<a href=\"leavegroup.php?groupId=" . $groupid . "\" id=\"leave-group-button\">Quitter le clan</a>\n";
 }
 
@@ -141,7 +141,7 @@ if ($bg_exists < 1) { // if there's no background override for this user set it 
 	$bg = "b_bg_pattern_abstract2";
 } else {
 	$bg_fetch = $bdd->prepare("SELECT bg FROM cms_homes_backgrounds WHERE userid = ? LIMIT 1");
-	$bg_fetch->bind_param('i', $my_id);
+	$bg_fetch->bind_param('i', $user['id']);
 	$bg_fetch->execute();
 	$result = $bg_fetch->get_result();
 	$bg_exists = $result->rowCount();
@@ -464,7 +464,7 @@ document.observe(\"dom:loaded\", function() {
 																			$userstmt->execute();
 																			$userrow = $userstmt->fetch(PDO::FETCH_ASSOC);
 
-																			if ($my_id == $row1['userid'] || $grouprrow['ownerid'] == $my_id) {
+																			if ($user['id'] == $row1['userid'] || $grouprrow['ownerid'] == $user['id']) {
 																				$owneronly = "<img src=\"./web-gallery/images/myhabbo/buttons/delete_entry_button.gif\" id=\"gbentry-delete-" . $row1['id'] . "\" class=\"gbentry-delete\" style=\"cursor:pointer\" alt=\"\"/><br/>";
 																			} else {
 																				$owneronly = "";
@@ -699,7 +699,7 @@ Created: <strong>" . $groupdata['created'] . "</strong>
 							<select id="edit-menu-skins-select">
 								<option value="1" id="edit-menu-skins-select-defaultskin">Default</option>
 								<option value="6" id="edit-menu-skins-select-goldenskin">Golden</option>
-								<?php if (IsHCMember($my_id)) { ?>
+								<?php if (IsHCMember($user['id'])) { ?>
 									<option value="8" id="edit-menu-skins-select-hc_pillowskin">HC Bling</option>
 									<option value="7" id="edit-menu-skins-select-hc_machineskin">HC Scifi</option>
 								<?php } ?>
@@ -830,7 +830,7 @@ Created: <strong>" . $groupdata['created'] . "</strong>
 
 				<ul>
 					<li><a href="group_profile.php?id=<?php echo $groupid; ?>&do=edit" id="group-tools-style">Modifier la page</a></li>
-					<?php if ($ownerid == $my_id) { ?><li><a href="#" id="group-tools-settings">Options</a></li><?php } ?>
+					<?php if ($ownerid == $user['id']) { ?><li><a href="#" id="group-tools-settings">Options</a></li><?php } ?>
 					<li><a href="#" id="group-tools-badge">Badge</a></li>
 					<li><a href="#" id="group-tools-members">Membres</a></li>
 				</ul>

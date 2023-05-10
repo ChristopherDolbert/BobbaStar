@@ -36,7 +36,7 @@ if(isset($_POST['query'])){
                 
                 @SendMusData('UPRC' . $query);
 
-		mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Gave user ".$amount." credits','givecredits.php','".$my_id."','".$query."','".$date_full."')") or die(mysql_error());
+		mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Gave user ".$amount." credits','givecredits.php','".$user['id']."','".$query."','".$date_full."')") or die(mysql_error());
 
 	} else {
 

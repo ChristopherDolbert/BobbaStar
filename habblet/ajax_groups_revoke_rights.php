@@ -25,7 +25,7 @@ if (!is_numeric($groupid)) {
 
 // Check if the user is a member and has permission
 $check_member = $bdd->prepare("SELECT member_rank FROM guilds_members WHERE user_id = :user_id AND guild_id = :guild_id AND member_rank > 1 AND is_pending = 0 LIMIT 1");
-$check_member->execute(array(':user_id' => $my_id, ':guild_id' => $groupid));
+$check_member->execute(array(':user_id' => $user['id'], ':guild_id' => $groupid));
 $is_member = $check_member->rowCount();
 
 if ($is_member > 0) {

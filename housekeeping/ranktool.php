@@ -37,14 +37,14 @@ $badge = "ADM";
 
 	if($exists > 0){
 		if($rank > 0 && $rank < 8){
-			if($rank > 6 && $sysadmin == $my_id || $rank < 7){
+			if($rank > 6 && $sysadmin == $user['id'] || $rank < 7){
 				if($sysadmin == $drow['id']){
-					mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Access Denied to Rank Tool; you may not modify the System Administrator\'s rank!','ranktool.php','".$my_id."','".$drow['id']."','".$date_full."')") or die(mysql_error());
+					mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Access Denied to Rank Tool; you may not modify the System Administrator\'s rank!','ranktool.php','".$user['id']."','".$drow['id']."','".$date_full."')") or die(mysql_error());
 					$msg = "Access denied. You may not modify the System Administrator's Rank.";
 				} else {
 					mysqli_query($con,("UPDATE users SET rank = '".$rank."' WHERE name = '".$key."' LIMIT 1") or die(mysql_error()); 
 					$msg = "Rank updated successfully.";
-					mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Changed user rank to ".$rank."','ranktool.php','".$my_id."','".$drow['id']."','".$date_full."')") or die(mysql_error());
+					mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Changed user rank to ".$rank."','ranktool.php','".$user['id']."','".$drow['id']."','".$date_full."')") or die(mysql_error());
 					mysqli_query($con,("DELETE FROM users_badges WHERE userid = '".$drow['id']."' AND badgeid = 'XXX' LIMIT 1");
 					mysqli_query($con,("DELETE FROM users_badges WHERE userid = '".$drow['id']."' AND badgeid = 'NWB' LIMIT 1");
 					mysqli_query($con,("DELETE FROM users_badges WHERE userid = '".$drow['id']."' AND badgeid = 'HBA' LIMIT 1");
@@ -53,7 +53,7 @@ $badge = "ADM";
 					mysqli_query($con,("INSERT INTO users_badges (userid,badgeid,iscurrent) VALUES ('".$drow['id']."','".$badge."','0')");
 				}
 			} else {
-				mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Access Denied to Rank Tool; Only the system administrator may give out rank 7!','ranktool.php','".$my_id."','".$drow['id']."','".$date_full."')") or die(mysql_error());
+				mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Access Denied to Rank Tool; Only the system administrator may give out rank 7!','ranktool.php','".$user['id']."','".$drow['id']."','".$date_full."')") or die(mysql_error());
 				$msg = "Access denied. Only the System Administrator may give out the administrator rank.";
 			}
 		} else {

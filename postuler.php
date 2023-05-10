@@ -170,7 +170,7 @@ Do YOU want to become a staff member? That's possible, below you see what jobs a
 				<script type="text/javascript">if (!$(document.body).hasClassName('process-template')) { Rounder.init(); }</script>
 </div><?php }else{
 $sql = mysqli_query($con,("SELECT * FROM cms_application_forms WHERE id='".$_GET['id']."' AND enabled='1' AND deleted='0'");
-$usersql = mysqli_query($con,("SELECT * FROM users WHERE id='".$my_id."' LIMIT 1");
+$usersql = mysqli_query($con,("SELECT * FROM users WHERE id='".$user['id']."' LIMIT 1");
 if(mysql_num_rows($sql) > 0){
 $row = mysql_fetch_assoc($sql);
 $user = mysql_fetch_assoc($usersql); ?>

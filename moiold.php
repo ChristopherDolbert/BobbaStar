@@ -12,7 +12,7 @@ $_GET['do'] = null;
 $online = null;
 
 $name = $user['username'];
-$my_id = $user['id'];
+
 
 if (!isset($_SESSION['username'])) {
     Redirect("" . $url . "/index");
@@ -22,13 +22,13 @@ if (!isset($_SESSION['username'])) {
 if ($_GET['do'] == "RemoveFeedItem" && is_numeric($_GET['key'])) { // ex. me.php?do=RemoveFeedItem&key=5
     $sql = "DELETE FROM cms_alerts WHERE userid = :my_id AND id = :key";
     $stmt = $bdd->prepare($sql);
-    $stmt->bindParam(":my_id", $my_id);
+    $stmt->bindParam(":my_id", $user['id']);
     $stmt->bindParam(":key", $_GET['key']);
     $result = $stmt->execute();
 }
 
 // Header for minimail
-$sql = "SELECT COUNT(*) FROM cms_minimail WHERE to_id = '" . $my_id . "'";
+$sql = "SELECT COUNT(*) FROM cms_minimail WHERE to_id = '" . $user['id'] . "'";
 $result = $bdd->query($sql);
 if (!$result) {
     $messages = 0;
@@ -41,7 +41,7 @@ header("X-JSON: {\"totalMessages\":" . $messages . "}");
 
 
 // Query tags
-$sql = "SELECT tag,id FROM cms_tags WHERE ownerid = '" . $my_id . "' LIMIT 20";
+$sql = "SELECT tag,id FROM cms_tags WHERE ownerid = '" . $user['id'] . "' LIMIT 20";
 $result = $bdd->query($sql) or die(mysqli_error($bdd));
 $fetch_tags = $result->fetch(MYSQLI_ASSOC);
 $tags_num = $result->rowCount();
@@ -194,10 +194,10 @@ body { behavior: url(web-gallery/csshover.htc); }
                             <a href="credits.php"><?php echo $user['credits']; ?></a> cr&eacute;dits
                         </li>
                         <li class="club">
-                            <a href="club.php"><?php if (!IsHCMember($my_id)) {
+                            <a href="club.php"><?php if (!IsHCMember($user['id'])) {
                                                     echo "Rejoins le " . $shortname . " club &raquo;</a>";
                                                 } else {
-                                                    echo HCDaysLeft($my_id) . " </a>jours HC";
+                                                    echo HCDaysLeft($user['id']) . " </a>jours HC";
                                                 } ?>
                         </li>
                         <li class="club"><a href="deletehand.php">Badge Shop</a></li>
@@ -209,7 +209,7 @@ body { behavior: url(web-gallery/csshover.htc); }
                             <?php
                             $sql = "SELECT * FROM users_club WHERE userid=:my_id LIMIT 1";
                             $stmt = $bdd->prepare($sql);
-                            $stmt->execute(['my_id' => $my_id]);
+                            $stmt->execute(['my_id' => $user['id']]);
                             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
                             if ($stmt->rowCount() == 0) {
@@ -232,12 +232,12 @@ body { behavior: url(web-gallery/csshover.htc); }
                                 <?php
                             }
 
-                            if (IsHCMember($my_id)) {
-                                if (HCDaysLeft($my_id) < 6) { ?>
+                            if (IsHCMember($user['id'])) {
+                                if (HCDaysLeft($user['id']) < 6) { ?>
                                     <li id="feed-item-hc-reminder">
                                         <a href="#" class="remove-feed-item" id="remove-hc-reminder" title="Remove notification">Remove notification</a>
                                         <div>
-                                            Votre <?php echo $shortname; ?> Club expire plus dans<?php echo HCDaysLeft($my_id); ?> jours. Voulez-vous prolonger votre <?php echo $shortname; ?> Club?
+                                            Votre <?php echo $shortname; ?> Club expire plus dans<?php echo HCDaysLeft($user['id']); ?> jours. Voulez-vous prolonger votre <?php echo $shortname; ?> Club?
                                         </div>
                                         <div id="hc-reminder-buttons" class="clearfix">
                                             <a href="#" class="new-button" id="hc-reminder-1" title="31 jours, 20 Credits"><b>1 mois</b><i></i></a>
@@ -279,7 +279,7 @@ body { behavior: url(web-gallery/csshover.htc); }
 
                             $sql = "SELECT * FROM cms_alerts WHERE userid = :my_id";
                             $stmt = $bdd->prepare($sql);
-                            $stmt->execute(['my_id' => $my_id]);
+                            $stmt->execute(['my_id' => $user['id']]);
                             $tmp = $stmt->fetch(PDO::FETCH_ASSOC);
                             $alerts = $stmt->rowCount();
 
@@ -322,7 +322,7 @@ body { behavior: url(web-gallery/csshover.htc); }
                                     }
                                 }
                             }
-                            $sql = "SELECT * FROM cms_noobgifts WHERE userid='" . $my_id . "' LIMIT 1";
+                            $sql = "SELECT * FROM cms_noobgifts WHERE userid='" . $user['id'] . "' LIMIT 1";
                             $result = $bdd->query($sql);
 
                             if ($stmt->rowCount() > 0) {
@@ -375,7 +375,7 @@ body { behavior: url(web-gallery/csshover.htc); }
                             <?php
                             $sql = "SELECT * FROM messenger_friendrequests WHERE user_to_id = :my_id";
                             $stmt = $bdd->prepare($sql);
-                            $stmt->bindParam(":my_id", $my_id);
+                            $stmt->bindParam(":my_id", $user['id']);
                             $stmt->execute();
                             $count = $stmt->rowCount();
 
@@ -480,13 +480,13 @@ body { behavior: url(web-gallery/csshover.htc); }
                     <?php
                     $sql = "SELECT * FROM messenger_friendships WHERE user_one_id = :my_id OR user_two_id = :my_id";
                     $stmt = $bdd->prepare($sql);
-                    $stmt->bindParam(":my_id", $my_id);
+                    $stmt->bindParam(":my_id", $user['id']);
                     $stmt->execute();
                     $count = $stmt->rowCount();
 
                     $sql = "SELECT * FROM cms_minimail WHERE to_id = :my_id OR senderid = :my_id";
                     $stmt = $bdd->prepare($sql);
-                    $stmt->bindParam(":my_id", $my_id);
+                    $stmt->bindParam(":my_id", $user['id']);
                     $stmt->execute();
                     $mescount = $stmt->rowCount();
 
@@ -641,7 +641,7 @@ body { behavior: url(web-gallery/csshover.htc); }
                         <div id="groups-habblet-list-container" class="habblet-list-container groups-list">
 
                             <?php
-                            $get_em = $bdd->query("SELECT * FROM guilds WHERE user_id = '" . $my_id . "'");
+                            $get_em = $bdd->query("SELECT * FROM guilds WHERE user_id = '" . $user['id'] . "'");
                             $groups = $get_em->rowCount();
 
                             echo "<ul class=\"habblet-list two-cols clearfix\">";
@@ -649,7 +649,7 @@ body { behavior: url(web-gallery/csshover.htc); }
                             $lefts = 0;
                             $rights = 0;
                             $get_em = $bdd->prepare("SELECT * FROM guilds WHERE user_id = :my_id");
-                            $get_em->execute(['my_id' => $my_id]);
+                            $get_em->execute(['my_id' => $user['id']]);
 
 
                             echo "<ul class=\"habblet-list two-cols clearfix\">";

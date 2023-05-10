@@ -1,53 +1,46 @@
 <?php
-/*================================================================+\
-|| # PHPRetro - An extendable virtual hotel site and management
-|+==================================================================
-|| # Copyright (C) 2009 Yifan Lu. All rights reserved.
-|| # http://www.yifanlu.com
-|| # Parts Copyright (C) 2009 Meth0d. All rights reserved.
-|| # http://www.meth0d.org
-|| # All images, scripts, and layouts
-|| # Copyright (C) 2009 Sulake Ltd. All rights reserved.
-|+==================================================================
-|| # PHPRetro is provided "as is" and comes without
-|| # warrenty of any kind. PHPRetro is free software!
-|| # License: GNU Public License 3.0
-|| # http://opensource.org/licenses/gpl-license.php
-\+================================================================*/
+/*---------------------------------------------------+
+| HoloCMS - Website and Content Management System
++----------------------------------------------------+
+| Copyright � 2008 Meth0d
++----------------------------------------------------+
+| HoloCMS is provided "as is" and comes without
+| warrenty of any kind. 
++---------------------------------------------------*/
 
-$page['dir'] = '\xml';
-require_once('../includes/core.php');
-$data = new xml_sql;
+include '../config.php';
+include '../core.php';
 
-header("Content-Type: text/xml");
+// This file will not generate a valid XML document, although we're getting close.
+
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 echo "<habbos>\n";
 
-$sql = $data->select1();
-while ($row = $db->fetch_row($sql)) {
+$sqll = mysqli_query($con,("SELECT id,name,mission,figure FROM users ORDER BY online DESC LIMIT 10") or die(mysql_error());
+while ($row = mysql_fetch_array($sqll, MYSQL_NUM)) {
 
-	$form_badge = $user->GetUserBadge($row[1]);
-	$form_group_badge = $user->GetUserGroupBadge($row[0]);
+	$form_badge = GetUserBadge($row[1]);
+	$form_group_badge = GetUserGroupBadge($row[0]);
 
-	if($form_badge != false){
-		$form_badge = $settings->find("site_c_images_path").$settings->find("site_badges_path").$form_badge.".gif";
+	if($form_badge !== false){
+		$form_badge = $cimagesurl.$badgesurl.$form_badge.".gif";
 	} else {
 		$form_badge = "";	
 	}
 
-	if($form_group_badge != false){
-		$form_group_badge = "groupBadge=\"".PATH."/habbo-imaging/badge/".$form_group_badge.".gif\"";
+	if($form_group_badge !== false){
+		$form_group_badge = "groupBadge=\"".$path."habbo-imaging/badge.php?badge=".$form_group_badge."\"";
 	} else {
 		$form_group_badge = "";
 	}
 
-	if($user->IsUserOnline($row[0]) == true){
+	if(IsUserOnline($row[0]) == true){
 	$status = "1";
 	} else {
 	$status = "0";
 	}
 
-	printf("<habbo id=\"%s\" name=\"%s\" motto=\"%s\" url=\"".PATH."/home/%s\" image=\"".$user->avatarURL($row[3],"b,4,3,sml,1,0")."\" badge=\"%s\" status=\"%s\" %s />\n", $row[0], $row[1], $input->HoloText($row[2]), $row[1], $form_badge, $status, $form_group_badge);
+	printf("<habbo id=\"%s\" name=\"%s\" motto=\"%s\" url=\"user_profile.php?name=%s\" image=\"http://www.habbo.co.uk/habbo-imaging/avatarimage?figure=%s&size=b&direction=4&head_direction=3&gesture=sml\" badge=\"%s\" status=\"%s\" %s />\n", $row[0], $row[1], HoloText($row[2]), $row[1], $row[3], $form_badge, $status, $form_group_badge);
 
 }
 

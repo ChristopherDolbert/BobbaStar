@@ -13,7 +13,7 @@ if (!$user['username']) {
 }
 $months = $_POST['optionNumber'];
 $myrow = $user;
-$my_id = $user['id'];
+
 
 switch ($months) {
 	case 1:
@@ -43,7 +43,7 @@ if ($myrow['credits'] < $price) {
 	$msg = "Tu n'as pas assez de cr&eacute;dits pour t'offrir des mois HC";
 } else {
 	$check = $bdd->prepare("SELECT months_left FROM users_club WHERE userid = ? LIMIT 1");
-	$check->execute(array($my_id));
+	$check->execute(array($user['id']));
 	$results = $check->rowCount();
 
 	if ($results > 0) {
@@ -57,7 +57,7 @@ if ($myrow['credits'] < $price) {
 	$time = time();
 
 	/*$check2 = $bdd->prepare("SELECT * FROM users_settings WHERE user_id = ? LIMIT 1");
-	$check2->execute(array($my_id));
+	$check2->execute(array($user['id']));
 	$results2 = $check2->fetch();
 
 	if ($results2['last_hc_payday'] != 0) {
@@ -72,19 +72,19 @@ if ($myrow['credits'] < $price) {
 
 		$stmt = $bdd->prepare($sql);
 		$stmt->bindParam(':price', $price, PDO::PARAM_INT);
-		$stmt->bindParam(':my_id', $my_id, PDO::PARAM_INT);
+		$stmt->bindParam(':my_id', $user['id'], PDO::PARAM_INT);
 		$stmt->execute();
 
 
 		// Appeler la fonction giveHC
-		giveHC($my_id, $months);
+		giveHC($user['id'], $months);
 		
 
 		// Insérer une transaction dans la table cms_transactions
 		$date_full = FullDate('full');
 		$sql = "INSERT INTO gabcms_transaction (user_id, prix, date, produit, gain) VALUES (:userid, :amount, :date_full, :descr, :gain)";
 		$stmt = $bdd->prepare($sql);
-		$stmt->bindParam(':userid', $my_id, PDO::PARAM_INT);
+		$stmt->bindParam(':userid', $user['id'], PDO::PARAM_INT);
 		$stmt->bindParam(':amount', $price, PDO::PARAM_INT);
 		$stmt->bindParam(':date_full', $date_full, PDO::PARAM_STR);
 		$descr = "Adhésion au MyHabbo Club (" . $months . " mois)";
@@ -96,10 +96,10 @@ if ($myrow['credits'] < $price) {
 		$usstts = "UPDATE users_settings SET last_hc_payday = :last_hc_payday WHERE user_id = :my_id LIMIT 1";
 		$stmt9 = $bdd->prepare($usstts);
 		$stmt9->bindParam(':last_hc_payday', $time, PDO::PARAM_INT);
-		$stmt9->bindParam(':my_id', $my_id, PDO::PARAM_INT);
+		$stmt9->bindParam(':my_id', $user['id'], PDO::PARAM_INT);
 		$stmt9->execute();
 
-		/*@SendMUSData('UPRC' . $my_id);*/
+		/*@SendMUSData('UPRC' . $user['id']);*/
 		$msg = "SUPER! Tu fais maintenant partie du " . $shortname . " Club pendant " . $months . " mois.";
 	} else {
 		$msg = "Vous ne pouvez vous inscrire que pour un maximum de " . $hc_maxmonths . " mois. Si cet abonnement est terminé, vous aurez dépassé la limite.";

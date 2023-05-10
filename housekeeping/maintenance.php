@@ -22,7 +22,7 @@ if(isset($_POST['site_closed'])){
 	mysqli_query($con,("UPDATE cms_system SET site_closed = '".$site_closed."' LIMIT 1") or die(mysql_error());
 	$msg = "Settings saved successfully.";
 
-	mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Updated CMS Settings (Turn your site on/off)','maintenance.php','".$my_id."','','".$date_full."')") or die(mysql_error());
+	mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Updated CMS Settings (Turn your site on/off)','maintenance.php','".$user['id']."','','".$date_full."')") or die(mysql_error());
 
 }
 

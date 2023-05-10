@@ -44,7 +44,7 @@ if (isset($_GET['pageNumber'])) {
 					echo "<a href=\"#\" class=\"friend-list-page\" id=\"page-" . $pageminus . "\">&lt;&lt;</a> |";
 				}
 				$stmt = $bdd->prepare("SELECT COUNT(*) FROM messenger_friendships WHERE user_one_id = :my_id OR user_two_id = :my_id");
-				$stmt->bindParam(':my_id', $my_id);
+				$stmt->bindParam(':my_id', $user['id']);
 				$stmt->execute();
 				$friendscount = $stmt->fetchColumn();
 				$pages = ceil($friendscount / $pagesize);
@@ -87,7 +87,7 @@ if (isset($_GET['pageNumber'])) {
 					$offset = $offset - $pagesize;
 
 					$stmt = $bdd->prepare("SELECT * FROM messenger_friendships WHERE user_one_id = :my_id OR user_two_id = :my_id LIMIT :pagesize OFFSET :offset");
-					$stmt->bindParam(':my_id', $my_id);
+					$stmt->bindParam(':my_id', $user['id']);
 					$stmt->bindParam(':pagesize', $pagesize, PDO::PARAM_INT);
 					$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
 					$stmt->execute();
@@ -101,7 +101,7 @@ if (isset($_GET['pageNumber'])) {
 							$even = "even";
 						}
 
-						if ($row['user_two_id'] == $my_id) {
+						if ($row['user_two_id'] == $user['id']) {
 							$stmt = $bdd->prepare("SELECT * FROM users WHERE id = :user_one_id");
 							$stmt->bindParam(':user_one_id', $row['user_one_id']);
 							$stmt->execute();
@@ -181,7 +181,7 @@ if (isset($_GET['pageNumber'])) {
 				$list = 0;
 
 				$stmt = $bdd->prepare("SELECT * FROM messenger_friendships WHERE user_one_id = :my_id OR user_two_id = :my_id");
-				$stmt->bindParam(':my_id', $my_id);
+				$stmt->bindParam(':my_id', $user['id']);
 				$stmt->execute();
 
 				while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -245,13 +245,13 @@ if (isset($_GET['pageNumber'])) {
 					$i = 0;
 					$n = 0;
 					$stmt = $bdd->prepare("SELECT * FROM messenger_friendships WHERE user_one_id = :my_id OR user_two_id = :my_id");
-					$stmt->bindParam(':my_id', $my_id);
+					$stmt->bindParam(':my_id', $user['id']);
 					$stmt->execute();
 
 					while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 						$i++;
 
-						if ($row['user_two_id'] == $my_id) {
+						if ($row['user_two_id'] == $user['id']) {
 							$stmt = $bdd->prepare("SELECT * FROM users WHERE id = :user_one_id AND username LIKE :search");
 							$stmt->bindParam(':user_one_id', $row['user_one_id']);
 							$stmt->bindValue(':search', '%' . $search . '%');

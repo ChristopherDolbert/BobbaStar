@@ -26,7 +26,7 @@ if(isset($_POST['alert'])){
         $userid = $tmp['id'];
         if(is_numeric($userid)){
             mysqli_query($con,("INSERT INTO cms_alerts (userid,type,alert) VALUES ('".$userid."','2','".$alert."')") or die(mysql_error());
-            mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Sent alert to user','alert.php','".$my_id."','".$userid."','".$date_full."')") or die(mysql_error());
+            mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Sent alert to user','alert.php','".$user['id']."','".$userid."','".$date_full."')") or die(mysql_error());
             $msg = "Gave alert to user.";
             if($_POST['musalert'] == "on"){
                 @SendMUSData('HKMW' . $userid . chr(2) . $alert);
@@ -41,7 +41,7 @@ if(isset($_POST['alert'])){
     $check = mysqli_query($con,("SELECT * FROM cms_help WHERE id = '".$_GET['key']."' LIMIT 1") or die(mysql_error());
     $tmp = mysql_fetch_assoc($check);
     if($tmp['picked_up'] !== "1"){
-        mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Automaticly picked up help query (ID: ".$_GET['key'].")','alert.php','".$my_id."','','".$date_full."')") or die(mysql_error());
+        mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Automaticly picked up help query (ID: ".$_GET['key'].")','alert.php','".$user['id']."','','".$date_full."')") or die(mysql_error());
         mysqli_query($con,("UPDATE cms_help SET picked_up = '1' WHERE id = '".$_GET['key']."' LIMIT 1") or die(mysql_error());
     }
     $_POST['alert'] = "Hello, my name is ".$name.". I am sending you this message in reply to your help inquiry sent on ".$tmp['date'].", with the subject '".HoloText($tmp['subject'])."'.\n\n".$name."\n".$shortname." Player Support";

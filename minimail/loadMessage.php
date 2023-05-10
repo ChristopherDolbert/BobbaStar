@@ -5,11 +5,12 @@
 #|																		  #|
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
-if ($bypass != "true") {
-	include('../config.php');
-}
+$page = "inbox";
+$bypass = true;
 
-$my_id = $user['id'];
+include('../config.php');
+
+
 
 if (isset($_GET['messageId'])) {
 	$mesid = $_GET['messageId'];
@@ -70,8 +71,10 @@ if (isset($_GET['messageId'])) {
 
 
 if (isset($_POST['label']) or $bypass == "true") {
-	[$label, $start, $conversationid, $unread] = [$_POST['label'] ?? "", $_POST['start'] ?? "", $_POST['conversationId'] ?? "", $_POST['unreadOnly'] ?? ""];
-
+	$label = isset($_POST['label']) ? $_POST['label'] : "";
+	$start = isset($_POST['start']) ? $_POST['start'] : "";
+	$conversationid = isset($_POST['conversationId']) ? $_POST['conversationId'] : "";
+	$unread = isset($_POST['unreadOnly']) ? $_POST['unreadOnly'] : "";
 
 	if ($bypass == "true") {
 		$label = $page ?? "";
@@ -86,7 +89,7 @@ if (isset($_POST['label']) or $bypass == "true") {
 		<ul class="box-tabs">
 			<?php
 			$stmt = $bdd->prepare("SELECT COUNT(*) AS count FROM cms_minimail WHERE to_id = ? AND read_mail = 0");
-			$stmt->execute([$my_id]);
+			$stmt->execute([$user['id']]);
 			$unreadmail = $stmt->fetch(PDO::FETCH_ASSOC)['count'];
 			?>
 			<li <?php if ($label == "inbox") {
@@ -117,11 +120,11 @@ if (isset($_POST['label']) or $bypass == "true") {
 																						} ?> /> non lus</div>
 				<?php
 				$stmt1 = $bdd->prepare("SELECT COUNT(*) AS count FROM cms_minimail WHERE to_id = ? AND deleted = 0");
-				$stmt1->execute([$my_id]);
+				$stmt1->execute([$user['id']]);
 				$allmail = $stmt1->fetch(PDO::FETCH_ASSOC)['count'];
 
 				$stmt2 = $bdd->prepare("SELECT COUNT(*) AS count FROM cms_minimail WHERE to_id = ? AND deleted = 0 AND read_mail = 0");
-				$stmt2->execute([$my_id]);
+				$stmt2->execute([$user['id']]);
 				$unreadmail = $stmt2->fetch(PDO::FETCH_ASSOC)['count'];
 
 				if ($unread == "true") {
@@ -138,7 +141,7 @@ if (isset($_POST['label']) or $bypass == "true") {
 					}
 				} else {
 					$stmt = $bdd->prepare("SELECT COUNT(*) AS count FROM cms_minimail WHERE to_id = ? AND deleted = 0 LIMIT 10");
-					$stmt->execute([$my_id]);
+					$stmt->execute([$user['id']]);
 					$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					$endnum = count($rows);
 
@@ -193,10 +196,10 @@ if (isset($_POST['label']) or $bypass == "true") {
 			$i = 0;
 			if ($unread == "true") {
 				$stmt = $bdd->prepare("SELECT * FROM cms_minimail WHERE to_id = ? AND deleted = 0 AND read_mail = 0 ORDER BY ID DESC LIMIT 10");
-				$stmt->execute([$my_id]); // cast offset to integer to avoid syntax error
+				$stmt->execute([$user['id']]); // cast offset to integer to avoid syntax error
 			} else {
 				$stmt = $bdd->prepare("SELECT * FROM cms_minimail WHERE to_id = ? AND deleted = 0 ORDER BY id DESC LIMIT 10");
-				$stmt->execute([$my_id]);
+				$stmt->execute([$user['id']]);
 			}
 
 
@@ -257,7 +260,7 @@ if (isset($_POST['label']) or $bypass == "true") {
 <?php } elseif ($label == "sent") { ?>
 	<div class="navigation">
 		<?php
-			$sql1 = $bdd->query("SELECT * FROM cms_minimail WHERE senderid = '" . $my_id . "'");
+			$sql1 = $bdd->query("SELECT * FROM cms_minimail WHERE senderid = '" . $user['id'] . "'");
 			$allmail = $sql1->rowCount();
 			$allnum = $allmail;
 			if ($start != null) {
@@ -268,7 +271,7 @@ if (isset($_POST['label']) or $bypass == "true") {
 					$endnum = $allnum;
 				}
 			} else {
-				$sql1 = $bdd->query("SELECT * FROM cms_minimail WHERE senderid = '" . $my_id . "' AND deleted = '0' LIMIT 10");
+				$sql1 = $bdd->query("SELECT * FROM cms_minimail WHERE senderid = '" . $user['id'] . "' AND deleted = '0' LIMIT 10");
 				$endnum = $sql1->rowCount();
 				$offset = "0";
 				$startnum = "1";
@@ -310,7 +313,7 @@ if (isset($_POST['label']) or $bypass == "true") {
 	<?php
 			$i = 0;
 			$getem = $bdd->prepare("SELECT * FROM cms_minimail WHERE senderid = :my_id ORDER BY id DESC LIMIT 10 OFFSET :offset");
-			$getem->bindParam(':my_id', $my_id);
+			$getem->bindParam(':my_id', $user['id']);
 			$getem->bindParam(':offset', $offset, PDO::PARAM_INT);
 			$getem->execute();
 
@@ -365,7 +368,7 @@ if (isset($_POST['label']) or $bypass == "true") {
 	<div class="navigation">
 		<?php
 			$stmt = $bdd->prepare("SELECT * FROM cms_minimail WHERE to_id = :my_id AND deleted = '1'");
-			$stmt->bindParam(':my_id', $my_id);
+			$stmt->bindParam(':my_id', $user['id']);
 			$stmt->execute();
 			$allmail = $stmt->rowCount();
 			$allnum = $allmail;
@@ -379,7 +382,7 @@ if (isset($_POST['label']) or $bypass == "true") {
 				}
 			} else {
 				$stmt = $bdd->prepare("SELECT * FROM cms_minimail WHERE to_id = :my_id AND deleted = '1' LIMIT 10");
-				$stmt->bindParam(':my_id', $my_id);
+				$stmt->bindParam(':my_id', $user['id']);
 				$stmt->execute();
 				$endnum = $stmt->rowCount();
 				$offset = "0";
@@ -430,7 +433,7 @@ if (isset($_POST['label']) or $bypass == "true") {
 			$i = 0;
 			$query = "SELECT * FROM cms_minimail WHERE to_id = :my_id AND deleted = '1' ORDER BY ID DESC LIMIT 10 OFFSET :offset";
 			$stmt = $bdd->prepare($query);
-			$stmt->bindParam(':my_id', $my_id, PDO::PARAM_INT);
+			$stmt->bindParam(':my_id', $user['id'], PDO::PARAM_INT);
 			$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
 			$stmt->execute();
 
@@ -560,7 +563,7 @@ if (isset($_POST['label']) or $bypass == "true") {
 				$stmt2->bindParam(':senderid', $row['senderid']);
 				$stmt2->execute();
 				$senderrow = $stmt2->fetch(PDO::FETCH_ASSOC);
-				$figure = $avatrimage . "" . $senderrow['figure'] . "&size=s&direction=9&head_direction=2&gesture=sml";
+				$figure = $avatarimage . $senderrow['look'] . "&size=s&direction=9&head_direction=2&gesture=sml";
 
 				printf("	<div class=\"message-item %s \" id=\"msg-%s\">
 				<div class=\"message-preview\" status=\"%s\">
@@ -591,7 +594,7 @@ if (isset($_POST['label']) or $bypass == "true") {
 			} ?>
 	</div>
 <?php }
-?><div style="opacity: 1;" class="notification"><?php echo $message; ?></div>
+?><div style="opacity: 1;" class="notification"></div>
 </div><?php
 	}
 		?>

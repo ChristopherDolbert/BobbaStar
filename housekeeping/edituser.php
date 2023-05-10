@@ -63,7 +63,7 @@ if(isset($_POST['hiddenHook']) && $showeditor == true){
         @SendMusData('UPRA' . $userid);
         
         // Create log entry
-        mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Edited user','edituser.php','".$my_id."','".$userid."','".$date_full."')") or die(mysql_error());
+        mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Edited user','edituser.php','".$user['id']."','".$userid."','".$date_full."')") or die(mysql_error());
         
         // Set $msg
         $msg = "User updated successfully. This user will also update (poof) ingame, if connected.<br />";

@@ -217,7 +217,7 @@ if (isset($_SESSION['acp'])) {
 			$tab = 5;
 			include('chatlogs.php');
 		} elseif ($p == "dboptimize") {
-			if ($sysadmin == $my_id) {
+			if ($sysadmin == $user['id']) {
 				$tab = 3;
 				include('dboptimize.php');
 			} else {
@@ -225,7 +225,7 @@ if (isset($_SESSION['acp'])) {
 				include('access_denied.php');
 			}
 		} elseif ($p == "dbrepair") {
-			if ($sysadmin == $my_id) {
+			if ($sysadmin == $user['id']) {
 				$tab = 3;
 				include('dbrepair.php');
 			} else {
@@ -233,7 +233,7 @@ if (isset($_SESSION['acp'])) {
 				include('access_denied.php');
 			}
 		} elseif ($p == "dbquery") {
-			if ($sysadmin == $my_id) {
+			if ($sysadmin == $user['id']) {
 				$tab = 3;
 				include('dbquery.php');
 			} else {

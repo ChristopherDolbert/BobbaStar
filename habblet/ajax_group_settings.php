@@ -21,7 +21,7 @@ if (!is_numeric($groupid)) {
 }
 
 $check = $bdd->prepare("SELECT member_rank FROM guilds_members WHERE user_id = ? AND guild_id = ? AND member_rank > 1 AND is_pending = '0' LIMIT 1");
-$check->execute([$my_id, $groupid]);
+$check->execute([$user['id'], $groupid]);
 $is_member = $check->rowCount();
 
 if ($is_member > 0) {
@@ -42,7 +42,7 @@ if ($valid > 0) {
     exit;
 }
 
-if ($ownerid !== $my_id) {
+if ($ownerid !== $user['id']) {
     exit;
 }
 

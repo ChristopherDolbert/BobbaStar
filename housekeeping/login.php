@@ -38,7 +38,7 @@ if (isset($_POST['username'])) {
 			$_SESSION['hkusername'] = $row['username'];
 			$_SESSION['hkpassword'] = $form_pass;
 
-			$my_id = $row['id'];
+			$user['id'] = $row['id'];
 
 			// Log them in on the site as well if needed
 			if (!isset($_SESSION['username'])) {
@@ -48,7 +48,7 @@ if (isset($_POST['username'])) {
 
 			header("Location: index.php?p=dashboard");
 			$stmt = $bdd->prepare("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES (:action,:message,:note,:userid,:targetid,:timestamp)");
-			$stmt->execute(array(':action' => 'Housekeeping', ':message' => $row['username'] . " authenticated from " . $_SERVER['REMOTE_ADDR'], ':note' => 'login.php', ':userid' => $my_id, ':targetid' => '', ':timestamp' => time()));
+			$stmt->execute(array(':action' => 'Housekeeping', ':message' => $row['username'] . " authenticated from " . $_SERVER['REMOTE_ADDR'], ':note' => 'login.php', ':userid' => $user['id'], ':targetid' => '', ':timestamp' => time()));
 
 			exit;
 		} else {

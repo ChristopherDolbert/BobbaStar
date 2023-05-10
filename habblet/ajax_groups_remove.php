@@ -34,7 +34,7 @@ if (!is_numeric($groupid)) {
 
 // Vérification de l'appartenance de l'utilisateur à la guilde
 $stmt = $bdd->prepare("SELECT member_rank FROM guilds_members WHERE user_id = :my_id AND guild_id = :groupid AND member_rank > 1 AND is_pending = '0' LIMIT 1");
-$stmt->bindParam(':my_id', $my_id, PDO::PARAM_INT);
+$stmt->bindParam(':my_id', $user['id'], PDO::PARAM_INT);
 $stmt->bindParam(':groupid', $groupid, PDO::PARAM_INT);
 $stmt->execute();
 $is_member = $stmt->rowCount();

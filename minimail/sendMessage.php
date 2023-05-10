@@ -52,7 +52,7 @@ $i = -1;
 while ($elements !== $i) {
 	$i++;
 	$stmt = $bdd->prepare("INSERT INTO cms_minimail (senderid,to_id,subject,date,message,conversationid) VALUES (?,?,?,?,?,?)");
-	$stmt->execute([$my_id, $ids[$i], $subject, $date, $body, $conid]);
+	$stmt->execute([$user['id'], $ids[$i], $subject, $date, $body, $conid]);
 }
 
 $bypass = "true";

@@ -15,7 +15,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $error = 0;
 
-if ($row['senderid'] == $my_id) {
+if ($row['senderid'] == $user['id']) {
 	$error = 1;
 	$message = "You can't report your own messages.";
 }

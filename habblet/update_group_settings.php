@@ -12,7 +12,7 @@ $groupid = $_POST['groupId'];
 if(!is_numeric($groupid)){ exit; }
 
 $check = $bdd->prepare("SELECT member_rank FROM guilds_members WHERE user_id = :my_id AND guild_id = :groupid AND member_rank > 1 AND is_pending = '0' LIMIT 1");
-$check->bindParam(':my_id', $my_id);
+$check->bindParam(':my_id', $user['id']);
 $check->bindParam(':groupid', $groupid);
 $check->execute();
 
@@ -41,7 +41,7 @@ if($valid > 0){
 }
 
 
-if($ownerid !== $my_id){ exit; }
+if($ownerid !== $user['id']){ exit; }
 
 $name = trim(FilterText($_POST['name']));
 $description = trim(FilterText($_POST['description']));
@@ -62,7 +62,7 @@ if(strlen(FilterText($name)) > 25){
 	$update->bindParam(':description', $description);
 	$update->bindParam(':type', $type);
 	$update->bindParam(':groupid', $groupid);
-	$update->bindParam(':my_id', $my_id);
+	$update->bindParam(':my_id', $user['id']);
 	$update->execute();
 
 	echo "Editing group settings successful\n\n<p>\n<a href=\"group_profile.php?id=".$groupid."\" class=\"new-button\"><b>Done</b><i></i></a>\n</p>\n\n<div class=\"clear\"></div>";

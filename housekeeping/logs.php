@@ -18,11 +18,11 @@ if($hkzone !== true){ header("Location: index.php?throwBack=true"); exit; }
 if(!session_is_registered(acp)){ header("Location: index.php?p=login"); exit; }
 
 if($_GET['do'] == "prune"){
-	if($my_id == $sysadmin){
+	if($user['id'] == $sysadmin){
 		mysqli_query($con,("TRUNCATE TABLE system_stafflog") or die(mysql_error());
-		mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Staff Log pruned (emptied)','logs.php','".$my_id."','','".$date_full."')") or die(mysql_error());
+		mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Staff Log pruned (emptied)','logs.php','".$user['id']."','','".$date_full."')") or die(mysql_error());
 	} else {
-		mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Access denied to System Administrator [".$sysadmin."] only feature (Prune Staff Logs)','logs.php','".$my_id."','','".$date_full."')") or die(mysql_error());
+		mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Access denied to System Administrator [".$sysadmin."] only feature (Prune Staff Logs)','logs.php','".$user['id']."','','".$date_full."')") or die(mysql_error());
 	}
 }
 

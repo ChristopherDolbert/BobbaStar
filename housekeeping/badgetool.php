@@ -40,7 +40,7 @@ $exists = mysql_num_rows($check);
 
 				$msg = "Gave the user this badge (" . $badge . ") and set it as current badge successfully.";
 
-				mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Gave user ".$badge." badge','badgetool.php','".$my_id."','".$userid."','".$date_full."')") or die(mysql_error());
+				mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Gave user ".$badge." badge','badgetool.php','".$user['id']."','".$userid."','".$date_full."')") or die(mysql_error());
                                 
                                 @SendMusData('UPRS' . $userid);
 
@@ -51,7 +51,7 @@ $exists = mysql_num_rows($check);
                                 
 				$msg = "This user already has this badge; the badge (" . $badge . ") has been set as the user's current badge successfully.";
 
-				mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Set current badge to ".$badge."','badgetool.php','".$my_id."','".$userid."','".$date_full."')") or die(mysql_error());
+				mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Set current badge to ".$badge."','badgetool.php','".$user['id']."','".$userid."','".$date_full."')") or die(mysql_error());
                                 
                                 @SendMusData('UPRS' . $userid);
 

@@ -29,7 +29,7 @@ if(isset($_POST['sitename'])){
 		mysqli_query($con,("UPDATE cms_system SET sitename = '".$sitename."', shortname = '".$shortname."', enable_sso = '".$enable_sso."', language = '".$language."' , start_credits='".$start_credits."', analytics = '".$analytics."' LIMIT 1") or die(mysql_error());
 		$msg = "Settings saved successfully.";
 
-		mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Updated CMS Settings (General Configuration)','cms_config.php','".$my_id."','','".$date_full."')") or die(mysql_error());
+		mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Updated CMS Settings (General Configuration)','cms_config.php','".$user['id']."','','".$date_full."')") or die(mysql_error());
 
 	} else {
 

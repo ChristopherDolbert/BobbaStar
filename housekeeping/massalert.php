@@ -28,7 +28,7 @@ if(isset($_POST['alert'])){
                 @SendMUSData('HKTM' . $row['id'] . chr(2) . $alert);
             }
         }
-        mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Mass Alert to all users on site','massalert.php','".$my_id."','','".$date_full."')") or die(mysql_error());
+        mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Mass Alert to all users on site','massalert.php','".$user['id']."','','".$date_full."')") or die(mysql_error());
         $msg = "Gave mass alert. Users processed: " . $counter;
     } else {
         $msg = "Please do not leave the alert field blank.";

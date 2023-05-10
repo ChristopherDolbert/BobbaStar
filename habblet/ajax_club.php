@@ -6,7 +6,7 @@
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
 include('../config.php');
-$my_id = $user['id'];
+
 
 if (!$user['username']) {
 	echo "<p>\nPlease log in first.\n</p>\n\n<p>\n<a href=\"#\" class=\"new-button\" onclick=\"habboclub.closeSubscriptionWindow(); return false;\"><b>Done</b><i></i></a>\n</p>";
@@ -16,15 +16,15 @@ if (!$user['username']) {
 echo "<p>
 Vous";
 
-if (!IsHCMember($my_id)) {
+if (!IsHCMember($user['id'])) {
 	echo " n'êtes";
 }
 
 echo " pas un membre du " . $sitename . " Club
 </p>
 <p>";
-if (IsHCMember($my_id)) {
-	echo "Vous avez " . HCDaysLeft($my_id) . " Jour(s) restants";
+if (IsHCMember($user['id'])) {
+	echo "Vous avez " . HCDaysLeft($user['id']) . " Jour(s) restants";
 } else {
 	echo "&nbsp;";
 }

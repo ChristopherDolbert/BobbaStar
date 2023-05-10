@@ -23,7 +23,7 @@ if(!isset($_POST['category'])){ // do not try to save when it's a category jump
 				mysqli_query($con,("UPDATE users SET credits = credits + '".$_POST['credits']."' WHERE id='".$row['id']."' LIMIT 1");
 				@SendMUSData('UPRC' . $row['id']);
 				}
-				mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Gave credits to every user, total users: ".$count." (Amount ".$_POST['credits'].")','massa.php','".$my_id."','','".$date_full."')") or die(mysql_error());
+				mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Gave credits to every user, total users: ".$count." (Amount ".$_POST['credits'].")','massa.php','".$user['id']."','','".$date_full."')") or die(mysql_error());
 				$msg = "Katsjing, everybody got there credits! Users processed: ".$count."";
 				}else{
 				$msg = "Oops, please use only numbers and no characters!";
@@ -46,9 +46,9 @@ if(!isset($_POST['category'])){ // do not try to save when it's a category jump
 			$time = time() + ($_POST['time'] * 24 * 60 * 60);
 			mysqli_query($con,("INSERT INTO cms_badges (userid,days,badgeid) VALUES ('".$row['id']."','".date('Y-m-d', $time)."','".$_POST['code']."')");
 			}
-			mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,timestamp) VALUES ('Housekeeping','Gave badge to every user (for ".$_POST['time']." days), total users: ".$count." (Badge id: ".$_POST['code'].").','massa.php','".$my_id."','".$date_full."')") or die(mysql_error());
+			mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,timestamp) VALUES ('Housekeeping','Gave badge to every user (for ".$_POST['time']." days), total users: ".$count." (Badge id: ".$_POST['code'].").','massa.php','".$user['id']."','".$date_full."')") or die(mysql_error());
 			}else{
-			mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,timestamp) VALUES ('Housekeeping','Gave badge to every user (perm.), total users: ".$count." (Badge id: ".$_POST['code'].").','massa.php','".$my_id."','".$date_full."')") or die(mysql_error());
+			mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,timestamp) VALUES ('Housekeeping','Gave badge to every user (perm.), total users: ".$count." (Badge id: ".$_POST['code'].").','massa.php','".$user['id']."','".$date_full."')") or die(mysql_error());
 			}
 			
 			$msg = "Katsjing, everybody got there badge! Users processed: ".$count."";
@@ -60,7 +60,7 @@ if(!isset($_POST['category'])){ // do not try to save when it's a category jump
 			mysqli_query($con,("DELETE FROM users_badges WHERE userid='".$row['id']."' AND badgeid='".$_POST['badgec']."'");
 			if(mysql_error == 0) {
 			$msg = "The badge ".$_POST['badgec']." is succesfully taken off.";
-			mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Badge (".$_POST['badgec'].") taken off','massa.php','".$my_id."','".$row['id']."','".$date_full."')") or die(mysql_error());
+			mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Badge (".$_POST['badgec'].") taken off','massa.php','".$user['id']."','".$row['id']."','".$date_full."')") or die(mysql_error());
 			}else{
 			$msg = "This user doesn't have this badge!";
 			}
@@ -73,7 +73,7 @@ if(!isset($_POST['category'])){ // do not try to save when it's a category jump
 	while($row = mysql_fetch_assoc($sql)) {
 	mysqli_query($con,("DELETE FROM users_badges WHERE badgeid='".$_POST['take']."'");
 	}
-	mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,timestamp) VALUES ('Housekeeping','Badge taken off from all users who had the badge ".$_POST['take'].". Users processed: ".$count."','massa.php','".$my_id."','".$date_full."')") or die(mysql_error());
+	mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,timestamp) VALUES ('Housekeeping','Badge taken off from all users who had the badge ".$_POST['take'].". Users processed: ".$count."','massa.php','".$user['id']."','".$date_full."')") or die(mysql_error());
 	$msg = "Badges are succesfully taken off! Users processed: ".$count."";
 	}
 }

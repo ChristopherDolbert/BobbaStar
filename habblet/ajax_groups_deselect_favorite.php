@@ -17,12 +17,12 @@ if (is_numeric($groupid) && $groupid > 0) {
 
 	if ($exists > 0) {
 
-		$check2 = $bdd->query("SELECT guild_id FROM guilds_members WHERE user_id = '" . $my_id . "' AND guild_id = '" . $groupid . "' LIMIT 1");
+		$check2 = $bdd->query("SELECT guild_id FROM guilds_members WHERE user_id = '" . $user['id'] . "' AND guild_id = '" . $groupid . "' LIMIT 1");
 		$already_member = $check2->rowCount();
 
 		if ($already_member > 0) {
 
-			$bdd->query("UPDATE guilds_members SET is_current = '0' WHERE user_id = '" . $my_id . "' AND guild_id = '" . $groupid . "' LIMIT 1");
+			$bdd->query("UPDATE guilds_members SET is_current = '0' WHERE user_id = '" . $user['id'] . "' AND guild_id = '" . $groupid . "' LIMIT 1");
 		} else {
 			exit;
 		}

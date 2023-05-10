@@ -101,16 +101,16 @@ if(isset($_POST['uid'])){
             $ban_date = $date[0] . "-" . $date[1] . "-" . $date[2] . " " . $time[0] . ":" . $time[1] . ":" . $time[2];
             $tmp = mysql_fetch_assoc($check);
             
-            if($uid !== $sysadmin || $my_id == $sysadmin){
+            if($uid !== $sysadmin || $user['id'] == $sysadmin){
                 mysqli_query($con,("INSERT INTO users_bans (userid,ipaddress,date_expire,descr) VALUES ('".$uid."','".$ip."','".$ban_date."','".$reason."')") or die(mysql_error());
                 mysqli_query($con,("UPDATE users SET ticket_sso = '' WHERE id = '".$uid."' LIMIT 1") or die(mysql_error()); // Let's null his SSO ticket just to make sure
-                mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Remotely banned (".$reason.")','bantool.php','".$my_id."','".$uid."','".$date_full."')") or die(mysql_error());
+                mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Remotely banned (".$reason.")','bantool.php','".$user['id']."','".$uid."','".$date_full."')") or die(mysql_error());
             
                 $msg = "User " . $tmp['name'] . " has been banned untill " . $ban_date . " successfully. An ingame notification has been sent (that is, if the user is online).";
                 @SendMUSData('HKSB' . $uid . chr(2) . $reason);
             } else {
                 $msg = "You may not ban the System Administrator!";
-                mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Access Denied; tried to ban System Administrator','bantool.php','".$my_id."','".$uid."','".$date_full."')") or die(mysql_error());
+                mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Access Denied; tried to ban System Administrator','bantool.php','".$user['id']."','".$uid."','".$date_full."')") or die(mysql_error());
             }
         }
     }

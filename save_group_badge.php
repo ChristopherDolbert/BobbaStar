@@ -21,7 +21,7 @@ if ($appkey !== "Meth0d.org") {
 $badge = str_replace("NaN", "", $badge); // NaN = invalid stuff
 
 $stmt = $bdd->prepare("SELECT member_rank FROM guilds_members WHERE user_id = ? AND guild_id = ? AND member_rank > 1 AND is_pending = '0' LIMIT 1");
-$stmt->bind_param('ii', $my_id, $groupid);
+$stmt->bind_param('ii', $user['id'], $groupid);
 $stmt->execute();
 $result = $stmt->get_result();
 $is_member = mysqli_num_rows($result);

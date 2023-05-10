@@ -19,7 +19,7 @@ if(isset($_POST['query'])){
     $query = FilterText($_POST['query']);
     $rows = mysql_evaluate("SELECT COUNT(*) FROM users_bans WHERE userid = '".$query."' OR descr = '".$query."' OR date_expire = '".$query."' OR ipaddress = '".$query."'");
     mysqli_query($con,("DELETE FROM users_bans WHERE userid = '".$query."' OR descr = '".$query."' OR date_expire = '".$query."' OR ipaddress = '".$query."'") or die(mysql_error());
-    mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','(Mass) Unban performed [Query: ".FilterText($query)."]','unbantool.php','".$my_id."','','".$date_full."')") or die(mysql_error());
+    mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','(Mass) Unban performed [Query: ".FilterText($query)."]','unbantool.php','".$user['id']."','','".$date_full."')") or die(mysql_error());
     $msg = "Operation applied successfully. Affected bans: " . $rows;
 }
 

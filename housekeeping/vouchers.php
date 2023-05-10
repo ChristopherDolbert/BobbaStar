@@ -23,7 +23,7 @@ if(isset($_POST['voucher'])){
             mysqli_query($con,("INSERT INTO vouchers (voucher,type,credits) VALUES ('".FilterText($_POST['voucher'])."','".$_POST['type']."','".$_POST['credits']."')") or die(mysql_error()); 
             $msg = "The voucher has been created successfully."; 
 
-            mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Created voucher ".FilterText($_POST['voucher'])." worth ".FilterText($_POST['credits'])." credits','vouchers.php','".$my_id."','','".$date_full."')") or die(mysql_error()); 
+            mysqli_query($con,("INSERT INTO system_stafflog (action,message,note,userid,targetid,timestamp) VALUES ('Housekeeping','Created voucher ".FilterText($_POST['voucher'])." worth ".FilterText($_POST['credits'])." credits','vouchers.php','".$user['id']."','','".$date_full."')") or die(mysql_error()); 
 
         } 
     } else { 

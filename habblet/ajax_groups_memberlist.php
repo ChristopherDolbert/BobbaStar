@@ -29,7 +29,7 @@ if (!is_numeric($groupid)) {
 }
 
 $stmt = $bdd->prepare("SELECT member_rank FROM guilds_members WHERE user_id = ? AND guild_id = ? AND member_rank > 1 AND is_pending = '0' LIMIT 1");
-$stmt->execute([$my_id, $groupid]);
+$stmt->execute([$user['id'], $groupid]);
 $is_member = $stmt->rowCount();
 
 
@@ -144,7 +144,7 @@ if ($pending == true) {
 				}
 				echo "</div>
 				<input id=\"group-memberlist-m-" . $userdata['id'] . "\" type=\"checkbox\"";
-				if ($membership['userid'] == $groupdata['ownerid'] || $membership['userid'] == $my_id) {
+				if ($membership['userid'] == $groupdata['ownerid'] || $membership['userid'] == $user['id']) {
 					echo " disabled=\"disabled\"";
 				}
 				echo " style=\"margin: 0; padding: 0; vertical-align: middle\"/>
