@@ -16,7 +16,8 @@ $sql = $bdd->query("SELECT * FROM gabcms_config WHERE id = '1'");
 $cof = $sql->fetch(PDO::FETCH_ASSOC);
 $id = Secu($_GET['id']);
 
-$info = $bdd->query("SELECT * FROM gabcms_recrutement WHERE id = '" . $id . "'");
+$info = $bdd->prepare("SELECT * FROM gabcms_recrutement WHERE id = ?");
+$info->execute([$id]);
 $i = $info->fetch();
 $date_but = date('d/m/Y', $i['date_butoire']);
 
@@ -80,7 +81,8 @@ if (isset($_POST['cv']) && isset($_POST['age'])) {
 </div>";
 	}
 }
-$correct = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id = '" . $i['poste'] . "'");
+$correct = $bdd->prepare("SELECT * FROM gabcms_postes_noms WHERE id = ?");
+$correct->execute([$i['poste']]);
 $caz = $correct->fetch();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -166,8 +168,9 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 							Poste à pourvoir: <b><?PHP echo Secu($caz['nom_M']); ?></b><br /><br />
 							Date de publication: <b><?PHP echo Secu($i['date']); ?></b><br /><br />
 							Date butoire: <b><?PHP echo Secu($date_but); ?></b><br /><br />
-							Nombre de postulant: <b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_recrutement_dossier WHERE id_recrut = '" . $id . "'";
-													$query = $bdd->query($req);
+							Nombre de postulant: <b><?php $req = "SELECT COUNT(*) AS id FROM gabcms_recrutement_dossier WHERE id_recrut = ?";
+													$query = $bdd->prepare($req);
+                                                    $query->execute([$id]);
 													$nb_inscrit = $query->fetch();
 													echo Secu($nb_inscrit['id']);
 													?></b>
@@ -195,8 +198,9 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 							if ($cof['aff_aidmotiv'] == '2') {
 								$modif_aide = "";
 							}
-							$search = $bdd->query("SELECT pseudo FROM gabcms_recrutement_dossier WHERE id_recrut = '" . $id . "' AND pseudo = '" . $user['username'] . "'");
-							$ok = $search->fetch();
+							$search = $bdd->prepare("SELECT pseudo FROM gabcms_recrutement_dossier WHERE id_recrut = ? AND pseudo = ?");
+							$search->execute([$id, $user['username']]);
+                            $ok = $search->fetch();
 							if ($i['date_butoire'] >= $nowtime && $ok['pseudo'] != $user['username']) { ?><span style="color:#FF0000;">Sachez que vous ne pourrez rien modifier après que votre candidature est été envoyée.</span><br /><br />
 								<?PHP echo $modif_aide; ?>
 								<form name="editor" method="post" action="#">
