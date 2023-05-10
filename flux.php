@@ -113,10 +113,11 @@ table:nth-child(2n+1) {
 </style> 
 <?php
 $messagesParPage=15; 
-$retour_total=$bdd->query('SELECT COUNT(*) AS total FROM gabcms_contact WHERE user_id = '.$user['id'].'');
-$donnees_total=$retour_total->fetch(PDO::FETCH_ASSOC);
-$total=$donnees_total['total'];
-$nombreDePages=ceil($total/$messagesParPage);
+$retour_total = $bdd->prepare('SELECT COUNT(*) AS total FROM gabcms_contact WHERE user_id = ?');
+$retour_total->execute([$user['id']]);
+$donnees_total = $retour_total->fetch(PDO::FETCH_ASSOC);
+$total = $donnees_total['total'];
+$nombreDePages = ceil($total/$messagesParPage);
 if(isset($_GET['page']))
 {
      $pageActuelle=intval($_GET['page']);
@@ -130,9 +131,10 @@ else
 {
      $pageActuelle=1; 
 }
-$premiereEntree=($pageActuelle-1)*$messagesParPage;
-$retour_messages=$bdd->query('SELECT * FROM gabcms_management WHERE user_id = '.$user['id'].' ORDER BY id DESC LIMIT '.$premiereEntree.', '.$messagesParPage.'');
-        while($t = $retour_messages->fetch()) {
+$premiereEntree = ($pageActuelle-1)*$messagesParPage;
+$retour_messages = $bdd->prepare('SELECT * FROM gabcms_management WHERE user_id = ? ORDER BY id DESC LIMIT ?, ?');
+$retour_messages->execute([$user['id'], $premiereEntree, $messagesParPage]);
+while($t = $retour_messages->fetch()) {
 ?>
 <table>
     <tbody>
