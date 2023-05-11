@@ -11,7 +11,6 @@ $bypass = true;
 include('../config.php');
 
 
-
 if (isset($_GET['messageId'])) {
 	$mesid = $_GET['messageId'];
 	$label = $_GET['label'];

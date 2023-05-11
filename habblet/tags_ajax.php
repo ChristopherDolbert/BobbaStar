@@ -9,14 +9,15 @@
 || # warrenty of any kind. HoloCMS is free software!
 |+===================================================*/
 
-include('../core.php');
-include('../includes/session.php');
+include('../config.php');
 
 $key = $_GET['key'];
 $tag = FilterText($_POST['tagName']);
 
-$tmp = mysqli_query($con,("SELECT * FROM cms_tags WHERE ownerid = '".$user['id']."' LIMIT 20") or die(mysql_error());
-$tag_num = mysql_num_rows($tmp);
+$stmt = $bdd->prepare("SELECT * FROM cms_tags WHERE ownerid = :user_id LIMIT 20");
+$stmt->execute(array(':user_id' => $user['id']));
+$tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$tags_num = count($tags);
 
 $randomq[] = "What is your favourite TV show?";
 $randomq[] = "Who is your favourite actor?";
@@ -33,93 +34,134 @@ $randomq[] = "Who was your first love?";
 $randomq[] = "What is your favorite movie?";
 $randomq[] = "Cats, dogs, or something more exotic?";
 $randomq[] = "What is your favorite color?";
-srand ((double) microtime() * 1000000);
-$chosen = rand(0,count($randomq)-1);
+mt_srand(time());
 
-if($key == "remove"){
+$chosen = array_rand($randomq);
+$tag_question = $randomq[$chosen];
 
-mysqli_query($con,("DELETE FROM cms_tags WHERE tag = '".$tag."' AND ownerid = '".$user['id']."' LIMIT 1") or die(mysql_error());
-echo "SUCCESS";
+$chosen = rand(0, count($randomq) - 1);
 
-} elseif($key == "p_remove"){
+if ($key == "remove") {
 
-echo "<div id=\"profile-tags-container\">\n";
+	$stmt = $bdd->prepare("DELETE FROM cms_tags WHERE tag = :tag AND ownerid = :user_id LIMIT 1");
+	$stmt->execute(array(':tag' => $tag, ':user_id' => $user['id']));
+	echo "SUCCESS";
+} elseif ($key == "p_remove") {
 
-mysqli_query($con,("DELETE FROM cms_tags WHERE tag = '".$tag."' AND ownerid = '".$user['id']."' LIMIT 1") or die(mysql_error());
-$get_tags = mysqli_query($con,("SELECT * FROM cms_tags WHERE ownerid = '" . $user['id'] . "' ORDER BY id LIMIT 25") or die(mysql_error());
-$rows = mysql_num_rows($get_tags);
+	echo "<div id=\"profile-tags-container\">\n";
 
-	if($rows > 0){
-		while ($row = mysql_fetch_assoc($get_tags)){
-			printf("    <span class=\"tag-search-rowholder\">
-        <a href=\"tags.php?tag=%s\" class=\"tag-search-link tag-search-link-%s\"
-        >%s</a><img border=\"0\" class=\"tag-delete-link tag-delete-link-%s\" onMouseOver=\"this.src='http://images.habbohotel.co.uk/habboweb/21_5527e6590eba8f3fb66348bdf271b5a2/14/web-gallery/images/buttons/tags/tag_button_delete_hi.gif'\" onMouseOut=\"this.src='http://images.habbohotel.co.uk/habboweb/21_5527e6590eba8f3fb66348bdf271b5a2/14/web-gallery/images/buttons/tags/tag_button_delete.gif'\" src=\"http://images.habbohotel.co.uk/habboweb/21_5527e6590eba8f3fb66348bdf271b5a2/14/web-gallery/images/buttons/tags/tag_button_delete.gif\"
-        /></span>", $row['tag'], $row['tag'], $row['tag'], $row['tag']);
+	$stmt = $bdd->prepare("DELETE FROM cms_tags WHERE tag = :tag AND ownerid = :user_id LIMIT 1");
+	$stmt->execute(array(':tag' => $tag, ':user_id' => $user['id']));
+
+	$get_tags = $bdd->prepare("SELECT * FROM cms_tags WHERE ownerid = :user_id ORDER BY id LIMIT 25");
+	$get_tags->execute(array(':user_id' => $user['id']));
+	$rows = $get_tags->rowCount();
+
+	if ($rows > 0) {
+		while ($row = $get_tags->fetch(PDO::FETCH_ASSOC)) {
+			printf(
+				"<span class=\"tag-search-rowholder\">
+				<a href=\"tags.php?tag=%s\" class=\"tag-search-link tag-search-link-%s\">%s</a>
+				<img border=\"0\" class=\"tag-delete-link tag-delete-link-%s\" 
+				onMouseOver=\"this.src='http://images.habbohotel.co.uk/habboweb/21_5527e6590eba8f3fb66348bdf271b5a2/14/web-gallery/images/buttons/tags/tag_button_delete_hi.gif'\"
+				onMouseOut=\"this.src='http://images.habbohotel.co.uk/habboweb/21_5527e6590eba8f3fb66348bdf271b5a2/14/web-gallery/images/buttons/tags/tag_button_delete.gif'\"
+				src=\"http://images.habbohotel.co.uk/habboweb/21_5527e6590eba8f3fb66348bdf271b5a2/14/web-gallery/images/buttons/tags/tag_button_delete.gif\" />
+				</span>",
+				htmlspecialchars($row['tag']),
+				htmlspecialchars($row['tag']),
+				htmlspecialchars($row['tag']),
+				htmlspecialchars($row['tag'])
+			);
 		}
 	} else {
 		echo "No tags";
 	}
 
-echo "\n    <img id=\"tag-img-added\" border=\"0\" src=\"http://images.habbohotel.co.uk/habboweb/21_5527e6590eba8f3fb66348bdf271b5a2/14/web-gallery/images/buttons/tags/tag_button_added.gif\" style=\"display:none\"/>    
+	echo "\n    <img id=\"tag-img-added\" border=\"0\" src=\"http://images.habbohotel.co.uk/habboweb/21_5527e6590eba8f3fb66348bdf271b5a2/14/web-gallery/images/buttons/tags/tag_button_added.gif\" style=\"display:none\"/>    
 </div>";
+} elseif ($key == "p_list") {
 
-} elseif($key == "p_list"){
+	echo "<div id=\"profile-tags-container\">\n";
 
-echo "<div id=\"profile-tags-container\">\n";
+	// Delete tag
+	$delete_tag_stmt = $bdd->prepare("DELETE FROM cms_tags WHERE tag = :tag AND ownerid = :user_id LIMIT 1");
+	$delete_tag_stmt->execute(array(':tag' => $tag, ':user_id' => $user['id']));
 
-mysqli_query($con,("DELETE FROM cms_tags WHERE tag = '".$tag."' AND ownerid = '".$user['id']."' LIMIT 1") or die(mysql_error());
-$get_tags = mysqli_query($con,("SELECT * FROM cms_tags WHERE ownerid = '" . $user['id'] . "' ORDER BY id LIMIT 25") or die(mysql_error());
-$rows = mysql_num_rows($get_tags);
+	// Get tags
+	$get_tags_stmt = $bdd->prepare("SELECT * FROM cms_tags WHERE ownerid = :user_id ORDER BY id LIMIT 25");
+	$get_tags_stmt->execute(array(':user_id' => $user['id']));
+	$fetch_tags = $get_tags_stmt->fetchAll(PDO::FETCH_ASSOC);
 
-	if($rows > 0){
-		while ($row = mysql_fetch_assoc($get_tags)){
+	$rows = count($fetch_tags);
+
+	if ($rows > 0) {
+		$get_tags = $bdd->prepare("SELECT * FROM cms_tags WHERE ownerid = :owner_id ORDER BY id LIMIT 25");
+		$get_tags->execute(array(':owner_id' => $user['id']));
+
+		while ($row = $get_tags->fetch(PDO::FETCH_ASSOC)) {
 			printf("    <span class=\"tag-search-rowholder\">
-        <a href=\"tags.php?tag=%s\" class=\"tag-search-link tag-search-link-%s\"
-        >%s</a><img border=\"0\" class=\"tag-delete-link tag-delete-link-%s\" onMouseOver=\"this.src='http://images.habbohotel.co.uk/habboweb/21_5527e6590eba8f3fb66348bdf271b5a2/14/web-gallery/images/buttons/tags/tag_button_delete_hi.gif'\" onMouseOut=\"this.src='http://images.habbohotel.co.uk/habboweb/21_5527e6590eba8f3fb66348bdf271b5a2/14/web-gallery/images/buttons/tags/tag_button_delete.gif'\" src=\"http://images.habbohotel.co.uk/habboweb/21_5527e6590eba8f3fb66348bdf271b5a2/14/web-gallery/images/buttons/tags/tag_button_delete.gif\"
-        /></span>", $row['tag'], $row['tag'], $row['tag'], $row['tag']);
+				<a href=\"tags.php?tag=%s\" class=\"tag-search-link tag-search-link-%s\"
+				>%s</a><img border=\"0\" class=\"tag-delete-link tag-delete-link-%s\" onMouseOver=\"this.src='http://images.habbohotel.co.uk/habboweb/21_5527e6590eba8f3fb66348bdf271b5a2/14/web-gallery/images/buttons/tags/tag_button_delete_hi.gif'\" onMouseOut=\"this.src='http://images.habbohotel.co.uk/habboweb/21_5527e6590eba8f3fb66348bdf271b5a2/14/web-gallery/images/buttons/tags/tag_button_delete.gif'\" src=\"http://images.habbohotel.co.uk/habboweb/21_5527e6590eba8f3fb66348bdf271b5a2/14/web-gallery/images/buttons/tags/tag_button_delete.gif\"
+				/></span>", $row['tag'], $row['tag'], $row['tag'], $row['tag']);
 		}
 	} else {
 		echo "No tags";
 	}
 
-echo "\n    <img id=\"tag-img-added\" border=\"0\" src=\"http://images.habbohotel.co.uk/habboweb/21_5527e6590eba8f3fb66348bdf271b5a2/14/web-gallery/images/buttons/tags/tag_button_added.gif\" style=\"display:none\"/>    
+	echo "\n    <img id=\"tag-img-added\" border=\"0\" src=\"http://images.habbohotel.co.uk/habboweb/21_5527e6590eba8f3fb66348bdf271b5a2/14/web-gallery/images/buttons/tags/tag_button_added.gif\" style=\"display:none\"/>    
 </div>";
+} elseif ($key == "add") {
 
-} elseif($key == "add"){
+	$tag = strtolower(FilterText($_POST['tagName']));
+	$filter = preg_replace("/[^a-z\d]/i", "", $tag);
 
-$tag = strtolower(FilterText($_POST['tagName']));
-$filter = preg_replace("/[^a-z\d]/i", "", $tag);
-
-	if(strlen($tag) < 2 || $filter !== $tag || strlen($tag) > 20){
-	echo "invalidtag"; exit;
+	if (strlen($tag) < 2 || $filter !== $tag || strlen($tag) > 20) {
+		echo "invalidtag";
+		exit;
 	} else {
-	$check = mysqli_query($con,("SELECT * FROM cms_tags WHERE ownerid = '".$user['id']."' AND tag = '".$tag."' LIMIT 1") or die(mysql_error());
-	$num = mysql_num_rows($check);
-		if($num > 0){
-		echo "invalidtag"; exit;
+		$check = $bdd->prepare("SELECT * FROM cms_tags WHERE ownerid = :user_id AND tag = :tag LIMIT 1");
+		$check->execute(array(':user_id' => $user['id'], ':tag' => $tag));
+		$num = $check->rowCount();
+		if ($num > 0) {
+			echo "invalidtag";
+			exit;
 		} else {
-			if($tag_num > 20){
-			echo "invalidtag"; exit;
+			$stmt = $bdd->prepare("SELECT * FROM cms_tags WHERE ownerid = :user_id LIMIT 20");
+			$stmt->execute(array(':user_id' => $user['id']));
+			$tag_num = $stmt->rowCount();
+			if ($tag_num > 20) {
+				echo "invalidtag";
+				exit;
 			} else {
-			mysqli_query($con,("INSERT INTO cms_tags (ownerid,tag) VALUES ('".$user['id']."','".$tag."')");
-			echo "valid"; exit;
+				$insert = $bdd->prepare("INSERT INTO cms_tags (ownerid,tag) VALUES (:user_id,:tag)");
+				$insert->execute(array(':user_id' => $user['id'], ':tag' => $tag));
+				echo "valid";
+				exit;
 			}
 		}
 	}
+} elseif ($key == "mytagslist") {
 
-} elseif($key == "mytagslist"){
+	echo "   <div class=\"habblet\" id=\"my-tags-list\">\n\n";
+	echo "<ul class=\"tag-list make-clickable\"> ";
+	$stmt = $bdd->prepare("SELECT tag FROM cms_tags WHERE ownerid = :ownerid ORDER BY id LIMIT 25");
+	$stmt->execute(array(':ownerid' => $user['id']));
+	$tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-echo "   <div class=\"habblet\" id=\"my-tags-list\">\n\n";
-            echo "<ul class=\"tag-list make-clickable\"> ";
-	while($row = mysql_fetch_assoc($tmp)){
-                    printf("<li><a href=\"tags.php?tag=%s\" class=\"tag\" style=\"font-size:10px\">%s</a>\n
-                        <a class=\"tag-remove-link\"\n
-                        title=\"Remove tag\"\n
-                        href=\"#\"></a></li>\n", $row['tag'], $row['tag']);
+	if ($tags) {
+		foreach ($tags as $tag) {
+			printf("<li><a href=\"tags.php?tag=%s\" class=\"tag\" style=\"font-size:10px\">%s</a>\n
+						<a class=\"tag-remove-link\"\n
+						title=\"Remove tag\"\n
+						href=\"#\"></a></li>\n", $tag['tag'], $tag['tag']);
+		}
+	} else {
+		echo "No tags found";
 	}
-            echo "</ul>";
-if($tag_num < 20){
-echo "     <form method=\"post\" action=\"tag_ajax.php?key=add\" onsubmit=\"TagHelper.addFormTagToMe();return false;\" >
+
+	echo "</ul>";
+	if ($tag_num < 20) {
+		echo "     <form method=\"post\" action=\"tag_ajax.php?key=add\" onsubmit=\"TagHelper.addFormTagToMe();return false;\" >
     <div class=\"add-tag-form clearfix\">
 		<a  class=\"new-button\" href=\"#\" id=\"add-tag-button\" onclick=\"TagHelper.addFormTagToMe();return false;\"><b>Add tag</b><i></i></a>
         <input type=\"text\" id=\"add-tag-input\" maxlength=\"20\" style=\"float: right\"/>
@@ -127,8 +169,8 @@ echo "     <form method=\"post\" action=\"tag_ajax.php?key=add\" onsubmit=\"TagH
     </div>
     <div style=\"clear: both\"></div> 
     </form>";
-}
-echo "    </div>
+	}
+	echo "    </div>
 
 <script type=\"text/javascript\">
 
@@ -140,7 +182,4 @@ echo "    </div>
         TagHelper.bindEventsToTagLists();
 
 </script>\n";
-
 }
-?>
-
