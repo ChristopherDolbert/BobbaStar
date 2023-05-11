@@ -108,9 +108,9 @@ if (!$error && !IsUserBanned($user['id'])) {
 }
 
 if ($searchname == $user['username'] && $user['id']) {
-	$pageid = "myprofile";
+	$pageid = "info";
 } else {
-	$pageid = "profile";
+	$pageid = "info";
 }
 
 $bg_stmt = $bdd->prepare("SELECT data FROM cms_homes_stickers WHERE type = '4' AND userid = :userid AND groupid = '-1' LIMIT 1");
