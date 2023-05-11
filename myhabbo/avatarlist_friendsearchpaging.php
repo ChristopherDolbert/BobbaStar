@@ -45,12 +45,12 @@ if ($search == "") {
 						<a href="#" id="avatar-list-open-link-<?php echo $widgetid; ?>-<?php echo $friendid; ?>" class="avatar-list-open-link"></a>
 					</div>
 					<div class="avatar-list-avatar">
-						<img src="http://www.habbo.co.uk/habbo-imaging/avatarimage?figure=<?php echo $friend['figure']; ?>&size=s&direction=2&head_direction=2&gesture=sml" alt="" />
+						<img src="<?php echo $avatarimage; ?><?php echo $friend['figure']; ?>&size=s&direction=2&head_direction=2&gesture=sml" alt="" />
 					</div>
 					<h4>
-						<a href="./user_profile.php?name=<?php echo $friend['name']; ?>"><?php echo $friend['name']; ?></a>
+						<a href="./user_profile.php?name=<?php echo $friend['username']; ?>"><?php echo $friend['username']; ?></a>
 					</h4>
-					<p class="avatar-list-birthday"><?php echo $friend['hbirth']; ?></p>
+					<p class="avatar-list-birthday"><?php echo $friend['account_day_of_birth']; ?></p>
 					<p></p>
 				</li>
 
@@ -144,7 +144,7 @@ if ($search == "") {
 			?>
 				<li id="avatar-list-<?php echo $widgetid; ?>-<?php echo $friendrow['id']; ?>" title="<?php echo $friendrow['username']; ?>">
 					<div class="avatar-list-open"><a href="#" id="avatar-list-open-link-<?php echo $widgetid; ?>-<?php echo $friendrow; ?>" class="avatar-list-open-link"></a></div>
-					<div class="avatar-list-avatar"><img src="http://www.habbo.co.uk/habbo-imaging/avatarimage?figure=<?php echo $friendrow['look']; ?>&size=s&direction=2&head_direction=2&gesture=sml" alt="" /></div>
+					<div class="avatar-list-avatar"><img src="<?php echo $avatarimage; ?><?php echo $friendrow['look']; ?>&size=s&direction=2&head_direction=2&gesture=sml" alt="" /></div>
 					<h4><a href="./user_profile.php?name=<?php echo $friendrow['username']; ?>"><?php echo $friendrow['username']; ?></a></h4>
 					<p class="avatar-list-birthday"><?php echo $friendrow['account_day_of_birth']; ?></p>
 					<p>
@@ -157,7 +157,7 @@ if ($search == "") {
 			?>
 				<li id="avatar-list-<?php echo $widgetid; ?>-<?php echo $friendrow['id']; ?>" title="<?php echo $friendrow['username']; ?>">
 					<div class="avatar-list-open"><a href="#" id="avatar-list-open-link-<?php echo $widgetid; ?>-<?php echo $friendrow; ?>" class="avatar-list-open-link"></a></div>
-					<div class="avatar-list-avatar"><img src="http://www.habbo.co.uk/habbo-imaging/avatarimage?figure=<?php echo $friendrow['look']; ?>&size=s&direction=2&head_direction=2&gesture=sml" alt="" /></div>
+					<div class="avatar-list-avatar"><img src="<?php echo $avatarimage; ?><?php echo $friendrow['look']; ?>&size=s&direction=2&head_direction=2&gesture=sml" alt="" /></div>
 					<h4><a href="./user_profile.php?name=<?php echo $friendrow['username']; ?>"><?php echo $friendrow['username']; ?></a></h4>
 					<p class="avatar-list-birthday"><?php echo $friendrow['account_day_of_birth']; ?></p>
 					<p>

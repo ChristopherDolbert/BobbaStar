@@ -36,14 +36,14 @@ if (IsUserOnline($id) == true) {
 				echo "<img src=\"" . $cimagesurl . $badgesurl . $badge . "\">";
 			}
 			?>
-			<img src="http://www.habbo.co.uk/habbo-imaging/avatarimage?figure=<?php echo $row['figure']; ?>&size=l&direction=4&head_direction=4" alt="<?php echo $row['name']; ?>" />
+			<img src="<?php echo $avatarimage; ?><?php echo $row['look']; ?>&size=l&direction=4&head_direction=4" alt="<?php echo $row['username']; ?>" />
 		</div>
-		<h4><a href="./user_profile.php?name=<?php echo $row['name']; ?>"><?php echo $row['name']; ?></a></h4>
+		<h4><a href="./user_profile.php?name=<?php echo $row['username']; ?>"><?php echo $row['username']; ?></a></h4>
 		<p>
 			<img src="./web-gallery/images/myhabbo/<?php echo $online; ?>" />
 		</p>
 		<p><?php echo $shortname; ?> created on: <b><?php echo $row['hbirth']; ?></b></p>
-		<p><a href="./user_profile.php?name=<?php echo $row['name']; ?>" class="arrow">View <?php echo $shortname; ?>s page</a></p>
-		<p class="avatar-info-motto"><?php echo $row['mission']; ?></p>
+		<p><a href="./user_profile.php?name=<?php echo $row['username']; ?>" class="arrow">View <?php echo $shortname; ?>s page</a></p>
+		<p class="avatar-info-motto"><?php echo $row['motto']; ?></p>
 	</div>
 </div>

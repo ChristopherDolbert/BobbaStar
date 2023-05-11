@@ -63,7 +63,7 @@ if ($results > 0) {
 				} else {
 					$even = "even";
 				}
-				printf("        <li class=\"%s\"><a href=\"info?tag=%s\">%s</a></li>\n", $even, $userrow['username'], $userrow['username']);
+				printf("        <li class=\"%s\"><a href=\"user_profile?name=%s\">%s</a></li>\n", $even, $userrow['username'], $userrow['username']);
 			}
 		}
 		echo "\n</ul>";

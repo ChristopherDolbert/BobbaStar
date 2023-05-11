@@ -14,6 +14,13 @@ $pagename = "Tes informations";
 $pageid = "info";
 $searchname = $user['username'];
 $user_row = $user;
+$found_profile = false;
+$profile_exists = false; 
+$edit = false;
+
+if ($profile_exists) {
+	$found_profile = true;
+}
 
 if (isset($_GET['tag']) || isset($_GET['name']) || isset($_POST['name'])) {
 	$searchname = ''; // Initialize $searchname with a default value
@@ -845,7 +852,7 @@ document.observe(\"dom:loaded\", function() {
 	<div class=\"profile-info\">
 
 		<div class=\"name\" style=\"float: left\">
-			<span class=\"name-text\">" . $userdata['name'] . "</span>
+			<span class=\"name-text\">" . $userdata['username'] . "</span>
 		</div>
 
 		<br class=\"clear\" />";
@@ -860,18 +867,18 @@ document.observe(\"dom:loaded\", function() {
 			Created on:
 		</div>
 		<div class=\"birthday date\">
-			" . $userdata['hbirth'] . "
+			" . $userdata['account_day_of_birth'] . "
 		</div>
 		<div>";
 										$groupbadge = GetUserGroupBadge($userdata['id']);
-										$badge = GetUserBadge($userdata['name']);
+										$badge = GetUserBadge($userdata['username']);
 
 										if ($groupbadge !== false) {
-											echo "<a href='group_profile.php?id=" . GetUserGroup($userdata['id']) . "'><img src='./habbo-imaging/badge-fill/" . $groupbadge . ".gif'></a>";
+											echo "<a href='group_profile.php?id=" . GetUserGroup($userdata['id'], $bdd) . "'><img src='./habbo-imaging/badge-fill/" . $groupbadge . ".gif'></a>";
 										}
 
 										if ($badge !== false) {
-											echo "<img src=\"http://images.habbohotel.co.uk/c_images/album1584/" . $badge . ".gif\" /></a>";
+											echo "<img src=\"" . $cimagesurl . $badgesurl . $badge . ".gif\" /></a>";
 										}
 										echo "
         </div>

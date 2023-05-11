@@ -1,17 +1,13 @@
 <?php
-/*---------------------------------------------------+
-| HoloCMS - Website and Content Management System
-+----------------------------------------------------+
-| Copyright © 2008 Meth0d
-+----------------------------------------------------+
-| HoloCMS is provided "as is" and comes without
-| warrenty of any kind. 
-+---------------------------------------------------*/
+#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
+#|                                                                        #|
+#|           GabCMS - Site Web et Content Management System               #|
+#|         Copyright © 2012-2013 - Gabodd Tout droits réservés.           #|
+#|																		  #|
+#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
 header("location:../index.php");
-
 ?>
-
 <html>
 <head>
   <title>Redirecting...</title>

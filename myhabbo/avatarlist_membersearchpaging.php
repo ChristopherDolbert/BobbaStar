@@ -17,7 +17,7 @@ if ($search == "") {
 	$groupid = $row1['groupid'];
 	$offset = $page - 1;
 	$offset = $offset * 20;
-	$sql = $bdd->prepare("SELECT userid, is_current, member_rank FROM groups_memberships WHERE groupid = :groupid AND is_pending = '0' ORDER BY member_rank ASC LIMIT 20 OFFSET :offset");
+	$sql = $bdd->prepare("SELECT user_id, is_current, member_rank FROM groups_memberships WHERE guild_id = :groupid AND is_pending = '0' ORDER BY member_rank ASC LIMIT 20 OFFSET :offset");
 	$sql->bindParam(':groupid', $groupid);
 	$sql->bindParam(':offset', $offset, PDO::PARAM_INT);
 	$sql->execute();
@@ -28,12 +28,12 @@ if ($search == "") {
 			<?php
 			while ($membership = $sql->fetch(PDO::FETCH_ASSOC)) {
 
-				$userstmt = $bdd->prepare("SELECT id,name,figure,hbirth FROM users WHERE id = :userid LIMIT 1");
+				$userstmt = $bdd->prepare("SELECT id,username,look,account_day_of_birth FROM users WHERE id = :userid LIMIT 1");
 				$userstmt->bindParam(':userid', $membership['userid']);
 				$userstmt->execute();
 				$found = $userstmt->rowCount();
 
-				$groupdetailsstmt = $bdd->prepare("SELECT * FROM groups_details WHERE id = :groupid LIMIT 1");
+				$groupdetailsstmt = $bdd->prepare("SELECT * FROM guilds WHERE id = :groupid LIMIT 1");
 				$groupdetailsstmt->bindParam(':groupid', $groupid);
 				$groupdetailsstmt->execute();
 				$groupdetails = $groupdetailsstmt->fetch(PDO::FETCH_ASSOC);
@@ -49,10 +49,10 @@ if ($search == "") {
 	<a href=\"#\" id=\"avatar-list-open-link-" . $groupid . "-" . $userrow['id'] . "\" class=\"avatar-list-open-link\"></a>
 </div>
 <div class=\"avatar-list-avatar\">
-	<img src=\"http://www.habbo.co.uk/habbo-imaging/avatarimage?figure=" . $userrow['figure'] . "&size=s&direction=2&head_direction=2&gesture=sml\" alt=\"\" />
+	<img src=\"" . $avatarimage . $userrow['look'] . "&size=s&direction=2&head_direction=2&gesture=sml\" alt=\"\" />
 </div>
 <h4>
-	<a href=\"user_profile.php?name=" . $userrow['name'] . "\">" . $userrow['name'] . "</a>
+	<a href=\"user_profile.php?name=" . $userrow['username'] . "\">" . $userrow['name'] . "</a>
 </h4>
 <p class=\"avatar-list-birthday\">
 	" . $userrow['hbirth'] . "
@@ -81,7 +81,7 @@ if ($search == "") {
 
 	<div id="avatar-list-paging">
 		<?php
-		$sql = $bdd->prepare("SELECT * FROM groups_memberships WHERE groupid = :groupid AND is_pending = '0'");
+		$sql = $bdd->prepare("SELECT * FROM guilds_members WHERE guild_id = :groupid AND is_pending = '0'");
 		$sql->bindParam(':groupid', $groupid);
 		$sql->execute();
 		$count = $sql->rowCount();
@@ -134,16 +134,16 @@ if ($search == "") {
 			<?php
 			while ($membership = $sql->fetch(PDO::FETCH_ASSOC)) {
 
-				$userstmt = $bdd->prepare("SELECT id, name, figure, hbirth FROM users WHERE id = :userid LIMIT 1");
+				$userstmt = $bdd->prepare("SELECT id, username, look, account_day_of_birth FROM users WHERE id = :userid LIMIT 1");
 				$userstmt->bindParam(':userid', $membership['userid']);
 				$userstmt->execute();
 				$found = $userstmt->rowCount();
 
-				$groupdetailsstmt = $bdd->prepare("SELECT * FROM groups_details WHERE id = :groupid LIMIT 1");
+				$groupdetailsstmt = $bdd->prepare("SELECT * FROM guilds WHERE id = :groupid LIMIT 1");
 				$groupdetailsstmt->bindParam(':groupid', $groupid);
 				$groupdetailsstmt->execute();
 				$groupdetails = $groupdetailsstmt->fetch(PDO::FETCH_ASSOC);
-				$ownerid = $groupdetails['ownerid'];
+				$ownerid = $groupdetails['user_id'];
 
 
 				if ($found > 0) {
@@ -155,13 +155,13 @@ if ($search == "") {
 	<a href=\"#\" id=\"avatar-list-open-link-" . $groupid . "-" . $userrow['id'] . "\" class=\"avatar-list-open-link\"></a>
 </div>
 <div class=\"avatar-list-avatar\">
-	<img src=\"http://www.habbo.co.uk/habbo-imaging/avatarimage?figure=" . $userrow['figure'] . "&size=s&direction=2&head_direction=2&gesture=sml\" alt=\"\" />
+	<img src=\"" . $avatarimage . $userrow['look'] . "&size=s&direction=2&head_direction=2&gesture=sml\" alt=\"\" />
 </div>
 <h4>
-	<a href=\"user_profile.php?name=" . $userrow['name'] . "\">" . $userrow['name'] . "</a>
+	<a href=\"user_profile.php?name=" . $userrow['username'] . "\">" . $userrow['username'] . "</a>
 </h4>
 <p class=\"avatar-list-birthday\">
-	" . $userrow['hbirth'] . "
+	" . $userrow['account_day_of_birth'] . "
 </p>
 <p>";
 					if ($userrow['id'] == $ownerid) {
