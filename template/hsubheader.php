@@ -70,7 +70,7 @@ if (empty($pagename) && isset($searchname)) {
 			height: 1360px;
 		}
 
-		<?php } elseif (IsHCMember($user_row['id'])) { ?>#playground,
+		<?php } elseif (IsHCMember($user['id'])) { ?>#playground,
 		#playground-outer {
 			width: 922px;
 			height: 1360px;
@@ -93,7 +93,7 @@ if (empty($pagename) && isset($searchname)) {
 		<?php if (isset($groupid)) {
 			$xid = $groupid;
 		} else {
-			$xid = $user_row['id'];
+			$xid = $user['id'];
 		} ?>
 		document.observe("dom:loaded", function() {
 			initView(<?php echo $xid . "," . $xid; ?>);

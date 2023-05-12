@@ -462,11 +462,7 @@ if ($mode == "inventory") {
 </div>";
 						}
 
-						$totalRows = count($get_em);
-						$i = 0;
-
-						while ($i < $totalRows) {
-							$row = $get_em[$i];
+						foreach ($get_em as $row) {
 
 							if ($row['amount'] > 1) {
 								$specialcount = "<div class=\"webstore-item-count\"><div>x" . $row['amount'] . "</div></div>";
@@ -482,7 +478,6 @@ if ($mode == "inventory") {
 			</div>
 		</div>
 	</li>", $row['id'], $row['data'], FormatThing($row['type'], $row['data'], true), $specialcount);
-							$i++;
 						}
 
 						// We want at least 20 empty slots. If the user has less than 20 items for this type
@@ -573,11 +568,7 @@ if ($mode == "inventory") {
 </div>";
 		}
 
-		$totalRows = count($get_em);
-		$i = 0;
-
-		while ($i < $totalRows) {
-			$row = $get_em[$i];
+		foreach ($get_em as $row) {
 
 			if ($row['amount'] > 1) {
 				$specialcount = "<div class=\"webstore-item-count\"><div>x" . $row['amount'] . "</div></div>";
@@ -593,7 +584,6 @@ if ($mode == "inventory") {
 			</div>
 		</div>
 	</li>", $row['id'], $row['data'], FormatThing($row['type'], $row['data'], true), $specialcount);
-			$i++;
 		}
 
 		// We want at least 20 empty slots. If the user has less than 20 items for this type
@@ -1071,11 +1061,7 @@ if ($mode == "inventory") {
 </div>";
 						}
 
-						$totalRows = count($get_em);
-						$i = 0;
-
-						while ($i < $totalRows) {
-							$row = $get_em[$i];
+						foreach ($get_em as $row) {
 
 							if ($row['amount'] > 1) {
 								$specialcount = "<div class=\"webstore-item-count\"><div>x" . $row['amount'] . "</div></div>";
@@ -1091,7 +1077,6 @@ if ($mode == "inventory") {
 			</div>
 		</div>
 	</li>", $row['id'], $row['data'], FormatThing($row['type'], $row['data'], true), $specialcount);
-							$i++;
 						}
 
 						// We want at least 20 empty slots. If the user has less than 20 items for this type
@@ -1388,11 +1373,7 @@ if ($mode == "inventory") {
 </div>";
 		}
 
-		$totalRows = count($get_em);
-		$i = 0;
-
-		while ($i < $totalRows) {
-			$row = $get_em[$i];
+		foreach ($get_em as $row) {
 
 			if ($row['amount'] > 1) {
 				$specialcount = "<div class=\"webstore-item-count\"><div>x" . $row['amount'] . "</div></div>";
@@ -1408,7 +1389,6 @@ if ($mode == "inventory") {
 			</div>
 		</div>
 	</li>", $row['id'], $row['data'], FormatThing($row['type'], $row['data'], true), $specialcount);
-			$i++;
 		}
 
 		// We want at least 20 empty slots. If the user has less than 20 items for this type
@@ -1578,7 +1558,8 @@ if ($mode == "inventory") {
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
 		}
 
-		header("X-JSON: [\"" . FormatThing($row['type'], $row['data'], true) . "\",\"" . FormatThing($row['type'], $row['data'], false) . "\",\"8\",\"" . $_POST['type'] . "\",null," . $row['amount'] . "]");
+		$amount = isset($row['amount']) ? $row['amount'] : 0;
+		header("X-JSON: [\"" . FormatThing($row['type'], $row['data'], true) . "\",\"" . FormatThing($row['type'], $row['data'], false) . "\",\"8\",\"" . $_POST['type'] . "\",null," . $amount . "]");
 
 		?>
 		<h4>&nbsp;</h4>
@@ -1589,11 +1570,12 @@ if ($mode == "inventory") {
 			<div class="clearfix">
 				<a href="#" class="new-button" id="inventory-place"><b>Place</b><i></i></a>
 			</div>
-			<?php if ($row['amount'] > 1 && $row['type'] == "1") { ?>
+			<?php if (isset($row['amount']) && $row['amount'] > 1 && $row['type'] == "1") { ?>
 				<div class="clearfix">
 					<a href="#" class="new-button" id="inventory-place-all"><b>All</b><i></i></a>
 				</div>
 			<?php } ?>
+
 		</div>
 	<?php
 	} elseif ($mode == "noteeditor") {

@@ -17,6 +17,8 @@ $user_row = $user;
 $found_profile = false;
 $profile_exists = false; 
 $edit = false;
+$qwer = false;
+$zxcv = false;
 
 if ($profile_exists) {
 	$found_profile = true;
@@ -250,7 +252,7 @@ Event.observe(\"" . $type . "-" . $row[0] . "-edit\", \"click\", function(e) { o
 										}
 
 										if ($subtype == "GroupsWidget") {
-											$stmt = $bdd->prepare("SELECT COUNT(*) FROM groups_memberships WHERE userid = :userid AND is_pending = '0'");
+											$stmt = $bdd->prepare("SELECT COUNT(*) FROM guilds_members WHERE user_id = :userid AND is_pending = '0'");
 											$stmt->execute(array(':userid' => $user_row['id']));
 											$groups_count = $stmt->fetchColumn();
 
@@ -258,7 +260,7 @@ Event.observe(\"" . $type . "-" . $row[0] . "-edit\", \"click\", function(e) { o
 											echo "<div class=\"movable widget GroupsWidget\" id=\"widget-" . $row[0] . "\" style=\" left: " . $row[2] . "px; top: " . $row[3] . "px; z-index: " . $row[4] . ";\">
 <div class=\"w_skin_" . $row[6] . "\">
 	<div class=\"widget-corner\" id=\"widget-" . $row[0] . "-handle\">
-		<div class=\"widget-headline\"><h3><span class=\"header-left\">&nbsp;</span><span class=\"header-middle\">MY GROUPS (<span id=\"groups-list-size\">" . $groups . "</span>)</span><span class=\"header-right\">" . $edit . "</span></h3>
+		<div class=\"widget-headline\"><h3><span class=\"header-left\">&nbsp;</span><span class=\"header-middle\">MY GROUPS (<span id=\"groups-list-size\">" . $groups_count . "</span>)</span><span class=\"header-right\">" . $edit . "</span></h3>
 		</div>
 	</div>
 	<div class=\"widget-body\">
@@ -267,18 +269,18 @@ Event.observe(\"" . $type . "-" . $row[0] . "-edit\", \"click\", function(e) { o
 <div class=\"groups-list-container\">
 <ul class=\"groups-list\">";
 
-											$get_groups_stmt = $bdd->prepare("SELECT * FROM groups_memberships WHERE userid = :userid AND is_pending = '0'");
+											$get_groups_stmt = $bdd->prepare("SELECT * FROM guilds_members WHERE user_id = :userid AND is_pending = '0'");
 											$get_groups_stmt->execute(array(':userid' => $user_row['id']));
 
 											while ($membership_row = $get_groups_stmt->fetch(PDO::FETCH_ASSOC)) {
-												$get_groupdata_stmt = $bdd->prepare("SELECT * FROM groups_details WHERE id = :groupid LIMIT 1");
-												$get_groupdata_stmt->execute(array(':groupid' => $membership_row['groupid']));
+												$get_groupdata_stmt = $bdd->prepare("SELECT * FROM guilds WHERE id = :groupid LIMIT 1");
+												$get_groupdata_stmt->execute(array(':groupid' => $membership_row['guild_id']));
 												$grouprow = $get_groupdata_stmt->fetch(PDO::FETCH_ASSOC);
 
 												echo "<li title=\"" . $grouprow['name'] . "\" id=\"groups-list-" . $row[0] . "-" . $grouprow['id'] . "\">";
 												echo "<div class=\"groups-list-icon\"><a href=\"group_profile.php?id=" . $grouprow['id'] . "\"><img src='./habbo-imaging/badge-fill/" . $grouprow['badge'] . ".gif'/></a></div>";
 												echo "<div class=\"groups-list-open\"></div>";
-												echo "<h4><a href=\"group_profile.php?id=" . $membership_row['groupid'] . "\">" . $grouprow['name'] . "</a></h4>";
+												echo "<h4><a href=\"group_profile.php?id=" . $membership_row['guild_id'] . "\">" . $grouprow['name'] . "</a></h4>";
 												echo "<p>Group created:<br />";
 												if ($membership_row['is_current'] == 1) {
 													echo "<div class=\"favourite-group\" title=\"Favourite\"></div>\n";
@@ -476,8 +478,8 @@ document.observe(\"dom:loaded\", function() {
 													<div class="widget-body">
 														<div class="widget-content">
 															<?php
-															$roomsql_stmt = $bdd->prepare("SELECT * FROM rooms WHERE owner = :owner");
-															$roomsql_stmt->execute(array(':owner' => $user_row['name']));
+															$roomsql_stmt = $bdd->prepare("SELECT * FROM rooms WHERE owner_name = :owner");
+															$roomsql_stmt->execute(array(':owner' => $user_row['username']));
 															$count = $roomsql_stmt->rowCount();
 															if ($count <> 0) {
 															?>
