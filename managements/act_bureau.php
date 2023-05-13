@@ -42,7 +42,8 @@ if (isset($_POST['texte'])) {
 	if (!empty($texte)) {
 		$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo, action, date) VALUES (:pseudo, :action, :date)");
 		$insertn1->execute([':pseudo' => $user['username'], ':action' => 'a modifié le message du bloc-notes <b>(Bureau des staffs)</b>', ':date' => FullDate('full')]);
-		$bdd->query("UPDATE gabcms_bureau_notes SET texte = '" . addslashes($texte) . "', date = '" . FullDate('full') . "', par = '{$user['username']}' WHERE id = '1'");
+		$update = $bdd->prepare("UPDATE gabcms_bureau_notes SET texte = ?, date = ?, par = ? WHERE id = '1'");
+        $update->execute([addslashes($texte), FullDate('full'), $user['username']]);
 		echo '<h4 class="alert_success">Le message dans le bloc-notes a été mis à jour !</h4>';
 	} else {
 		echo '<h4 class="alert_error">Merci d\'écrire quelque chose</h4>';
