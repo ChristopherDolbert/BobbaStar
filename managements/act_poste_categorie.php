@@ -29,7 +29,8 @@ if ($_GET['do'] === 'create' && !empty($_POST['nom_categorie'])) {
     if ($haut != "" && $bas != "") {
         $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
         $insertn1->execute([':pseudo' => $user['username'], ':action' => 'a modifié <b>les textes</b> de la <b>newsletter</b>', ':date' => FullDate('full')]);
-        $bdd->query("UPDATE gabcms_newsletter SET newsletter_haut = '" . $haut . "', newsletter_bas = '" . $bas . "' WHERE id = '1'");
+        $update = $bdd->prepare("UPDATE gabcms_newsletter SET newsletter_haut = ?, newsletter_bas = ? WHERE id = '1'");
+        $update->execute([$haut, $bas]);
         echo '<h4 class="alert_success">Les textes des newsletters viennent d\'être modifiés.</h4>';
     } else {
         echo '<h4 class="alert_error">Merci de remplir les champs vides</h4>';
@@ -40,17 +41,21 @@ if ($_GET['do'] === 'create' && !empty($_POST['nom_categorie'])) {
 
 if (isset($_GET['sup'])) {
     $sup = Secu($_GET['sup']);
-    $sql_modif = $bdd->query("SELECT * FROM gabcms_postes_categorie WHERE id = '$sup'");
+    $sql_modif = $bdd->prepare("SELECT * FROM gabcms_postes_categorie WHERE id = ?");
+    $sql_modif->execute([$sup]);
     $modif_e = $sql_modif->fetch();
-    $bdd->query("UPDATE gabcms_postes_noms SET id_categorie = '0' WHERE id_categorie = '$sup'");
-    $bdd->query("DELETE FROM gabcms_postes_categorie WHERE id = '$sup'");
+    $update = $bdd->prepare("UPDATE gabcms_postes_noms SET id_categorie = '0' WHERE id_categorie = ?");
+    $update->execute([$sup]);
+    $delete = $bdd->prepare("DELETE FROM gabcms_postes_categorie WHERE id = ?");
+    $delete->execute([$sup]);
     $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
     $insertn1->execute([
         ':pseudo' => $user['username'],
         ':action' => 'a supprimé une catégorie de postes <b>(' . addslashes($modif_e['nom']) . ')</b>',
         ':date' => FullDate('full')
     ]);
-    $deplacer = $bdd->query("SELECT * FROM gabcms_postes_noms WHERE id_categorie = '$sup'");
+    $deplacer = $bdd->prepare("SELECT * FROM gabcms_postes_noms WHERE id_categorie = ?");
+    $deplacer->execute([$sup]);
     while ($d = $deplacer->fetch()) {
         $insertn1->execute([
             ':pseudo' => $user['username'],
@@ -65,7 +70,8 @@ if (isset($_GET['modifierrecrut'])) {
     $modifierrecrut = Secu($_GET['modifierrecrut']);
     if (isset($_POST['nom_modif'])) {
         $nom_modif = addslashes($_POST['nom_modif']);
-        $sql_modif = $bdd->query("SELECT * FROM gabcms_postes_categorie WHERE id = '" . $modifierrecrut . "'");
+        $sql_modif = $bdd->prepare("SELECT * FROM gabcms_postes_categorie WHERE id = ?");
+        $sql_modif->execute([$modifierrecrut]);
         $modif_a = $sql_modif->fetch();
         if ($nom_modif != "") {
             $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
@@ -73,7 +79,8 @@ if (isset($_GET['modifierrecrut'])) {
             $insertn1->bindValue(':action', 'a modifié la catégorie de postes <b>' . addslashes($modif_a['nom']) . '</b> en <b>' . $nom_modif . '</b>');
             $insertn1->bindValue(':date', FullDate('full'));
             $insertn1->execute();
-            $bdd->query("UPDATE gabcms_postes_categorie SET nom = '" . $nom_modif . "' WHERE id = '" . $modifierrecrut . "'");
+            $update = $bdd->prepare("UPDATE gabcms_postes_categorie SET nom = ? WHERE id = ?");
+            $update->execute([$nom_modif, $modifierrecrut]);
             echo '<h4 class="alert_success">La modification a bien eu lieu</h4>';
         } else {
             echo '<h4 class="alert_error">Une erreur est survenue</h4>';
@@ -121,7 +128,8 @@ if (isset($_GET['modifierrecrut'])) {
         </table>
     <?PHP }
     if (isset($_GET['modif'])) {
-        $sql_modif = $bdd->query("SELECT * FROM gabcms_postes_categorie WHERE id = '" . $modif . "'");
+        $sql_modif = $bdd->prepare("SELECT * FROM gabcms_postes_categorie WHERE id = ?");
+        $sql_modif->execute([$modif]);
         $modif_a = $sql_modif->fetch();
     ?>
         <p><span id="titre">Modifies une catégorie de postes</span><br />

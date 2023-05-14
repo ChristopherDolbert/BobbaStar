@@ -14,7 +14,8 @@ if (!isset($_SESSION['username']) || $user['rank'] > 11) {
 
 $pseudo = Secu($_GET['pseudo']);
 
-$info = $bdd->query("SELECT * FROM gabcms_recrutement_dossier WHERE id_recrut = '" . $pseudo . "'");
+$info = $bdd->prepare("SELECT * FROM gabcms_recrutement_dossier WHERE id_recrut = ?");
+$info->execute([$pseudo]);
 $i = $info->fetch();
 ?>
 <link rel="stylesheet" href="css/contenu.css<?php echo '?' . mt_rand(); ?>" type="text/css" media="screen" />
@@ -37,11 +38,14 @@ $i = $info->fetch();
             </tr>
             
             <?php
-            $sql = $bdd->query("SELECT * FROM gabcms_recrutement_dossier WHERE pseudo = '" . $pseudo . "' ORDER BY id DESC");
+            $sql = $bdd->prepare("SELECT * FROM gabcms_recrutement_dossier WHERE pseudo = ? ORDER BY id DESC");
+            $sql->execute([$pseudo]);
             while ($a = $sql->fetch()) {
-                $dossiers = $bdd->query("SELECT * FROM gabcms_recrutement WHERE id = '" . $a['id_recrut'] . "'");
+                $dossiers = $bdd->prepare("SELECT * FROM gabcms_recrutement WHERE id = ?");
+                $dossiers->execute([$a['id_recrut']]);
                 $e = $dossiers->fetch();
-                $correct = $bdd->query("SELECT nom_M FROM gabcms_postes_noms WHERE id = '" . $e['poste'] . "'");
+                $correct = $bdd->prepare("SELECT nom_M FROM gabcms_postes_noms WHERE id = ?");
+                $correct->execute([$e['poste']]);
                 $modif = ($e['poste'] == "") ? "<i>Session supprimée</i>" : ($correct->rowCount() == 0 ? "<i>Poste supprimé</i>" : $correct->fetch()['nom_M']);
                 $modif_traite = ($a['retenu'] == 2) ? "<span style=\"color:#008000;\">Accepté</span>" : (($a['retenu'] == 1) ? "<span style=\"color:#FF0000;\">Refusé</span>" : "<span style=\"color:#0000FF;\">En attente</span>");
             ?>

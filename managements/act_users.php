@@ -23,14 +23,16 @@ if (isset($_GET['modifierrecrut']) && isset($_POST['motto'], $_POST['jetons'], $
     $mail = Secu($_POST['mail']);
     $credits = Secu($_POST['credits']);
     $activity_points = Secu($_POST['activity_points']);
-    $sqlaz = $bdd->query("SELECT username FROM users WHERE id = '$modifierrecrut'");
+    $sqlaz = $bdd->prepare("SELECT username FROM users WHERE id = ?");
+    $sqlaz->execute([$modifierrecrut]);
     $assocaz = $sqlaz->fetch(PDO::FETCH_ASSOC);
     if ($motto && $jetons && $mail && $credits && $activity_points) {
         $insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo,action,date) VALUES (:pseudo, :action, :date)");
         $insertn1->execute([':pseudo' => $user['username'], ':action' => 'a modifié des données sur le compte de <b>' . $assocaz['username'] . '</b>', ':date' => FullDate('full')]);
         $insertn2 = $bdd->prepare("INSERT INTO gabcms_management (user_id, message, auteur, date, look) VALUES (:userid, :message, :auteur, :date, :look)");
         $insertn2->execute([':userid' => $modifierrecrut, ':message' => 'Nous venons de modifier quelques trucs sur ton compte, pour plus d\'infos, rentre en contact avec moi-même depuis l\'hôtel ou sur le service client en <a href="' . $url . '/service_client/autre">cliquant ici</a> !', ':auteur' => $user['username'], ':date' => FullDate('full'), ':look' => $user['look']]);
-        $bdd->query("UPDATE users SET jetons = '$jetons', mail = '$mail', motto = '$motto', credits = '$credits', pixels = '$activity_points' WHERE id = '$modifierrecrut'");
+        $update = $bdd->prepare("UPDATE users SET jetons = ?, mail = ?, motto = ?, credits = ?, pixels = ? WHERE id = ?");
+        $update->execute([$jetons, $mail, $motto, $credits, $activity_points, $modifierrecrut]);
         echo '<h4 class="alert_success">Les données de <b>' . $assocaz['username'] . '</b> ont été modifiées.</h4>';
     } else {
         echo '<h4 class="alert_error">Merci de ne pas laisser des cases vides.</h4>';
@@ -179,7 +181,8 @@ if (isset($_GET['modifierrecrut']) && isset($_POST['motto'], $_POST['jetons'], $
         </table>
     <?PHP }
     if (isset($_GET['modif'])) {
-        $sql_modif = $bdd->query("SELECT * FROM users WHERE id = '" . $modif . "'");
+        $sql_modif = $bdd->prepare("SELECT * FROM users WHERE id = ?");
+        $sql_modif->execute([$modif]);
         $modif_a = $sql_modif->fetch();
     ?>
         <span id="titre">Modifies les données</span><br />
