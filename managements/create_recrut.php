@@ -17,7 +17,8 @@ if (isset($_POST['poste'], $_POST['date'], $_POST['comment'])) {
 	$comment = Secu($_POST['comment']);
 	$date = Secu($_POST['date']);
 	$date_ban = strtotime("+{$date} days", strtotime(date('Y-m-d') . ' 23:59:59'));
-	$correct = $bdd->query("SELECT nom_M FROM gabcms_postes_noms WHERE id = {$poste}");
+	$correct = $bdd->prepare("SELECT nom_M FROM gabcms_postes_noms WHERE id = ?");
+    $correct->execute([$poste]);
 	$c = $correct->fetch(PDO::FETCH_ASSOC);
 	if (!empty($poste)) {
 		$insertn1 = $bdd->prepare("INSERT INTO gabcms_stafflog (pseudo, action, date) VALUES (:pseudo, :action, :date)");

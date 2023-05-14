@@ -19,10 +19,12 @@ if (isset($_GET['do'])) {
         if (isset($_POST['badge'])) {
             $code_badge = Secu($_POST['badge']);
 
-            $selectcode = $bdd->query("SELECT * FROM gabcms_shopbadge WHERE badge_id = '" . $code_badge . "'");
+            $selectcode = $bdd->prepare("SELECT * FROM gabcms_shopbadge WHERE badge_id = ?");
+            $selectcode->execute([$code_badge]);
             $codet = $selectcode->fetch();
 
-            $havebadge = $bdd->query("SELECT * FROM users_badges WHERE user_id = " . $user['id'] . " AND badge_code = '" . $code_badge . "'");
+            $havebadge = $bdd->prepare("SELECT * FROM users_badges WHERE user_id = ? AND badge_code = ?");
+            $havebadge->execute([$user['id'], $code_badge]);
             $have = $havebadge->fetch();
 
             if ($have == false) {
@@ -37,8 +39,12 @@ if (isset($_GET['do'])) {
         </div> 
 </div>";
                     } else {
-                        $bdd->query("UPDATE gabcms_shopbadge SET stock = stock - 1 WHERE badge_id = '" . $codet['badge_id'] . "'");
-                        $bdd->query("UPDATE users SET jetons = jetons - " . $codet['prix'] . " WHERE username = '" . $user['username'] . "'");
+                        $update = $bdd->prepare("UPDATE gabcms_shopbadge SET stock = stock - 1 WHERE badge_id = ?");
+                        $update->execute([$codet['badge_id']]);
+                        $update2 = $bdd->prepare("UPDATE users SET jetons = jetons - ? WHERE username = ?");
+                        $update2->bindParam(1, $codet['prix'], PDO::PARAM_INT);
+                        $update2->bindParam(2, $user['username'], PDO::PARAM_STR);
+                        $update2->execute();
                         $insertn2 = $bdd->prepare("INSERT INTO users_badges (user_id,slot_id,badge_code) VALUES (:userid, :slot, :badge)");
                         $insertn2->bindValue(':userid', $user['id']);
                         $insertn2->bindValue(':slot', '0');
