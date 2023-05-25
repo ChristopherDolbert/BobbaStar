@@ -440,7 +440,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
                             <table width="100%">
                                 <tbody>
                                     <tr>
-                                        <td valign="top">Pseudo du demandeur : <b><?PHP echo Secu($t['pseudo']); ?></b> - <a href="<?PHP echo $url; ?>/user_profile?name=<?PHP echo Secu($t['pseudo']); ?>" target="_blank">Aller sur son profil &raquo;</a><br />
+                                        <td valign="top">Pseudo du demandeur : <b><?PHP echo Secu($t['pseudo']); ?></b> - <a href="<?PHP echo $url; ?>/info?name=<?PHP echo Secu($t['pseudo']); ?>" target="_blank">Aller sur son profil &raquo;</a><br />
                                             Sujet : <b><?PHP echo stripslashes($t['sujet']); ?></b>
                                             <br />Date : <b><?PHP echo Secu($t['date']); ?></b>
                                             <br />Catégorie : <b><?PHP echo Secu($t['categorie']); ?></b><br />

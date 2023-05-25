@@ -14,22 +14,22 @@ $rrow1 = $sql->fetch(PDO::FETCH_ASSOC);
 $user = $rrow1['userid'];
 $offset = $page - 1;
 $offset = $offset * 16;
-$sql = $bdd->prepare("SELECT * FROM users_badges WHERE userid = :user ORDER BY iscurrent DESC LIMIT 16 OFFSET :offset");
-$sql->bindParam(':user', $user);
+$sql = $bdd->prepare("SELECT * FROM users_badges WHERE user_id = :user ORDER BY badge_code DESC LIMIT 16 OFFSET :offset");
+$sql->bindParam(':user', $user['id']);
 $sql->bindParam(':offset', $offset, PDO::PARAM_INT);
 $sql->execute();
 
 ?>
 <ul class="clearfix">
     <?php while ($rrow = $sql->fetch(PDO::FETCH_ASSOC)) { ?>
-        <li style="background-image: url(<?php echo $cimagesurl . $badgesurl . $rrow['badgeid'] . ".gif"; ?>)"></li>
+        <li style="background-image: url(<?php echo $cimagesurl . $badgesurl . $rrow['badge_code'] . ".gif"; ?>)"></li>
     <?php } ?>
 </ul>
 
 <div id="badge-list-paging">
     <?php
-    $sql = $bdd->prepare("SELECT * FROM users_badges WHERE userid = :user ORDER BY iscurrent DESC");
-    $sql->bindParam(':user', $user);
+    $sql = $bdd->prepare("SELECT * FROM users_badges WHERE user_id = :user ORDER BY badge_code DESC");
+    $sql->bindParam(':user', $user['id']);
     $sql->execute();
     $count = $sql->rowCount();
 
