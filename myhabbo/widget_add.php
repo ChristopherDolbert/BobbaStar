@@ -244,7 +244,7 @@ Event.observe(\"widget-" . $saved_id . "-edit\", \"click\", function(e) { openEd
 				<div class="widget-body">
 					<div class="widget-content">
 						<?php
-						$roomsql = $bdd->query("SELECT * FROM rooms WHERE owner = '" . $name . "'");
+						$roomsql = $bdd->query("SELECT * FROM rooms WHERE owner_name = '" . $user['username'] . "'");
 						$count = $roomsql->rowCount();
 						if ($count <> 0) {
 						?>

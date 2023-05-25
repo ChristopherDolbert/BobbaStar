@@ -160,7 +160,7 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
                             <p class=\"moto\">%s</p>
                     </div>
                 </div>
-                <input type=\"hidden\" id=\"active-habbo-url-%s\" value=\"" . $url . "/user_profile?name=%s\"/>
+                <input type=\"hidden\" id=\"active-habbo-url-%s\" value=\"" . $url . "/info?name=%s\"/>
                 <input type=\"hidden\" id=\"active-habbo-image-%s\" class=\"active-habbo-image\" value=\"" . $avatarimage . $row["look"] . "\n\" />", $list_id, $status, $row[1], date('d/m/Y', $row['last_online']), "", $list_id, $row[1], $list_id);
 							}
 							?>
@@ -261,7 +261,7 @@ $cof = $sql->fetch(PDO::FETCH_ASSOC);
 									<tbody>
 										<tr>
 											<td valign="middle" width="10" height="60">
-												<a href="<?PHP echo $url ?>/user_profile?name=<?PHP echo htmlentities($room['username']); ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">
+												<a href="<?PHP echo $url ?>/info?name=<?PHP echo htmlentities($room['username']); ?>" title="Aller sur son profil &raquo;" onmouseover="tooltip.show(this)" onmouseout="tooltip.hide(this)">
 													<div style="width: 64px; height: 65px; margin-bottom:-15px; margin-top:-5px; margin-left: -5px; float: right; background: url(<?php echo $avatarimage; ?><?PHP echo htmlentities($room['look']); ?>&action=wav&direction=2&head_direction=2&gesture=sml&size=big&img_format=gif);"></div>
 												</a>
 											</td>
