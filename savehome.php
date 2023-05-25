@@ -10,194 +10,124 @@
 |+===================================================*/
 
 include('config.php');
+// Split and count the data we've just received
+$note = explode("/", $_POST['stickienotes']);
+$widget = explode("/", $_POST['widgets']);
+$sticker = explode("/", $_POST['stickers']);
+$background = explode(":", $_POST['background']);
 
-// Split and count the data we've just recieved
-if (isset($_POST['stickienotes'])) {
-	$note = explode("/", $_POST['stickienotes']);
-} else {
-	$note = "golden";
-}
-
-if (isset($_POST['widgets'])) {
-	$widget = explode("/", $_POST['widgets']);
-} else {
-	$widget = "golden";
-}
-
-if (isset($_POST['stickers'])) {
-	$stickers = explode("/", $_POST['stickers']);
-} else {
-	$stickers = "golden";
-}
-
-if (isset($_POST['background'])) {
-	$background = explode("/", $_POST['background']);
-} else {
-	$background = "golden";
-}
-
-$stmt = $bdd->prepare("SELECT groupid, active FROM cms_homes_group_linker WHERE userid = :my_id AND active = '1' LIMIT 1");
-$stmt->bindParam(':my_id', $user['id']);
-$stmt->execute();
-$linked = $stmt->rowCount();
-
+$check_stmt = $bdd->query("SELECT groupid,active FROM cms_homes_group_linker WHERE userid = '" . $user['id'] . "' AND active = '1' LIMIT 1");
+$linked = $check_stmt->rowCount();
 
 if ($linked > 0) {
-	$linkdata = $stmt->fetch(PDO::FETCH_ASSOC);
+	$linkdata = $check_stmt->fetch(PDO::FETCH_ASSOC);
 	$groupid = $linkdata['groupid'];
 }
+
 
 if (!empty($background[1])) {
 	$bg = str_replace("b_", "", $background[1]);
 	echo $bg;
-	$stmt = $bdd->prepare("SELECT id FROM cms_homes_inventory WHERE userid = :my_id AND type = '4' AND data = :bg LIMIT 1");
-	$stmt->bindParam(':my_id',  $user['id']);
-	$stmt->bindParam(':bg', $bg);
-	$stmt->execute();
-	$valid = $stmt->rowCount();
-
+	if (!isset($groupid)) {
+		$check_stmt = $bdd->prepare("SELECT id FROM cms_homes_inventory WHERE userid = :userid AND type = '4' AND data = :bg LIMIT 1");
+		$check_stmt->execute(array(':userid' => $user['id'], ':bg' => FilterText($bg)));
+	} else {
+		$check_stmt = $bdd->prepare("SELECT id FROM cms_homes_inventory WHERE userid = :userid AND type = '4' AND data = :bg AND groupid = :groupid LIMIT 1");
+		$check_stmt->execute(array(':userid' => $user['id'], ':bg' => FilterText($bg), ':groupid' => $groupid));
+	}
+	$valid = $check_stmt->rowCount();
 	if ($valid > 0) {
 		if (!isset($groupid)) {
-			$stmt = $bdd->query("SELECT data FROM cms_homes_stickers WHERE userid = :my_id AND groupid = '-1' AND type = '4' LIMIT 1");
-			$stmt->bindParam(':my_id',  $user['id']);
+			$check_stmt = $bdd->query("SELECT data FROM cms_homes_stickers WHERE userid = '" . $user['id'] . "' AND groupid = '-1' AND type = '4' LIMIT 1");
 		} else {
-			$stmt = $bdd->query("SELECT data FROM cms_homes_stickers WHERE groupid = :groupid AND type = '4' LIMIT 1");
-			$stmt->bindParam(':groupid', $groupid);
+			$check_stmt = $bdd->query("SELECT data FROM cms_homes_stickers WHERE groupid = '" . $groupid . "' AND type = '4' LIMIT 1");
 		}
-		$exists = $stmt->rowCount();
-
+		$exists = $check_stmt->rowCount();
 		if ($exists > 0) {
+			echo("<script>console.log('Ligne 47');</script>");
 			if (!isset($groupid)) {
-				$stmt = $bdd->prepare("UPDATE cms_homes_stickers SET data = :bg WHERE type = '4' AND userid = :my_id AND groupid = '-1' LIMIT 1");
-				$stmt->bindParam(':bg', $bg);
-				$stmt->bindParam(':my_id',  $user['id']);
+				echo("<script>console.log('Ligne 48');</script>");
+				$update_stmt = $bdd->prepare("UPDATE cms_homes_stickers SET data = :bg WHERE type = '4' AND userid = :userid AND groupid = '-1' LIMIT 1");
+				$update_stmt->execute(array(':bg' => $bg, ':userid' => $user['id']));
 			} else {
-				$stmt = $bdd->prepare("UPDATE cms_homes_stickers SET data = :bg WHERE type = '4' AND groupid = :groupid LIMIT 1");
-				$stmt->bindParam(':bg', $bg);
-				$stmt->bindParam(':groupid', $groupid);
+				echo("<script>console.log('Ligne 53');</script>");
+				$update_stmt = $bdd->prepare("UPDATE cms_homes_stickers SET data = :bg WHERE type = '4' AND groupid = :groupid LIMIT 1");
+				$update_stmt->execute(array(':bg' => $bg, ':groupid' => $groupid));
 			}
-			$stmt->execute();
 		} else {
 			if (!isset($groupid)) {
-				$stmt = $bdd->prepare("INSERT INTO cms_homes_stickers (userid, groupid, x, y, z, data, type, subtype, skin) VALUES (:my_id, '-1', '-1', '-1', '-1', :bg, '4', '0', '-1')");
-				$stmt->bindParam(':my_id',  $user['id']);
-				$stmt->bindParam(':bg', $bg);
+				$insert_stmt = $bdd->prepare("INSERT INTO cms_homes_stickers (userid, groupid, x, y, z, data, type, subtype, skin) VALUES (:userid, '-1', '-1', '-1', '-1', :bg, '4', '0', '-1')");
+				$insert_stmt->execute(array(':userid' => $user['id'], ':bg' => $bg));
 			} else {
-				$stmt = $bdd->prepare("INSERT INTO cms_homes_stickers (userid, groupid, x, y, z, data, type, subtype, skin) VALUES (:my_id, :groupid, '-1', '-1', '-1', :bg, '4', '0', '-1')");
-				$stmt->bindParam(':my_id',  $user['id']);
-				$stmt->bindParam(':groupid', $groupid);
-				$stmt->bindParam(':bg', $bg);
+				$insert_stmt = $bdd->prepare("INSERT INTO cms_homes_stickers (userid, groupid, x, y, z, data, type, subtype, skin) VALUES (:userid, :groupid, '-1', '-1', '-1', :bg, '4', '0', '-1')");
+				$insert_stmt->execute(array(':userid' => $user['id'], ':groupid' => $groupid, ':bg' => $bg));
 			}
-			$stmt->execute();
 		}
 	}
 }
 
 
 // Loop through each array of data we encountered and save the stuff that was passed onto us
-if (is_array($widget) || is_iterable($widget)) {
-	foreach ($widget as $raw) {
-		$bits = explode(":", $raw);
-		if (count($bits) >= 2) {
-			$id = $bits[0];
-			$data = FilterText($bits[1]);
-		} else {
-		}
-
-		if (!empty($data) && !empty($id) && is_numeric($id)) {
-			$coordinates = explode(",", $data);
-			$x = $coordinates[0];
-			$y = $coordinates[1];
-			$z = $coordinates[2];
-
-			if (is_numeric($x) && is_numeric($y) && is_numeric($z)) {
-				if (isset($groupid)) {
-					$stmt = $bdd->prepare("UPDATE cms_homes_stickers SET x = :x, y = :y, z = :z WHERE id = :id AND type = '2' AND groupid = :groupid LIMIT 1");
-					$stmt->bindParam(':x', $x);
-					$stmt->bindParam(':y', $y);
-					$stmt->bindParam(':z', $z);
-					$stmt->bindParam(':id', $id);
-					$stmt->bindParam(':groupid', $groupid);
-				} else {
-					$stmt = $bdd->prepare("UPDATE cms_homes_stickers SET x = :x, y = :y, z = :z WHERE id = :id AND type = '2' AND userid = :my_id AND groupid = '-1' LIMIT 1");
-					$stmt->bindParam(':x', $x);
-					$stmt->bindParam(':y', $y);
-					$stmt->bindParam(':z', $z);
-					$stmt->bindParam(':id', $id);
-					$stmt->bindParam(':my_id',  $user['id']);
-				}
-
-				$stmt->execute();
+foreach ($widget as $raw) {
+	$bits = explode(":", $raw);
+	$id = $bits[0];
+	$data = FilterText($bits[1]);
+	if (!empty($data) && !empty($id) && is_numeric($id)) {
+		$coordinates = explode(",", $data);
+		$x = $coordinates[0];
+		$y = $coordinates[1];
+		$z = $coordinates[2];
+		if (is_numeric($x) && is_numeric($y) && is_numeric($z)) {
+			if (isset($groupid)) {
+				$update_stmt = $bdd->prepare("UPDATE cms_homes_stickers SET x = :x, y = :y, z = :z WHERE id = :id AND type = '2' AND groupid = :groupid LIMIT 1");
+				$update_stmt->execute(array(':x' => $x, ':y' => $y, ':z' => $z, ':id' => $id, ':groupid' => $groupid));
+			} else {
+				$update_stmt = $bdd->prepare("UPDATE cms_homes_stickers SET x = :x, y = :y, z = :z WHERE id = :id AND type = '2' AND userid = :userid AND groupid = '-1' LIMIT 1");
+				$update_stmt->execute(array(':x' => $x, ':y' => $y, ':z' => $z, ':id' => $id, ':userid' => $user['id']));
 			}
 		}
 	}
 }
 
-if (is_array($stickers) || is_iterable($stickers)) {
-	foreach ($stickers as $raw) {
-		$bits = explode(":", $raw);
-		$id = $bits[0];
-		$data = FilterText($bits[1]);
 
-		if (!empty($data) && !empty($id) && is_numeric($id)) {
-			$coordinates = explode(",", $data);
-			$x = $coordinates[0];
-			$y = $coordinates[1];
-			$z = $coordinates[2];
-
-			if (is_numeric($x) && is_numeric($y) && is_numeric($z)) {
-				if (isset($groupid)) {
-					$stmt = $bdd->prepare("UPDATE cms_homes_stickers SET x = :x, y = :y, z = :z WHERE id = :id AND type = '1' AND groupid = :groupid LIMIT 1");
-					$stmt->bindParam(':x', $x);
-					$stmt->bindParam(':y', $y);
-					$stmt->bindParam(':z', $z);
-					$stmt->bindParam(':id', $id);
-					$stmt->bindParam(':groupid', $groupid);
-				} else {
-					$stmt = $bdd->prepare("UPDATE cms_homes_stickers SET x = :x, y = :y, z = :z WHERE id = :id AND type = '1' AND userid = :my_id AND groupid = '-1' LIMIT 1");
-					$stmt->bindParam(':x', $x);
-					$stmt->bindParam(':y', $y);
-					$stmt->bindParam(':z', $z);
-					$stmt->bindParam(':id', $id);
-					$stmt->bindParam(':my_id',  $user['id']);
-				}
-
-				$stmt->execute();
+foreach ($sticker as $raw) {
+	$bits = explode(":", $raw);
+	$id = $bits[0];
+	$data = FilterText($bits[1]);
+	if (!empty($data) && !empty($id) && is_numeric($id)) {
+		$coordinates = explode(",", $data);
+		$x = $coordinates[0];
+		$y = $coordinates[1];
+		$z = $coordinates[2];
+		if (is_numeric($x) && is_numeric($y) && is_numeric($z)) {
+			if (isset($groupid)) {
+				$update_stmt = $bdd->prepare("UPDATE cms_homes_stickers SET x = :x, y = :y, z = :z WHERE id = :id AND type = '1' AND groupid = :groupid LIMIT 1");
+				$update_stmt->execute(array(':x' => $x, ':y' => $y, ':z' => $z, ':id' => $id, ':groupid' => $groupid));
+			} else {
+				$update_stmt = $bdd->prepare("UPDATE cms_homes_stickers SET x = :x, y = :y, z = :z WHERE id = :id AND type = '1' AND userid = :userid AND groupid = '-1' LIMIT 1");
+				$update_stmt->execute(array(':x' => $x, ':y' => $y, ':z' => $z, ':id' => $id, ':userid' => $user['id']));
 			}
 		}
 	}
 }
 
-if (is_array($note) || is_iterable($note)) {
-	foreach ($note as $raw) {
-		$bits = explode(":", $raw);
-		$id = $bits[0];
-		$data = FilterText($bits[1]);
 
-		if (!empty($data) && !empty($id) && is_numeric($id)) {
-			$coordinates = explode(",", $data);
-			$x = $coordinates[0];
-			$y = $coordinates[1];
-			$z = $coordinates[2];
-
-			if (is_numeric($x) && is_numeric($y) && is_numeric($z)) {
-				if (isset($groupid)) {
-					$stmt = $bdd->prepare("UPDATE cms_homes_stickers SET x = :x, y = :y, z = :z WHERE id = :id AND type = '3' AND groupid = :groupid LIMIT 1");
-					$stmt->bindParam(':x', $x);
-					$stmt->bindParam(':y', $y);
-					$stmt->bindParam(':z', $z);
-					$stmt->bindParam(':id', $id);
-					$stmt->bindParam(':groupid', $groupid);
-				} else {
-					$stmt = $bdd->prepare("UPDATE cms_homes_stickers SET x = :x, y = :y, z = :z WHERE id = :id AND type = '3' AND userid = :my_id AND groupid = '-1' LIMIT 1");
-					$stmt->bindParam(':x', $x);
-					$stmt->bindParam(':y', $y);
-					$stmt->bindParam(':z', $z);
-					$stmt->bindParam(':id', $id);
-					$stmt->bindParam(':my_id',  $user['id']);
-				}
-
-				$stmt->execute();
+foreach ($note as $raw) {
+	$bits = explode(":", $raw);
+	$id = $bits[0];
+	$data = FilterText($bits[1]);
+	if (!empty($data) && !empty($id) && is_numeric($id)) {
+		$coordinates = explode(",", $data);
+		$x = $coordinates[0];
+		$y = $coordinates[1];
+		$z = $coordinates[2];
+		if (is_numeric($x) && is_numeric($y) && is_numeric($z)) {
+			if (isset($groupid)) {
+				$update_stmt = $bdd->prepare("UPDATE cms_homes_stickers SET x = :x, y = :y, z = :z WHERE id = :id AND type = '3' AND groupid = :groupid LIMIT 1");
+				$update_stmt->execute(array(':x' => $x, ':y' => $y, ':z' => $z, ':id' => $id, ':groupid' => $groupid));
+			} else {
+				$update_stmt = $bdd->prepare("UPDATE cms_homes_stickers SET x = :x, y = :y, z = :z WHERE id = :id AND type = '3' AND userid = :userid AND groupid = '-1' LIMIT 1");
+				$update_stmt->execute(array(':x' => $x, ':y' => $y, ':z' => $z, ':id' => $id, ':userid' => $user['id']));
 			}
 		}
 	}
