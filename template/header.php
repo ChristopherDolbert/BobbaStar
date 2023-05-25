@@ -218,7 +218,7 @@ if ($c['afficher'] == "Oui") {
                         <?PHP if ($pageid == "info") { ?>
                             <li class=" selected">Compte</li>
                         <?PHP } else { ?>
-                            <li class=""><a href="<?PHP echo $url; ?>/info?name=<?PHP echo $user['username']; ?>">Compte</a></li>
+                            <li class=""><a href="<?PHP echo $url; ?>/info?tag=<?PHP echo $user['username']; ?>">Compte</a></li>
                         <?PHP } ?>
 
                         <?PHP if ($user['rank'] >= 4) { ?>
