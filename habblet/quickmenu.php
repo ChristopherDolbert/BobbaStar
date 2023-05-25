@@ -20,7 +20,7 @@ switch($mode){
 		break;
 	case 2:
 		$str = "groups";
-		$get_em = mysqli_query($con,("SELECT * FROM groups_memberships WHERE userid = '".$user['id']."' AND is_pending = '0' ORDER BY member_rank LIMIT 10") or die(mysql_error());
+		$get_em = mysqli_query($con,("SELECT * FROM guilds_members WHERE userid = '".$user['id']."' AND is_pending = '0' ORDER BY member_rank LIMIT 10") or die(mysql_error());
 		break;
 	case 3:
 		$str = "rooms";
