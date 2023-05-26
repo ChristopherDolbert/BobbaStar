@@ -94,6 +94,7 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 </style>
 <![endif]-->
     <meta name="build" content="<?PHP echo $build; ?> >> <?PHP echo $version; ?>" />
+    
 </head>
 
 <body id="home" class=" ">

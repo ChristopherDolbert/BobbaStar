@@ -68,27 +68,30 @@ body { behavior: url(http://www.habbo.com/js/csshover.htc); }
 <![endif]-->
 	<meta name="build" content="<?PHP echo $build; ?> >> <?PHP echo $version; ?>" />
 
+
+
+	<script type="text/javascript">
+		var andSoItBegins = (new Date()).getTime();
+	</script>
+
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/process.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+
+	<script src="<?PHP echo $imagepath; ?>static/js/libs2.js" type="text/javascript"></script>
+	<script src="<?PHP echo $imagepath; ?>static/js/visual.js" type="text/javascript"></script>
+	<script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
+	<script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
+	<script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
+	<script src="<?PHP echo $imagepath; ?>js/tooltip.js" type="text/javascript"></script>
+
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/changepassword.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+	<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/process.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
+
+	
 </head>
-
-<script type="text/javascript">
-	var andSoItBegins = (new Date()).getTime();
-</script>
-
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/process.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
-
-<script src="<?PHP echo $imagepath; ?>static/js/libs2.js" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath; ?>static/js/visual.js" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath; ?>static/js/libs.js" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath; ?>static/js/common.js" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath; ?>static/js/fullcontent.js" type="text/javascript"></script>
-<script src="<?PHP echo $imagepath; ?>js/tooltip.js" type="text/javascript"></script>
-
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/style.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/buttons.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/boxes.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/tooltips.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/changepassword.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
-<link rel="stylesheet" href="<?PHP echo $imagepath; ?>v2/styles/process.css<?php echo '?' . mt_rand(); ?>" type="text/css" />
 
 <body id="intermediate" class="process-template">
 	<div id="tooltip"></div>

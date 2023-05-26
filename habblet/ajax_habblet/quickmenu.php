@@ -30,7 +30,7 @@ switch ($mode) {
 		break;
 	case 2:
 		$str = "groups";
-		$query = "SELECT * FROM guilds_members WHERE user_id = :my_id AND is_pending = '0' ORDER BY member_rank LIMIT 10";
+		$query = "SELECT * FROM guilds_members WHERE user_id = :my_id ORDER BY guild_id LIMIT 10";
 		$stmt = $bdd->prepare($query);
 		$stmt->bindParam(':my_id', $user['id']);
 		$stmt->execute();

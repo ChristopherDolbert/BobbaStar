@@ -80,6 +80,7 @@ if (isset($_GET['id'])) {
             HabboClient.windowName = "uberClientWnd";
         }
     </script>
+    
     <link rel="shortcut icon" href="<?PHP echo $imagepath; ?>favicon.ico" type="image/vnd.microsoft.icon" />
     <script src="<?PHP echo $imagepath; ?>static/js/libs2.js" type="text/javascript"></script>
     <script src="<?PHP echo $imagepath; ?>static/js/visual.js" type="text/javascript"></script>
