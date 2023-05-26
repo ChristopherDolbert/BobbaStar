@@ -161,7 +161,7 @@ if ($c['afficher'] == "Oui") {
         <?PHP } ?>
         <!-- FIN DU BOUTTON SECURITE -->
         <!-- BOUTTON BOUTIQUE -->
-        <?PHP if ($pageid == "badgeshop" || $pageid == "achats" || $pageid == "codepromo" || $pageid == "jetons" || $pageid == "clubs" || $pageid == "shopbots") { ?>
+        <?PHP if ($pageid == "badgeshop" || $pageid == "achats" || $pageid == "codepromo" || $pageid == "jetons" || $pageid == "credits" || $pageid == "pixels" || $pageid == "loto" || $pageid == "clubs" || $pageid == "club") { ?>
             <li class="selected"><a href="<?PHP echo $url; ?>/jetons">Boutique</a> <span></span>
             </li>
         <?PHP } else { ?>
@@ -296,7 +296,7 @@ if ($c['afficher'] == "Oui") {
                             <li class=""><a href="<?PHP echo $url; ?>/videinventaire">Vider l'inventaire</a></li>
                         <?PHP } ?>
                     <?PHP } ?>
-                    <?PHP if ($pageid == "badgeshop" || $pageid == "achats" || $pageid == "codepromo" || $pageid == "jetons" || $pageid == "clubs" || $pageid == "clubhc" || $pageid == "pixels" || $pageid == "credits") { ?>
+                    <?PHP if ($pageid == "badgeshop" || $pageid == "achats" || $pageid == "codepromo" || $pageid == "jetons" || $pageid == "loto" || $pageid == "clubs" || $pageid == "clubhc" || $pageid == "pixels" || $pageid == "credits") { ?>
                         <?PHP if ($pageid == "jetons") { ?>
                             <li class=" selected">Jetons</li>
                         <?PHP } else { ?>
@@ -323,9 +323,9 @@ if ($c['afficher'] == "Oui") {
                             <li class=""><a href="<?PHP echo $url; ?>/clubs">Premium</a></li>
                         <?PHP } ?>
                         <?PHP if ($pageid == "badgeshop") { ?>
-                            <li class=" selected">Acheter des badges</li>
+                            <li class=" selected">Badges</li>
                         <?PHP } else { ?>
-                            <li class=""><a href="<?PHP echo $url; ?>/shopbadge">Acheter des badges</a></li>
+                            <li class=""><a href="<?PHP echo $url; ?>/shopbadge">Badges</a></li>
                         <?PHP } ?>
                         <?PHP if ($pageid == "clubhc") { ?>
                             <li class=" selected">Devenir HC</li>
@@ -336,6 +336,11 @@ if ($c['afficher'] == "Oui") {
                             <li class=" selected">Code</li>
                         <?PHP } else { ?>
                             <li class=""><a href="<?PHP echo $url; ?>/code_promo">Code</a></li>
+                        <?PHP } ?>
+                        <?PHP if ($pageid == "loto") { ?>
+                            <li class=" selected">Loto</li>
+                        <?PHP } else { ?>
+                            <li class=""><a href="<?PHP echo $url; ?>/loto">Loto</a></li>
                         <?PHP } ?>
                     <?PHP } ?>
 
