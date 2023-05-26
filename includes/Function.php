@@ -75,6 +75,15 @@ if (!function_exists('bbcode_format')) {
 	}
 }
 
+function Age($date_naissance)
+{
+	$timestamp_naissance = $date_naissance; // Remplacez par votre propre timestamp
+	$timestamp_actuel = time();
+	$diff_seconds = $timestamp_actuel - $timestamp_naissance;
+	$age = floor($diff_seconds / (365 * 24 * 60 * 60));
+	return $age;
+}
+
 if (!function_exists('IsUserBanned')) {
 	function IsUserBanned($my_id)
 	{
