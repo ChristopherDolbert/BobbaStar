@@ -7,7 +7,7 @@
 #|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|
 
 $date = date('dmY');
-$sitename = "MyHabbo";
+$sitename = "BobbaGalaxy";
 $shortname = "Habbo";
 $url = "http://localhost";
 $description = "&raquo; Créer ton appart, tchat avec des centaines d'utilisateurs et fais-toi de nouveaux amis.";

@@ -260,115 +260,86 @@ $temps_interdit3 = $temps_actuelle + $temps_interdit2;
         </div>
 
         <div id="column2" class="column">
-            <div class="habblet-container ">
-                <div class="cbb clearfix red ">
 
-                    <h2 class="title">C'est quoi ?</h2>
+            <div class="habblet-container">
+                <div class="cbb clearfix red">
+                    <h2 class="title">Qu'est-ce que c'est ?</h2>
                     <div id="purse-habblet">
                         <div class="box-content">
-                            <div align="center"><img src="Images/Rel11_DDeals_truck_145x114.gif" /><br /><br />
+                            <div align="center"><img width="50%" src="<?PHP echo $imagepath; ?>v2/images/loto.png"></div>
+                            <br />
+                            <div>
+                                <p>Le Loto de <?php echo $sitename; ?> est un jeu de loterie captivant et très apprécié offert aux utilisateurs de <?php echo $sitename; ?>. Il offre aux joueurs la chance de gagner des prix en échange de l'achat de tickets de loterie. Les participants choisissent leur mise et reçoivent instantanément le résultat pour découvrir s'ils ont remporté des récompenses incroyables.</p>
+                                <p style="color: red;">Il est essentiel de jouer de manière responsable et de fixer des limites personnelles pour éviter les problèmes d'addiction potentiels. <?php echo $sitename; ?> encourage ses utilisateurs à adopter une approche saine vis-à-vis du jeu, à se divertir de manière responsable et à être conscients des risques associés à l'addiction.</span>
                             </div>
-                            <div>Le <strong><?php echo $shortname; ?> Loto</strong> est completements <strong>gratuit </strong>et <br />il te permet de <strong>gagner</strong> de nombreuses choses.<br /><br />
-
-                                Pour jouer c'est tr�s simple appuit sur <strong>jouer</strong> !<br /><br />
-
-                                N'oublies pas <strong><?php echo $shortname; ?> Swayn & Fonction</strong> sont toujours là pour <strong>toi</strong>.</div>
                         </div>
                     </div>
                 </div>
-                <div id="column2" class="column">
-                    <div class="habblet-container ">
-                        <div class="cbb clearfix orange ">
-
-                            <h2 class="title">Besoin D'aide ?</h2>
-                            <div id="purse-habblet">
-                                <div class="box-content">
-                                    <div>
-                                        <div id="pixels-info" class="box-content pixels-info">
-                                            <div class="pixels-info-text clearfix">
-                                                <img src="Images/frank_23.gif" alt="" width="105" height="88" class="pixels-image" />
-                                                <p class="pixels-text">Si tu as un <strong>probl&egrave;me</strong> <br />
-                                                    avec le <?php echo $shortname; ?> loto ou <br />si tu veux nous poser<br /> une question, contacte le<br /> Createur du cms a : Tefax@live.fr<br /><br />
-                                                    Nous tenterons de<br /> r&eacute;pondre &agrave; ta demande<br /> <u>le plus rapidement possible. </u></p>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <script type="text/javascript">
-                            if (!$(document.body).hasClassName('process-template')) {
-                                Rounder.init();
-                            }
-                        </script>
-
-                        <div class="habblet-container ">
-
-
-
-
-
-                        </div>
-                        <script type="text/javascript">
-                            if (!$(document.body).hasClassName('process-template')) {
-                                Rounder.init();
-                            }
-                        </script>
-
-                        <script type='text/javascript'>
-                            if (!$(document.body).hasClassName('process-template')) {
-                                Rounder.init();
-                            }
-                        </script>
-
-
-                    </div>
-
-                    <script type="text/javascript">
-                        HabboView.run();
-                    </script>
-                </div>
-                <script type="text/javascript">
-                    if (!$(document.body).hasClassName('process-template')) {
-                        Rounder.init();
-                    }
-                </script>
-
-                <div class="habblet-container ">
-
-
-
-
-
-                </div>
-                <script type="text/javascript">
-                    if (!$(document.body).hasClassName('process-template')) {
-                        Rounder.init();
-                    }
-                </script>
-
                 <script type='text/javascript'>
                     if (!$(document.body).hasClassName('process-template')) {
                         Rounder.init();
                     }
                 </script>
+            </div>
 
 
+            <div class="habblet-container ">
+                <div class="cbb clearfix brown ">
+                    <h2 class="title">Obtenir des tickets (<?php echo $user['tickets']; ?>)
+                    </h2>
+                    <div id="purse-habblet">
+                        <ul>
+                            <li class="even icon-purse">
+                                <div>Tu as actuellement:</div>
+                                <span class="purse-balance-amount"><?php echo $user['jetons']; ?> Jetons</span>
+                                <div class="purse-tx"><a href="transactions">Mes transactions</a></div>
+                            </li>
+                            <?php if ($user['jetons'] >= 5) { ?>
+                                <li class="odd">
+                                    <div style="text-align: center;" class="box-content">
+                                        <a href="loto?generateJetons" id="purse-redeemcode-button" class="new-button purse-icon" style="display: inline-block;"><b><span></span>5 jetons en 1 ticket</b><i></i></a>
+                                    </div>
+                                </li>
+
+                                <?php if (isset($affichage)) {
+                                    echo $affichage;
+                                } ?>
+                            <?php } else { ?>
+                                <br />
+                                <center>
+                                    <div style="width:80%;" class="redeem-error">
+                                        <div style="text-align:center" class="rounded rounded-red">
+                                            Tu n'as pas assez de jetons !
+                                        </div>
+                                    </div>
+                                </center>
+                            <?php } ?>
+                        </ul>
+                        <div id="purse-redeem-result">
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        new PurseHabblet();
+                    </script>
+                </div>
             </div>
 
             <script type="text/javascript">
                 HabboView.run();
             </script>
         </div>
+
         <script type="text/javascript">
-            if (!$(document.body).hasClassName('process-template')) {
-                Rounder.init();
-            }
+            HabboView.run();
         </script>
-        <?php
+    </div>
+    <script type="text/javascript">
+        if (!$(document.body).hasClassName('process-template')) {
+            Rounder.init();
+        }
+    </script>
+    <?php
 
-        include('template/footer.php');
+    include('template/footer.php');
 
-        ?>
+    ?>
