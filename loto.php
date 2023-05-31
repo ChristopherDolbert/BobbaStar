@@ -476,7 +476,6 @@ if (isset($_GET['acceptConditions'])) {
                         Rounder.init();
                     }
                 </script>
-
             </div>
             <div id="column2" class="column">
 
