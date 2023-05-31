@@ -74,6 +74,9 @@ $temps_interdit3 = $temps_actuelle + $temps_interdit2;
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <title><?PHP echo $sitename; ?> &raquo; <?PHP echo $pagename; ?></title>
@@ -93,8 +96,16 @@ $temps_interdit3 = $temps_actuelle + $temps_interdit2;
             HabboClient.windowName = "uberClientWnd";
         }
     </script>
+    <style type="text/css">
+        .Style1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
 
-
+        .Style2 {
+            font-size: 18px
+        }
+    </style>
 
     <link rel="shortcut icon" href="<?PHP echo $imagepath; ?>favicon.ico" type="image/vnd.microsoft.icon" />
     <script src="<?PHP echo $imagepath; ?>static/js/libs2.js" type="text/javascript"></script>
@@ -257,86 +268,78 @@ $temps_interdit3 = $temps_actuelle + $temps_interdit2;
                     }
                 </script>
             </div>
-        </div>
 
-        <div id="column2" class="column">
 
-            <div class="habblet-container">
-                <div class="cbb clearfix red">
-                    <h2 class="title">Qu'est-ce que c'est ?</h2>
-                    <div id="purse-habblet">
-                        <div class="box-content">
-                            <div align="center"><img width="50%" src="<?PHP echo $imagepath; ?>v2/images/loto.png"></div>
-                            <br />
-                            <div>
-                                <p>Le Loto de <?php echo $sitename; ?> est un jeu de loterie captivant et très apprécié offert aux utilisateurs de <?php echo $sitename; ?>. Il offre aux joueurs la chance de gagner des prix en échange de l'achat de tickets de loterie. Les participants choisissent leur mise et reçoivent instantanément le résultat pour découvrir s'ils ont remporté des récompenses incroyables.</p>
-                                <p style="color: red;">Il est essentiel de jouer de manière responsable et de fixer des limites personnelles pour éviter les problèmes d'addiction potentiels. <?php echo $sitename; ?> encourage ses utilisateurs à adopter une approche saine vis-à-vis du jeu, à se divertir de manière responsable et à être conscients des risques associés à l'addiction.</span>
+            <div id="column2" class="column">
+
+                <div class="habblet-container">
+                    <div class="cbb clearfix red">
+                        <h2 class="title">Qu'est-ce que c'est ?</h2>
+                        <div id="purse-habblet">
+                            <div class="box-content">
+                                <div align="center"><img width="50%" src="<?PHP echo $imagepath; ?>v2/images/loto.png"></div>
+                                <br />
+                                <div>
+                                    <p>Le Loto de <?php echo $sitename; ?> est un jeu de loterie captivant et très apprécié offert aux utilisateurs de <?php echo $sitename; ?>. Il offre aux joueurs la chance de gagner des prix en échange de l'achat de tickets de loterie. Les participants choisissent leur mise et reçoivent instantanément le résultat pour découvrir s'ils ont remporté des récompenses incroyables.</p>
+                                    <p style="color: red;">Il est essentiel de jouer de manière responsable et de fixer des limites personnelles pour éviter les problèmes d'addiction potentiels. <?php echo $sitename; ?> encourage ses utilisateurs à adopter une approche saine vis-à-vis du jeu, à se divertir de manière responsable et à être conscients des risques associés à l'addiction.</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <script type='text/javascript'>
-                    if (!$(document.body).hasClassName('process-template')) {
-                        Rounder.init();
-                    }
-                </script>
-            </div>
-
-
-            <div class="habblet-container ">
-                <div class="cbb clearfix brown ">
-                    <h2 class="title">Obtenir des tickets (<?php echo $user['tickets']; ?>)
-                    </h2>
-                    <div id="purse-habblet">
-                        <ul>
-                            <li class="even icon-purse">
-                                <div>Tu as actuellement:</div>
-                                <span class="purse-balance-amount"><?php echo $user['jetons']; ?> Jetons</span>
-                                <div class="purse-tx"><a href="transactions">Mes transactions</a></div>
-                            </li>
-                            <?php if ($user['jetons'] >= 5) { ?>
-                                <li class="odd">
-                                    <div style="text-align: center;" class="box-content">
-                                        <a href="loto?generateJetons" id="purse-redeemcode-button" class="new-button purse-icon" style="display: inline-block;"><b><span></span>5 jetons en 1 ticket</b><i></i></a>
-                                    </div>
-                                </li>
-
-                                <?php if (isset($affichage)) {
-                                    echo $affichage;
-                                } ?>
-                            <?php } else { ?>
-                                <br />
-                                <center>
-                                    <div style="width:80%;" class="redeem-error">
-                                        <div style="text-align:center" class="rounded rounded-red">
-                                            Tu n'as pas assez de jetons !
-                                        </div>
-                                    </div>
-                                </center>
-                            <?php } ?>
-                        </ul>
-                        <div id="purse-redeem-result">
-                        </div>
-                    </div>
-                    <script type="text/javascript">
-                        new PurseHabblet();
+                    <script type='text/javascript'>
+                        if (!$(document.body).hasClassName('process-template')) {
+                            Rounder.init();
+                        }
                     </script>
                 </div>
+
+
+                <div class="habblet-container ">
+                    <div class="cbb clearfix brown ">
+                        <h2 class="title">Obtenir des tickets (<?php echo $user['tickets']; ?>)
+                        </h2>
+                        <div id="purse-habblet">
+                            <ul>
+                                <li class="even icon-purse">
+                                    <div>Tu as actuellement:</div>
+                                    <span class="purse-balance-amount"><?php echo $user['jetons']; ?> Jetons</span>
+                                    <div class="purse-tx"><a href="transactions">Mes transactions</a></div>
+                                </li>
+                                <?php if ($user['jetons'] >= 5) { ?>
+                                    <li class="odd">
+                                        <div style="text-align: center;" class="box-content">
+                                            <a href="loto?generateJetons" id="purse-redeemcode-button" class="new-button purse-icon" style="display: inline-block;"><b><span></span>5 jetons en 1 ticket</b><i></i></a>
+                                        </div>
+                                    </li>
+
+                                    <?php if (isset($affichage)) {
+                                        echo $affichage;
+                                    } ?>
+                                <?php } else { ?>
+                                    <br />
+                                    <center>
+                                        <div style="width:80%;" class="redeem-error">
+                                            <div style="text-align:center" class="rounded rounded-red">
+                                                Tu n'as pas assez de jetons !
+                                            </div>
+                                        </div>
+                                    </center>
+                                <?php } ?>
+                            </ul>
+                            <div id="purse-redeem-result">
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            new PurseHabblet();
+                        </script>
+                    </div>
+                </div>
+
             </div>
-
-            <script type="text/javascript">
-                HabboView.run();
-            </script>
         </div>
-
-        <script type="text/javascript">
-            HabboView.run();
-        </script>
     </div>
     <script type="text/javascript">
-        if (!$(document.body).hasClassName('process-template')) {
-            Rounder.init();
-        }
+        HabboView.run();
     </script>
     <?php
 
