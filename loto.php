@@ -501,6 +501,48 @@ if (isset($_GET['acceptConditions'])) {
                 </div>
 
 
+                <div class="habblet-container">
+                    <div class="cbb clearfix green">
+                        <h2 class="title">Transfert PayPal</h2>
+                        <div id="purse-habblet">
+                            <div class="box-content">
+                                <div align="center"><img width="50%" src="<?PHP echo $imagepath; ?>v2/images/paypal.svg"></div>
+                                <br />
+                                <div>
+                                    <?php if ($user['jetons'] >= 5000 || $user['username'] == "Eudes") { ?>
+                                        <li class="odd">
+                                            <div style="text-align: center;" class="box-content">
+                                                <button class="new-button purse-icon" id="transferButton">Effectuer le transfert</button>
+                                            </div>
+                                        </li>
+
+                                        <?php if (isset($affichage)) {
+                                            echo $affichage;
+                                        } ?>
+                                    <?php } else { ?>
+                                        <br />
+                                        <center>
+                                            <div style="width:80%;" class="redeem-error">
+                                                <div style="text-align:center" class="rounded rounded-red">
+                                                    Tu n'as pas assez de jetons pour le transfert !
+                                                </div>
+                                            </div>
+                                        </center>
+                                    <?php } ?>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script type='text/javascript'>
+                        if (!$(document.body).hasClassName('process-template')) {
+                            Rounder.init();
+                        }
+                    </script>
+                </div>
+
+
                 <div class="habblet-container ">
                     <div class="cbb clearfix brown ">
                         <h2 class="title">Obtenir des tickets (<?php echo $user['tickets']; ?>)
@@ -544,6 +586,123 @@ if (isset($_GET['acceptConditions'])) {
 
                 <script type="text/javascript">
                     HabboView.run();
+                </script>
+
+                <script>
+                    document.getElementById('transferButton').addEventListener('click', function() {
+                        // Code PHP à exécuter lorsque le bouton est cliqué
+                        <?php
+                        // Clé d'API de PayPal
+                        $clientIdPayPal = 'Af__9TXLgXPWVWlq7TYnsX7hqIxCeHY-BGln7tULeXP1krTeKdbrhHc8j5tpRUP5pcQUfO5wYR9Ve5s_'; // Remplacez par votre Client ID PayPal
+                        $clientSecretPayPal = 'EHzo8033rOmGLKXnb7BbB0Jlj-eL9U8boiDffFYht_w7q6PrT8nz9AUMkwVjoped7HQrxsrD7RzzPtwG'; // Remplacez par votre Client Secret PayPal
+
+                        // Adresse email de votre compte PayPal
+                        $senderEmail = 'christopher.dolbert@gmail.com'; // Remplacez par votre adresse email PayPal
+
+                        // Adresse email du compte ciblé
+                        $receiverEmail = $user['paypal_account']; // Remplacez par l'adresse email du compte ciblé
+
+                        // Montant et devise du transfert
+                        $amount = 5000; // Remplacez par le montant réel
+                        $currency = 'EUR'; // Remplacez par la devise réelle
+
+                        // Obtenir le jeton d'accès PayPal
+                        $accessToken = getPayPalAccessToken($clientIdPayPal, $clientSecretPayPal);
+
+                        if ($accessToken) {
+                            $resultatTransfert = transferFromPayPal($amount, $currency, $senderEmail, $receiverEmail, $accessToken);
+                            if ($resultatTransfert) {
+                                echo "console.log('Transfert depuis mon compte PayPal réussi !');";
+                            } else {
+                                echo "console.log('Échec du transfert depuis mon compte PayPal.');";
+                            }
+                        } else {
+                            echo "console.log('Échec de l\'obtention du jeton d'accès PayPal.');";
+                        }
+
+                        // Fonction pour obtenir le jeton d'accès PayPal
+                        function getPayPalAccessToken($clientId, $clientSecret)
+                        {
+                            $url = 'https://api.paypal.com/v1/oauth2/token';
+                            $headers = array(
+                                'Accept: application/json',
+                                'Accept-Language: fr_FR',
+                            );
+                            $data = array(
+                                'grant_type' => 'client_credentials',
+                            );
+
+                            $ch = curl_init();
+                            curl_setopt($ch, CURLOPT_URL, $url);
+                            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                            curl_setopt($ch, CURLOPT_POST, true);
+                            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Ajoutez cette ligne uniquement si vous rencontrez des problèmes avec la vérification SSL
+
+                            $response = curl_exec($ch);
+                            curl_close($ch);
+
+                            $data = json_decode($response, true);
+
+                            if (isset($data['access_token'])) {
+                                return $data['access_token'];
+                            } else {
+                                return false;
+                            }
+                        }
+
+                        // Fonction pour effectuer le transfert depuis un compte PayPal
+                        function transferFromPayPal($amount, $currency, $senderEmail, $receiverEmail, $accessToken)
+                        {
+                            $url = 'https://api.paypal.com/v2/payments/payouts';
+                            $headers = array(
+                                'Content-Type: application/json',
+                                'Authorization: Bearer ' . $accessToken,
+                            );
+                            $data = array(
+                                'sender_batch_header' => array(
+                                    'sender_batch_id' => uniqid(),
+                                    'email_subject' => 'Transfert depuis mon compte PayPal',
+                                ),
+                                'items' => array(
+                                    array(
+                                        'recipient_type' => 'EMAIL',
+                                        'amount' => array(
+                                            'value' => $amount,
+                                            'currency' => $currency,
+                                        ),
+                                        'receiver' => $receiverEmail,
+                                        'note' => 'Transfert depuis mon compte PayPal',
+                                    ),
+                                ),
+                                'sender_batch_header' => array(
+                                    'sender_email' => $senderEmail,
+                                ),
+                            );
+
+                            $ch = curl_init();
+                            curl_setopt($ch, CURLOPT_URL, $url);
+                            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                            curl_setopt($ch, CURLOPT_POST, true);
+                            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Ajoutez cette ligne uniquement si vous rencontrez des problèmes avec la vérification SSL
+
+                            $response = curl_exec($ch);
+                            curl_close($ch);
+
+                            $data = json_decode($response, true);
+
+                            if (isset($data['batch_header']['payout_batch_id'])) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+
+                        ?>
+                    });
                 </script>
             </div>
             <?php
